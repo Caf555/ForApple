@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>儲存庫檔案瀏覽器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #24292e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        #repo-name {
+            color: #0366d6;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .file-list {
+            list-style-type: none;
+        }
+        .file-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e1e4e8;
+            display: flex;
+            align-items: center;
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-item:hover {
+            background-color: #f6f8fa;
+        }
+        .file-icon {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        .file-link {
+            flex-grow: 1;
+            text-decoration: none;
+            color: #0366d6;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        .file-meta {
+            color: #586069;
+            font-size: 0.85em;
+        }
+        .loader {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #586069;
+        }
+        .error {
+            color: #cb2431;
+            padding: 15px;
+            background-color: #ffeef0;
+            border-radius: 4px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #586069;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .file-meta {
+                display: none;
+            }
+        }
+        #search {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>檔案瀏覽器 - <span id="repo-name">正在載入...</span></h1>
+        <input type="text" id="search" placeholder="搜尋檔案..." aria-label="搜尋檔案">
+        <div id="file-container">
+            <div class="loader">正在載入檔案列表...</div>
+        </div>
+    </div>
+
+    <footer>
+        自動產生的儲存庫檔案瀏覽器 | 適用於蘋果裝置
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 解析當前URL以獲取使用者名和儲存庫名
+            function getRepoInfo() {
+                const url = window.location.href;
+                const match = url.match(/https?:\/\/([^.]+)\.github\.io\/([^\/]+)/);
+                
+                if (match && match.length >= 3) {
+                    return {
+                        username: match[1],
+                        repo: match[2]
+                    };
+                }
+                
+                // 如果無法從GitHub Pages URL獲取，嘗試從原始URL獲取
+                const pathParts = window.location.pathname.split('/');
+                if (pathParts.length >= 2) {
+                    return {
+                        username: 'current-user', // 無法可靠地從直接檔案獲取
+                        repo: pathParts[1] === '' ? '當前儲存庫' : pathParts[1]
+                    };
+                }
+                
+                return {
+                    username: 'unknown',
+                    repo: '當前儲存庫'
+                };
+            }
+            
+            // 設置儲存庫名稱
+            const repoInfo = getRepoInfo();
+            document.getElementById('repo-name').textContent = repoInfo.repo;
+            
+            // 獲取GitHub儲存庫內容
+            async function fetchRepoContents() {
+                const fileContainer = document.getElementById('file-container');
+                
+                try {
+                    // 如果是從本地檔案系統開啟，使用fetch API可能會有跨域問題
+                    // 將使用靜態顯示目前目錄內容
+                    const isLocalFile = window.location.protocol === 'file:';
+                    
+                    if (isLocalFile) {
+                        displayLocalFileWarning();
+                        return;
+                    }
+                    
+                    // 檢查我們是否在GitHub Pages上
+                    const url = `https://api.github.com/repos/${repoInfo.username}/${repoInfo.repo}/contents`;
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error(`GitHub API 回應錯誤: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    displayFiles(data);
+                } catch (error) {
+                    // 如果API調用失敗，使用替代方案
+                    console.error('無法獲取儲存庫內容:', error);
+                    displayAlternative();
+                }
+            }
+            
+            // 顯示檔案列表
+            function displayFiles(files) {
+                const fileContainer = document.getElementById('file-container');
+                
+                // 過濾掉index.html（當前檔案）
+                files = files.filter(file => file.name.toLowerCase() !== 'index.html');
+                
+                if (files.length === 0) {
+                    fileContainer.innerHTML = '<p>此儲存庫中沒有其他檔案。</p>';
+                    return;
+                }
+                
+                // 按類型排序：資料夾在前，檔案在後
+                files.sort((a, b) => {
+                    if (a.type === 'dir' && b.type !== 'dir') return -1;
+                    if (a.type !== 'dir' && b.type === 'dir') return 1;
+                    return a.name.localeCompare(b.name);
+                });
+                
+                let html = '<ul class="file-list" id="file-list">';
+                
+                files.forEach(file => {
+                    const isDirectory = file.type === 'dir';
+                    const icon = isDirectory ? '📁' : getFileIcon(file.name);
+                    const fileUrl = file.html_url ? file.html_url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/') : file.name;
+                    
+                    html += `
+                    <li class="file-item">
+                        <span class="file-icon">${icon}</span>
+                        <a href="${isDirectory ? file.html_url : file.name}" class="file-link" 
+                           target="${isDirectory ? '_blank' : '_self'}" 
+                           data-filename="${file.name.toLowerCase()}">
+                           ${file.name}
+                           <span class="file-meta">${formatSize(file.size)}</span>
+                        </a>
+                    </li>`;
+                });
+                
+                html += '</ul>';
+                fileContainer.innerHTML = html;
+                
+                // 添加搜尋功能
+                setupSearch();
+            }
+            
+            // 設置搜尋功能
+            function setupSearch() {
+                const searchInput = document.getElementById('search');
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const fileItems = document.querySelectorAll('#file-list .file-item');
+                    
+                    fileItems.forEach(item => {
+                        const fileName = item.querySelector('.file-link').getAttribute('data-filename');
+                        if (fileName.includes(searchTerm)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // 如果無法從GitHub API獲取，顯示替代內容
+            function displayAlternative() {
+                const fileContainer = document.getElementById('file-container');
+                
+                // 手動添加一些可能的HTML檔案，通常適合GitHub Pages
+                const commonFiles = [
+                    { name: 'mypage.html', icon: '📄', description: 'HTML檔案' },
+                    { name: 'aboutme.html', icon: '📄', description: 'HTML檔案' },
+                    { name: 'contact.html', icon: '📄', description: 'HTML檔案' },
+                    { name: 'portfolio.html', icon: '📄', description: 'HTML檔案' },
+                    { name: 'style.css', icon: '🎨', description: 'CSS樣式表' },
+                    { name: 'script.js', icon: '📜', description: 'JavaScript檔案' }
+                ];
+                
+                let html = `
+                <div class="error">
+                    <p>無法自動獲取儲存庫檔案列表。以下是一些您可能有的常見檔案：</p>
+                </div>
+                <ul class="file-list" id="file-list">`;
+                
+                commonFiles.forEach(file => {
+                    html += `
+                    <li class="file-item">
+                        <span class="file-icon">${file.icon}</span>
+                        <a href="${file.name}" class="file-link" data-filename="${file.name.toLowerCase()}">
+                            ${file.name}
+                            <span class="file-meta">${file.description}</span>
+                        </a>
+                    </li>`;
+                });
+                
+                html += `</ul>
+                <p style="margin-top: 15px;">
+                    如果上述檔案不存在，它們的連結將無法工作。請使用實際存在於同一目錄中的檔名替換這些連結。
+                </p>`;
+                
+                fileContainer.innerHTML = html;
+                
+                // 同樣添加搜尋功能
+                setupSearch();
+            }
+            
+            // 如果是從本地檔案系統開啟，顯示警告
+            function displayLocalFileWarning() {
+                const fileContainer = document.getElementById('file-container');
+                
+                fileContainer.innerHTML = `
+                <div class="error">
+                    <p>您似乎正在本地檔案系統中查看此頁面。要使此頁面正常工作，請：</p>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>將此頁面上傳到您的GitHub儲存庫</li>
+                        <li>透過GitHub Pages訪問此頁面</li>
+                    </ol>
+                </div>
+                <p style="margin-top: 15px;">
+                    手動添加您的檔案連結，或在本地使用伺服器來測試此頁面。
+                </p>`;
+            }
+            
+            // 依檔案類型獲取圖示
+            function getFileIcon(filename) {
+                const ext = filename.split('.').pop().toLowerCase();
+                const icons = {
+                    'html': '📄',
+                    'htm': '📄',
+                    'css': '🎨',
+                    'js': '📜',
+                    'json': '📋',
+                    'txt': '📝',
+                    'md': '📋',
+                    'jpg': '🖼️',
+                    'jpeg': '🖼️',
+                    'png': '🖼️',
+                    'gif': '🖼️',
+                    'svg': '🖼️',
+                    'pdf': '📑',
+                    'zip': '📦',
+                    'gz': '📦',
+                    'tar': '📦'
+                };
+                
+                return icons[ext] || '📄';
+            }
+            
+            // 格式化檔案大小
+            function formatSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                if (!bytes || isNaN(bytes)) return '';
+                
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            // 初始化
+            fetchRepoContents();
+        });
+    </script>
+</body>
+</html>
