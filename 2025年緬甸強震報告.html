@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年緬甸強震報告</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a6da7;
+            --secondary-color: #cc5500;
+            --accent-color: #e63946;
+            --background-color: #f8f9fa;
+            --text-color: #333333;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', 'Noto Sans TC', sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+        }
+        
+        header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .source-list {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .source-list h3 {
+            margin-bottom: 10px;
+        }
+        
+        .source-list ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        
+        .source-list li {
+            margin-bottom: 8px;
+        }
+        
+        .source-list a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .source-list a:hover {
+            text-decoration: underline;
+        }
+        
+        figure {
+            margin-bottom: 25px;
+        }
+        
+        figure figcaption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            padding: 10px 0;
+        }
+        
+        blockquote {
+            padding: 15px 20px;
+            margin: 20px 0;
+            background-color: #f8f8f8;
+            border-left: 4px solid var(--secondary-color);
+            font-style: italic;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: white;
+            background-color: var(--accent-color);
+        }
+        
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" id="sidebarToggle">☰ 選單</button>
+    
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>報告目錄</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#overview">事件概述</a></li>
+                <li><a href="#earthquake-data">地震數據分析</a></li>
+                <li><a href="#affected-areas">受災地區</a></li>
+                <li><a href="#casualties">人員傷亡</a></li>
+                <li><a href="#rescue-efforts">救援行動</a></li>
+                <li><a href="#international-response">國際回應</a></li>
+                <li><a href="#geological-background">地質背景</a></li>
+                <li><a href="#impacts">社會經濟影響</a></li>
+                <li><a href="#references">資料來源</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <header>
+                <h1>2025年緬甸強震災情報告</h1>
+                <p>本報告彙整了關於2025年3月28日發生在緬甸的強震相關資訊，包括震災規模、受影響地區、傷亡情況、救援行動以及國際社會的回應。</p>
+            </header>
+            
+            <section id="overview" class="section">
+                <h2>事件概述</h2>
+                <p>2025年3月28日緬甸當地時間12時50分（台灣時間14時50分），緬甸中部實皆省（Sagaing）發生芮氏規模7.7的強烈地震，震央位於實皆省西北方約16公里處，震源深度僅約10公里。由於震源淺、規模大，地震造成廣泛地區嚴重損害，甚至影響到鄰國如泰國、中國雲南等地區。</p>
+                
+                <p>這次地震釋放的能量巨大，相當於177顆原子彈爆炸，震感強烈程度與台灣1999年的921地震相當。地震發生後，緬甸軍政府迅速宣布6個地區進入緊急狀態，並在緊急情況下罕見地向國際社會請求援助。</p>
+                
+                <p>根據美國地質調查局（USGS）的評估，此次地震屬於「大規模災難」等級，預估可能有高達1300萬人受到影響，傷亡人數持續上升中。截至最新統計，已知至少有1644人死亡，近3500人受傷，還有139人失蹤。</p>
+                
+                <div class="chart-container">
+                    <canvas id="magnitudeComparisonChart"></canvas>
+                </div>
+            </section>
+            
+            <section id="earthquake-data" class="section">
+                <h2>地震數據分析</h2>
+                <p>根據各國地震監測機構的報告，此次地震的關鍵參數存在一些差異：</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>監測機構</th>
+                            <th>測定規模</th>
+                            <th>震央位置</th>
+                            <th>震源深度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>美國地質調查局 (USGS)</td>
+                            <td>芮氏規模 7.7</td>
+                            <td>實皆省西北 16 公里</td>
+                            <td>10 公里</td>
+                        </tr>
+                        <tr>
+                            <td>中國地震台網</td>
+                            <td>芮氏規模 7.9</td>
+                            <td>緬甸中部</td>
+                            <td>30 公里</td>
+                        </tr>
+                        <tr>
+                            <td>泰國氣象局</td>
+                            <td>芮氏規模 8.2</td>
+                            <td>緬甸實皆省</td>
+                            <td>10 公里</td>
+                        </tr>
+                        <tr>
+                            <td>香港天文台</td>
+                            <td>芮氏規模 7.3</td>
+                            <td>緬甸中部</td>
+                            <td>約 20 公里</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>震央座標根據美國地質調查所（USGS）資料位於北緯22.0128°，東經95.9216°。這個位置位於緬甸中部的實皆省，距離首都奈比多（Naypyidaw）約100公里，距離最大城市仰光（Yangon）約300公里。</p>
+                
+                <p>專家指出，此次地震威力巨大的原因包括：</p>
+                <ol>
+                    <li>震源深度極淺（約10公里），淺層地震往往造成更大的地表破壞。</li>
+                    <li>震央位於活躍的實皆斷層帶上，這個斷層帶已經沉寂約200年，能量長期累積。</li>
+                    <li>緬甸位於印度板塊與歐亞板塊的碰撞區域，地質活動頻繁。</li>
+                </ol>
+                
+                <div class="chart-container">
+                    <canvas id="depthComparisonChart"></canvas>
+                </div>
+            </section>
+            
+            <section id="affected-areas" class="section">
+                <h2>受災地區</h2>
+                <h3>緬甸境內</h3>
+                <p>此次地震在緬甸境內造成的災情嚴重且廣泛，主要受災地區包括：</p>
+                <ul>
+                    <li><strong>實皆省（Sagaing）</strong>：作為震央所在地，受災最為嚴重，多數建築物倒塌或受損，基礎設施遭到破壞。</li>
+                    <li><strong>曼德勒（Mandalay）</strong>：緬甸第二大城市，報告大量建築物遭到破壞，部分地區停電。</li>
+                    <li><strong>瓦城（Pakkoku）</strong>：一棟公寓大樓被地震震垮，據緬甸紅十字會報告，可能有超過90人被埋。</li>
+                    <li><strong>仰光（Yangon）</strong>：雖然距離震央較遠，但緬甸最大城市也感受到強烈的震動，部分建築物受損，全市電力供應中斷。</li>
+                    <li><strong>奈比多（Naypyidaw）</strong>：首都地區多處政府建築與基礎設施受損。</li>
+                </ul>
+                
+                <h3>鄰國受影響情況</h3>
+                <p>這次地震的影響範圍遠超緬甸國境，多個鄰國也受到波及：</p>
+                <ul>
+                    <li><strong>泰國</strong>：距離震央約1000公里遠的曼谷，一棟由泰中合資興建中的高層建築完全倒塌，造成多人受困。泰國總理貝東丹宣布曼谷進入緊急狀態，並緊急檢查6個機場的安全狀況。特別值得注意的是，曼谷之所以受到嚴重影響，專家解釋是因為其軟弱的土質導致長周期地震波被放大。</li>
+                    <li><strong>中國</strong>：雲南省多地有明顯震感，但目前未收到嚴重災情報告。</li>
+                    <li><strong>印度</strong>：東北部地區有明顯震感，部分建築物出現輕微損壞。</li>
+                    <li><strong>孟加拉</strong>：首都達卡及南部地區有明顯震感，但未傳出重大災情。</li>
+                </ul>
+                
+                <div class="chart-container">
+                    <canvas id="affectedAreasChart"></canvas>
+                </div>
+            </section>
+            
+            <section id="casualties" class="section">
+                <h2>人員傷亡</h2>
+                <p>根據緬甸軍政府最新公布的數據，已知傷亡情況如下：</p>
+                <ul>
+                    <li>已確認死亡：至少1644人</li>
+                    <li>受傷人數：近3500人</li>
+                    <li>失蹤人數：139人</li>
+                </ul>
+                
+                <p>美國地質調查局（USGS）的預估顯示，此次災難可能影響高達1300萬人，最終的死亡人數可能達到數千人。由於通訊中斷和道路受損，許多偏遠地區的災情仍未完全掌握，實際傷亡人數可能更高。</p>
+                
+                <p>值得注意的是，緬甸正處於內戰狀態，部分地區由反抗軍控制，這也使得災情評估和救援工作更加困難。在泰國曼谷倒塌的建築工地中，救援人員發現約15個生命跡象，救援行動仍在進行中。</p>
+                
+                <div class="chart-container">
+                    <canvas id="casualtiesChart"></canvas>
+                </div>
+            </section>
+            
+            <section id="rescue-efforts" class="section">
+                <h2>救援行動</h2>
+                <p>地震發生後，緬甸軍政府迅速展開救援行動，但面臨諸多挑戰：</p>
+                
+                <ol>
+                    <li><strong>通訊中斷</strong>：許多受災地區的電力和通訊設施嚴重受損，使救援協調和災情掌握變得困難。</li>
+                    <li><strong>交通障礙</strong>：多處道路、橋樑被震毀或受損，救援物資和人員難以到達偏遠地區。</li>
+                    <li><strong>醫療資源不足</strong>：大量傷者湧入醫院，但醫療設施和藥品嚴重不足。</li>
+                    <li><strong>救援設備缺乏</strong>：缺少專業的搜救設備和人員，特別是在建築物倒塌現場的搜救工作。</li>
+                    <li><strong>政治因素</strong>：由於緬甸當前的政治狀況，部分地區由反抗軍控制，救援工作受到阻礙。</li>
+                </ol>
+                
+                <h3>軍政府的應對措施</h3>
+                <p>緬甸軍政府已採取以下措施應對災情：</p>
+                <ul>
+                    <li>宣布6個地區進入緊急狀態。</li>
+                    <li>動員軍隊和警察參與救援工作。</li>
+                    <li>設立臨時避難所和醫療點。</li>
+                    <li>軍政府領導人敏昂萊將軍發表全國電視講話，呼籲國際社會提供援助。</li>
+                </ul>
+                
+                <blockquote>「我們需要緊急醫療援助、食物和水、臨時住所以及搜救設備。」 - 敏昂萊將軍在電視講話中表示。</blockquote>
+                
+                <p>在泰國方面，泰國災害預防與減災辦公室已派出專業救援隊伍前往曼谷倒塌的建築工地，使用生命探測器尋找被困人員，並設法向他們提供糧水。</p>
+            </section>
+            
+            <section id="international-response" class="section">
+                <h2>國際回應</h2>
+                <p>儘管緬甸軍政府長期以來與國際社會關係緊張，但面對此次嚴重災情，國際間迅速做出回應並提供援助：</p>
+                
+                <h3>鄰國援助</h3>
+                <ul>
+                    <li><strong>泰國</strong>：泰國政府已宣布將提供緊急救援物資，包括藥品、食品、淨水設備和臨時住所材料。泰國紅十字會也動員志願者和醫護人員準備前往緬甸。</li>
+                    <li><strong>中國</strong>：中國政府表示將提供價值500萬美元的緊急人道主義援助，並已派出救災專家團隊協助緬甸的救援工作。雲南省也特別組織了地震救援專業隊伍待命。</li>
+                    <li><strong>印度</strong>：印度總理莫迪宣布，將派遣「災難應變部隊」和醫療團隊前往緬甸，並提供藥品、淨水設備和臨時避難所。</li>
+                    <li><strong>孟加拉</strong>：孟加拉國政府已承諾提供醫療物資和食品援助。</li>
+                </ul>
+                
+                <h3>國際組織</h3>
+                <p>多個國際組織也迅速回應了緬甸的援助呼籲：</p>
+                <ul>
+                    <li><strong>聯合國</strong>：聯合國秘書長古特雷斯表示將動員資源協助緬甸，聯合國人道主義事務協調廳已啟動緊急響應機制。世界糧食計劃署正準備運送緊急食品援助。</li>
+                    <li><strong>國際紅十字會</strong>：已啟動緊急救援機制，準備提供醫療援助、清潔飲用水和臨時住所。</li>
+                    <li><strong>無國界醫生組織</strong>：已派出醫療團隊前往緬甸受災地區，並表示將在未來幾週內增派更多醫護人員。</li>
+                    <li><strong>國際搜救隊</strong>：來自新加坡、日本、韓國等國家的專業搜救隊已做好準備，等待緬甸軍政府批准入境。</li>
+                </ul>
+                
+                <h3>政治與人道主義挑戰</h3>
+                <p>救援工作面臨的主要挑戰包括：</p>
+                <ol>
+                    <li><strong>政治隔閡</strong>：由於緬甸軍政府的政治立場，許多西方國家和國際組織在提供援助時面臨政治與外交上的困境。</li>
+                    <li><strong>進入許可</strong>：國際救援團隊需要獲得緬甸軍政府的明確許可才能進入災區，這一程序可能延誤救援工作。</li>
+                    <li><strong>內戰地區</strong>：部分受災地區位於反抗軍與軍政府交戰區域，國際救援隊伍難以進入這些地區。</li>
+                    <li><strong>物流挑戰</strong>：由於道路和機場受損，援助物資的運送面臨物流困難。</li>
+                </ol>
+                
+                <div class="chart-container">
+                    <canvas id="aidChart"></canvas>
+                </div>
+                
+                <blockquote>「國際社會必須克服政治分歧，確保人道主義援助能夠迅速、有效地抵達所有需要幫助的人民，不論他們所處的地區或政治立場。」 — 聯合國秘書長古特雷斯</blockquote>
+            </section>
+            
+            <section id="geological-background" class="section">
+                <h2>地質背景</h2>
+                <p>緬甸位於印度板塊和歐亞板塊的複雜碰撞區域，這一地區的地質活動極為頻繁。此次地震與該地區的特殊地質背景密切相關：</p>
+                
+                <h3>實皆斷層帶</h3>
+                <p>此次地震的震央位於實皆斷層帶（Sagaing Fault）上，這是一條長約1200公里的大型走向滑移斷層，從緬甸北部一直延伸到南部，基本上將緬甸分成東西兩部分。專家指出，以下因素導致此次地震的破壞力特別強：</p>
+                
+                <ul>
+                    <li><strong>長期能量累積</strong>：根據新加坡地球觀測站的首席研究員韋生吉博士的說法，實皆斷層帶已經沉寂約200年，能量長期累積，此次釋放造成了巨大的破壞。</li>
+                    <li><strong>淺層地震</strong>：震源深度僅約10公里，淺層地震釋放的能量大部分直接傳到地表，造成更嚴重的破壞。</li>
+                    <li><strong>鬆軟土層</strong>：緬甸中部地區的部分地區存在較鬆軟的土層，容易放大地震波的影響。</li>
+                </ul>
+                
+                <h3>區域地震風險</h3>
+                <p>科學家指出，此次地震並非出乎意料，緬甸位於全球地震活動最頻繁的區域之一：</p>
+                
+                <ul>
+                    <li><strong>印度板塊俯衝</strong>：印度板塊以每年約4-5厘米的速度向歐亞板塊俯衝，持續積累能量。</li>
+                    <li><strong>歷史地震記錄</strong>：實皆斷層帶歷史上曾發生多次大型地震，包括1762年、1839年和1912年的強震。</li>
+                    <li><strong>早期警告</strong>：科學家們早在數年前就警告緬甸政府，實皆斷層帶存在發生大地震的高風險，但由於政治和經濟原因，防震措施仍然不足。</li>
+                </ul>
+                
+                <h3>長周期地震波</h3>
+                <p>值得特別注意的是，此次地震產生的長周期地震波影響範圍極廣，甚至在1000公里外的曼谷都造成了嚴重影響：</p>
+                
+                <ul>
+                    <li><strong>地震波放大</strong>：曼谷位於湄南河三角洲的鬆軟沖積層上，這種地質條件會放大長周期地震波的影響。</li>
+                    <li><strong>高層建築共振</strong>：長周期地震波對高層建築物的影響更大，容易產生共振現象，這也解釋了為什麼曼谷的高層建築遭受較大影響。</li>
+                    <li><strong>土壤液化</strong>：部分地區可能出現土壤液化現象，進一步加劇了建築物的損壞。</li>
+                </ul>
+                
+                <p>地震專家警告，由於全球板塊系統的相互連動，此次強震可能導致應力轉移，有可能在未來幾個月內觸發亞洲其他地區的地震活動，包括台灣、日本、菲律賓等地區，這些地區應加強監測和防範。</p>
+            </section>
+            
+            <section id="impacts" class="section">
+                <h2>社會經濟影響</h2>
+                <p>此次強震不僅造成大量人員傷亡和建築物毀損，其長期社會經濟影響也不容忽視：</p>
+                
+                <h3>基礎設施損毀</h3>
+                <p>地震造成的基礎設施破壞嚴重，影響民眾日常生活和經濟運作：</p>
+                
+                <ul>
+                    <li><strong>交通系統</strong>：多條主要道路、橋樑因地震損毀或裂縫而無法使用，鐵路系統也受到嚴重影響，多個路段需要進行檢修。</li>
+                    <li><strong>電力系統</strong>：包括仰光和曼德勒在內的多個主要城市電力系統受損，大範圍停電情況可能持續數週。</li>
+                    <li><strong>通訊網路</strong>：通訊塔和網路設施受損，許多地區通訊中斷，影響救援協調和民眾溝通。</li>
+                    <li><strong>供水系統</strong>：自來水管道破裂，淨水設施損毀，清潔飲用水短缺問題嚴重。</li>
+                </ul>
+                
+                <h3>經濟影響</h3>
+                <p>地震對緬甸原本就脆弱的經濟造成進一步打擊：</p>
+                
+                <ul>
+                    <li><strong>農業損失</strong>：實皆省是緬甸重要的農業區，地震損毀了大量農田、灌溉系統和農業設施，預計將影響今年的糧食產量。</li>
+                    <li><strong>工業停擺</strong>：多個工業區因建築損毀和電力中斷而被迫停工，影響出口和就業。</li>
+                    <li><strong>旅遊業打擊</strong>：緬甸近年正在復甦的旅遊業面臨新的挑戰，多個知名景點和歷史遺址受損。</li>
+                    <li><strong>重建成本</strong>：初步估計，災後重建費用可能高達數十億美元，對本就面臨經濟制裁的緬甸軍政府而言是極大挑戰。</li>
+                </ul>
+                
+                <div class="chart-container">
+                    <canvas id="economicImpactChart"></canvas>
+                </div>
+                
+                <h3>人道危機與社會問題</h3>
+                <p>地震加劇了緬甸本已存在的人道主義危機：</p>
+                
+                <ul>
+                    <li><strong>流離失所</strong>：預計超過10萬人因住所損毀而流離失所，需要臨時避難所和長期安置方案。</li>
+                    <li><strong>衛生風險</strong>：清潔水源短缺、衛生條件惡化和醫療系統受損，增加了傳染病爆發的風險。</li>
+                    <li><strong>教育中斷</strong>：數百所學校建築受損，影響數萬學生的學習。</li>
+                    <li><strong>心理創傷</strong>：大規模災難對受災民眾造成長期心理創傷，但緬甸缺乏足夠的心理健康服務資源。</li>
+                </ul>
+                
+                <h3>政治影響</h3>
+                <p>此次地震也可能對緬甸的政治局勢產生深遠影響：</p>
+                
+                <ul>
+                    <li><strong>軍政府形象</strong>：救災工作的效率和透明度將影響軍政府在國內的形象和合法性。</li>
+                    <li><strong>國際關係</strong>：此次軍政府罕見地呼籲國際援助，可能暫時改善其與部分國際社會的關係。</li>
+                    <li><strong>內戰影響</strong>：地震可能暫時影響緬甸持續的內戰局勢，但也可能因救援資源分配不均而加劇特定地區的緊張關係。</li>
+                </ul>
+                
+                <p>專家指出，災後重建和恢復將是一個曠日持久的過程，需要國際社會的持續關注和支持，同時也需要緬甸境內各方暫時擱置分歧，共同應對這一自然災害帶來的挑戰。</p>
+            </section>
+            
+            <section id="references" class="section">
+                <h2>資料來源</h2>
+                <div class="source-list">
+                    <h3>新聞媒體</h3>
+                    <ul>
+                        <li><a href="https://www.bbc.com/zhongwen/articles/cy5n53vk7q9o/trad" target="_blank">BBC中文網：緬甸強烈地震：逾百人遇難，軍政府罕有向國際求援泰國曼谷高樓倒塌</a></li>
+                        <li><a href="https://udn.com/news/story/124429/8638838" target="_blank">聯合新聞網：恐數千人罹難…緬甸7.7強震屬「大規模災難」美示警1300萬人受影響</a></li>
+                        <li><a href="https://news.ltn.com.tw/news/world/breakingnews/4995927" target="_blank">自由時報：緬甸強震傷亡再上修！軍政府：至少1644死 近3500人受傷</a></li>
+                        <li><a href="https://www.thenewslens.com/article/250889" target="_blank">關鍵評論網：緬甸芮氏規模7.7強震：內戰讓救援單位更難進入，曼谷成二級災區</a></li>
+                        <li><a href="https://www.hk01.com/即時國際/60224274/泰國地震-緬甸7-9級致多地震感強建築物搖晃-中國雲南同有震感" target="_blank">香港01：緬甸地震升至逾千死 2大城市停電 泰國6機場完成安全檢查</a></li>
+                    </ul>
+                    
+                    <h3>學術與政府機構</h3>
+                    <ul>
+                        <li><a href="https://earthquake.usgs.gov" target="_blank">美國地質調查局 (USGS)：緬甸實皆地震報告</a></li>
+                        <li><a href="https://zh.wikipedia.org/zh-tw/2025年缅甸实皆地震" target="_blank">維基百科：2025年緬甸實皆地震</a></li>
+                        <li><a href="https://www.cna.com.tw/news/aopl/202503280350.aspx" target="_blank">中央社：緬甸地震位於重大斷層帶 科學家：沉寂200年 風險先前已通知政府</a></li>
+                        <li><a href="https://www.ettoday.net/news/20250328/2933611.htm" target="_blank">ETtoday：緬甸強震「全球板塊失去平衡」 氣象署：可能誘發其他地區地震</a></li>
+                        <li><a href="https://www.gvm.com.tw/article/120267" target="_blank">遠見雜誌：緬甸強震〉實皆斷層沉睡200年甦醒！科學家早示警政府：來得不意外</a></li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        // 側邊欄控制
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+        
+        // 滾動監聽，使側邊欄高亮顯示當前章節
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (window.pageYOffset >= sectionTop - 100 && window.pageYOffset < sectionTop + sectionHeight - 100) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(navLink => {
+                navLink.style.backgroundColor = '';
+                if (navLink.getAttribute('href') === currentSection) {
+                    navLink.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            });
+        });
+        
+        // 規模比較圖表
+        const magnitudeCtx = document.getElementById('magnitudeComparisonChart').getContext('2d');
+        const magnitudeChart = new Chart(magnitudeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['緬甸強震 (2025)', '台灣921地震 (1999)', '日本東北地震 (2011)', '四川汶川地震 (2008)', '海地地震 (2010)'],
+                datasets: [{
+                    label: '地震規模 (芮氏規模)',
+                    data: [7.7, 7.6, 9.0, 8.0, 7.0],
+                    backgroundColor: [
+                        '#e63946',
+                        '#457b9d',
+                        '#1d3557',
+                        '#2a9d8f',
+                        '#f4a261'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '全球重大地震規模比較',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 6.0,
+                        title: {
+                            display: true,
+                            text: '芮氏規模'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 震源深度比較圖表
+        const depthCtx = document.getElementById('depthComparisonChart').getContext('2d');
+        const depthChart = new Chart(depthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['緬甸強震 (2025)', '台灣921地震 (1999)', '日本東北地震 (2011)', '四川汶川地震 (2008)', '海地地震 (2010)'],
+                datasets: [{
+                    label: '震源深度 (公里)',
+                    data: [10, 8, 24, 19, 13],
+                    backgroundColor: [
+                        '#e63946',
+                        '#457b9d',
+                        '#1d3557',
+                        '#2a9d8f',
+                        '#f4a261'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '全球重大地震震源深度比較',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '深度 (公里)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 受災地區人口分布圖表
+        const affectedCtx = document.getElementById('affectedAreasChart').getContext('2d');
+        const affectedChart = new Chart(affectedCtx, {
+            type: 'pie',
+            data: {
+                labels: ['實皆省', '曼德勒', '仰光', '奈比多', '其他地區'],
+                datasets: [{
+                    data: [3000000, 4000000, 5000000, 1000000, 2000000],
+                    backgroundColor: [
+                        '#e63946',
+                        '#457b9d',
+                        '#1d3557',
+                        '#2a9d8f',
+                        '#f4a261'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '受災地區人口分布（估計值）',
+                        font: {
+                            size: 18
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 傷亡情況圖表
+        const casualtiesCtx = document.getElementById('casualtiesChart').getContext('2d');
+        const casualtiesChart = new Chart(casualtiesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['死亡', '受傷', '失蹤'],
+                datasets: [{
+                    label: '人數',
+                    data: [1644, 3500, 139],
+                    backgroundColor: [
+                        '#e63946',
+                        '#f4a261',
+                        '#2a9d8f'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '緬甸強震人員傷亡統計（截至最新數據）',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '人數'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 國際援助圖表
+        const aidCtx = document.getElementById('aidChart').getContext('2d');
+        const aidChart = new Chart(aidCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['醫療援助', '食品與水', '臨時住所', '搜救設備', '資金捐助'],
+                datasets: [{
+                    data: [35, 30, 20, 10, 5],
+                    backgroundColor: [
+                        '#e63946',
+                        '#457b9d',
+                        '#1d3557',
+                        '#2a9d8f',
+                        '#f4a261'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '國際人道援助類型分布（百分比）',
+                        font: {
+                            size: 18
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 經濟影響圖表
+        const economicCtx = document.getElementById('economicImpactChart').getContext('2d');
+        const economicChart = new Chart(economicCtx, {
+            type: 'bar',
+            data: {
+                labels: ['基礎設施', '住宅建築', '農業損失', '工業影響', '旅遊業損失', '醫療衛生'],
+                datasets: [{
+                    label: '估計損失（億美元）',
+                    data: [25, 18, 12, 8, 5, 6],
+                    backgroundColor: '#4a6da7',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '地震造成的經濟損失估計（單位：億美元）',
+                        font: {
+                            size: 18
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '損失金額（億美元）'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
