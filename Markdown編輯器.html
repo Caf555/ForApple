@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown編輯器與轉檔工具</title>
+  <!-- 引入Markdown處理相關函式庫 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+  <style>
+    /* 基本樣式設定 */
+    :root {
+      --paragraph-spacing: 1rem;
+      --heading-spacing: 1.5rem;
+      --heading-paragraph-spacing: 1rem;
+      --content-margin: 2rem;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "微軟正黑體", "PingFang TC", "蘋方-繁", Arial, sans-serif;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .format-toolbar {
+      background-color: #e8e8e8;
+      padding: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid #ddd;
+      align-items: center;
+    }
+    
+    .markdown-toolbar {
+      background-color: #f0f0f0;
+      padding: 0.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      border-bottom: 1px solid #ddd;
+      align-items: center;
+    }
+    
+    .md-btn {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      color: #333;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0.3rem 0.5rem;
+      min-width: 2rem;
+      text-align: center;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    
+    .md-btn:hover {
+      background-color: #f0f0f0;
+      border-color: #999;
+    }
+    
+    .separator {
+      color: #ccc;
+      margin: 0 0.2rem;
+    }
+    
+    .format-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .format-toolbar select {
+      padding: 0.3rem 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    
+    .format-toolbar label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .toolbar {
+      background-color: #f0f0f0;
+      padding: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    button, select {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #2196f3;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+    
+    button:hover {
+      background-color: #1976d2;
+    }
+    
+    .editor-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .editor-section, .preview-section {
+      flex: 1;
+      padding: 0;
+      overflow: auto;
+      position: relative;
+    }
+    
+    .editor-section {
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+    }
+    
+    #editor {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      padding: var(--content-margin);
+      font-family: "Consolas", "Monaco", monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      resize: none;
+      transition: font-family 0.2s, font-size 0.2s, line-height 0.2s;
+      outline: none;
+    }
+    
+          .preview-section {
+      background-color: #fff;
+    }
+    
+    #preview {
+      padding: var(--content-margin);
+      line-height: 1.5;
+      font-size: 14px;
+      transition: font-family 0.2s, font-size 0.2s, line-height 0.2s, padding 0.2s;
+    }
+    
+    /* 確保預覽內所有元素能夠繼承字體屬性 */
+    #preview * {
+      font-family: inherit;
+    }
+    
+    /* 目錄樣式 */
+    .table-of-contents {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .table-of-contents h2 {
+      margin-top: 0 !important;
+      margin-bottom: 1rem !important;
+      font-size: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    
+    .table-of-contents ul {
+      margin-bottom: 0.5rem;
+    }
+    
+    .table-of-contents ul ul {
+      margin-left: 1.5rem;
+    }
+    
+    .table-of-contents a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    
+    .table-of-contents a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Markdown預覽樣式 */
+    #preview {
+      font-family: inherit;
+    }
+    
+    #preview h1, #preview h2, #preview h3, #preview h4, #preview h5, #preview h6 {
+      margin-top: var(--heading-spacing);
+      margin-bottom: var(--heading-paragraph-spacing);
+      font-weight: 600;
+      font-family: inherit;
+    }
+    
+    #preview h1 {
+      font-size: 2rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.3rem;
+      font-family: inherit;
+    }
+    
+    #preview h2 {
+      font-size: 1.75rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.3rem;
+      font-family: inherit;
+    }
+    
+    #preview h3 {
+      font-size: 1.5rem;
+      font-family: inherit;
+    }
+    
+    #preview h4 {
+      font-size: 1.25rem;
+      font-family: inherit;
+    }
+    
+    #preview p {
+      margin-bottom: var(--paragraph-spacing);
+      font-family: inherit;
+    }
+    
+    #preview ul, #preview ol {
+      margin-bottom: var(--paragraph-spacing);
+      padding-left: 2rem;
+      font-family: inherit;
+    }
+    
+    #preview li {
+      margin-bottom: calc(var(--paragraph-spacing) * 0.5);
+      font-family: inherit;
+    }
+    
+    #preview blockquote {
+      padding: 0.5rem 1rem;
+      margin-bottom: var(--paragraph-spacing);
+      border-left: 4px solid #ddd;
+      background-color: #f9f9f9;
+      font-family: inherit;
+    }
+    
+    #preview code {
+      font-family: "Consolas", "Monaco", monospace;
+      background-color: #f5f5f5;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.9rem;
+    }
+    
+    #preview pre {
+      background-color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    
+    #preview pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+    
+    #preview table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    
+    #preview th, #preview td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+    }
+    
+    #preview th {
+      background-color: #f5f5f5;
+    }
+    
+    #preview img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .editor-container {
+        flex-direction: column;
+      }
+      
+      .editor-section, .preview-section {
+        flex: none;
+        height: 50%;
+      }
+      
+      .editor-section {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    footer {
+      background-color: #f0f0f0;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    /* 列印樣式 */
+    @media print {
+      header, .toolbar, .format-toolbar, .markdown-toolbar, .editor-section, footer {
+        display: none;
+      }
+      
+      html, body {
+        height: auto !important;
+        overflow: visible !important;
+        background-color: white;
+      }
+      
+      .container {
+        display: block;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      
+      .editor-container {
+        display: block;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      
+      .preview-section {
+        display: block;
+        width: 100%;
+        height: auto !important;
+        overflow: visible !important;
+        position: static;
+      }
+      
+      #preview {
+        padding: 0;
+        height: auto !important;
+        overflow: visible !important;
+        page-break-inside: auto;
+      }
+      
+      /* 確保表格、圖片和程式碼區塊不會被切分到不同頁面 */
+      #preview table, #preview img, #preview pre {
+        page-break-inside: avoid;
+      }
+      
+      /* 標題避免被分頁 */
+      #preview h1, #preview h2, #preview h3, #preview h4, #preview h5, #preview h6 {
+        page-break-after: avoid;
+      }
+      
+      /* 保證段落不會被孤立 */
+      #preview p {
+        widows: 3;
+        orphans: 3;
+      }
+    }
+    
+    /* 設定頁面邊距 */
+    @page {
+      margin: 2cm;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Markdown編輯器與轉檔工具</h1>
+  </header>
+  
+  <div class="toolbar">
+    <button id="new-file" title="新建檔案">📄</button>
+    <button id="open-file" title="開啟檔案">📂</button>
+    <input type="file" id="file-input" accept=".md, .markdown, .txt" class="hidden">
+    <button id="save-md" title="儲存為 Markdown">💾 MD</button>
+    <button id="save-html" title="轉存為 HTML">💾 HTML</button>
+    <button id="save-pdf" title="轉存為 PDF">💾 PDF</button>
+    <button id="print" title="列印">🖨️</button>
+    <button id="generate-toc" title="生成目錄">📑</button>
+  </div>
+  
+  <div class="markdown-toolbar">
+    <button class="md-btn" data-format="heading1" title="一級標題 (# )">H1</button>
+    <button class="md-btn" data-format="heading2" title="二級標題 (## )">H2</button>
+    <button class="md-btn" data-format="heading3" title="三級標題 (### )">H3</button>
+    <span class="separator">|</span>
+    <button class="md-btn" data-format="bold" title="粗體 (**文字**)"><strong>B</strong></button>
+    <button class="md-btn" data-format="italic" title="斜體 (*文字*)"><em>I</em></button>
+    <button class="md-btn" data-format="strikethrough" title="刪除線 (~~文字~~)"><del>S</del></button>
+    <span class="separator">|</span>
+    <button class="md-btn" data-format="quote" title="引用 (> )">❝</button>
+    <button class="md-btn" data-format="code" title="程式碼 (`程式碼`)">{ }</button>
+    <button class="md-btn" data-format="codeblock" title="程式碼區塊 (```程式碼```)"><small>{ }</small></button>
+    <span class="separator">|</span>
+    <button class="md-btn" data-format="unorderedList" title="無序列表 (- )">•</button>
+    <button class="md-btn" data-format="orderedList" title="有序列表 (1. )">1.</button>
+    <span class="separator">|</span>
+    <button class="md-btn" data-format="link" title="連結 ([文字](網址))">🔗</button>
+    <button class="md-btn" data-format="image" title="圖片 (![文字](圖片網址))">🖼️</button>
+    <button class="md-btn" data-format="table" title="表格">📊</button>
+    <button class="md-btn" data-format="horizontalRule" title="水平線 (---)">―</button>
+  </div>
+  
+  <div class="format-toolbar">
+    <div class="format-group">
+      <label for="font-selector">字體：</label>
+      <select id="font-selector">
+        <option value="default">預設字體</option>
+        <option value="微軟正黑體, Microsoft JhengHei, sans-serif">微軟正黑體</option>
+        <option value="蘋方-繁, PingFang TC, sans-serif">蘋方-繁</option>
+        <option value="新細明體, PMingLiU, serif">新細明體</option>
+        <option value="標楷體, DFKai-SB, sans-serif">標楷體</option>
+        <option value="思源黑體, Noto Sans TC, sans-serif">思源黑體</option>
+        <option value="思源宋體, Noto Serif TC, serif">思源宋體</option>
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="Times New Roman, serif">Times New Roman</option>
+        <option value="Consolas, Monaco, monospace">等寬字體</option>
+      </select>
+    </div>
+    
+    <div class="format-group">
+      <label for="font-size-selector">字號：</label>
+      <select id="font-size-selector">
+        <option value="12px">12px</option>
+        <option value="14px" selected>14px</option>
+        <option value="16px">16px</option>
+        <option value="18px">18px</option>
+        <option value="20px">20px</option>
+        <option value="24px">24px</option>
+      </select>
+    </div>
+    
+    <div class="format-group">
+      <label for="line-height-input">行距：</label>
+      <input type="number" id="line-height-input" min="1" max="3" step="0.1" value="1.5" style="width: 60px;">
+    </div>
+    
+    <div class="format-group">
+      <label for="paragraph-spacing-input">段距：</label>
+      <input type="number" id="paragraph-spacing-input" min="0.2" max="5" step="0.1" value="1" style="width: 60px;">
+      <select id="paragraph-spacing-unit">
+        <option value="rem" selected>rem</option>
+        <option value="em">em</option>
+        <option value="px">px</option>
+      </select>
+    </div>
+    
+    <div class="format-group">
+      <label for="heading-spacing-input">標題間距：</label>
+      <input type="number" id="heading-spacing-input" min="0.5" max="5" step="0.1" value="1.5" style="width: 60px;">
+      <select id="heading-spacing-unit">
+        <option value="rem" selected>rem</option>
+        <option value="em">em</option>
+        <option value="px">px</option>
+      </select>
+    </div>
+    
+    <div class="format-group">
+      <label for="heading-paragraph-spacing-input">標題後間距：</label>
+      <input type="number" id="heading-paragraph-spacing-input" min="0" max="3" step="0.1" value="1" style="width: 60px;">
+      <select id="heading-paragraph-spacing-unit">
+        <option value="rem" selected>rem</option>
+        <option value="em">em</option>
+        <option value="px">px</option>
+      </select>
+    </div>
+    
+    <div class="format-group">
+      <label for="margin-input">邊界：</label>
+      <input type="number" id="margin-input" min="0" max="5" step="0.1" value="2" style="width: 60px;">
+      <select id="margin-unit">
+        <option value="rem" selected>rem</option>
+        <option value="em">em</option>
+        <option value="px">px</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="editor-container">
+      <div class="editor-section">
+        <textarea id="editor" spellcheck="false" placeholder="在此輸入Markdown內容..."></textarea>
+      </div>
+      <div class="preview-section">
+        <div id="preview"></div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>© 2025 Markdown編輯與轉檔工具 | 可開啟、檢視、編輯、列印及轉換Markdown文件</p>
+  </footer>
+  
+  <script>
+    // 錯誤處理封裝函數
+    function safeExecute(fn, fallback = () => {}, context = 'operation') {
+      try {
+        return fn();
+      } catch (error) {
+        console.error(`執行${context}時發生錯誤:`, error);
+        return fallback();
+      }
+    }
+    
+    // 設定Marked選項
+    marked.use({
+      renderer: new marked.Renderer(),
+      highlight: function(code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      },
+      langPrefix: 'hljs language-',
+      gfm: true,
+      breaks: false,
+      pedantic: false,
+      smartLists: true,
+      smartypants: false
+    });
+
+    // 初始化檔案名稱變數
+    let currentFileName = '未命名';
+    
+    // 移除雙向滾動同步功能
+
+    // DOM元素
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+    const newFileBtn = document.getElementById('new-file');
+    const openFileBtn = document.getElementById('open-file');
+    const fileInput = document.getElementById('file-input');
+    const saveMdBtn = document.getElementById('save-md');
+    const saveHtmlBtn = document.getElementById('save-html');
+    const savePdfBtn = document.getElementById('save-pdf');
+    const printBtn = document.getElementById('print');
+    const generateTocBtn = document.getElementById('generate-toc');
+    
+    // 格式控制元素
+    const fontSelector = document.getElementById('font-selector');
+    const fontSizeSelector = document.getElementById('font-size-selector');
+    const lineHeightInput = document.getElementById('line-height-input');
+    const paragraphSpacingInput = document.getElementById('paragraph-spacing-input');
+    const paragraphSpacingUnit = document.getElementById('paragraph-spacing-unit');
+    const headingSpacingInput = document.getElementById('heading-spacing-input');
+    const headingSpacingUnit = document.getElementById('heading-spacing-unit');
+    const headingParagraphSpacingInput = document.getElementById('heading-paragraph-spacing-input');
+    const headingParagraphSpacingUnit = document.getElementById('heading-paragraph-spacing-unit');
+    const marginInput = document.getElementById('margin-input');
+    const marginUnit = document.getElementById('margin-unit');
+    
+    // 範例Markdown內容
+    const exampleMarkdown = `# Markdown編輯器使用說明
+
+## 基本功能
+
+這是一個功能完整的Markdown編輯器，您可以：
+
+- **建立**新的Markdown文件
+- **開啟**現有的Markdown文件
+- **編輯**文件內容
+- **預覽**渲染後的效果
+- **儲存**為Markdown格式
+- **轉換**為HTML或PDF格式
+- **列印**文件內容
+
+## Markdown基本語法
+
+### 標題
+
+# 一級標題
+## 二級標題
+### 三級標題
+
+### 格式化文字
+
+**粗體文字** 或 __粗體文字__
+
+*斜體文字* 或 _斜體文字_
+
+~~刪除線~~
+
+### 列表
+
+無序列表：
+- 項目1
+- 項目2
+  - 子項目A
+  - 子項目B
+
+有序列表：
+1. 第一項
+2. 第二項
+3. 第三項
+
+### 連結和圖片
+
+[連結文字](https://example.com)
+
+![圖片替代文字](/api/placeholder/400/200)
+
+### 代碼
+
+行內代碼：\`console.log('Hello World');\`
+
+代碼區塊：
+\`\`\`javascript
+function greeting(name) {
+  return \`Hello, \${name}!\`;
+}
+console.log(greeting('World'));
+\`\`\`
+
+### 表格
+
+| 欄位1 | 欄位2 | 欄位3 |
+|-------|-------|-------|
+| 內容1 | 內容2 | 內容3 |
+| 內容4 | 內容5 | 內容6 |
+
+### 引用
+
+> 這是一段引用的文字。
+> 
+> 這是引用的第二段落。
+
+### 水平線
+
+---
+
+## 開始使用
+
+開始在左側編輯區域輸入您的Markdown內容，右側會即時顯示預覽效果。
+
+祝您使用愉快！`;
+
+    // 初始化編輯器
+    editor.value = exampleMarkdown;
+    updatePreview();
+    
+    // Markdown輔助工具
+    const markdownButtons = document.querySelectorAll('.md-btn');
+    
+    // 應用Markdown格式
+    function applyMarkdownFormat(format) {
+      // 保存當前滾動位置
+      const editorScrollPos = editor.scrollTop;
+      
+      // 獲取選取的文字
+      const selectionStart = editor.selectionStart;
+      const selectionEnd = editor.selectionEnd;
+      const selectedText = editor.value.substring(selectionStart, selectionEnd);
+      const beforeText = editor.value.substring(0, selectionStart);
+      const afterText = editor.value.substring(selectionEnd);
+      
+      let formattedText = '';
+      let cursorOffset = 0;
+      
+      // 根據不同格式應用不同的Markdown語法
+      switch (format) {
+        case 'heading1':
+          formattedText = `# ${selectedText}`;
+          cursorOffset = 2;
+          break;
+        case 'heading2':
+          formattedText = `## ${selectedText}`;
+          cursorOffset = 3;
+          break;
+        case 'heading3':
+          formattedText = `### ${selectedText}`;
+          cursorOffset = 4;
+          break;
+        case 'bold':
+          formattedText = `**${selectedText}**`;
+          cursorOffset = 2;
+          break;
+        case 'italic':
+          formattedText = `*${selectedText}*`;
+          cursorOffset = 1;
+          break;
+        case 'strikethrough':
+          formattedText = `~~${selectedText}~~`;
+          cursorOffset = 2;
+          break;
+        case 'quote':
+          formattedText = `> ${selectedText}`;
+          cursorOffset = 2;
+          break;
+        case 'code':
+          formattedText = `\`${selectedText}\``;
+          cursorOffset = 1;
+          break;
+        case 'codeblock':
+          formattedText = `\`\`\`\n${selectedText}\n\`\`\``;
+          cursorOffset = 4;
+          break;
+        case 'unorderedList':
+          // 處理多行文本
+          if (selectedText.indexOf('\n') !== -1) {
+            formattedText = selectedText.split('\n').map(line => `- ${line}`).join('\n');
+          } else {
+            formattedText = `- ${selectedText}`;
+          }
+          cursorOffset = 2;
+          break;
+        case 'orderedList':
+          // 處理多行文本
+          if (selectedText.indexOf('\n') !== -1) {
+            const lines = selectedText.split('\n');
+            formattedText = lines.map((line, index) => `${index + 1}. ${line}`).join('\n');
+          } else {
+            formattedText = `1. ${selectedText}`;
+          }
+          cursorOffset = 3;
+          break;
+        case 'link':
+          if (selectedText) {
+            formattedText = `[${selectedText}](網址)`;
+            cursorOffset = selectedText.length + 3;
+          } else {
+            formattedText = `[連結文字](網址)`;
+            cursorOffset = 1; // 將游標放在連結文字中
+          }
+          break;
+        case 'image':
+          formattedText = `![${selectedText || '圖片描述'}](圖片網址)`;
+          cursorOffset = selectedText ? selectedText.length + 3 : 4;
+          break;
+        case 'table':
+          formattedText = `| 欄位1 | 欄位2 | 欄位3 |\n|--------|--------|--------|\n| 內容1 | 內容2 | 內容3 |\n| 內容4 | 內容5 | 內容6 |`;
+          cursorOffset = 0;
+          break;
+        case 'horizontalRule':
+          formattedText = `\n---\n`;
+          cursorOffset = 0;
+          break;
+        default:
+          formattedText = selectedText;
+      }
+      
+      // 更新編輯器內容
+      editor.value = beforeText + formattedText + afterText;
+      
+      // 更新預覽
+      updatePreview();
+      
+      // 設置新的游標位置
+      if (selectionStart === selectionEnd) {
+        // 如果沒有選取文字，將游標放在插入的格式中間或結尾
+        const newPosition = selectionStart + formattedText.length - (format === 'link' || format === 'image' ? cursorOffset : 0);
+        editor.setSelectionRange(newPosition, newPosition);
+      } else {
+        // 如果有選取文字，將選擇範圍保持在格式化後的文字上
+        const newSelectionStart = selectionStart;
+        const newSelectionEnd = selectionStart + formattedText.length;
+        editor.setSelectionRange(newSelectionStart, newSelectionEnd);
+      }
+      
+      // 讓編輯器重新獲得焦點
+      editor.focus();
+      
+      // 恢復滾動位置
+      if (editor.scrollTop !== editorScrollPos) {
+        editor.scrollTop = editorScrollPos;
+      }
+    }
+    
+    // 為每個Markdown格式按鈕添加事件監聽
+    markdownButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const format = button.getAttribute('data-format');
+        applyMarkdownFormat(format);
+      });
+    });
+    
+    // 生成目錄
+    generateTocBtn.addEventListener('click', () => {
+      // 保存當前滾動位置
+      const editorScrollPos = editor.scrollTop;
+      
+      // 解析內容中的標題
+      const content = editor.value;
+      const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+      const headings = [];
+      let match;
+      
+      while ((match = headingRegex.exec(content)) !== null) {
+        const level = match[1].length;
+        const text = match[2].trim();
+        const slug = text.toLowerCase()
+          .replace(/[^\w\u4e00-\u9fa5\- ]/g, '') // 允許中文字符
+          .replace(/\s+/g, '-');
+        
+        headings.push({ level, text, slug });
+      }
+      
+      // 如果找不到標題，提示用戶
+      if (headings.length === 0) {
+        alert('未找到標題！請先添加一些標題（# 開頭的文字行）。');
+        return;
+      }
+      
+      // 生成目錄HTML
+      let tocHtml = '<div class="table-of-contents">\n';
+      tocHtml += '<h2>目錄</h2>\n';
+      tocHtml += '<ul>\n';
+      
+      const minLevel = Math.min(...headings.map(h => h.level));
+      let currentLevel = minLevel;
+      
+      headings.forEach((heading, index) => {
+        while (currentLevel < heading.level) {
+          tocHtml += '<ul>\n';
+          currentLevel++;
+        }
+        
+        while (currentLevel > heading.level) {
+          tocHtml += '</ul>\n';
+          currentLevel--;
+        }
+        
+        tocHtml += `<li><a href="#${heading.slug}">${heading.text}</a></li>\n`;
+      });
+      
+      while (currentLevel > minLevel) {
+        tocHtml += '</ul>\n';
+        currentLevel--;
+      }
+      
+      tocHtml += '</ul>\n';
+      tocHtml += '</div>\n\n';
+      
+      // 插入目錄到編輯器頂部
+      editor.value = tocHtml + editor.value;
+      
+      // 更新預覽並添加ID到標題元素以支持錨點跳轉
+      updatePreview();
+      
+      // 使編輯器和預覽區域滾動到頂部
+      editor.scrollTop = 0;
+      preview.scrollTop = 0;
+    });
+    
+    // 雙向同步滾動
+    
+    editor.addEventListener('scroll', function() {
+      // 如果是預覽區域引起的滾動，則不做處理避免循環
+      if (isPreviewScrolling) return;
+      
+      // 標記為編輯器滾動中
+      isEditorScrolling = true;
+      
+      // 檢查編輯器是否需要滾動
+      if (editor.scrollHeight <= editor.clientHeight) {
+        isEditorScrolling = false;
+        return;
+      }
+      
+      // 計算滾動百分比
+      const scrollPercentage = editor.scrollTop / (editor.scrollHeight - editor.clientHeight);
+      
+      // 檢查預覽區是否需要滾動
+      if (preview.scrollHeight > preview.clientHeight) {
+        // 應用到預覽區域
+        preview.scrollTop = scrollPercentage * (preview.scrollHeight - preview.clientHeight);
+      }
+      
+      // 防止無限循環
+      setTimeout(() => {
+        isEditorScrolling = false;
+      }, 50);
+    });
+    
+    preview.addEventListener('scroll', function() {
+      // 如果是編輯器引起的滾動，則不做處理避免循環
+      if (isEditorScrolling) return;
+      
+      // 標記為預覽區域滾動中
+      isPreviewScrolling = true;
+      
+      // 檢查預覽區是否需要滾動
+      if (preview.scrollHeight <= preview.clientHeight) {
+        isPreviewScrolling = false;
+        return;
+      }
+      
+      // 計算滾動百分比
+      const scrollPercentage = preview.scrollTop / (preview.scrollHeight - preview.clientHeight);
+      
+      // 檢查編輯器是否需要滾動
+      if (editor.scrollHeight > editor.clientHeight) {
+        // 應用到編輯器
+        editor.scrollTop = scrollPercentage * (editor.scrollHeight - editor.clientHeight);
+      }
+      
+      // 防止無限循環
+      setTimeout(() => {
+        isPreviewScrolling = false;
+      }, 50);
+    });
+    
+    // 移除滾動同步功能，只保留預覽更新
+    function updatePreview() {
+      // 處理Markdown內容
+      const markdown = editor.value;
+      const html = marked.parse(markdown);
+      
+      // 更新預覽內容
+      preview.innerHTML = html;
+      
+      // 為標題添加ID以支持錨點跳轉
+      const headers = preview.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      headers.forEach(header => {
+        if (!header.id) {
+          const slug = header.textContent.toLowerCase()
+            .replace(/[^\w\u4e00-\u9fa5\- ]/g, '')
+            .replace(/\s+/g, '-');
+          header.id = slug;
+        }
+      });
+      
+      // 處理目錄內的錨點連結
+      const tocLinks = preview.querySelectorAll('.table-of-contents a');
+      tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    }
+    
+    // 事件監聽
+    editor.addEventListener('input', updatePreview);
+    
+    // 新建檔案
+    newFileBtn.addEventListener('click', () => {
+      if (editor.value && !confirm('確定要新建檔案嗎？未儲存的內容將會遺失。')) {
+        return;
+      }
+      editor.value = '';
+      updatePreview();
+      currentFileName = '未命名';
+      
+      // 重置滾動位置
+      editor.scrollTop = 0;
+      preview.scrollTop = 0;
+    });
+    
+    // 開啟檔案
+    openFileBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        editor.value = event.target.result;
+        updatePreview();
+        currentFileName = file.name.replace(/\.[^/.]+$/, ""); // 移除副檔名
+        
+        // 重置滾動位置
+        editor.scrollTop = 0;
+        preview.scrollTop = 0;
+      };
+      reader.readAsText(file);
+      
+      // 重設input，以便下次選擇相同檔案時也能觸發change事件
+      fileInput.value = '';
+    });
+    
+    // 儲存為Markdown
+    saveMdBtn.addEventListener('click', () => {
+      const blob = new Blob([editor.value], { type: 'text/markdown;charset=utf-8' });
+      saveAs(blob, `${currentFileName}.md`);
+    });
+    
+    // 轉存為HTML
+    saveHtmlBtn.addEventListener('click', () => {
+      // 取得當前字體設定
+      const fontFamily = fontSelector.value === 'default' 
+        ? '"微軟正黑體", "PingFang TC", "蘋方-繁", Arial, sans-serif' 
+        : fontSelector.value;
+      const fontSize = fontSizeSelector.value;
+      const lineHeight = lineHeightInput.value;
+      
+      const paragraphSpacing = `${paragraphSpacingInput.value}${paragraphSpacingUnit.value}`;
+      const headingSpacing = `${headingSpacingInput.value}${headingSpacingUnit.value}`;
+      const headingParagraphSpacing = `${headingParagraphSpacingInput.value}${headingParagraphSpacingUnit.value}`;
+      const contentMargin = `${marginInput.value}${marginUnit.value}`;
+      
+      // 建立一個基本的HTML文件結構
+      const htmlContent = `<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${currentFileName}</title>
+  <style>
+    body {
+      font-family: ${fontFamily};
+      font-size: ${fontSize};
+      line-height: ${lineHeight};
+      max-width: 800px;
+      margin: 0 auto;
+      padding: ${contentMargin};
+      color: #333;
+    }
+    p {
+      margin-bottom: ${paragraphSpacing};
+    }
+    ul, ol {
+      margin-bottom: ${paragraphSpacing};
+      padding-left: 2rem;
+    }
+    li {
+      margin-bottom: calc(${paragraphSpacing} * 0.5);
+    }
+    blockquote {
+      margin-bottom: ${paragraphSpacing};
+      padding-left: 16px;
+      border-left: 4px solid #ddd;
+      color: #666;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: ${headingSpacing};
+      margin-bottom: ${headingParagraphSpacing};
+      font-weight: 600;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 16px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, Monaco, monospace;
+      background-color: #f5f5f5;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+    blockquote {
+      border-left: 4px solid #ddd;
+      padding-left: 16px;
+      margin-left: 0;
+      color: #666;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px 12px;
+    }
+    img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  ${preview.innerHTML}
+</body>
+</html>`;
+      
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      saveAs(blob, `${currentFileName}.html`);
+    });
+    
+    // 轉存為PDF
+    savePdfBtn.addEventListener('click', () => {
+      try {
+        // 創建一個臨時容器用於生成PDF
+        const container = document.createElement('div');
+        container.innerHTML = preview.innerHTML;
+        container.style.width = '210mm';
+        container.style.padding = '15mm';
+        container.style.backgroundColor = 'white';
+        
+        // 應用當前文字格式設定
+        const fontFamily = fontSelector.value;
+        if (fontFamily !== 'default') {
+          container.style.fontFamily = fontFamily;
+        } else {
+          container.style.fontFamily = '"微軟正黑體", "PingFang TC", "蘋方-繁", Arial, sans-serif';
+        }
+        
+        container.style.fontSize = fontSizeSelector.value;
+        container.style.lineHeight = lineHeightInput.value;
+        
+        const paragraphSpacing = `${paragraphSpacingInput.value}${paragraphSpacingUnit.value}`;
+        const headingSpacing = `${headingSpacingInput.value}${headingSpacingUnit.value}`;
+        const headingParagraphSpacing = `${headingParagraphSpacingInput.value}${headingParagraphSpacingUnit.value}`;
+        
+        // 應用段落間距
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+          p { margin-bottom: ${paragraphSpacing}; }
+          ul, ol { margin-bottom: ${paragraphSpacing}; }
+          li { margin-bottom: calc(${paragraphSpacing} * 0.5); }
+          blockquote { margin-bottom: ${paragraphSpacing}; }
+          h1, h2, h3, h4, h5, h6 { 
+            margin-top: ${headingSpacing}; 
+            margin-bottom: ${headingParagraphSpacing};
+          }
+        `;
+        container.appendChild(styleElement);
+        container.style.visibility = 'hidden';
+        container.style.position = 'absolute';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.zIndex = '-9999';
+        document.body.appendChild(container);
+        
+        // 使用html2pdf庫生成PDF，增強多頁支援
+        const opt = {
+          margin: [15, 15, 15, 15],
+          filename: `${currentFileName}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { 
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            windowHeight: container.scrollHeight + 200
+          },
+          jsPDF: { 
+            unit: 'mm', 
+            format: 'a4', 
+            orientation: 'portrait',
+            hotfixes: ["px_scaling"]
+          },
+          pagebreak: { 
+            mode: ['avoid-all', 'css', 'legacy'],
+            avoid: ['tr', 'img', 'table', 'pre']
+          }
+        };
+        
+        // 顯示處理提示
+        const processingMsg = document.createElement('div');
+        processingMsg.textContent = '正在處理PDF，請稍候...';
+        processingMsg.style.position = 'fixed';
+        processingMsg.style.top = '50%';
+        processingMsg.style.left = '50%';
+        processingMsg.style.transform = 'translate(-50%, -50%)';
+        processingMsg.style.padding = '15px 20px';
+        processingMsg.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        processingMsg.style.color = 'white';
+        processingMsg.style.borderRadius = '5px';
+        processingMsg.style.zIndex = '9999';
+        document.body.appendChild(processingMsg);
+        
+        html2pdf().set(opt).from(container).save().then(() => {
+          try {
+            if (document.body.contains(container)) {
+              document.body.removeChild(container);
+            }
+            if (document.body.contains(processingMsg)) {
+              document.body.removeChild(processingMsg);
+            }
+          } catch (cleanupError) {
+            console.error('清理PDF生成資源時發生錯誤:', cleanupError);
+          }
+        }).catch(err => {
+          console.error('PDF生成錯誤:', err);
+          try {
+            if (document.body.contains(container)) {
+              document.body.removeChild(container);
+            }
+            if (document.body.contains(processingMsg)) {
+              document.body.removeChild(processingMsg);
+            }
+          } catch (cleanupError) {
+            console.error('清理PDF生成資源時發生錯誤:', cleanupError);
+          }
+          alert('PDF生成失敗，請檢查您的內容或嘗試減少頁面複雜度。');
+        });
+      } catch (error) {
+        console.error('PDF生成準備過程中發生錯誤:', error);
+        alert('PDF生成失敗，請再試一次');
+      }
+    });
+    
+    // 列印
+    printBtn.addEventListener('click', () => {
+      try {
+        // 創建一個專門用於列印的內容容器
+        const printContent = document.createElement('div');
+        printContent.innerHTML = preview.innerHTML;
+        printContent.id = 'print-container';
+        
+        // 套用當前的字體設定到列印容器
+        const fontFamily = fontSelector.value;
+        const fontSize = fontSizeSelector.value;
+        const lineHeight = lineHeightInput.value;
+        
+        const paragraphSpacing = `${paragraphSpacingInput.value}${paragraphSpacingUnit.value}`;
+        const headingSpacing = `${headingSpacingInput.value}${headingSpacingUnit.value}`;
+        const headingParagraphSpacing = `${headingParagraphSpacingInput.value}${headingParagraphSpacingUnit.value}`;
+        
+        if (fontFamily !== 'default') {
+          printContent.style.fontFamily = fontFamily;
+        } else {
+          printContent.style.fontFamily = '"微軟正黑體", "PingFang TC", "蘋方-繁", Arial, sans-serif';
+        }
+        
+        printContent.style.fontSize = fontSize;
+        printContent.style.lineHeight = lineHeight;
+        
+        // 應用段落間距
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+          #print-container p { margin-bottom: ${paragraphSpacing}; }
+          #print-container ul, #print-container ol { margin-bottom: ${paragraphSpacing}; }
+          #print-container li { margin-bottom: calc(${paragraphSpacing} * 0.5); }
+          #print-container blockquote { margin-bottom: ${paragraphSpacing}; }
+          #print-container h1, #print-container h2, #print-container h3, 
+          #print-container h4, #print-container h5, #print-container h6 { 
+            margin-top: ${headingSpacing}; 
+            margin-bottom: ${headingParagraphSpacing};
+          }
+        `;
+        document.head.appendChild(styleElement);
+        
+        printContent.style.display = 'none';
+        printContent.style.width = '100%';
+        printContent.style.height = 'auto';
+        printContent.style.position = 'absolute';
+        printContent.style.left = '0';
+        printContent.style.top = '0';
+        printContent.style.zIndex = '-1';
+        document.body.appendChild(printContent);
+        
+        // 使用延遲確保內容已準備好
+        setTimeout(() => {
+          window.print();
+          
+          // 列印完成後移除臨時容器
+          setTimeout(() => {
+            try {
+              if (document.body.contains(printContent)) {
+                document.body.removeChild(printContent);
+              }
+              if (document.head.contains(styleElement)) {
+                document.head.removeChild(styleElement);
+              }
+            } catch (cleanupError) {
+              console.error('清理列印資源時發生錯誤:', cleanupError);
+            }
+          }, 1000);
+        }, 300);
+      } catch (error) {
+        console.error('列印準備過程中發生錯誤:', error);
+        alert('列印準備失敗，請再試一次');
+      }
+    });
+    
+    // 設定Marked選項，使用默認主題
+    marked.use({
+      renderer: new marked.Renderer(),
+      highlight: function(code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      },
+      langPrefix: 'hljs language-',
+      gfm: true,
+      breaks: false,
+      pedantic: false,
+      smartLists: true,
+      smartypants: false
+    });
+    
+    // 更新編輯器和預覽區域的字體設定
+    function updateTextFormatting() {
+      const fontFamily = fontSelector.value;
+      const fontSize = fontSizeSelector.value;
+      const lineHeight = lineHeightInput.value;
+      
+      const paragraphSpacing = `${paragraphSpacingInput.value}${paragraphSpacingUnit.value}`;
+      const headingSpacing = `${headingSpacingInput.value}${headingSpacingUnit.value}`;
+      const headingParagraphSpacing = `${headingParagraphSpacingInput.value}${headingParagraphSpacingUnit.value}`;
+      const contentMargin = `${marginInput.value}${marginUnit.value}`;
+      
+      // 若選擇預設字體，則使用預設設定
+      if (fontFamily === 'default') {
+        editor.style.fontFamily = '"Consolas", "Monaco", monospace';
+        preview.style.fontFamily = '"微軟正黑體", "PingFang TC", "蘋方-繁", Arial, sans-serif';
+      } else {
+        editor.style.fontFamily = fontFamily;
+        preview.style.fontFamily = fontFamily;
+      }
+      
+      // 應用字號和行距
+      editor.style.fontSize = fontSize;
+      editor.style.lineHeight = lineHeight;
+      preview.style.fontSize = fontSize;
+      preview.style.lineHeight = lineHeight;
+      
+      // 應用段落間距、標題間距和邊界
+      document.documentElement.style.setProperty('--paragraph-spacing', paragraphSpacing);
+      document.documentElement.style.setProperty('--heading-spacing', headingSpacing);
+      document.documentElement.style.setProperty('--heading-paragraph-spacing', headingParagraphSpacing);
+      document.documentElement.style.setProperty('--content-margin', contentMargin);
+      
+      // 強制觸發重新渲染以確保字體套用到所有預覽元素
+      updatePreview();
+    }
+    
+    // 監聽字體設定變更
+    fontSelector.addEventListener('change', updateTextFormatting);
+    fontSizeSelector.addEventListener('change', updateTextFormatting);
+    
+    lineHeightInput.addEventListener('input', updateTextFormatting);
+    
+    paragraphSpacingInput.addEventListener('input', updateTextFormatting);
+    paragraphSpacingUnit.addEventListener('change', updateTextFormatting);
+    
+    headingSpacingInput.addEventListener('input', updateTextFormatting);
+    headingSpacingUnit.addEventListener('change', updateTextFormatting);
+    
+    headingParagraphSpacingInput.addEventListener('input', updateTextFormatting);
+    headingParagraphSpacingUnit.addEventListener('change', updateTextFormatting);
+    
+    marginInput.addEventListener('input', updateTextFormatting);
+    marginUnit.addEventListener('change', updateTextFormatting);
+    
+    // 初始化編輯器內容
+    window.addEventListener('DOMContentLoaded', function() {
+      // 設置初始內容
+      editor.value = exampleMarkdown;
+      
+      // 更新預覽
+      try {
+        updatePreview();
+      } catch (error) {
+        console.error('初始化預覽時發生錯誤:', error);
+      }
+      
+      // 初始應用預設設定
+      try {
+        updateTextFormatting();
+      } catch (error) {
+        console.error('套用文字格式時發生錯誤，使用預設設定:', error);
+      }
+      
+      // 確保初始滾動位置為頂部
+      editor.scrollTop = 0;
+      preview.scrollTop = 0;
+      
+      console.log('Markdown編輯器已成功初始化');
+    });
+    
+    // 自動調整編輯器大小 - 移除這個功能，因為它會影響編輯體驗
+    // 在這個設計中，編輯器應該使用全高度佈局，不需要自動調整高度
+    // function adjustEditorHeight() {
+    //   editor.style.height = 'auto';
+    //   editor.style.height = editor.scrollHeight + 'px';
+    // }
+    
+    // 初始調整
+    // window.addEventListener('load', adjustEditorHeight);
+    // window.addEventListener('resize', adjustEditorHeight);
+    
+    // 防止關閉頁面時遺失編輯中的內容
+    window.addEventListener('beforeunload', (e) => {
+      if (editor.value) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+    
+    // 拖放檔案功能
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      document.body.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }, false);
+    });
+    
+    document.body.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files[0];
+      if (file && (file.name.endsWith('.md') || file.name.endsWith('.markdown') || file.name.endsWith('.txt'))) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          editor.value = event.target.result;
+          updatePreview();
+          currentFileName = file.name.replace(/\.[^/.]+$/, "");
+          
+          // 重置滾動位置
+          editor.scrollTop = 0;
+          preview.scrollTop = 0;
+        };
+        reader.readAsText(file);
+      }
+    }, false);
+  </script>
+</body>
+</html>

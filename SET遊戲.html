@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SET 遊戲</title>
+    <style>
+        /* 基本樣式 */
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 遊戲設定區塊 */
+        #setup {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+        }
+        #setup label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #setup select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+        }
+        
+        /* 按鈕樣式 */
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        /* 玩家顯示區 */
+        #players {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .player {
+            padding: 12px 20px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .player:hover {
+            border-color: #3498db;
+        }
+        .player.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 卡片網格 */
+        #card-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        @media (max-width: 1000px) {
+            #card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            #card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .card-select {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            aspect-ratio: 3/2;
+        }
+        .card-select:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card-select.selected {
+            border-color: #2ecc71;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+        }
+        .card-select.hidden {
+            visibility: hidden;
+        }
+        .card-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        /* 訊息顯示 */
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 50px;
+        }
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .info {
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        /* 控制區 */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        /* 額外功能區 */
+        .features {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .feature-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        /* 統計區 */
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f7fa;
+            border-radius: 8px;
+        }
+        .stats h3 {
+            margin-top: 0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .stat-item {
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 說明區 */
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .instructions h3 {
+            margin-top: 0;
+        }
+        
+        /* 模態視窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SET 遊戲 - 增強版</h1>
+        
+        <!-- 遊戲設定區 -->
+        <div id="setup">
+            <h3>遊戲設定</h3>
+            <div>
+                <label for="playerCount">玩家人數：</label>
+                <select id="playerCount">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                
+                <label for="difficulty">難度：</label>
+                <select id="difficulty">
+                    <option value="normal">一般</option>
+                    <option value="hard">困難</option>
+                </select>
+            </div>
+            <button id="startBtn" onclick="startGame()">開始遊戲</button>
+        </div>
+        
+        <!-- 玩家顯示區 -->
+        <div id="players"></div>
+        
+        <!-- 卡片顯示區 -->
+        <div id="card-grid" class="card-grid"></div>
+        
+        <!-- 控制按鈕區 -->
+        <div class="controls">
+            <button id="hintBtn" onclick="showHint()" disabled>提示</button>
+            <button id="addCardsBtn" onclick="addCards()" disabled>增加卡片</button>
+            <button id="resetBtn" onclick="resetGame()">重新開始</button>
+            <button id="helpBtn" onclick="showHelp()">遊戲說明</button>
+        </div>
+        
+        <!-- 訊息顯示區 -->
+        <div id="message"></div>
+        
+        <!-- 統計區 -->
+        <div class="stats" id="gameStats" style="display: none;">
+            <h3>遊戲統計</h3>
+            <div class="stats-grid">
+                <div class="stat-item">找到的集合數: <span id="setsFound">0</span></div>
+                <div class="stat-item">使用提示次數: <span id="hintsUsed">0</span></div>
+                <div class="stat-item">剩餘卡片數: <span id="cardsLeft">81</span></div>
+            </div>
+        </div>
+        
+        <!-- 遊戲說明模態視窗 -->
+        <div id="helpModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>SET 遊戲說明</h2>
+                <div class="instructions">
+                    <p>SET 是一個觀察力與邏輯思考的紙牌遊戲。每張卡片有四個特徵，每個特徵有三種可能:</p>
+                    <ul>
+                        <li><strong>顏色：</strong>紅色、綠色、紫色</li>
+                        <li><strong>形狀：</strong>橢圓、波浪、菱形</li>
+                        <li><strong>數量：</strong>一個、兩個、三個</li>
+                        <li><strong>填充：</strong>實心、條紋、空心</li>
+                    </ul>
+                    <p>一個有效的SET必須符合以下規則：對於每個特徵，三張卡片要麼<strong>全部相同</strong>，要麼<strong>全部不同</strong>。</p>
+                    <p>遊戲規則:</p>
+                    <ol>
+                        <li>選擇一位玩家</li>
+                        <li>找出三張形成SET的卡片</li>
+                        <li>如找到有效SET，玩家得3分</li>
+                        <li>如選擇了無效SET，玩家扣1分</li>
+                        <li>找到SET後，會自動補充新卡片</li>
+                    </ol>
+                    <p>祝您遊戲愉快！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        // 定義遊戲特徵
+        const features = [
+            ['紅色', '綠色', '紫色'],
+            ['橢圓', '波浪', '菱形'],
+            ['一個', '兩個', '三個'],
+            ['實心', '條紋', '空心']
+        ];
+        
+        // 定義玩家名稱選項
+        const animalNames = ['貓咪', '狗狗', '兔子', '熊貓', '獅子', '老虎', '猴子', '大象'];
+        
+        // 遊戲狀態變數
+        let deck = [];                // 牌組
+        let displayedCards = [];      // 顯示的卡片
+        let selectedCards = [];       // 選中的卡片
+        let players = [];             // 玩家列表
+        let scores = {};              // 分數記錄
+        let activePlayer = null;      // 當前活躍玩家
+        let gameStarted = false;      // 遊戲是否開始
+        let extraCardsShown = false;  // 是否顯示額外卡片
+        let difficultyMode = 'normal';// 難度模式
+        let hintsUsed = 0;            // 使用提示次數
+        let setsFound = 0;            // 找到的SET數量
+        
+        // SVG圖形路徑 - 統一形狀尺寸，減少寬度避免形狀連在一起
+        const shapePaths = {
+            '橢圓': 'M-16 0 A16 30 0 1 1 16 0 A16 30 0 1 1 -16 0',
+            '波浪': 'M-16 -30 C-8 -30 -8 0 -16 0 C-8 0 -8 30 -16 30 L16 30 C8 30 8 0 16 0 C8 0 8 -30 16 -30 Z',
+            '菱形': 'M0 -30 L16 0 L0 30 L-16 0 Z'
+        };
+        
+        // 顏色映射
+        const colorMap = { 
+            '紅色': '#FF4136', 
+            '綠色': '#2ECC40', 
+            '紫色': '#B10DC9', 
+        };
+        
+        // 數量映射
+        const countMap = {'一個': 1, '兩個': 2, '三個': 3};
+        
+        // 建立SVG圖示
+        function createSVGIcon(card) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "100%");
+            svg.setAttribute("viewBox", "0 0 160 100");
+            
+            const color = card[0];
+            const shape = card[1];
+            const number = card[2];
+            const shading = card[3];
+            
+            // 建立條紋填充
+            const patternId = "stripe-" + color + "-" + Math.random().toString(36).substr(2, 9);
+            const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            const pattern = document.createElementNS("http://www.w3.org/2000/svg", "pattern");
+            pattern.setAttribute("id", patternId);
+            pattern.setAttribute("patternUnits", "userSpaceOnUse");
+            pattern.setAttribute("width", "4");
+            pattern.setAttribute("height", "4");
+            
+            const patternPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            patternPath.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+            patternPath.setAttribute("stroke", colorMap[color]);
+            patternPath.setAttribute("stroke-width", "1");
+            pattern.appendChild(patternPath);
+            defs.appendChild(pattern);
+            svg.appendChild(defs);
+            
+            // 主要圖形群組
+            const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            group.setAttribute("transform", "translate(80, 50)");
+            
+            // 計算每個圖形的間距
+            const count = countMap[number];
+            const spacing = count === 1 ? 0 : count === 2 ? 50 : 40;
+            
+            // 繪製多個圖形
+            for (let i = 0; i < count; i++) {
+                const shapeGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                const xOffset = (i - (count - 1) / 2) * spacing;
+                shapeGroup.setAttribute("transform", "translate(" + xOffset + ", 0)");
+                
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", shapePaths[shape]);
+                path.setAttribute("stroke", colorMap[color]);
+                path.setAttribute("stroke-width", "2");
+                
+                // 根據填充類型設定樣式
+                if (shading === '實心') {
+                    path.setAttribute("fill", colorMap[color]);
+                } else if (shading === '條紋') {
+                    path.setAttribute("fill", "url(#" + patternId + ")");
+                } else { // 空心
+                    path.setAttribute("fill", "none");
+                }
+                
+                shapeGroup.appendChild(path);
+                group.appendChild(shapeGroup);
+            }
+            
+            svg.appendChild(group);
+            return svg;
+        }
+        
+        // 生成完整牌組
+        function generateDeck() {
+            deck = [];
+            for (let c = 0; c < features[0].length; c++) {
+                for (let s = 0; s < features[1].length; s++) {
+                    for (let n = 0; n < features[2].length; n++) {
+                        for (let f = 0; f < features[3].length; f++) {
+                            deck.push([features[0][c], features[1][s], features[2][n], features[3][f]]);
+                        }
+                    }
+                }
+            }
+            shuffleDeck();
+            updateCardCount();
+        }
+        
+        // 洗牌
+        function shuffleDeck() {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+        
+        // 發牌
+        function dealCards(count) {
+            if (deck.length < count) {
+                count = deck.length;
+            }
+            
+            if (count === 0) return;
+            
+            const newCards = deck.splice(0, count);
+            
+            // 找到第一個空位置
+            const emptySlots = [];
+            document.querySelectorAll('.card-select.hidden').forEach((el, idx) => {
+                if (idx < displayedCards.length || emptySlots.length >= count) return;
+                emptySlots.push(idx);
+            });
+            
+            // 如果有空位置，將新卡片放入空位置
+            if (emptySlots.length > 0) {
+                for (let i = 0; i < Math.min(emptySlots.length, newCards.length); i++) {
+                    // 確保索引在範圍內
+                    while (displayedCards.length <= emptySlots[i]) {
+                        displayedCards.push(null);
+                    }
+                    displayedCards[emptySlots[i]] = newCards[i];
+                }
+                
+                // 如果還有剩餘的新卡片，添加到末尾
+                if (emptySlots.length < newCards.length) {
+                    displayedCards = displayedCards.concat(newCards.slice(emptySlots.length));
+                }
+            } else {
+                // 沒有空位置，直接添加到末尾
+                displayedCards = displayedCards.concat(newCards);
+            }
+            
+            // 清理空值
+            displayedCards = displayedCards.filter(card => card !== null);
+            
+            updateCardGrid();
+            updateCardCount();
+        }
+        
+        // 更新卡片網格
+        function updateCardGrid() {
+            const grid = document.getElementById('card-grid');
+            grid.innerHTML = '';
+            
+            // 計算顯示的卡片數量，正常模式顯示12張，困難模式可顯示15張
+            let gridSize = difficultyMode === 'hard' ? 15 : 12;
+            gridSize = Math.max(gridSize, displayedCards.length);
+            
+            for (let i = 0; i < gridSize; i++) {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card-select';
+                
+                if (i >= displayedCards.length) {
+                    cardDiv.classList.add('hidden');
+                } else {
+                    const cardIcon = document.createElement('div');
+                    cardIcon.className = 'card-icon';
+                    cardIcon.appendChild(createSVGIcon(displayedCards[i]));
+                    cardDiv.appendChild(cardIcon);
+                    
+                    cardDiv.onclick = (function(index) {
+                        return function() { selectCard(index); };
+                    })(i);
+                    
+                    // 如果該卡片已被選中，添加選中樣式
+                    if (selectedCards.includes(i)) {
+                        cardDiv.classList.add('selected');
+                    }
+                }
+                
+                grid.appendChild(cardDiv);
+            }
+        }
+        
+        // 選擇卡片
+        function selectCard(index) {
+            if (!gameStarted || activePlayer === null || index >= displayedCards.length) {
+                return;
+            }
+            
+            const cardDivs = document.querySelectorAll('.card-select');
+            
+            // 如果已經選中，則取消選中
+            const selectedIndex = selectedCards.indexOf(index);
+            if (selectedIndex > -1) {
+                selectedCards.splice(selectedIndex, 1);
+                cardDivs[index].classList.remove('selected');
+            } else {
+                // 如果還未選滿三張，則添加選中
+                if (selectedCards.length < 3) {
+                    selectedCards.push(index);
+                    cardDivs[index].classList.add('selected');
+                }
+            }
+            
+            // 如果已經選中三張卡片，檢查是否構成SET
+            if (selectedCards.length === 3) {
+                setTimeout(checkSet, 300);
+            }
+        }
+        
+        // 檢查是否構成SET
+        function checkSet() {
+            const cards = selectedCards.map(index => displayedCards[index]);
+            
+            if (isSet(cards[0], cards[1], cards[2])) {
+                // 有效SET
+                scores[activePlayer] += 3;
+                setsFound++;
+                updateStats();
+                
+                // 移除選中卡片並補充新卡片
+                removeAndReplaceCards();
+                
+                showMessage(`${activePlayer} 找到了一個有效的SET！得到3分`, 'success');
+            } else {
+                // 無效SET
+                scores[activePlayer] = Math.max(0, scores[activePlayer] - 1); // 避免負分
+                showMessage(`這不是一個有效的SET。${activePlayer} 失去1分`, 'error');
+                
+                // 重設選中狀態
+                const cardDivs = document.querySelectorAll('.card-select');
+                selectedCards.forEach(index => {
+                    cardDivs[index].classList.remove('selected');
+                });
+            }
+            
+            selectedCards = [];
+            activePlayer = null;
+            updatePlayerDisplay();
+            
+            // 檢查是否還有可能的SET
+            checkForPossibleSets();
+        }
+        
+        // 判斷三張卡片是否構成SET
+        function isSet(card1, card2, card3) {
+            for (let i = 0; i < 4; i++) {
+                const feature1 = card1[i];
+                const feature2 = card2[i];
+                const feature3 = card3[i];
+                
+                // 對於每個特徵，要麼全部相同，要麼全部不同
+                const allSame = (feature1 === feature2 && feature2 === feature3);
+                const allDifferent = (feature1 !== feature2 && feature2 !== feature3 && feature1 !== feature3);
+                
+                if (!(allSame || allDifferent)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 移除已選中卡片並補充新卡片，保持其他卡片位置不變
+        function removeAndReplaceCards() {
+            // 保存要替換的位置
+            const replacementPositions = [...selectedCards].sort((a, b) => a - b);
+            
+            // 從牌組中取出新卡片
+            let newCards = [];
+            if (!extraCardsShown && deck.length > 0) {
+                const cardsNeeded = Math.min(replacementPositions.length, deck.length);
+                newCards = deck.splice(0, cardsNeeded);
+            }
+            
+            // 替換卡片，將新卡片放入移除的位置
+            for (let i = 0; i < replacementPositions.length; i++) {
+                if (i < newCards.length) {
+                    // 有新卡片可用，直接替換
+                    displayedCards[replacementPositions[i]] = newCards[i];
+                } else {
+                    // 沒有足夠的新卡片，標記為空卡片
+                    displayedCards[replacementPositions[i]] = null;
+                }
+            }
+            
+            // 清理空卡片（null），保持索引順序
+            displayedCards = displayedCards.filter(card => card !== null);
+            
+            // 重置額外卡片標記
+            if (extraCardsShown) {
+                extraCardsShown = false;
+            }
+            
+            updateCardGrid();
+            updateCardCount();
+        }
+        
+        // 顯示訊息
+        function showMessage(msg, type = 'info') {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = msg;
+            messageDiv.className = type;
+            
+            // 自動清除訊息
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = '';
+            }, 5000);
+        }
+        
+        // 更新玩家顯示
+        function updatePlayerDisplay() {
+            const playerDiv = document.getElementById('players');
+            playerDiv.innerHTML = '';
+            
+            players.forEach(player => {
+                const playerButton = document.createElement('div');
+                playerButton.className = 'player';
+                playerButton.textContent = `${player}: ${scores[player]}分`;
+                playerButton.onclick = function() { selectPlayer(player); };
+                
+                if (player === activePlayer) {
+                    playerButton.classList.add('active');
+                }
+                
+                playerDiv.appendChild(playerButton);
+            });
+        }
+        
+        // 選擇玩家
+        function selectPlayer(player) {
+            if (!gameStarted) return;
+            
+            // 如果當前有活躍玩家且已選中卡片，不允許切換
+            if (activePlayer && selectedCards.length > 0) {
+                showMessage(`${activePlayer} 正在選擇卡片，請先完成或取消當前選擇`, 'error');
+                return;
+            }
+            
+            activePlayer = player;
+            selectedCards = [];
+            updatePlayerDisplay();
+            
+            // 清除所有已選中卡片的樣式
+            document.querySelectorAll('.card-select').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            showMessage(`${player} 正在尋找SET`);
+        }
+        
+        // 開始遊戲
+        function startGame() {
+            // 獲取設定
+            const playerCount = parseInt(document.getElementById('playerCount').value);
+            difficultyMode = document.getElementById('difficulty').value;
+            
+            // 設定玩家列表
+            players = [];
+            const shuffledNames = [...animalNames].sort(() => Math.random() - 0.5);
+            for (let i = 0; i < playerCount; i++) {
+                players.push(shuffledNames[i]);
+                scores[shuffledNames[i]] = 0;
+            }
+            
+            // 初始化遊戲狀態
+            generateDeck();
+            displayedCards = [];
+            selectedCards = [];
+            activePlayer = null;
+            gameStarted = true;
+            extraCardsShown = false;
+            hintsUsed = 0;
+            setsFound = 0;
+            
+            // 發牌
+            const initialCardCount = difficultyMode === 'hard' ? 15 : 12;
+            dealCards(initialCardCount);
+            
+            // 更新UI
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('gameStats').style.display = 'block';
+            document.getElementById('hintBtn').disabled = false;
+            document.getElementById('addCardsBtn').disabled = false;
+            
+            updatePlayerDisplay();
+            updateStats();
+            
+            showMessage('遊戲開始！選擇一名玩家開始尋找SET', 'success');
+            
+            // 檢查是否有可能的SET
+            checkForPossibleSets();
+        }
+        
+        // 提供提示
+        function showHint() {
+            if (!gameStarted) return;
+            
+            hintsUsed++;
+            updateStats();
+            
+            // 尋找一個可能的SET
+            const setIndices = findPossibleSet();
+            
+            if (setIndices) {
+                // 隨機選擇SET中的1-2張卡片提示
+                const randomIndex = Math.floor(Math.random() * setIndices.length);
+                const hintIndex = setIndices[randomIndex];
+                
+                showMessage(`提示：第 ${hintIndex + 1} 張卡片可能是SET的一部分`, 'info');
+                
+                // 高亮提示卡片
+                const cardDivs = document.querySelectorAll('.card-select');
+                cardDivs[hintIndex].style.boxShadow = '0 0 15px rgba(52, 152, 219, 0.7)';
+                
+                // 3秒後移除高亮
+                setTimeout(() => {
+                    cardDivs[hintIndex].style.boxShadow = '';
+                }, 3000);
+            } else {
+                // 如果找不到SET，自動添加卡片
+                showMessage('當前沒有可用的SET。自動添加3張卡片。', 'info');
+                addCards();
+            }
+        }
+        
+        // 增加卡片
+        function addCards() {
+            if (!gameStarted || deck.length === 0) return;
+            
+            // 在正常模式下，只有沒有SET時才能添加卡片
+            if (difficultyMode === 'normal' && findPossibleSet()) {
+                showMessage('當前牌面已有可能的SET，不需要添加卡片', 'error');
+                return;
+            }
+            
+            // 記錄當前顯示的卡片數
+            const currentCardCount = displayedCards.length;
+            
+            // 添加3張新卡片
+            const cardsToAdd = Math.min(3, deck.length);
+            dealCards(cardsToAdd);
+            extraCardsShown = true;
+            
+            showMessage(`已添加 ${cardsToAdd} 張新卡片`, 'info');
+            
+            // 重新檢查是否有可能的SET
+            checkForPossibleSets();
+        }
+        
+        // 尋找可能的SET
+        function findPossibleSet() {
+            for (let i = 0; i < displayedCards.length - 2; i++) {
+                for (let j = i + 1; j < displayedCards.length - 1; j++) {
+                    for (let k = j + 1; k < displayedCards.length; k++) {
+                        if (isSet(displayedCards[i], displayedCards[j], displayedCards[k])) {
+                            return [i, j, k];
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        
+        // 檢查是否還有可能的SET
+        function checkForPossibleSets() {
+            const setIndices = findPossibleSet();
+            
+            // 如果沒有可能的SET且牌組已空，遊戲結束
+            if (!setIndices && deck.length === 0) {
+                endGame();
+                return;
+            }
+            
+            // 如果沒有可能的SET且牌組還有牌，自動添加卡片
+            if (!setIndices && deck.length > 0 && !extraCardsShown && difficultyMode === 'normal') {
+                showMessage('當前牌面沒有可能的SET，自動添加3張卡片', 'info');
+                setTimeout(addCards, 1000);
+            }
+        }
+        
+        // 結束遊戲
+        function endGame() {
+            gameStarted = false;
+            
+            // 找出得分最高的玩家
+            let winner = '';
+            let highestScore = -1;
+            let tie = false;
+            
+            for (const player in scores) {
+                if (scores[player] > highestScore) {
+                    highestScore = scores[player];
+                    winner = player;
+                    tie = false;
+                } else if (scores[player] === highestScore) {
+                    tie = true;
+                }
+            }
+            
+            let endMessage = '遊戲結束！';
+            if (tie) {
+                endMessage += '有多位玩家並列第一！';
+            } else {
+                endMessage += `贏家是 ${winner}，得分: ${highestScore}。`;
+            }
+            
+            showMessage(endMessage, 'success');
+            
+            // 禁用遊戲按鈕
+            document.getElementById('hintBtn').disabled = true;
+            document.getElementById('addCardsBtn').disabled = true;
+        }
+        
+        // 重設遊戲
+        function resetGame() {
+            document.getElementById('setup').style.display = 'block';
+            document.getElementById('gameStats').style.display = 'none';
+            document.getElementById('card-grid').innerHTML = '';
+            document.getElementById('players').innerHTML = '';
+            document.getElementById('message').textContent = '';
+            document.getElementById('hintBtn').disabled = true;
+            document.getElementById('addCardsBtn').disabled = true;
+            
+            // 重設遊戲狀態
+            players = [];
+            deck = [];
+            displayedCards = [];
+            selectedCards = [];
+            activePlayer = null;
+            gameStarted = false;
+            extraCardsShown = false;
+            
+            showMessage('遊戲已重置。請選擇玩家人數並開始新遊戲。');
+        }
+        
+        // 更新統計數據
+        function updateStats() {
+            document.getElementById('setsFound').textContent = setsFound;
+            document.getElementById('hintsUsed').textContent = hintsUsed;
+            updateCardCount();
+        }
+        
+        // 更新牌組數量
+        function updateCardCount() {
+            document.getElementById('cardsLeft').textContent = deck.length;
+        }
+        
+        // 顯示遊戲說明
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'block';
+        }
+        
+        // 關閉模態視窗
+        function closeModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+        
+        // 將功能暴露給全局
+        window.startGame = startGame;
+        window.showHint = showHint;
+        window.addCards = addCards;
+        window.resetGame = resetGame;
+        window.showHelp = showHelp;
+        window.closeModal = closeModal;
+        
+        // 點擊模態視窗外部關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('helpModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    })();
+    </script>
+</body>
+</html>
