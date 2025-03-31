@@ -411,6 +411,14 @@
             font-size: 12px;
         }
         
+        .saved-link-thumb {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #f6f6f6;
+            margin-bottom: 5px;
+        }
+        
         .export-section {
             margin-top: 20px;
             display: flex;
@@ -755,7 +763,7 @@
         </div>
         
         <div class="note">
-            <p><strong>說明：</strong>本工具可獲取照片的實際直接連結。如果連結無法自動取得，您可以拖曳圖片查看並獲取連結。請在每次使用後，使用「匯出」功能保存您收集的連結。</p>
+            <p><strong>說明：</strong>本工具可獲取照片的實際直接連結（如：https://upload.wikimedia.org/wikipedia/commons/2/21/七星山到小油坑步道.jpg）。如果連結無法自動取得，您可以拖曳圖片查看並獲取連結。請在每次使用後，使用「匯出」功能保存您收集的連結。</p>
         </div>
         
         <!-- 單一搜尋標籤頁 -->
@@ -1427,6 +1435,34 @@
             return url;
         }
         
+        // 創建縮圖URL的輔助函數
+        function createThumbUrl(directUrl, size = 300) {
+            // 如果directUrl是Wikimedia上傳連結，創建一個縮圖版本
+            if (directUrl.includes('upload.wikimedia.org/wikipedia/commons')) {
+                try {
+                    // 提取檔案名稱
+                    const fileName = directUrl.split('/').pop();
+                    
+                    // 建立縮圖URL路徑
+                    let thumbUrl = directUrl;
+                    
+                    // 如果不是已經是縮圖路徑
+                    if (!directUrl.includes('/thumb/')) {
+                        thumbUrl = directUrl.replace('/wikipedia/commons/', '/wikipedia/commons/thumb/');
+                        thumbUrl = `${thumbUrl}/${size}px-${fileName}`;
+                    }
+                    
+                    return thumbUrl;
+                } catch (error) {
+                    console.error('創建縮圖URL錯誤:', error);
+                    return directUrl;
+                }
+            }
+            
+            // 如果無法創建縮圖URL，返回原始URL
+            return directUrl;
+        }
+        
         // 儲存模態框中的照片連結
         function saveModalPhoto() {
             if (currentModalPhoto && currentModalPhoto.directUrl) {
@@ -1476,10 +1512,11 @@
             const linkExists = savedLinks.some(link => link.directUrl === linkData.directUrl);
             
             if (!linkExists) {
-                // 只儲存需要的資訊（直接連結、標題和搜尋關鍵字）
+                // 儲存需要的資訊（直接連結、標題、縮圖URL和搜尋關鍵字）
                 savedLinks.push({
                     title: linkData.title,
                     directUrl: linkData.directUrl,
+                    thumbUrl: linkData.thumbUrl || createThumbUrl(linkData.directUrl),
                     searchKeyword: linkData.searchKeyword || currentSearchKeyword || '',
                     dateAdded: new Date().toISOString()
                 });
@@ -1509,16 +1546,26 @@
                     keywordHtml = `<span class="saved-link-keyword">${link.searchKeyword}</span>`;
                 }
                 
+                // 使用縮圖URL或直接連結作為縮圖
+                const thumbUrl = link.thumbUrl || createThumbUrl(link.directUrl);
+                
                 let linkContent = `
-                    <div class="saved-link-title">
-                        <span>${link.title}</span>
-                        ${keywordHtml}
-                    </div>
-                    <div class="saved-link-url">${link.directUrl}</div>
-                    <div class="saved-link-actions">
-                        <button class="button-primary view-direct">查看照片</button>
-                        <button class="button-primary copy-link">複製連結</button>
-                        <button class="button-danger remove-link">移除</button>
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <div class="saved-link-thumb" style="min-width: 100px; width: 100px;">
+                            <img src="${thumbUrl}" alt="${link.title}" style="width: 100%; height: auto; border-radius: 4px; display: block;" onerror="this.src='https://via.placeholder.com/100x75?text=圖片載入失敗'">
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <div class="saved-link-title">
+                                <span>${link.title}</span>
+                                ${keywordHtml}
+                            </div>
+                            <div class="saved-link-url">${link.directUrl}</div>
+                            <div class="saved-link-actions">
+                                <button class="button-primary view-direct">查看照片</button>
+                                <button class="button-primary copy-link">複製連結</button>
+                                <button class="button-danger remove-link">移除</button>
+                            </div>
+                        </div>
                     </div>
                 `;
                 
@@ -1846,6 +1893,13 @@
                         );
                         
                         if (isValidFormat) {
+                            // 確保每個匯入的連結都有縮圖URL
+                            importedLinks.forEach(link => {
+                                if (!link.thumbUrl) {
+                                    link.thumbUrl = createThumbUrl(link.directUrl);
+                                }
+                            });
+                            
                             // 合併連結，避免重複
                             const newLinks = importedLinks.filter(importedLink => 
                                 !savedLinks.some(savedLink => savedLink.directUrl === importedLink.directUrl)
@@ -2075,6 +2129,7 @@
                                     processedResults.push({
                                         title: fileName,
                                         directUrl: fileInfo.directUrl,
+                                        thumbUrl: fileInfo.thumbUrl,
                                         searchKeyword: keyword,
                                         dateAdded: new Date().toISOString()
                                     });
@@ -2083,6 +2138,7 @@
                                     batchQueryResults.push({
                                         title: fileName,
                                         directUrl: fileInfo.directUrl,
+                                        thumbUrl: fileInfo.thumbUrl,
                                         searchKeyword: keyword,
                                         dateAdded: new Date().toISOString()
                                     });
@@ -2123,8 +2179,11 @@
                 content += `<div class="batch-links">`;
                 
                 results.forEach(result => {
+                    // 添加縮圖顯示
+                    const thumbUrl = result.thumbUrl || createThumbUrl(result.directUrl);
                     content += `
-                        <div class="batch-link">
+                        <div class="batch-link" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <img src="${thumbUrl}" alt="${result.title}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/50?text=圖片'">
                             <span class="batch-link-title">${result.title}</span>
                             <span class="batch-link-url">${result.directUrl}</span>
                         </div>
