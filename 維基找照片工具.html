@@ -528,6 +528,8 @@
             border-radius: 8px;
             width: 80%;
             max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
@@ -549,13 +551,13 @@
             display: flex;
             justify-content: center;
             margin: 20px 0;
-            max-height: 70vh;
+            max-height: 50vh;
             overflow: auto;
         }
         
         .modal-image {
             max-width: 100%;
-            max-height: 70vh;
+            max-height: 50vh;
             object-fit: contain;
         }
         
@@ -706,6 +708,39 @@
             font-size: 14px;
         }
         
+        .modal-attribution {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        
+        .attribution-details {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .attribution-formats {
+            margin-top: 20px;
+        }
+        
+        .attribution-format {
+            margin-bottom: 15px;
+        }
+        
+        .attribution-format p {
+            margin-bottom: 5px;
+        }
+        
+        .attribution-format textarea {
+            font-family: monospace;
+            font-size: 13px;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -752,7 +787,7 @@
     <div class="container">
         <header>
             <h1>Wikimedia Commons 照片連結收集工具</h1>
-            <p class="description">搜尋、選擇並儲存 Wikimedia Commons 照片的實際連結</p>
+            <p class="description">搜尋、選擇並儲存 Wikimedia Commons 照片的實際連結與合法引用資訊</p>
         </header>
         
         <div class="tabs">
@@ -763,7 +798,7 @@
         </div>
         
         <div class="note">
-            <p><strong>說明：</strong>本工具可獲取照片的實際直接連結（如：https://upload.wikimedia.org/wikipedia/commons/2/21/七星山到小油坑步道.jpg）。如果連結無法自動取得，您可以拖曳圖片查看並獲取連結。請在每次使用後，使用「匯出」功能保存您收集的連結。</p>
+            <p><strong>說明：</strong>本工具可獲取照片的實際直接連結以及合法引用資訊（如：授權、作者），幫助您合法使用Wikimedia Commons的資源。如果連結無法自動取得，您可以拖曳圖片查看並獲取連結。請在每次使用後，使用「匯出」功能保存您收集的連結。</p>
         </div>
         
         <!-- 單一搜尋標籤頁 -->
@@ -897,6 +932,7 @@
             <div class="photo-actions" style="margin-top: 20px;">
                 <button id="modal-save" class="photo-button button-success">儲存連結</button>
             </div>
+            <div id="modal-attribution"></div>
         </div>
     </div>
     
@@ -946,6 +982,7 @@
         const modalCopyDirect = document.getElementById('modal-copy-direct');
         const modalOpenDirect = document.getElementById('modal-open-direct');
         const modalSave = document.getElementById('modal-save');
+        const modalAttribution = document.getElementById('modal-attribution');
         
         // 當前模態框顯示的照片資訊
         let currentModalPhoto = null;
@@ -1130,7 +1167,7 @@
                 const detailPageUrl = `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(fileName)}`;
                 
                 // 獲取檔案資訊和連結
-                fetchFileInfo(fileName, detailPageUrl)
+                fetchFileInfoWithAttribution(fileName, detailPageUrl)
                     .then(fileInfo => {
                         // 添加搜尋關鍵字到檔案資訊中
                         fileInfo.searchKeyword = currentSearchKeyword;
@@ -1157,10 +1194,18 @@
             });
         }
         
-        // 獲取檔案的詳細資訊，尤其是直接連結
-        async function fetchFileInfo(fileName, detailPageUrl) {
-            // 構建獲取檔案資訊的 API URL
-            const fileInfoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(fileName)}&prop=imageinfo&iiprop=url|size|mime&format=json&origin=*`;
+        // 從元數據中提取值
+        function extractMetadataValue(field) {
+            if (!field || !field.value) {
+                return '';
+            }
+            return field.value;
+        }
+        
+        // 獲取檔案的詳細資訊，包括授權和歸因資訊
+        async function fetchFileInfoWithAttribution(fileName, detailPageUrl) {
+            // 構建獲取檔案資訊的 API URL，添加extmetadata屬性獲取授權資訊
+            const fileInfoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(fileName)}&prop=imageinfo&iiprop=url|size|mime|extmetadata|user|canonicaltitle&format=json&origin=*`;
             
             try {
                 const response = await fetch(fileInfoUrl);
@@ -1179,6 +1224,22 @@
                 }
                 
                 const imageInfo = pages[pageId].imageinfo[0];
+                const extmetadata = imageInfo.extmetadata || {};
+                
+                // 提取授權和歸因資訊
+                const attribution = {
+                    author: extractMetadataValue(extmetadata.Artist),
+                    authorUrl: extractMetadataValue(extmetadata.AuthorURL),
+                    license: extractMetadataValue(extmetadata.LicenseShortName),
+                    licenseUrl: extractMetadataValue(extmetadata.LicenseUrl),
+                    description: extractMetadataValue(extmetadata.ImageDescription),
+                    dateCreated: extractMetadataValue(extmetadata.DateTimeOriginal),
+                    source: extractMetadataValue(extmetadata.Credit) || extractMetadataValue(extmetadata.Source),
+                    attributionRequired: extractMetadataValue(extmetadata.AttributionRequired) === 'true',
+                    usageTerms: extractMetadataValue(extmetadata.UsageTerms),
+                    uploader: imageInfo.user || '',
+                    uploadDate: imageInfo.timestamp || ''
+                };
                 
                 // 這裡獲取的 url 就是照片的直接連結
                 const directUrl = imageInfo.url;
@@ -1194,12 +1255,95 @@
                     width: imageInfo.width,
                     height: imageInfo.height,
                     size: imageInfo.size,
-                    mime: imageInfo.mime
+                    mime: imageInfo.mime,
+                    attribution: attribution
                 };
             } catch (error) {
                 console.error('獲取檔案詳細資訊錯誤:', error);
                 throw error;
             }
+        }
+        
+        // 生成不同格式的引用文本
+        function generateAttribution(fileInfo) {
+            if (!fileInfo || !fileInfo.attribution) {
+                return {
+                    plainText: '無法生成引用資訊',
+                    html: '無法生成引用資訊',
+                    wikimedia: '無法生成引用資訊'
+                };
+            }
+            
+            const attr = fileInfo.attribution;
+            const title = fileInfo.title;
+            
+            // 處理作者顯示名稱
+            let authorDisplay = attr.author || attr.uploader || '未知作者';
+            let authorLink = '';
+            
+            if (attr.authorUrl) {
+                authorLink = attr.authorUrl;
+            } else if (attr.uploader) {
+                authorLink = `https://commons.wikimedia.org/wiki/User:${encodeURIComponent(attr.uploader)}`;
+            }
+            
+            // 處理授權信息
+            let licenseDisplay = attr.license || '未指定授權';
+            let licenseLink = attr.licenseUrl || '';
+            
+            // 簡單文本格式
+            const plainText = `"${title}" 由 ${authorDisplay} - 
+來源: Wikimedia Commons ${fileInfo.pageUrl}
+授權: ${licenseDisplay} ${licenseLink}`;
+            
+            // HTML 格式
+            let htmlAttribution = `"${title}" 由 `;
+            if (authorLink) {
+                htmlAttribution += `<a href="${authorLink}" target="_blank">${authorDisplay}</a>`;
+            } else {
+                htmlAttribution += authorDisplay;
+            }
+            
+            htmlAttribution += ` - 來源: <a href="${fileInfo.pageUrl}" target="_blank">Wikimedia Commons</a>`;
+            
+            if (licenseLink) {
+                htmlAttribution += ` - 授權: <a href="${licenseLink}" target="_blank">${licenseDisplay}</a>`;
+            } else {
+                htmlAttribution += ` - 授權: ${licenseDisplay}`;
+            }
+            
+            // Wikimedia 模板格式 (用於 Wikipedia)
+            const wikimediaTemplate = `{{Information
+|Description=${attr.description}
+|Source=${attr.source || fileInfo.pageUrl}
+|Date=${attr.dateCreated || attr.uploadDate || ''}
+|Author=${authorDisplay}
+|Permission=
+|other_versions=
+}}
+
+{{${getLicenseTemplate(attr.license)}}}`;
+            
+            return {
+                plainText: plainText,
+                html: htmlAttribution,
+                wikimedia: wikimediaTemplate
+            };
+        }
+        
+        // 根據授權名稱獲取 Wikimedia 模板名稱
+        function getLicenseTemplate(licenseName) {
+            // 這只是一個簡單的對照表，實際實現應更完整
+            const licenseMap = {
+                'CC BY-SA 4.0': 'Cc-by-sa-4.0',
+                'CC BY-SA 3.0': 'Cc-by-sa-3.0',
+                'CC BY 4.0': 'Cc-by-4.0',
+                'CC BY 3.0': 'Cc-by-3.0',
+                'CC0': 'Cc-zero',
+                'Public Domain': 'PD-self'
+            };
+            
+            return licenseMap[licenseName] || 'Unknown-license';
         }
         
         // 渲染照片卡片
@@ -1231,6 +1375,16 @@
                         </div>
                     </div>
                 `;
+                
+                // 顯示授權資訊如果有
+                if (photoInfo.attribution && photoInfo.attribution.license) {
+                    photoContent += `
+                        <div class="photo-link">
+                            <span class="link-label">授權</span>
+                            <span class="link-content">${photoInfo.attribution.license}</span>
+                        </div>
+                    `;
+                }
             } else {
                 photoContent += `
                     <div class="photo-links">
@@ -1339,11 +1493,90 @@
             modalSave.disabled = isAlreadySaved;
             modalSave.style.opacity = isAlreadySaved ? 0.7 : 1;
             
+            // 顯示歸因資訊
+            showAttributionInModal(photoInfo);
+            
             // 顯示模態框
             photoModal.style.display = 'block';
             
             // 檢查模態框位置，確保不會被頁面邊緣裁切
             setTimeout(adjustModalPosition, 100);
+        }
+        
+        // 在模態框中顯示歸因資訊
+        function showAttributionInModal(photoInfo) {
+            modalAttribution.innerHTML = '';
+            
+            // 如果沒有歸因資訊且有直接連結，嘗試獲取
+            if (!photoInfo.attribution && photoInfo.directUrl) {
+                modalAttribution.innerHTML = '<p class="loading">正在載入歸因資訊...</p>';
+                
+                // 嘗試獲取歸因資訊
+                fetchFileInfoWithAttribution(photoInfo.title, photoInfo.pageUrl)
+                    .then(fileInfo => {
+                        // 更新照片資訊
+                        photoInfo.attribution = fileInfo.attribution;
+                        
+                        // 顯示歸因資訊
+                        displayAttributionInfo(photoInfo);
+                    })
+                    .catch(error => {
+                        console.error('獲取歸因資訊錯誤:', error);
+                        modalAttribution.innerHTML = '<p class="error">無法獲取歸因資訊</p>';
+                    });
+            } else if (photoInfo.attribution) {
+                // 已有歸因資訊，直接顯示
+                displayAttributionInfo(photoInfo);
+            } else {
+                // 無法獲取歸因資訊
+                modalAttribution.innerHTML = '';
+            }
+        }
+        
+        // 顯示歸因資訊內容
+        function displayAttributionInfo(photoInfo) {
+            if (!photoInfo.attribution) {
+                modalAttribution.innerHTML = '';
+                return;
+            }
+            
+            const attr = photoInfo.attribution;
+            const attributionFormats = generateAttribution(photoInfo);
+            
+            let content = `
+                <h3 style="margin-top: 20px;">授權與歸因資訊</h3>
+                <div class="attribution-details">
+                    <p><strong>作者:</strong> ${attr.author || attr.uploader || '未知'}</p>
+                    <p><strong>授權:</strong> ${attr.license || '未指定'} ${attr.licenseUrl ? `<a href="${attr.licenseUrl}" target="_blank">(查看授權條款)</a>` : ''}</p>
+                    ${attr.description ? `<p><strong>描述:</strong> ${attr.description}</p>` : ''}
+                    ${attr.source ? `<p><strong>來源:</strong> ${attr.source}</p>` : ''}
+                    ${attr.dateCreated ? `<p><strong>建立日期:</strong> ${attr.dateCreated}</p>` : ''}
+                </div>
+                
+                <div class="attribution-formats">
+                    <h4>引用格式</h4>
+                    
+                    <div class="attribution-format">
+                        <p><strong>簡易文字:</strong></p>
+                        <textarea readonly rows="3" style="width:100%">${attributionFormats.plainText}</textarea>
+                        <button class="copy-button" onclick="copyToClipboard('${encodeURIComponent(attributionFormats.plainText)}')">複製</button>
+                    </div>
+                    
+                    <div class="attribution-format">
+                        <p><strong>HTML 格式:</strong></p>
+                        <textarea readonly rows="3" style="width:100%">${attributionFormats.html.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                        <button class="copy-button" onclick="copyToClipboard('${encodeURIComponent(attributionFormats.html)}')">複製</button>
+                    </div>
+                    
+                    <div class="attribution-format">
+                        <p><strong>Wikimedia 模板:</strong></p>
+                        <textarea readonly rows="5" style="width:100%">${attributionFormats.wikimedia}</textarea>
+                        <button class="copy-button" onclick="copyToClipboard('${encodeURIComponent(attributionFormats.wikimedia)}')">複製</button>
+                    </div>
+                </div>
+            `;
+            
+            modalAttribution.innerHTML = content;
         }
         
         // 調整模態框位置，避免邊緣裁切
@@ -1405,6 +1638,16 @@
                 modalOpenDirect.disabled = false;
                 modalCopyDirect.style.opacity = 1;
                 modalOpenDirect.style.opacity = 1;
+                
+                // 嘗試獲取歸因資訊
+                fetchFileInfoWithAttribution(currentModalPhoto.title, currentModalPhoto.pageUrl)
+                    .then(fileInfo => {
+                        currentModalPhoto.attribution = fileInfo.attribution;
+                        showAttributionInModal(currentModalPhoto);
+                    })
+                    .catch(error => {
+                        console.error('獲取歸因資訊錯誤:', error);
+                    });
                 
                 showNotification('已成功獲取直接連結');
             }
@@ -1479,6 +1722,15 @@
         
         // 複製文字到剪貼簿
         function copyToClipboard(text) {
+            // 如果是URI編碼的文字，先解碼
+            if (text.indexOf('%') !== -1) {
+                try {
+                    text = decodeURIComponent(text);
+                } catch (e) {
+                    console.error('解碼文字錯誤:', e);
+                }
+            }
+            
             const textarea = document.createElement('textarea');
             textarea.value = text;
             document.body.appendChild(textarea);
@@ -1487,9 +1739,9 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showNotification('已複製連結到剪貼簿');
+                    showNotification('已複製到剪貼簿');
                 } else {
-                    showNotification('無法複製連結，請手動複製', true);
+                    showNotification('無法複製，請手動複製', true);
                 }
             } catch (err) {
                 showNotification('複製失敗，請手動複製', true);
@@ -1512,11 +1764,12 @@
             const linkExists = savedLinks.some(link => link.directUrl === linkData.directUrl);
             
             if (!linkExists) {
-                // 儲存需要的資訊（直接連結、標題、縮圖URL和搜尋關鍵字）
+                // 儲存需要的資訊（直接連結、標題、縮圖URL、歸因資訊和搜尋關鍵字）
                 savedLinks.push({
                     title: linkData.title,
                     directUrl: linkData.directUrl,
                     thumbUrl: linkData.thumbUrl || createThumbUrl(linkData.directUrl),
+                    attribution: linkData.attribution || null,
                     searchKeyword: linkData.searchKeyword || currentSearchKeyword || '',
                     dateAdded: new Date().toISOString()
                 });
@@ -1549,6 +1802,12 @@
                 // 使用縮圖URL或直接連結作為縮圖
                 const thumbUrl = link.thumbUrl || createThumbUrl(link.directUrl);
                 
+                // 顯示授權資訊（如果有）
+                let licenseHtml = '';
+                if (link.attribution && link.attribution.license) {
+                    licenseHtml = `<p><strong>授權:</strong> ${link.attribution.license}</p>`;
+                }
+                
                 let linkContent = `
                     <div style="display: flex; align-items: flex-start; gap: 10px;">
                         <div class="saved-link-thumb" style="min-width: 100px; width: 100px;">
@@ -1560,8 +1819,9 @@
                                 ${keywordHtml}
                             </div>
                             <div class="saved-link-url">${link.directUrl}</div>
+                            ${licenseHtml}
                             <div class="saved-link-actions">
-                                <button class="button-primary view-direct">查看照片</button>
+                                <button class="button-primary view-details">查看詳細</button>
                                 <button class="button-primary copy-link">複製連結</button>
                                 <button class="button-danger remove-link">移除</button>
                             </div>
@@ -1571,10 +1831,15 @@
                 
                 linkItem.innerHTML = linkContent;
                 
-                // 查看直接連結按鈕點擊事件
-                const viewDirectButton = linkItem.querySelector('.view-direct');
-                viewDirectButton.addEventListener('click', function() {
-                    window.open(link.directUrl, '_blank');
+                // 查看詳細按鈕點擊事件
+                const viewDetailsButton = linkItem.querySelector('.view-details');
+                viewDetailsButton.addEventListener('click', function() {
+                    // 創建臨時對象，確保有pageUrl
+                    const photoInfo = {
+                        ...link,
+                        pageUrl: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(link.title)}`
+                    };
+                    showPhotoModal(photoInfo);
                 });
                 
                 // 複製連結按鈕點擊事件
@@ -1661,7 +1926,14 @@
                 textContent += `## ${keyword}\n\n`;
                 groupedLinks[keyword].forEach((link, index) => {
                     textContent += `${index + 1}. ${link.title}\n`;
-                    textContent += `   連結: ${link.directUrl}\n\n`;
+                    textContent += `   連結: ${link.directUrl}\n`;
+                    if (link.attribution && link.attribution.license) {
+                        textContent += `   授權: ${link.attribution.license}\n`;
+                    }
+                    if (link.attribution && link.attribution.author) {
+                        textContent += `   作者: ${link.attribution.author}\n`;
+                    }
+                    textContent += '\n';
                 });
             });
             
@@ -1797,6 +2069,14 @@
             text-decoration: underline;
         }
         
+        .attribution {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
         @media (max-width: 900px) {
             .photo-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1835,6 +2115,18 @@
             <div class="photo-grid">`;
                 
                 groupedLinks[keyword].forEach(link => {
+                    // 添加授權信息
+                    let attributionHtml = '';
+                    if (link.attribution) {
+                        const attr = link.attribution;
+                        attributionHtml = `
+                        <div class="attribution">
+                            ${attr.author ? `<p>作者: ${attr.author}</p>` : ''}
+                            ${attr.license ? `<p>授權: ${attr.license}</p>` : ''}
+                            <p>來源: <a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(link.title)}" target="_blank">Wikimedia Commons</a></p>
+                        </div>`;
+                    }
+                    
                     html += `
                 <div class="photo-item">
                     <a href="${link.directUrl}" target="_blank">
@@ -1844,6 +2136,7 @@
                         <h3>${link.title}</h3>
                         ${link.dateAdded ? `<p>收集日期: ${new Date(link.dateAdded).toLocaleString()}</p>` : ''}
                         <p><a href="${link.directUrl}" target="_blank">查看原始照片</a></p>
+                        ${attributionHtml}
                     </div>
                 </div>`;
                 });
@@ -1970,7 +2263,11 @@
                         textPreview += `## ${keyword}\n\n`;
                         groupedLinks[keyword].forEach((link, index) => {
                             textPreview += `${index + 1}. ${link.title}\n`;
-                            textPreview += `   連結: ${link.directUrl}\n\n`;
+                            textPreview += `   連結: ${link.directUrl}\n`;
+                            if (link.attribution && link.attribution.license) {
+                                textPreview += `   授權: ${link.attribution.license}\n`;
+                            }
+                            textPreview += '\n';
                         });
                     });
                     
@@ -1982,7 +2279,7 @@
                     break;
                     
                 case 'html':
-                    exportPreview.innerHTML = `<p>HTML 檔案已生成。HTML 檔案包含一個完整的網頁，按關鍵字分類顯示所有照片，並具有響應式設計，可以在任何設備上正常查看。</p>`;
+                    exportPreview.innerHTML = `<p>HTML 檔案已生成。HTML 檔案包含一個完整的網頁，按關鍵字分類顯示所有照片，現在還包含了每張照片的授權和歸因資訊，並具有響應式設計，可以在任何設備上正常查看。</p>`;
                     break;
             }
         }
@@ -2054,7 +2351,7 @@
             // 清空先前的批次結果
             batchQueryResults = [];
             batchResults.innerHTML = '';
-            batchResults.style.display = 'none';
+            batchResults.style.display = 'block';
             
             // 依序查詢每個關鍵字
             for (let i = 0; i < keywords.length; i++) {
@@ -2122,7 +2419,7 @@
                             
                             try {
                                 // 獲取檔案資訊和連結
-                                const fileInfo = await fetchFileInfo(fileName, detailPageUrl);
+                                const fileInfo = await fetchFileInfoWithAttribution(fileName, detailPageUrl);
                                 
                                 // 只有在成功獲取直接連結時才添加到結果中
                                 if (fileInfo.directUrl) {
@@ -2130,6 +2427,7 @@
                                         title: fileName,
                                         directUrl: fileInfo.directUrl,
                                         thumbUrl: fileInfo.thumbUrl,
+                                        attribution: fileInfo.attribution,
                                         searchKeyword: keyword,
                                         dateAdded: new Date().toISOString()
                                     });
@@ -2139,6 +2437,7 @@
                                         title: fileName,
                                         directUrl: fileInfo.directUrl,
                                         thumbUrl: fileInfo.thumbUrl,
+                                        attribution: fileInfo.attribution,
                                         searchKeyword: keyword,
                                         dateAdded: new Date().toISOString()
                                     });
@@ -2149,7 +2448,7 @@
                             
                             // 增加索引並暫停一下
                             index++;
-                            if (index < searchResults.length) {
+                            if (index < searchResults.length && processedResults.length < limit) {
                                 await new Promise(r => setTimeout(r, 300));
                             }
                         }
@@ -2181,11 +2480,19 @@
                 results.forEach(result => {
                     // 添加縮圖顯示
                     const thumbUrl = result.thumbUrl || createThumbUrl(result.directUrl);
+                    const licenseText = result.attribution && result.attribution.license ? 
+                        `<span style="color: #7f8c8d; margin-left: 10px; font-size: 11px;">${result.attribution.license}</span>` : '';
+                    
                     content += `
                         <div class="batch-link" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                             <img src="${thumbUrl}" alt="${result.title}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/50?text=圖片'">
-                            <span class="batch-link-title">${result.title}</span>
-                            <span class="batch-link-url">${result.directUrl}</span>
+                            <div style="flex: 1; overflow: hidden;">
+                                <div class="batch-link-title">${result.title}</div>
+                                <div class="batch-link-url" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${result.directUrl}
+                                    ${licenseText}
+                                </div>
+                            </div>
                         </div>
                     `;
                 });
