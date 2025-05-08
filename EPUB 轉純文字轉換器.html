@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-TF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPUB 轉純文字轉換器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* 使用 Inter 字體 */
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .btn-primary {
+            background-color: #3b82f6; /* 藍色 */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: #6b7280; /* 灰色 */
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        #outputText {
+            min-height: 200px;
+            border-radius: 0.5rem;
+        }
+        #fileName {
+            font-style: italic;
+            color: #4b5563; /* 灰色 */
+        }
+        /* 針對行動裝置優化 */
+        @media (max-width: 640px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .flex-col-reverse { /* 在小螢幕上反轉按鈕順序 */
+                flex-direction: column-reverse;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container bg-white shadow-lg rounded-lg">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800">EPUB 轉純文字轉換器</h1>
+            <p class="text-gray-600 mt-2">選擇一個 EPUB 檔案，程式將提取其文字內容。</p>
+        </header>
+
+        <div class="mb-6">
+            <label for="epubFile" class="block mb-2 text-sm font-medium text-gray-700">選擇 EPUB 檔案：</label>
+            <input type="file" id="epubFile" accept=".epub" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5">
+            <p id="fileName" class="mt-1 text-sm"></p>
+        </div>
+
+        <div id="statusMessage" class="mb-4 text-sm text-blue-600"></div>
+
+        <div class="mb-6">
+            <label for="outputText" class="block mb-2 text-sm font-medium text-gray-700">提取的文字：</label>
+            <textarea id="outputText" readonly class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" rows="15" placeholder="轉換後的文字將顯示在這裡..."></textarea>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3 flex-col-reverse">
+            <button id="clearButton" class="btn btn-secondary">清除</button>
+            <button id="downloadButton" class="btn btn-primary" disabled>下載純文字檔 (.txt)</button>
+        </div>
+
+        <footer class="mt-8 text-center text-xs text-gray-500">
+            <p>使用 JSZip 在瀏覽器端進行處理。您的檔案不會被上傳。</p>
+            <p>&copy; 2025 EPUB 工具</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM 元素
+        const epubFileInput = document.getElementById('epubFile');
+        const outputTextarea = document.getElementById('outputText');
+        const downloadButton = document.getElementById('downloadButton');
+        const clearButton = document.getElementById('clearButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        let currentFileName = ''; // 用於儲存目前檔案名稱供下載使用
+
+        // 當選擇檔案時觸發
+        epubFileInput.addEventListener('change', handleFileSelect);
+        downloadButton.addEventListener('click', downloadTextFile);
+        clearButton.addEventListener('click', clearAll);
+
+        /**
+         * 處理檔案選擇事件
+         * @param {Event} event - 檔案選擇事件
+         */
+        async function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                setStatus('未選擇檔案。', 'text-gray-600');
+                fileNameDisplay.textContent = '';
+                return;
+            }
+
+            if (!file.name.toLowerCase().endsWith('.epub')) {
+                setStatus('錯誤：請選擇一個 .epub 檔案。', 'text-red-600');
+                epubFileInput.value = ''; // 清除無效的檔案選擇
+                fileNameDisplay.textContent = '';
+                return;
+            }
+
+            currentFileName = file.name.replace(/\.epub$/i, ''); // 移除 .epub 副檔名
+            fileNameDisplay.textContent = `已選擇檔案: ${file.name}`;
+            outputTextarea.value = '';
+            downloadButton.disabled = true;
+            setStatus('正在處理 EPUB 檔案...', 'text-blue-600 animate-pulse');
+
+            try {
+                const arrayBuffer = await readFileAsArrayBuffer(file);
+                const textContent = await processEpub(arrayBuffer);
+                outputTextarea.value = textContent;
+                if (textContent.trim() !== '') {
+                    downloadButton.disabled = false;
+                    setStatus('EPUB 檔案處理完成！', 'text-green-600');
+                } else {
+                    setStatus('處理完成，但未提取到文字內容。可能是 EPUB 結構特殊或無文字。', 'text-yellow-600');
+                }
+            } catch (error) {
+                console.error('處理 EPUB 時發生錯誤:', error);
+                setStatus(`錯誤: ${error.message}`, 'text-red-600');
+                outputTextarea.value = `處理過程中發生錯誤：\n${error.message}\n\n請檢查瀏覽器控制台以獲取更多詳細資訊。`;
+            } finally {
+                statusMessage.classList.remove('animate-pulse');
+            }
+        }
+
+        /**
+         * 將檔案讀取為 ArrayBuffer
+         * @param {File} file - 要讀取的檔案
+         * @returns {Promise<ArrayBuffer>} - 包含檔案內容的 ArrayBuffer
+         */
+        function readFileAsArrayBuffer(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        /**
+         * 處理 EPUB 檔案數據
+         * @param {ArrayBuffer} epubData - EPUB 檔案的 ArrayBuffer 數據
+         * @returns {Promise<string>} - 提取的純文字內容
+         */
+        async function processEpub(epubData) {
+            const zip = await JSZip.loadAsync(epubData);
+            const parser = new DOMParser();
+
+            // 1. 找到 container.xml 以取得 OPF 檔案路徑
+            const containerXmlString = await zip.file("META-INF/container.xml")?.async("string");
+            if (!containerXmlString) {
+                throw new Error("無效的 EPUB：找不到 META-INF/container.xml。");
+            }
+            const containerDoc = parser.parseFromString(containerXmlString, "application/xml");
+            const rootfilePath = containerDoc.getElementsByTagName("rootfile")[0]?.getAttribute("full-path");
+            if (!rootfilePath) {
+                throw new Error("無效的 EPUB：在 container.xml 中找不到 OPF 檔案路徑。");
+            }
+
+            // 2. 讀取並解析 OPF 檔案
+            const opfFileDirectory = rootfilePath.substring(0, rootfilePath.lastIndexOf('/') + 1);
+            const opfString = await zip.file(rootfilePath)?.async("string");
+            if (!opfString) {
+                throw new Error(`無效的 EPUB：找不到 OPF 檔案於 ${rootfilePath}。`);
+            }
+            const opfDoc = parser.parseFromString(opfString, "application/xml");
+
+            // 3. 從 manifest 獲取內容檔案
+            const manifestItems = {};
+            const manifestNode = opfDoc.getElementsByTagName("manifest")[0];
+            if (manifestNode) {
+                const items = manifestNode.getElementsByTagName("item");
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    const id = item.getAttribute("id");
+                    const href = item.getAttribute("href");
+                    // 檢查 media-type 是否為 HTML/XHTML
+                    const mediaType = item.getAttribute("media-type");
+                    if (id && href && (mediaType === "application/xhtml+xml" || mediaType === "text/html")) {
+                        manifestItems[id] = href;
+                    }
+                }
+            } else {
+                 throw new Error("無效的 EPUB：OPF 檔案中找不到 manifest。");
+            }
+
+
+            // 4. 從 spine 獲取內容檔案的順序
+            const spineNode = opfDoc.getElementsByTagName("spine")[0];
+            if (!spineNode) {
+                throw new Error("無效的 EPUB：OPF 檔案中找不到 spine。");
+            }
+            const itemrefs = spineNode.getElementsByTagName("itemref");
+            const contentFilePaths = [];
+            for (let i = 0; i < itemrefs.length; i++) {
+                const idref = itemrefs[i].getAttribute("idref");
+                if (manifestItems[idref]) {
+                    // 構建相對於 ZIP 根目錄的完整路徑
+                    let fullPath = manifestItems[idref];
+                    if (!fullPath.startsWith(opfFileDirectory) && opfFileDirectory) {
+                         // href 是相對於 OPF 檔案的，需要加上 OPF 檔案的目錄
+                        fullPath = opfFileDirectory + manifestItems[idref];
+                    }
+                    // 處理路徑中的相對部分，例如 './' 或 '../' (簡易處理)
+                    fullPath = normalizePath(fullPath);
+                    contentFilePaths.push(fullPath);
+                }
+            }
+            
+            if (contentFilePaths.length === 0) {
+                setStatus('警告：在 EPUB spine 中未找到有效的 HTML/XHTML 內容項目。嘗試直接從 manifest 讀取。', 'text-yellow-600');
+                // 後備方案：如果 spine 為空或無效，嘗試讀取 manifest 中的所有 HTML/XHTML 檔案
+                for (const id in manifestItems) {
+                    let fullPath = manifestItems[id];
+                     if (!fullPath.startsWith(opfFileDirectory) && opfFileDirectory) {
+                        fullPath = opfFileDirectory + manifestItems[id];
+                    }
+                    fullPath = normalizePath(fullPath);
+                    if (!contentFilePaths.includes(fullPath)) { // 避免重複
+                        contentFilePaths.push(fullPath);
+                    }
+                }
+                 if (contentFilePaths.length === 0) {
+                    throw new Error("在 EPUB 中未找到任何 HTML/XHTML 內容檔案。");
+                }
+            }
+
+
+            // 5. 讀取並提取每個內容檔案的文字
+            let allTextContent = "";
+            for (const filePath of contentFilePaths) {
+                try {
+                    const contentFileString = await zip.file(filePath)?.async("string");
+                    if (contentFileString) {
+                        const contentDoc = parser.parseFromString(contentFileString, "application/xhtml+xml");
+                        // 嘗試 body, 如果沒有 body (例如某些 XML 結構), 嘗試 documentElement
+                        const textSourceElement = contentDoc.body || contentDoc.documentElement;
+                        if (textSourceElement && textSourceElement.textContent) {
+                             // 移除多餘的空白和換行符
+                            const cleanedText = textSourceElement.textContent.replace(/\s\s+/g, ' ').trim();
+                            allTextContent += cleanedText + "\n\n"; // 段落間用雙換行分隔
+                        }
+                    } else {
+                        console.warn(`警告：無法讀取內容檔案 ${filePath}`);
+                    }
+                } catch (docError) {
+                    console.warn(`警告：解析檔案 ${filePath} 時發生錯誤: ${docError.message}`);
+                    // 嘗試使用 text/html 解析器作為後備
+                    try {
+                        const contentFileString = await zip.file(filePath)?.async("string");
+                        if (contentFileString) {
+                            const contentDoc = parser.parseFromString(contentFileString, "text/html");
+                            const textSourceElement = contentDoc.body || contentDoc.documentElement;
+                             if (textSourceElement && textSourceElement.textContent) {
+                                const cleanedText = textSourceElement.textContent.replace(/\s\s+/g, ' ').trim();
+                                allTextContent += cleanedText + "\n\n";
+                            }
+                        }
+                    } catch (fallbackError) {
+                         console.warn(`警告：使用 text/html 解析檔案 ${filePath} 仍然失敗: ${fallbackError.message}`);
+                    }
+                }
+            }
+            return allTextContent.trim();
+        }
+
+        /**
+         * 簡易路徑標準化函式
+         * @param {string} path - 原始路徑
+         * @returns {string} - 標準化後的路徑
+         */
+        function normalizePath(path) {
+            // 處理 "A/B/../C" -> "A/C"
+            const parts = path.split('/');
+            const newParts = [];
+            for (const part of parts) {
+                if (part === '..') {
+                    if (newParts.length > 0 && newParts[newParts.length - 1] !== '..') {
+                        newParts.pop();
+                    } else {
+                        // 如果 ../ 出現在開頭或連續出現，則保留 (雖然在 EPUB 中不常見)
+                        newParts.push(part);
+                    }
+                } else if (part !== '.' && part !== '') {
+                    newParts.push(part);
+                }
+            }
+            return newParts.join('/');
+        }
+
+
+        /**
+         * 下載提取的文字為 .txt 檔案
+         */
+        function downloadTextFile() {
+            if (outputTextarea.value.trim() === "") {
+                setStatus('沒有文字內容可供下載。', 'text-yellow-600');
+                return;
+            }
+            const blob = new Blob([outputTextarea.value], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentFileName || 'extracted_text'}.txt`; // 使用處理過的檔名
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            setStatus('文字檔已下載！', 'text-green-600');
+        }
+
+        /**
+         * 清除所有輸入和輸出
+         */
+        function clearAll() {
+            epubFileInput.value = ''; // 清除檔案選擇
+            outputTextarea.value = '';
+            downloadButton.disabled = true;
+            currentFileName = '';
+            fileNameDisplay.textContent = '';
+            setStatus('已清除。請選擇一個新的 EPUB 檔案。', 'text-gray-600');
+        }
+
+        /**
+         * 設定狀態訊息
+         * @param {string} message - 要顯示的訊息
+         * @param {string} colorClass - Tailwind CSS 顏色類別 (例如 'text-green-600')
+         */
+        function setStatus(message, colorClass) {
+            statusMessage.textContent = message;
+            statusMessage.className = `mb-4 text-sm ${colorClass}`; // 重設 class
+        }
+
+    </script>
+</body>
+</html>
