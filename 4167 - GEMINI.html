@@ -3,649 +3,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>松瑞製藥 (4167) 全面分析報告</title>
+    <title>松瑞藥 (4167.TW) 互動分析報告</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Application Structure Plan: 
+        The SPA is structured with a top navigation bar for easy access to key sections: 
+        1.  總覽 (Overview): Quick snapshot – company name, stock code, current (mock) price, overall rating, brief intro.
+        2.  公司剖析 (Company Analysis): Business model, market position, subsidiaries.
+        3.  核心產品 (Core Products): Ertapenem, Meropenem, market trends.
+        4.  CDMO夥伴進展 (CDMO Partner Progress): Detailed updates on Iterum and Spero.
+        5.  財務快照 (Financial Snapshot): Interactive charts for key financial metrics (revenue, EPS, margins), highlighting one-time gains.
+        6.  估值與策略 (Valuation & Strategy): P/E, P/B, peer comparison, target price, investment recommendations.
+        7.  展望與風險 (Outlook & Risks): Growth drivers, catalysts, and risks.
+        This thematic, non-linear structure allows users to quickly find information relevant to them, enhancing usability compared to a linear report. Each section starts with an introductory paragraph.
+    -->
+    <!-- Visualization & Content Choices:
+        - Overview: Text summaries, key metric cards (HTML/Tailwind). Goal: Quick Info.
+        - Company Analysis: Structured text (HTML/Tailwind). Goal: Foundational Knowledge.
+        - Core Products: Text descriptions, market share callouts (HTML/Tailwind). Goal: Inform on revenue drivers.
+        - CDMO Partners: Structured text for each client (Drug, Status, Market Potential, Savior's Role) (HTML/Tailwind). Goal: Highlight growth area.
+        - Financial Snapshot: Line/Bar charts (Chart.js) for revenue, EPS (with toggle for adjusted view), margins. Key figures as text. Goal: Analyze financial trends.
+        - Valuation & Strategy: Text display for P/E, P/B, target price. HTML table for peer comparison. Goal: Investment decision support.
+        - Outlook & Risks: Bulleted lists (HTML/Tailwind). Goal: Summarize pros/cons.
+        Interactions include navigation, chart tooltips, and a toggle for EPS view. This approach aims for clarity and engagement.
+    -->
     <style>
-        /* Custom Styles */
         body {
-            font-family: 'Noto Sans TC', sans-serif; /* More suitable font for Traditional Chinese */
-            background-color: #F9FAFB; /* Light Gray Background */
-            color: #1F2937; /* Dark Gray Text */
+            font-family: 'Inter', 'Noto Sans TC', sans-serif; /* Added Noto Sans TC for better Chinese character rendering */
         }
-        /* Sidebar Styles */
-        #sidebar {
-            background-color: #1E3A8A; /* Dark Blue */
-            color: #E0E7FF; /* Light Blue/Lavender text */
-            transition: transform 0.3s ease-in-out;
-        }
-        #sidebar a {
-            color: #E0E7FF;
-            border-left: 3px solid transparent;
-            transition: background-color 0.2s ease, border-left 0.2s ease;
-        }
-        #sidebar a:hover, #sidebar a.active {
-            background-color: #3B82F6; /* Brighter Blue */
-            color: #FFFFFF; /* White text */
-            border-left-color: #FBBF24; /* Amber accent */
-        }
-        /* Header Style */
-        .report-header {
-            background-color: #1E40AF; /* Medium Blue */
-            color: #FFFFFF;
-        }
-        /* Section Title Style */
-        .section-title {
-            color: #1E40AF; /* Medium Blue */
-            border-bottom: 2px solid #DBEAFE; /* Light Blue border */
-            padding-bottom: 0.5rem;
-        }
-        /* Chart Container */
         .chart-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Default 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-            background-color: #FFFFFF;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            margin-top: 1rem;
+            max-width: 600px; /* Default max-width, can be overridden by Tailwind */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-link.active, .nav-link:hover {
+            background-color: #0D9488; /* Teal-600 */
+            color: white;
+        }
+        .section-title {
+            font-size: 1.75rem; /* text-2xl */
+            font-weight: 700; /* bold */
+            color: #1F2937; /* gray-800 */
             margin-bottom: 1rem;
+            border-bottom: 2px solid #0D9488; /* Teal-600 */
+            padding-bottom: 0.5rem;
         }
-        .chart-container canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
-        }
-        /* Responsive Image Style */
-        .responsive-img {
-            max-width: 100%;
-            height: auto;
+        .card {
+            background-color: white;
             border-radius: 0.5rem;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
-
-        /* Media Queries for Chart Aspect Ratio */
-        @media (min-width: 768px) {
-             .chart-container-tall { /* Example for a taller chart on larger screens */
-                 padding-bottom: 45%; /* Adjust as needed */
-             }
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            background-color: #F3F4F6; /* gray-100 */
+            color: #374151; /* gray-700 */
+            margin-right: 0.5rem;
+            font-weight: 500;
         }
-         @media (max-width: 640px) {
-             .chart-container {
-                 padding-bottom: 75%; /* Make charts taller on small screens */
-             }
-         }
-
-         /* Sidebar toggle button */
-         #menu-button {
-             z-index: 30; /* Ensure button is above sidebar */
-         }
-         /* Sidebar visibility for mobile */
-         @media (max-width: 767px) {
-            #sidebar {
-                 transform: translateX(-100%);
-                 position: fixed;
-                 height: 100vh;
-                 z-index: 20;
-             }
-             #sidebar.open {
-                 transform: translateX(0);
-             }
-             #main-content {
-                 margin-left: 0; /* Full width when sidebar is closed */
-             }
-             #menu-button {
-                 display: block;
-             }
-         }
-         @media (min-width: 768px) {
-             #sidebar {
-                 transform: translateX(0);
-             }
-             #main-content {
-                 margin-left: 16rem; /* Same as sidebar width */
-             }
-              #menu-button {
-                 display: none; /* Hide button on larger screens */
-             }
-         }
+        .tab-button.active {
+            background-color: #0D9488; /* Teal-600 */
+            color: white;
+        }
+        .tooltip-custom {
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 text-gray-800">
 
-    <aside id="sidebar" class="fixed top-0 left-0 w-64 h-full overflow-y-auto md:translate-x-0">
-        <div class="p-4">
-            <h2 class="text-xl font-semibold text-center mb-4">分析報告目錄</h2>
-            <nav id="toc">
-                <a href="#overview" class="block py-2 px-4 rounded mb-1">1. 公司概況</a>
-                <a href="#products" class="block py-2 px-4 rounded mb-1">2. 主要業務與產品</a>
-                <a href="#customers" class="block py-2 px-4 rounded mb-1">3. 主要客戶進展</a>
-                <a href="#financials" class="block py-2 px-4 rounded mb-1">4. 財務表現分析</a>
-                <a href="#stock" class="block py-2 px-4 rounded mb-1">5. 股價表現分析</a>
-                <a href="#operations" class="block py-2 px-4 rounded mb-1">6. 營運與研發概況</a>
-                <a href="#industry" class="block py-2 px-4 rounded mb-1">7. 產業前景與競爭</a>
-                <a href="#risks" class="block py-2 px-4 rounded mb-1">8. 風險因素</a>
-                <a href="#conclusion" class="block py-2 px-4 rounded mb-1">9. 結論與展望</a>
-                <a href="#sources" class="block py-2 px-4 rounded mb-1">10. 資料來源</a>
-            </nav>
+    <header class="bg-slate-100 shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-sky-700">松瑞藥 (4167.TW)</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-1 lg:space-x-2">
+                        <a href="#overview" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">總覽</a>
+                        <a href="#company-analysis" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">公司剖析</a>
+                        <a href="#core-products" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">核心產品</a>
+                        <a href="#cdmo-partners" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">CDMO夥伴</a>
+                        <a href="#financials" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">財務快照</a>
+                        <a href="#valuation" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">估值與策略</a>
+                        <a href="#outlook-risks" class="nav-link text-gray-700 hover:bg-sky-600 hover:text-white">展望與風險</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-sky-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden bg-slate-50">
+            <a href="#overview" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">總覽</a>
+            <a href="#company-analysis" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">公司剖析</a>
+            <a href="#core-products" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">核心產品</a>
+            <a href="#cdmo-partners" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">CDMO夥伴</a>
+            <a href="#financials" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">財務快照</a>
+            <a href="#valuation" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">估值與策略</a>
+            <a href="#outlook-risks" class="block nav-link text-gray-700 hover:bg-sky-600 hover:text-white">展望與風險</a>
         </div>
-    </aside>
+    </header>
 
-    <button id="menu-button" class="fixed top-4 left-4 p-2 bg-blue-600 text-white rounded md:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-        </svg>
-     </button>
-
-    <main id="main-content" class="p-4 md:p-8 transition-all duration-300 ease-in-out">
-        <header class="report-header p-6 rounded-lg shadow-md mb-8 text-center">
-            <img src="https://www.saviorlifetec.com.tw/images/logo.svg" alt="松瑞製藥 Logo" class="mx-auto mb-4 h-16">
-            <h1 class="text-3xl font-bold">松瑞製藥股份有限公司 (4167)</h1>
-            <p class="text-xl">全面分析報告</p>
-            <p class="text-sm mt-2">報告生成日期：2025年4月2日</p>
-        </header>
-
-        <section id="overview" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">1. 公司概況</h2>
-            <p>松瑞製藥股份有限公司（Savior Lifetec Corporation），股票代號 4167，前身為展旺生命科技股份有限公司，於2020年9月更為現名。公司成立於2004年1月30日，並於2015年9月8日在台灣櫃買中心（TPEx）掛牌上櫃。</p>
-            <p>松瑞製藥總部位於南部科學園區（台南市新市區），是全球領先的培南類（Carbapenem）抗生素原料藥（API）及針劑供應商之一，據稱位居全球前三大。公司專注於無菌原料藥及其針劑產品的製程開發、生產及銷售，並提供生物製藥技術服務。</p>
-            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-700">
-                <li><strong>股票代號：</strong> 4167.TWO</li>
-                <li><strong>產業類別：</strong> 生技醫療（櫃生技）</li>
-                <li><strong>成立日期：</strong> 2004年1月30日</li>
-                <li><strong>掛牌日期：</strong> 2015年9月8日</li>
-                <li><strong>董事長：</strong> 李香雲</li>
-                <li><strong>總經理：</strong> 陳志芳</li>
-                <li><strong>主要業務：</strong> 原料藥（培南類抗生素為主）、無菌針劑、製程開發、CMO/CDMO服務</li>
-                <li><strong>公司地址：</strong> 南部科學園區台南市新市區南科六路1號</li>
-                <li><strong>官方網站：</strong> <a href="https://www.saviorlifetec.com.tw/zh/" target="_blank" class="text-blue-600 hover:underline">https://www.saviorlifetec.com.tw/zh/</a></li>
-            </ul>
-             <img src="https://www.saviorlifetec.com.tw/ufiles/00300/Banner-1-1.jpg" alt="松瑞製藥廠房外觀示意圖" class="mt-4 responsive-img" loading="lazy">
-        </section>
-
-        <section id="products" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">2. 主要業務與產品</h2>
-            <p>松瑞製藥的核心業務聚焦於高技術門檻的培南類（Carbapenem）抗生素，這是目前臨床上抗菌譜最廣、抗菌活性最強的抗生素之一，常用於治療重症感染。</p>
-            <p class="mt-2">主要產品線包括：</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                <div class="border p-4 rounded bg-blue-50">
-                    <h3 class="font-semibold text-lg text-blue-800">無菌原料藥 (Sterile API)</h3>
-                    <ul class="list-disc list-inside mt-1 text-gray-700">
-                        <li>美洛培南 三水合物 (Meropenem Trihydrate)</li>
-                        <li>美洛培南 與 碳酸鈉 (Meropenem and Sodium Carbonate)</li>
-                        <li>厄他培南鈉 (Ertapenem Sodium)</li>
-                        <li>亞胺培南/西司他丁 (Imipenem/Cilastatin - 據MoneyDJ資料，可能於南科廠生產)</li>
-                    </ul>
-                </div>
-                <div class="border p-4 rounded bg-green-50">
-                    <h3 class="font-semibold text-lg text-green-800">無菌針劑 (Finished Dosage Form - Injectables)</h3>
-                     <ul class="list-disc list-inside mt-1 text-gray-700">
-                        <li>注射用 美洛培南 (Meropenem for Injection - 250mg, 500mg, 1g)</li>
-                        <li>注射用 厄他培南 (Ertapenem for Injection - 1g)</li>
-                        <li>注射用 亞胺培南/西司他丁 (Imipenem and Cilastatin for Injection - 500mg/500mg)</li>
-                    </ul>
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <section id="overview" class="mb-12 pt-16 -mt-16">
+            <h2 class="section-title">投資總覽</h2>
+            <div class="card">
+                <p class="text-lg text-gray-700 mb-4">
+                    松瑞製藥 (4167.TW) 正處於營運轉型的關鍵時期。其核心培南類抗生素業務，特別是厄他培南，在全球需求強勁及部分原廠供應不穩的背景下，展現成長動能。公司2025年第一季EPS達1.22元，但受一次性廠房處分收益顯著影響。本應用程式將深入解析松瑞藥的業務、財務、CDMO進展及投資前景。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-sky-50 p-4 rounded-lg shadow">
+                        <p class="text-sm text-sky-700 font-semibold">目前股價 (模擬)</p>
+                        <p class="text-2xl font-bold text-sky-900">新台幣 21.0 元</p>
+                        <p class="text-xs text-gray-500">(截至 2025年5月下旬)</p>
+                    </div>
+                    <div class="bg-teal-50 p-4 rounded-lg shadow">
+                        <p class="text-sm text-teal-700 font-semibold">目標價區間</p>
+                        <p class="text-2xl font-bold text-teal-900" id="targetPriceOverview">16.2 - 24.2 元</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg shadow">
+                        <p class="text-sm text-amber-700 font-semibold">投資評級</p>
+                        <p class="text-2xl font-bold text-amber-900" id="ratingOverview">中性偏多</p>
+                    </div>
                 </div>
             </div>
-            <p class="mt-4">公司的生產設施（位於竹南及南科）均符合 cGMP 標準，並已通過美國 FDA、歐盟 EMA、英國 MHRA 及日本 PMDA 等多國藥監機構的查廠認證，使其產品得以行銷全球主要市場。</p>
-             <p class="mt-2">除了自有產品，松瑞製藥也提供委託開發暨製造服務 (CDMO/CMO)，涵蓋：</p>
-             <ul class="list-disc list-inside mt-1 text-gray-700">
-                 <li>製程開發與優化</li>
-                 <li>客製化合成</li>
-                 <li>技術轉移</li>
-                 <li>公斤級實驗室與小規模生產</li>
-                 <li>臨床試驗批次生產</li>
-                 <li>GMP 商業化生產 (無菌原料藥、無菌/粉末充填、口服製劑)</li>
-             </ul>
         </section>
 
-        <section id="customers" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">3. 主要客戶進展</h2>
-            <p>松瑞製藥的產品主要以外銷為主。根據 MoneyDJ 於 2024 年底發布的資料，2023 年銷售地區比重約為：美洲 51%、亞洲 35%、歐洲 14%。美國是其關鍵市場。</p>
-            <p class="mt-2">在客戶方面，雖然具體的客戶名單通常屬於商業機密，但根據過往（2021年）的市場資訊：</p>
-            <ul class="list-disc list-inside mt-1 text-gray-700">
-                <li>曾提及與國際學名藥大廠如 **山德士 (Sandoz)** 及 **阿特維斯/梯瓦 (Apotex/Teva)** 等建立銷售合作夥伴關係，藉此進入美國醫院集體採購組織 (GPO) 的供應鏈，有助於獲取穩定訂單。 (註：此為歷史資訊，目前合作狀態需參閱公司最新說明)</li>
-                <li>公司提供 CDMO/CMO 服務，意味著其客戶群包含其他國內外製藥公司，委託松瑞進行特定藥品的開發或生產製造。</li>
-            </ul>
-             <p class="mt-4">近年（截至目前搜尋結果）尚未有如先前查詢到的 Synmosa Biopharma (4114) 與 Hasten Bio / Celltrion 類型的大型經銷權轉移公告，顯示兩家公司在客戶策略上可能有所不同。建議投資人關注公司法說會或重訊公告以獲取最新的客戶合作進展。</p>
-        </section>
-
-        <section id="financials" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">4. 財務表現分析</h2>
-            <p>觀察近年財務數據，松瑞製藥的營運表現呈現波動與成長趨勢。</p>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-                <div>
-                    <h3 class="text-xl font-medium text-center mb-2">每股盈餘 (EPS) 趨勢 (元)</h3>
-                    <div class="chart-container">
-                        <canvas id="epsChart"></canvas>
-                    </div>
-                    <p class="text-sm text-center text-gray-500 mt-1">資料來源：Yahoo 股市 (彙整)</p>
+        <section id="company-analysis" class="mb-12 pt-16 -mt-16">
+            <h2 class="section-title">公司剖析</h2>
+            <div class="card">
+                <p class="text-gray-700 mb-6">松瑞製藥專注於無菌原料藥及針劑藥品的研發與製造，是全球培南類抗生素的主要供應商之一。公司具備從API到製劑的垂直整合能力，並積極拓展CDMO業務及透過子公司實現多元化發展。以下將探討其核心競爭力、市場地位及子公司佈局。</p>
+                
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">業務版圖與核心競爭力</h3>
+                    <p class="text-gray-600">松瑞藥成立於2004年，核心業務為培南類抗生素的生產與銷售，是全球前三大供應商。公司擁有從無菌原料藥到製劑成品(FDF)的垂直整合能力，核心技術在於無菌結晶與粉末滅菌處理。廠房通過多國藥監機構cGMP認證。近年策略轉型聚焦高毛利厄他培南，拓展CDMO業務，並優化營運效率（如出售竹南廠）。</p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">全球培南類抗生素市場地位</h3>
+                    <p class="text-gray-600">美洛培南及厄他培南在美國市場已佔有雙位數市佔率。厄他培南因技術門檻高及原廠供應緊張，成為關鍵成長引擎。全球培南市場預計穩定成長(CAGR 4.5-4.78%)。松瑞藥成功打入美國GPO供應鏈，並拓展中國等新市場。</p>
                 </div>
                 <div>
-                    <h3 class="text-xl font-medium text-center mb-2">營收與稅後淨利趨勢</h3>
-                    <div class="chart-container">
-                        <canvas id="revenueProfitChart"></canvas>
-                    </div>
-                     <p class="text-sm text-center text-gray-500 mt-1">資料來源：使用者提供之季度損益表彙總</p>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">子公司業務發展</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li><strong>松瑞生技：</strong>專注利基型學名藥API、針劑開發及CRO服務，佈局胜肽藥物、寡核苷酸及mRNA領域。</li>
+                        <li><strong>瑞澤生技：</strong>從事保健品及藥品銷售，推出自有品牌「SLC」系列保健食品，拓展大健康消費市場。</li>
+                    </ul>
                 </div>
             </div>
+        </section>
 
-            <div class="mt-6">
-                <h3 class="text-xl font-medium mb-2">近期財務亮點 & 指標 (基於公開資訊)</h3>
-                <ul class="list-disc list-inside space-y-1 text-gray-700">
-                    <li>**2024年營運轉佳：** 全年EPS達到 0.57 元，稅後淨利達 1.78 億元，相較前兩年有顯著增長。</li>
-                     <li>**營收波動：** 近五年營收在 10.5 億至 18.3 億元間波動，2021年後有所下滑，但 2024 年相對 2023 年回升。</li>
-                    <li>**利潤率 (2024 Q4 參考)：** 根據 Anue 鉅亨網資料，毛利率約 28.49%，營業利益率約 6.23%，稅後淨利率約 16.53%。 (註：實際數字應以經會計師查核簽證之財報為準)</li>
-                    <li>**股利政策：** 2023 年度發放現金股利 0.0851 元 (2024年發放)。顯示在獲利改善後開始回饋股東。</li>
-                    <li>**營收動能：** 根據近期營收公告（如2025年2月），顯示年增長趨勢，但月營收可能受出貨排程影響而波動。</li>
-                </ul>
-                <p class="text-sm text-red-600 mt-4"><strong>重要提醒：</strong> 詳細的財務數據（營收、毛利、淨利、資產負債表等）請務必查閱公司於「公開資訊觀測站」發布的正式財務報告。</p>
+        <section id="core-products" class="mb-12 pt-16 -mt-16">
+            <h2 class="section-title">核心產品分析</h2>
+            <div class="card">
+                <p class="text-gray-700 mb-6">松瑞藥的核心產品為厄他培南與美洛培南等培南類抗生素。這些產品在全球抗生素市場中扮演重要角色，尤其在治療重症感染方面。本節將深入分析各主要產品的市場需求、競爭格局及未來展望。</p>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">厄他培南 (Ertapenem)</h3>
+                    <p class="text-gray-600 mb-1"><strong>市場需求與競爭：</strong>全球需求強勁，一度供不應求。美國市佔逾20%，透過Sandoz、Apotex進入GPO。台灣因原廠MSD產能緊張，松瑞藥市佔已超越原廠，預計達五成以上。</p>
+                    <p class="text-gray-600 mb-1"><strong>中國市場拓展：</strong>注射劑已於2025年4月獲NMPA批准，與華潤九新簽訂獨家銷售合約，預期貢獻顯著營收。</p>
+                    <p class="text-gray-600"><strong>產能佈局：</strong>已建置第二條產線，計劃2025下半年提交新增產線變更申請以擴大產能。</p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">美洛培南 (Meropenem)</h3>
+                    <p class="text-gray-600">全球前三大供應商，美國市佔雙位數。竹南廠停產出售後，原料藥改為外購，旨在優化成本結構，提升製劑毛利率。公司資源可能更集中於厄他培南及CDMO。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">全球碳青黴烯類抗生素市場趨勢</h3>
+                    <p class="text-gray-600">2022年市場規模約36.2億美元，預計2030年達52.4億美元 (CAGR 4.7-4.78%)。成長動力來自細菌抗藥性、重症感染增加及高齡化。北美為最大市場，亞太區成長最快。</p>
+                </div>
             </div>
         </section>
 
-        <section id="stock" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">5. 股價表現分析</h2>
-            <p>松瑞製藥 (4167.TWO) 股價受公司營運表現、產品銷售、市場供需、產業趨勢及整體股市氛圍等多重因素影響。</p>
-            <div class="chart-container chart-container-tall mt-4">
-                 <canvas id="stockPriceChart"></canvas>
+        <section id="cdmo-partners" class="mb-12 pt-16 -mt-16">
+            <h2 class="section-title">CDMO夥伴進展</h2>
+            <div class="card">
+                 <p class="text-gray-700 mb-6">CDMO業務是松瑞藥未來重要的成長引擎。公司目標成為培南類藥物開發及代工的首選夥伴，並已在口服固體制劑方面取得進展。本節將重點分析與Iterum Therapeutics及SPERO Therapeutics的合作案最新進度及其對松瑞藥的潛在影響。</p>
+                <div id="cdmoTabs" class="mb-4">
+                    <button class="tab-button active" data-tab="iterum">Iterum Therapeutics (ORLYNVAH™)</button>
+                    <button class="tab-button" data-tab="spero">SPERO Therapeutics (Tebipenem HBr)</button>
+                    <button class="tab-button" data-tab="otherCDMO">其他合作與產能</button>
+                </div>
+
+                <div id="iterumContent" class="tab-content">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Iterum Therapeutics PLC (ORLYNVAH™ - Sulopenem)</h3>
+                    <p class="text-gray-600 mb-1"><strong>新藥申請進度：</strong>口服培南抗生素ORLYNVAH™已於2024年10月25日獲美國FDA批准，用於治療成人女性單純性泌尿道感染(uUTIs)，是FDA批准的首款口服培南類抗生素。</p>
+                    <p class="text-gray-600 mb-1"><strong>市場潛力：</strong>針對抗藥性或治療選擇有限的uUTI患者。美國每年約4000萬張uUTI處方，其中約1%為抗藥性感染。</p>
+                    <p class="text-gray-600"><strong>松瑞藥角色與影響：</strong>市場推斷松瑞藥為ORLYNVAH™的CDMO夥伴 (代號SLC-017)。獲批驗證松瑞藥口服培南製造能力，有望獲生產收入。此成功案例提升松瑞藥國際CDMO信譽，利於爭取新訂單。合約細節未公開，Iterum自身有對輝瑞的里程碑付款義務。</p>
+                </div>
+                <div id="speroContent" class="tab-content hidden">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">SPERO Therapeutics (Tebipenem HBr)</h3>
+                    <p class="text-gray-600 mb-1"><strong>新藥申請進度：</strong>口服碳青黴烯抗生素Tebipenem HBr原用於cUTI，NDA於2022年6月收FDA完整回應信函(CRL)，需額外臨床研究。2022年9月Spero與GSK達成授權協議，由GSK負責後續開發。新三期臨床試驗PIVOT-PO已於2023Q4啟動，獲FDA SPA同意。</p>
+                    <p class="text-gray-600 mb-1"><strong>市場潛力：</strong>若成功上市，將是美國首款治療cUTI的口服碳青黴烯抗生素，替代靜脈注射，潛力顯著。</p>
+                    <p class="text-gray-600"><strong>松瑞藥角色與影響：</strong>早期報導暗示松瑞藥可能為最初CDMO夥伴 (代號SLC-029)。FDA的CRL為挫折。GSK介入重燃希望，若試驗成功且藥物獲批，松瑞藥仍有機會為製造商，但GSK的供應鏈策略可能影響最終安排，角色仍存不確定性。</p>
+                </div>
+                 <div id="otherCDMOContent" class="tab-content hidden">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">其他CDMO合作機會與產能佈局</h3>
+                    <p class="text-gray-600 mb-1">松瑞藥積極拓展其他CDMO業務，包括與兩家日本大型藥廠分別進行API製程開發和針劑充填的合作，顯示在培南類藥物以外的CDMO領域亦有所斬獲。</p>
+                    <p class="text-gray-600">產能方面，南科廠為生產重心，負責厄他培南及亞胺培南/西司他丁。為滿足厄他培南需求及CDMO訂單，持續擴充厄他培南產線，預計2025下半年提交新增產線變更申請。出售竹南廠並將美洛培南API外購，有助優化成本並將南科廠先進產能分配給高附加價值產品及CDMO項目。</p>
+                </div>
             </div>
-            <p class="text-sm text-center text-gray-500 mt-1">註：此股價圖表為示意性質，非即時或歷史精確數據。請查詢即時股價與技術分析。</p>
-            <p class="mt-4">近期觀察點：</p>
-            <ul class="list-disc list-inside space-y-1 text-gray-700">
-                <li>**基本面連動：** 股價通常會反映對公司未來獲利的預期。2024年 EPS 與淨利的顯著改善可能為股價提供支撐。</li>
-                <li>**市場題材：** 抗生素缺貨、疫情相關需求、GPO 訂單能見度、新產能開出、新藥證或新合作案等，都可能成為影響股價的題材。</li>
-                <li>**籌碼與技術面：** 法人進出、融資融券餘額、均線走勢、量價關係等技術指標，也是市場參與者關注的焦點。</li>
-            </ul>
-             <p class="text-sm text-red-600 mt-4"><strong>重要提醒：</strong> 股價資訊變動快速，本報告不構成任何投資建議。投資前請審慎評估風險，並諮詢專業意見。請透過各大券商下單軟體或財經網站（如 Yahoo 股市、鉅亨網、MoneyDJ 等）查詢 **4167.TWO** 的即時股價與詳細技術分析。</p>
         </section>
 
-        <section id="operations" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">6. 營運與研發概況</h2>
-            <p>松瑞製藥擁有垂直整合的生產能力，從關鍵中間體、原料藥到最終的無菌針劑成品。</p>
-             <ul class="list-disc list-inside mt-2 space-y-1 text-gray-700">
-                 <li><strong>生產基地：</strong> 主要有竹南廠（可能以美洛培南為主）和南科廠（可能包含厄他培南、亞胺培南/西司他丁）。（廠區分工細節以公司說明為準）</li>
-                 <li><strong>產能擴充：</strong> 過去曾進行產線擴充（如厄他培南第二條產線）及製程優化以滿足訂單需求。未來的產能利用率和擴產計畫值得關注。</li>
-                 <li><strong>品質系統：</strong> 生產設施通過多國查廠認證，顯示其嚴謹的品質管理系統，是外銷導向的關鍵。</li>
-                 <li><strong>研發重心：</strong>
-                    <ul>
-                        <li>持續優化現有培南類產品的生產製程，以提高效率、降低成本。</li>
-                        <li>開發困難學名藥或新劑型藥物（如過去提及的口服培南藥物、胜肽藥物等，需確認最新進度）。</li>
-                        <li>透過旗下研發子公司（SLC BioPharm）進行專業分工。</li>
+        <section id="financials" class="mb-12 pt-16 -mt-16">
+            <h2 class="section-title">財務快照</h2>
+            <div class="card">
+                <p class="text-gray-700 mb-6">松瑞藥近年財務表現呈現逐步改善趨勢，2024年實現營運轉折。2025年第一季因廠房處分利益，EPS表現亮眼。本節將透過圖表展示其營收、獲利能力及關鍵財務比率，並提供調整後數據以反映常續性獲利能力。</p>
+                
+                <div class="mb-4">
+                    <label for="epsToggle" class="mr-2 font-medium text-gray-700">顯示調整後EPS (扣除一次性收益):</label>
+                    <input type="checkbox" id="epsToggle" class="form-checkbox h-5 w-5 text-sky-600 rounded">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-center text-gray-700 mb-2">營業收入趨勢</h3>
+                        <div class="chart-container h-64 md:h-80 max-w-lg">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-center text-gray-700 mb-2">每股盈餘 (EPS) 趨勢</h3>
+                        <div class="chart-container h-64 md:h-80 max-w-lg">
+                            <canvas id="epsChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-center text-gray-700 mb-2">毛利率與營業利益率</h3>
+                        <div class="chart-container h-64 md:h-80 max-w-lg">
+                            <canvas id="marginsChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">關鍵財務數據 (2025 Q1)</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>總資產: 42.43億元</li>
+                            <li>總負債: 3.42億元</li>
+                            <li>股東權益: 38.94億元</li>
+                            <li>負債比率: 8.06%</li>
+                            <li>每股淨值: 12.27元</li>
+                            <li>營業活動現金流量 (近12月): 4.07億元</li>
+                            <li id="q1ROE">報導ROE (2025 Q1): 10.38%</li>
+                        </ul>
+                         <p class="text-xs text-gray-500 mt-2">註: 2025 Q1 EPS 1.22元含重大一次性收益 (約0.9元)。調整後常續性EPS約0.22-0.32元。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="valuation" class="mb-12 pt-16 -mt-16">
+            <h2 class="section-title">估值與投資策略</h2>
+            <div class="card">
+                <p class="text-gray-700 mb-6">本節將探討松瑞藥的估值水平，包括本益比、股價淨值比，並與同業進行比較。同時，根據報告分析，提供目標價估算及短中長期投資策略建議。請注意，所有估值指標均基於報告提供數據及分析，投資決策應謹慎評估。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">估值指標 (截至2025年5月下旬)</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>目前股價 (模擬): 約 21.0 元</li>
+                            <li>LTM EPS (含一次性收益): 1.57 元</li>
+                            <li>報導本益比 (P/E): 約 13.6 倍</li>
+                            <li>標準化預估全年EPS (2025): 0.9 - 1.1 元</li>
+                            <li>標準化本益比 (P/E): 約 19 - 23 倍 (以21元股價及預估EPS計算)</li>
+                            <li>每股淨值 (2025 Q1): 12.27 元</li>
+                            <li>股價淨值比 (P/B): 約 1.71 倍</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">目標價與評級</h3>
+                        <p class="text-gray-600"><strong>目標價區間:</strong> <span class="font-bold text-teal-700 text-lg">16.2 元 - 24.2 元</span></p>
+                        <p class="text-gray-600"> (基於預估標準化EPS 0.9-1.1元及目標P/E 18-22倍)</p>
+                        <p class="text-gray-600 mt-2"><strong>投資評級:</strong> <span class="font-bold text-amber-700 text-lg">中性偏多</span></p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">同業比較 (截至2025年5月下旬，部分數據為標準化或估算)</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-2 px-3 border-b text-left text-sm font-semibold text-gray-600">公司名稱</th>
+                                <th class="py-2 px-3 border-b text-left text-sm font-semibold text-gray-600">本益比(倍)</th>
+                                <th class="py-2 px-3 border-b text-left text-sm font-semibold text-gray-600">股價淨值比(倍)</th>
+                                <th class="py-2 px-3 border-b text-left text-sm font-semibold text-gray-600">毛利率(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr>
+                                <td class="py-2 px-3 border-b">松瑞藥 (4167.TW)</td>
+                                <td class="py-2 px-3 border-b">~26 (標準化)</td>
+                                <td class="py-2 px-3 border-b">~1.74</td>
+                                <td class="py-2 px-3 border-b">36.86 (Q1'25)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 border-b">神隆 (1789.TW)</td>
+                                <td class="py-2 px-3 border-b">~57-60</td>
+                                <td class="py-2 px-3 border-b">~1.31</td>
+                                <td class="py-2 px-3 border-b">33.22 (Q1'25)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 border-b">台耀 (4746.TW)</td>
+                                <td class="py-2 px-3 border-b">~22.5</td>
+                                <td class="py-2 px-3 border-b">~1.07</td>
+                                <td class="py-2 px-3 border-b">42.05 (Q1'25)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 border-b">中化生 (1762.TW)</td>
+                                <td class="py-2 px-3 border-b">~52-101</td>
+                                <td class="py-2 px-3 border-b">~0.67</td>
+                                <td class="py-2 px-3 border-b">31.37 (Q1'25)</td>
+                            </tr>
+                             <tr>
+                                <td class="py-2 px-3 border-b">生泰 (1777.TW)</td>
+                                <td class="py-2 px-3 border-b">~10.5</td>
+                                <td class="py-2 px-3 border-b">~1.67</td>
+                                <td class="py-2 px-3 border-b">36.86 (Q1'25)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">資料來源：研究報告內表三，松瑞藥數據經標準化調整。</p>
+                
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">投資策略建議</h3>
+                    <p class="text-gray-600 mb-2"><strong>短期 (3-6個月):</strong> 關注市場對「標準化」獲利能力的解讀。若股價回落至目標價區間下緣 (16-18元) 或因短期雜音錯殺，可視為介入機會。關注Q2財報驗證常續性獲利。</p>
+                    <p class="text-gray-600 mb-2"><strong>中期 (6-18個月):</strong> 觀察厄他培南中國銷售、Iterum ORLYNVAH™銷售貢獻、Spero/GSK Tebipenem HBr臨床結果及松瑞藥角色、新CDMO合約等催化劑實現進度。</p>
+                    <p class="text-gray-600"><strong>長期 (18個月以上):</strong> 價值取決於轉型成功能否，CDMO規模化、松瑞生技利基藥品上市、培南市場優勢維持。穩定現金流與股利政策亦為觀察點。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook-risks" class="pt-16 -mt-16">
+            <h2 class="section-title">展望與風險</h2>
+            <div class="card">
+                <p class="text-gray-700 mb-6">松瑞藥的未來發展充滿機遇，但也伴隨著相應的風險。本節將概述其主要的成長動能、潛在的股價催化劑，以及投資者需要關注的營運與市場風險，以提供一個更全面的投資視角。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-teal-700 mb-2">主要成長動能與投資亮點</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>厄他培南市場領導地位與擴張 (中國市場、美國GPO)。</li>
+                            <li>CDMO業務潛力顯現 (Iterum ORLYNVAH™獲批)。</li>
+                            <li>獲利能力顯著改善 (產品結構優化、成本控制)。</li>
+                            <li>子公司多元化發展 (松瑞生技利基藥品、瑞澤生技保健品)。</li>
+                            <li>財務結構強健 (現金充裕、低負債)。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-rose-700 mb-2">營運與市場風險提示</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>核心產品依賴與競爭 (學名藥價格壓力)。</li>
+                            <li>CDMO業務不確定性 (客戶藥物商業化成效、合約細節透明度)。</li>
+                            <li>Spero/GSK Tebipenem HBr 臨床與合作不確定性。</li>
+                            <li>市場拓展與執行風險 (中國市場推廣)。</li>
+                            <li>法規遵循風險 (GMP規範)。</li>
+                            <li>子公司營運成效待觀察。</li>
+                            <li>利潤率維持挑戰。</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-6">
+                    <h3 class="text-xl font-semibold text-sky-700 mb-2">未來股價催化劑</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>厄他培南中國銷售超預期或美國新GPO突破。</li>
+                        <li>Iterum ORLYNVAH™銷售放量，帶動CDMO訂單。</li>
+                        <li>Spero/GSK Tebipenem HBr臨床數據正面且確認松瑞藥生產。</li>
+                        <li>宣布新的重要CDMO合作案。</li>
+                        <li>松瑞生技利基藥品成功上市或達重要里程碑。</li>
+                        <li>持續公佈優於預期的季度財報 (排除一次性收益)。</li>
                     </ul>
-                 </li>
-                 <li><strong>藥證申請：</strong> 持續在全球各市場申請或維持既有產品的藥品許可證 (ANDA, DMF 等) 是營運的基礎。新產品的藥證申請進度是未來成長動能的觀察指標。</li>
-             </ul>
-             <p class="mt-4">公司的永續報告書 (Sustainability Report) 中提到，追求卓越、優化製程、尋求產業鏈上下游整合，是其永續經營的策略方向。</p>
-              <img src="https://www.saviorlifetec.com.tw/images/img_prod02.jpg" alt="藥品生產示意圖" class="mt-4 responsive-img" loading="lazy">
+                </div>
+            </div>
         </section>
-
-        <section id="industry" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">7. 產業前景與競爭</h2>
-             <p>松瑞製藥處於學名藥及原料藥產業，特別是其中的培南類抗生素領域。</p>
-            <h3 class="text-lg font-medium mt-4 mb-2">產業前景</h3>
-             <ul class="list-disc list-inside space-y-1 text-gray-700">
-                 <li><strong>學名藥機會：</strong> 隨著原廠培南類藥物（如 Merrem®, Invanz®）專利陸續到期，學名藥市場迎來增長機會，有利於像松瑞這樣的專業製造商。</li>
-                 <li><strong>抗生素需求：</strong> 儘管有抗藥性問題的擔憂，但培南類抗生素作為治療嚴重細菌感染的後線藥物，在臨床上仍有其不可替代性，尤其在住院病人市場。</li>
-                 <li><strong>供應鏈韌性：</strong> 全球疫情及地緣政治因素可能促使各國更重視關鍵藥品（如抗生素）供應鏈的穩定性與多元化，可能為品質可靠的供應商帶來機會。</li>
-                 <li><strong>CDMO 趨勢：</strong> 全球藥廠將非核心的生產製造委外趨勢持續，有利於具備高品質產能和國際認證的 CDMO/CMO 廠商。</li>
-             </ul>
-             <h3 class="text-lg font-medium mt-4 mb-2">市場競爭</h3>
-             <ul class="list-disc list-inside space-y-1 text-gray-700">
-                 <li><strong>全球競爭者：</strong> 培南類原料藥及針劑市場存在其他國際競爭者，尤其來自印度和中國的廠商，價格競爭可能較為激烈。</li>
-                 <li><strong>國內同業：</strong> 台灣的生技製藥公司中，部分廠商（如：中化生、生達、南光、東洋等）在抗生素或針劑領域亦有佈局，形成一定的競爭關係。</li>
-                 <li><strong>品質與法規門檻：</strong> 雖然競爭者眾多，但無菌原料藥與針劑的生產具有較高的技術與法規門檻（需通過各國查廠），能符合國際標準的廠商相對有限，形成一定的競爭壁壘。</li>
-                 <li><strong>價格壓力：</strong> 學名藥市場普遍面臨藥價逐年下降的壓力，特別是在醫院集體採購 (GPO) 模式下。成本控制與製程效率成為競爭關鍵。</li>
-             </ul>
-             <div class="mt-4 chart-container" style="padding-bottom: 40%;"> <canvas id="salesRegionChart"></canvas>
-             </div>
-             <p class="text-sm text-center text-gray-500 mt-1">2023 銷售區域分佈參考 (資料來源: MoneyDJ)</p>
-
-        </section>
-
-        <section id="risks" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">8. 風險因素</h2>
-             <p>投資或評估松瑞製藥時，需考量以下潛在風險：</p>
-             <ul class="list-disc list-inside mt-2 space-y-2 text-gray-700">
-                 <li><strong>市場競爭風險：</strong> 全球培南類抗生素市場競爭激烈，尤其面臨來自印度、中國等地的低價競爭，可能壓縮產品價格與毛利率。</li>
-                 <li><strong>藥價壓力風險：</strong> 各國健保控費趨勢及 GPO 議價能力強，學名藥普遍面臨持續的價格壓力。</li>
-                 <li><strong>客戶集中風險：</strong> 若公司主要營收依賴少數大客戶或通路夥伴，客戶訂單的變動將對營運產生較大影響。CDMO 業務也可能受單一客戶訂單波動影響。</li>
-                 <li><strong>匯率風險：</strong> 公司產品以外銷為主，營收多以美元或其他外幣計價，新台幣匯率的波動將影響營收及獲利表現。</li>
-                 <li><strong>法規與查廠風險：</strong> 需定期接受國內外藥監機構（如美國 FDA）的查廠，若未能通過或需要重大改進，可能影響產品的出貨與銷售。藥品法規的變動也可能增加合規成本。</li>
-                 <li><strong>研發不確定性風險：</strong> 新產品（包括新劑型、新藥）的開發時程長、投入成本高，且結果具有不確定性，可能面臨開發失敗或上市後銷售不如預期的風險。</li>
-                 <li><strong>環保與工安風險：</strong> 原料藥生產過程涉及化學品使用，需符合嚴格的環保與工安規範，相關法規趨嚴或意外事件可能增加營運成本或導致停工。</li>
-             </ul>
-        </section>
-
-        <section id="conclusion" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">9. 結論與展望</h2>
-            <p>松瑞製藥 (4167) 作為全球領先的培南類抗生素原料藥與針劑供應商，憑藉其通過多國認證的高品質生產設施和垂直整合能力，在學名藥市場佔有一席之地。</p>
-            <p class="mt-2">**優勢：**</p>
-            <ul class="list-disc list-inside mt-1 space-y-1 text-green-700">
-                <li>在培南類抗生素領域具備規模經濟與技術優勢。</li>
-                <li>國際認證齊全，有利於拓展全球市場。</li>
-                <li>具備從 API 到針劑成品的垂直整合能力，並提供 CDMO 服務。</li>
-                <li>近年財務表現有改善跡象 (以2024年營收與淨利來看)。</li>
-            </ul>
-            <p class="mt-2">**挑戰與機會：**</p>
-             <ul class="list-disc list-inside mt-1 space-y-1 text-orange-700">
-                 <li>需持續面對學名藥市場的價格競爭與藥價壓力。</li>
-                 <li>營收近年呈現波動，需觀察是否能重回穩定增長軌道。</li>
-                 <li>拓展新產品線或新劑型（如口服劑型）的成功與否，將影響長期成長動能。</li>
-                 <li>如何維持或擴大在主要市場（如美國）的市佔率及客戶關係。</li>
-                 <li>全球供應鏈重組趨勢下，爭取轉單或強化供應鏈地位的機會。</li>
-                 <li>成本控制與營運效率的持續優化。</li>
-             </ul>
-            <p class="mt-4">**整體而言，** 松瑞製藥在利基型的培南類抗生素市場擁有穩固的基礎。未來的成長動能將取決於其能否有效應對價格競爭、成功拓展產品組合（包含 CDMO 業務的增長）、並維持高標準的生產品質與法規遵循。投資人應持續關注其營收獲利變化、新訂單/合作案進展、以及產業供需狀況。</p>
-        </section>
-
-        <section id="sources" class="mb-12 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-semibold section-title mb-4">10. 資料來源</h2>
-            <p>本報告內容彙整自以下公開資訊來源，資訊時效性請以各來源最新發布為準：</p>
-            <ul class="list-disc list-inside mt-2 space-y-1">
-                <li><strong class="font-semibold">松瑞製藥股份有限公司 官方網站：</strong> <a href="https://www.saviorlifetec.com.tw/zh/" target="_blank" class="text-blue-600 hover:underline">https://www.saviorlifetec.com.tw/zh/</a> (公司介紹、產品、CMO/CDMO服務)</li>
-                 <li><strong class="font-semibold">松瑞製藥 2022 永續報告書 (英文版)：</strong> <a href="https://www.saviorlifetec.com.tw/ufiles/00200/2022%E6%B0%B8%E7%BA%8C%E5%A0%B1%E5%91%8A%E6%9B%B8-%E8%8B%B1%E6%96%87%E7%89%88.pdf" target="_blank" class="text-blue-600 hover:underline">PDF Link</a> (營運策略、R&D方向)</li>
-                <li><strong class="font-semibold">Yahoo 奇摩股市 (4167.TWO)：</strong> <a href="https://tw.stock.yahoo.com/quote/4167.TWO" target="_blank" class="text-blue-600 hover:underline">https://tw.stock.yahoo.com/quote/4167.TWO</a> (股價、基本資料、EPS、股利)</li>
-                <li><strong class="font-semibold">MoneyDJ 理財網 - 松瑞製藥：</strong> <a href="https://www.moneydj.com/kmdj/wiki/wikiviewer.aspx?keyid=3cef65d9-d92d-4b21-bd35-6d026416b1c4" target="_blank" class="text-blue-600 hover:underline">https://www.moneydj.com/kmdj/wiki/wikiviewer.aspx?keyid=3cef65d9-d92d-4b21-bd35-6d026416b1c4</a> (公司簡介、產品、銷售地區)</li>
-                 <li><strong class="font-semibold">Anue 鉅亨網 - 松瑞藥(4167)：</strong> <a href="https://www.cnyes.com/twstock/4167" target="_blank" class="text-blue-600 hover:underline">https://www.cnyes.com/twstock/4167</a> (股價、財務指標、新聞)</li>
-                 <li><strong class="font-semibold">PressPlay / 豹投資 (歷史文章 2021/07)：</strong> <a href="https://www.pressplay.cc/project/AD476DA2E0D3BD510786FB482D44E2AD/articles/B9E8D8673C528F81B399CCB7E5494AB6" target="_blank" class="text-blue-600 hover:underline">PressPlay Link</a> / <a href="https://www.gorich.com.tw/tw/article/16751" target="_blank" class="text-blue-600 hover:underline">GoRich Link</a> (歷史營運狀況、客戶夥伴資訊參考)</li>
-                 <li><strong class="font-semibold">公開資訊觀測站 (MOPS)：</strong> <a href="https://mops.twse.com.tw/mops/web/index" target="_blank" class="text-blue-600 hover:underline">https://mops.twse.com.tw/mops/web/index</a> (公司正式財報、重大訊息公告)</li>
-                 <li><strong class="font-semibold">季度損益數據：</strong> 由使用者提供之圖片檔案 (image_05e98c.png)。</li>
-            </ul>
-             <p class="mt-4 text-sm text-gray-500">免責聲明：本報告僅為資訊彙整與分析參考，不構成任何投資建議。所有資訊應以官方公告及正式財報為準。投資涉及風險，讀者應自行判斷並承擔相關風險。</p>
-        </section>
-
-        <footer class="text-center text-gray-500 text-sm mt-8">
-            報告由 AI 生成 | 資料截止日期請參考各來源 | 2025
-        </footer>
-
     </main>
 
+    <footer class="bg-slate-800 text-slate-300 py-8 text-center">
+        <p>&copy; 2025 松瑞藥 (4167.TW) 互動分析報告. 資訊僅供參考，不構成投資建議。</p>
+        <p class="text-sm">資料來源：松瑞藥研究報告與買賣策略 (ae811190-4d31-42c6-ac8c-c5a79ef664fa)</p>
+    </footer>
+
     <script>
-        // --- Sidebar Toggle ---
-        const sidebar = document.getElementById('sidebar');
-        const menuButton = document.getElementById('menu-button');
-        const mainContent = document.getElementById('main-content');
-        const tocLinks = document.querySelectorAll('#toc a');
+        const financialData = {
+            years: ["2022", "2023", "2024", "2025 Q1"],
+            revenue: [1265.75, 1050.28, 1217.33, 263.86], // 百萬元
+            epsReported: [0.11, 0.09, 0.57, 1.22], // 元
+            epsAdjusted: [0.11, 0.09, 0.57, 0.27], // 2025 Q1 調整後EPS取中間值 (0.22-0.32 -> 0.27)
+            grossMargin: [10.39, 21.04, 28.49, 36.86], // %
+            operatingMargin: [-7.45, -0.23, 9.77, 10.14] // %
+        };
 
-        menuButton.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
+        const valuationData = {
+            targetPriceLow: 16.2,
+            targetPriceHigh: 24.2,
+            rating: "中性偏多"
+        };
 
-        // Close sidebar when a link is clicked on mobile
-        tocLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) {
-                    sidebar.classList.remove('open');
-                }
-                // Smooth scroll
-                const targetId = link.getAttribute('href');
+        document.getElementById('targetPriceOverview').textContent = `${valuationData.targetPriceLow} - ${valuationData.targetPriceHigh} 元`;
+        document.getElementById('ratingOverview').textContent = valuationData.rating;
+        
+        const q1ROEText = document.getElementById('q1ROE');
+        if (q1ROEText) { // Ensure element exists
+            // The report states 2025 Q1 reported ROE is 10.38%.
+            // The report also states: "若將2025年第一季獲利標準化（扣除廠房出售利益），則單季ROE將顯著下降"
+            // but doesn't give a specific adjusted ROE. So we'll show reported.
+            // The table 3 also shows "~10 (標準化年化)" for ROE, which is an annualized estimate.
+            // For Q1 specific, 10.38% is the reported figure.
+        }
+
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    // Calculate offset based on potential fixed header height if needed
-                     const offsetTop = targetElement.offsetTop; // Adjust if you have a fixed header: - headerHeight;
-                    window.scrollTo({
-                        top: offsetTop,
+                    targetElement.scrollIntoView({
                         behavior: 'smooth'
                     });
                 }
-                // Update active link
-                 updateActiveLink(targetId);
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
             });
         });
+        
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a.nav-link');
 
-         // --- Active Link Highlighting ---
-        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 80) { // 80px offset for sticky header
+                    current = section.getAttribute('id');
+                }
+            });
 
-        function updateActiveLink(forcedId = null) {
-            let currentSectionId = forcedId;
-
-            if (!currentSectionId) {
-                 const scrollPosition = window.scrollY + (window.innerHeight / 3); // Adjust trigger point
-
-                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
-                     if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                         currentSectionId = `#${section.id}`;
-                     }
-                 });
-            }
-
-
-            tocLinks.forEach(link => {
+            navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === currentSectionId) {
+                if (link.getAttribute('href').substring(1) === current) {
                     link.classList.add('active');
                 }
             });
-         }
-
-         window.addEventListener('scroll', () => updateActiveLink());
-         // Initial active link check
-         updateActiveLink();
+        });
 
 
-        // --- Chart.js Initialization ---
-        const chartOptions = {
+        // CDMO Tabs
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                tabContents.forEach(content => {
+                    if (content.id === `${tab}Content`) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+        
+        // Chart.js Tooltip Customization
+        const tooltipTitle = (tooltipItems) => {
+            return `期間: ${tooltipItems[0].label}`;
+        };
+        const tooltipLabel = (context) => {
+            let label = context.dataset.label || '';
+            if (label) {
+                label += ': ';
+            }
+            if (context.parsed.y !== null) {
+                label += context.parsed.y.toFixed(2);
+                if (context.dataset.yAxisID === 'yPercentage') {
+                     label += '%';
+                } else if (context.dataset.label.includes('營收')) {
+                    label += ' 百萬元';
+                } else if (context.dataset.label.includes('EPS')) {
+                    label += ' 元';
+                }
+            }
+            return label;
+        };
+        
+        const commonChartOptions = {
             responsive: true,
-            maintainAspectRatio: false, // Allow chart to fill container height
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'top',
+                    labels: {
+                        font: { size: 10 } // Smaller legend font
+                    }
                 },
                 tooltip: {
+                    enabled: true,
                     mode: 'index',
                     intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFont: { size: 12 },
+                    bodyFont: { size: 10 },
+                    footerFont: { size: 9 },
+                    padding: 8,
+                    callbacks: {
+                        title: tooltipTitle,
+                        label: tooltipLabel
+                    }
                 }
             },
             scales: {
-                y: {
-                    beginAtZero: false, // Allow Y axis to not start at zero for better visualization
-                     ticks: {
-                        color: '#6B7280', // Gray ticks
-                        // Callback to format Y axis labels (optional)
-                        // callback: function(value, index, values) {
-                        //     return value / 1000000 + 'M'; // Example: format as millions
-                        // }
-                     },
-                     grid: { color: '#E5E7EB' } // Light gray grid lines
-                },
                 x: {
-                     ticks: { color: '#6B7280' },
-                     grid: { display: false } // Hide vertical grid lines
+                    ticks: {
+                        font: { size: 10 }, // Smaller X-axis labels
+                        maxRotation: 0, // Prevent label rotation
+                        autoSkipPadding: 10 // Adjust padding for auto-skip
+                    }
+                },
+                y: {
+                    ticks: { 
+                        font: { size: 10 }, // Smaller Y-axis labels
+                        callback: function(value) { return value.toLocaleString() + (this.axis === 'yPercentage' ? '%' : ''); }
+                    },
+                    beginAtZero: true
                 }
             }
         };
-
-         const chartBackgroundColor = [
-            'rgba(59, 130, 246, 0.6)', // Blue
-            'rgba(16, 185, 129, 0.6)', // Green
-            'rgba(245, 158, 11, 0.6)', // Amber
-            'rgba(107, 114, 128, 0.6)', // Gray
-            'rgba(139, 92, 246, 0.6)' // Violet
-        ];
-        const chartBorderColor = [
-            'rgba(59, 130, 246, 1)',
-            'rgba(16, 185, 129, 1)',
-            'rgba(245, 158, 11, 1)',
-            'rgba(107, 114, 128, 1)',
-            'rgba(139, 92, 246, 1)'
-        ];
-
-        // 1. EPS Chart (Bar Chart - Using actual found data)
-        const epsCtx = document.getElementById('epsChart').getContext('2d');
-        new Chart(epsCtx, {
-            type: 'bar',
-            data: {
-                labels: ['2021', '2022', '2023', '2024'],
-                datasets: [{
-                    label: '全年 每股盈餘 (元)',
-                    data: [0.03, 0.11, 0.09, 0.57], // Data from Yahoo Finance summary
-                    backgroundColor: chartBackgroundColor[0],
-                    borderColor: chartBorderColor[0],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                 ...chartOptions,
-                 scales: {
-                    y: { beginAtZero: true, ticks: { color: '#6B7280' }, grid: { color: '#E5E7EB' } }, // Keep EPS chart starting at zero
-                    x: { ticks: { color: '#6B7280' }, grid: { display: false } }
-                 }
-             }
-        });
-
-        // 2. Revenue & Profit Chart (Line Chart - Updated with Annual Data)
-        // Data calculated from provided quarterly figures (in Millions NTD)
-        const annualRevenue = [1827.24, 1743.79, 1265.75, 1050.28, 1217.33]; // Rounded Millions
-        const annualNetIncome = [250.94, 9.96, 36.31, 27.50, 178.41]; // Rounded Millions
-
-        const revenueProfitCtx = document.getElementById('revenueProfitChart').getContext('2d');
-        new Chart(revenueProfitCtx, {
-            type: 'line',
-            data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'], // Updated years
-                datasets: [
-                    {
-                        label: '年度合併營收 (百萬元)', // Updated label
-                        data: annualRevenue, // Updated data
-                        borderColor: chartBorderColor[0], // Blue
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        tension: 0.1,
-                        fill: true,
-                        yAxisID: 'yRevenue' // Assign to the first Y axis
-                    },
-                    {
-                        label: '年度稅後淨利 (百萬元)', // Updated label
-                        data: annualNetIncome, // Updated data
-                        borderColor: chartBorderColor[1], // Green
-                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        tension: 0.1,
-                        fill: true,
-                         yAxisID: 'yProfit' // Assign to the second Y axis
-                    }
-                ]
-            },
-            options: { // Use custom options to handle dual axes
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top' },
-                    tooltip: { mode: 'index', intersect: false }
+        
+        const commonPercentageScaleOptions = {
+             yPercentage: {
+                type: 'linear',
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                ticks: { 
+                    font: { size: 10 },
+                    callback: function(value) { return value.toFixed(1) + '%'; }
                 },
-                scales: {
-                    x: { ticks: { color: '#6B7280' }, grid: { display: false } },
-                    yRevenue: { // First Y axis for Revenue
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        beginAtZero: false, // Revenue usually doesn't start at zero
-                        title: {
-                            display: true,
-                            text: '營收 (百萬元)',
-                            color: chartBorderColor[0]
-                        },
-                        ticks: { color: chartBorderColor[0] },
-                        grid: { color: '#E5E7EB' }
-                    },
-                    yProfit: { // Second Y axis for Profit
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        beginAtZero: false, // Profit can be negative, so allow negative range
-                        title: {
-                            display: true,
-                            text: '稅後淨利 (百萬元)',
-                            color: chartBorderColor[1]
-                        },
-                        ticks: { color: chartBorderColor[1] },
-                        grid: { drawOnChartArea: false } // Only show grid for the left axis
-                    }
-                }
+                 min: -10, // Adjusted for operating margin
+                 suggestedMax: 40
             }
-        });
+        };
 
-        // 3. Stock Price Chart (Line Chart - Placeholder Data)
-        const stockPriceCtx = document.getElementById('stockPriceChart').getContext('2d');
-        new Chart(stockPriceCtx, {
-            type: 'line',
-            data: {
-                labels: ['Q1', 'Q2', 'Q3', 'Q4', '次年Q1'], // Example time periods
-                datasets: [{
-                    label: '股價走勢 (示意)',
-                    data: [18, 22, 20, 25, 23], // Placeholder data
-                    borderColor: chartBorderColor[2], // Amber
-                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    tension: 0.1,
-                    fill: false // Typically don't fill stock line charts
-                }]
-            },
-             options: {
-                 ...chartOptions,
-                 scales: { // Allow Y axis to not start at zero for price charts
-                    y: { ticks: { color: '#6B7280' }, grid: { color: '#E5E7EB' }, beginAtZero: false },
-                    x: { ticks: { color: '#6B7280' }, grid: { display: false } }
-                 }
-             }
-        });
 
-         // 4. Sales Region Chart (Pie Chart)
-        const salesRegionCtx = document.getElementById('salesRegionChart').getContext('2d');
-        new Chart(salesRegionCtx, {
-            type: 'pie',
-            data: {
-                labels: ['美洲', '亞洲', '歐洲', '其他'],
-                datasets: [{
-                    label: '2023 銷售區域分佈 (約)',
-                    data: [51, 35, 14, 0], // Data from MoneyDJ (added 0 for 'Other' if not specified)
-                    backgroundColor: [
-                        chartBackgroundColor[0], // Blue for Americas
-                        chartBackgroundColor[1], // Green for Asia
-                        chartBackgroundColor[2], // Amber for Europe
-                        chartBackgroundColor[3]  // Gray for Other
-                    ],
-                    borderColor: [ // Use slightly darker borders for pie slices
-                         '#FFFFFF',
-                         '#FFFFFF',
-                         '#FFFFFF',
-                         '#FFFFFF'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom', // Legend at bottom for pie charts often looks better
-                    },
-                    tooltip: {
-                        callbacks: { // Show percentage in tooltip
-                             label: function(context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed !== null) {
-                                     label += context.parsed + '%';
-                                }
-                                return label;
-                            }
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
+        if (revenueCtx) {
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: financialData.years,
+                    datasets: [{
+                        label: '營業收入 (百萬元)',
+                        data: financialData.revenue,
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)', // blue-500
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {...commonChartOptions}
+            });
+        }
+
+        // EPS Chart
+        const epsCtx = document.getElementById('epsChart')?.getContext('2d');
+        let epsChartInstance;
+        if (epsCtx) {
+            epsChartInstance = new Chart(epsCtx, {
+                type: 'bar',
+                data: {
+                    labels: financialData.years,
+                    datasets: [{
+                        label: '每股盈餘 (元) - 報導',
+                        data: financialData.epsReported,
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)', // emerald-500
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {...commonChartOptions}
+            });
+        }
+
+        const epsToggle = document.getElementById('epsToggle');
+        if (epsToggle && epsChartInstance) {
+            epsToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    epsChartInstance.data.datasets[0].data = financialData.epsAdjusted;
+                    epsChartInstance.data.datasets[0].label = '每股盈餘 (元) - 調整後';
+                } else {
+                    epsChartInstance.data.datasets[0].data = financialData.epsReported;
+                    epsChartInstance.data.datasets[0].label = '每股盈餘 (元) - 報導';
+                }
+                epsChartInstance.update();
+            });
+        }
+        
+
+        // Margins Chart
+        const marginsCtx = document.getElementById('marginsChart')?.getContext('2d');
+        if (marginsCtx) {
+            new Chart(marginsCtx, {
+                type: 'line',
+                data: {
+                    labels: financialData.years,
+                    datasets: [
+                        {
+                            label: '毛利率 (%)',
+                            data: financialData.grossMargin,
+                            borderColor: 'rgba(239, 68, 68, 1)', // red-500
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            tension: 0.1,
+                            yAxisID: 'yPercentage'
+                        },
+                        {
+                            label: '營業利益率 (%)',
+                            data: financialData.operatingMargin,
+                            borderColor: 'rgba(245, 158, 11, 1)', // amber-500
+                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                            tension: 0.1,
+                            yAxisID: 'yPercentage'
                         }
+                    ]
+                },
+                options: {
+                    ...commonChartOptions,
+                    scales: {
+                        ...commonChartOptions.scales,
+                        ...commonPercentageScaleOptions
                     }
                 }
-            }
-        });
+            });
+        }
 
     </script>
-
 </body>
 </html>
