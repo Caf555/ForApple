@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本親子奇幻之旅互動行程</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
+        .tab-button { transition: all 0.3s ease; }
+        .tab-button.active { background-color: #0284c7; color: white; border-bottom-color: transparent; }
+        .tab-button:not(.active):hover { background-color: #f0f9ff; color: #0369a1; }
+        .tab-content { display: none; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .checklist-item input[type="checkbox"] { display: none; }
+        .checklist-details { display: none; max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.5s ease-out; }
+        .checklist-item input[type="checkbox"]:checked ~ .checklist-details {
+            display: block;
+            max-height: 1000px; /* Adjust as needed */
+            padding-top: 0.75rem; padding-bottom: 0.75rem;
+        }
+        .checklist-item label { cursor: pointer; display: flex; align-items: center; }
+        .checklist-item label .arrow { transition: transform 0.3s ease; display: inline-block; margin-right: 8px; }
+        .checklist-item input[type="checkbox"]:checked ~ label .arrow { transform: rotate(90deg); }
+
+        .day-button { transition: all 0.3s ease; }
+        .day-button.active { background-color: #0ea5e9; color: white; }
+        .day-button:not(.active):hover { background-color: #e0f2fe; }
+        
+        .activity-card {
+            border-left-width: 4px;
+            transition: box-shadow 0.3s ease;
+        }
+        .activity-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .section-intro {
+            background-color: #f0f9ff; /* Light blue background for intro paragraphs */
+            border-left: 4px solid #0ea5e9; /* Sky blue left border */
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.25rem;
+            color: #075985; /* Darker blue text for readability */
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-800">
+    <div class="container mx-auto p-4 lg:p-6 max-w-6xl">
+        <header class="text-center py-6 md:py-8">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-teal-700">規劃您的日本親子奇幻之旅</h1>
+            <p class="text-md sm:text-lg text-stone-600 mt-2">從台北出發，暢遊名古屋與東京五天四夜互動行程</p>
+        </header>
+
+        <nav id="tabsContainer" class="flex flex-wrap justify-center border-b border-stone-300 mb-6 sticky top-0 bg-amber-50 py-2 z-10 shadow-sm">
+        </nav>
+
+        <main id="tabContentsContainer">
+        </main>
+
+        <footer class="text-center py-6 mt-12 border-t border-stone-300">
+            <p class="text-sm text-stone-500">&copy; 2025 互動行程規劃. 資訊僅供參考，實際情況請依官方公告為準.</p>
+        </footer>
+    </div>
+
+    <script>
+        const appData = {
+            tripDetails: {
+                title: "規劃您的日本親子奇幻之旅：從台北出發，暢遊名古屋與東京五天四夜",
+                introduction: "誠摯歡迎您與家人一同踏上這趟精心策劃的日本五天四夜探索之旅。從充滿活力的台北萬華區出發，我們將一同前往名古屋的歷史魅力與東京的現代繁華，為您與兩位就讀小學的孩童，在今年8月4日至8月8日期間，打造一段充滿歡笑與難忘回憶的夏日假期。本行程將全面涵蓋交通、住宿、景點、餐飲、購物，以及每日的詳細時程與預算規劃，旨在提供一個輕鬆無憂且豐富多彩的親子旅遊體驗。名古屋的工業遺產與親子樂園，以及東京融合傳統與尖端潮流的無限魅力，都將在這趟旅程中完美呈現，讓您與家人深度感受日本夏季的獨特風情。"
+            },
+            preDeparture: [
+                {
+                    id: "passportVisa", title: "護照與簽證",
+                    details: "對於持有台灣護照的旅客，前往日本進行短期旅遊（90天內）通常享有免簽證待遇。此免簽證安排僅適用於護照上載有個人身分證號碼的台灣護照持有者。請確認所有護照有效期從入境日起至少六個月以上，並建議有1-2頁空白頁。日本法務省為最權威資訊來源。"
+                },
+                {
+                    id: "flights", title: "機票預訂",
+                    details: "去程：台北(TPE/TSA)至名古屋(NGO)。回程：東京(NRT/HND)至台北。航空公司選擇多樣，包括全服務航空（中華航空、長榮、JAL、星宇）及低成本航空（樂桃、台灣虎航）。8月為旺季，建議儘早預訂。可利用Google Flights, Skyscanner等比較票價。全服務航空通常含行李餐飲；LCC需額外付費。選擇鄰近市區的機場（TSA, HND）可節省交通時間。"
+                },
+                {
+                    id: "accommodationPrep", title: "親子友善住宿考量",
+                    details: "日本飯店房間普遍較小。尋找家庭房、雙床房加床或連通房。確認是否提供嬰兒床、洗衣設施。選擇靠近主要車站的飯店交通便利，但價格可能較高。"
+                },
+                {
+                    id: "insurance", title: "全方位旅遊保險",
+                    details: "強烈建議購買。日本醫療費用高。應涵蓋醫療、旅程取消/中斷、旅程延誤/行李損失、個人責任、自然災害（地震、颱風）。Travelex, World Nomads等為推薦品牌。"
+                },
+                {
+                    id: "packing", title: "聰明打包 (應對8月氣候)",
+                    details: "8月日本炎熱潮濕 (30°C+)。衣物：輕便透氣棉麻夏季服裝，薄外套（室內冷氣強），參觀神社寺廟服裝需莊重，舒適好走的鞋。防曬用品：帽子、太陽眼鏡、高係數防曬乳。雨具：輕便摺疊傘/雨衣。個人藥品。電子用品：日本電壓100V (東日本50Hz, 西日本60Hz)，插座A/B型。多數3C充電器為國際通用電壓。"
+                },
+                {
+                    id: "connectivity", title: "Wi-Fi與SIM卡",
+                    details: "保持網路暢通重要。選項：Pocket Wi-Fi (適合家庭，性價比高)、旅遊SIM卡、手機原號國際漫遊 (通常較貴)。"
+                },
+                {
+                    id: "money", title: "資金管理 (日圓現鈔與支付)",
+                    details: "準備適量日圓現鈔，搭配信用卡/簽帳金融卡。換匯可在台灣銀行或日本機場/市區。信用卡接受度高。IC卡 (Suica/PASMO/Manaca) 可小額支付。"
+                },
+                {
+                    id: "transportPassesPrep", title: "日本交通票券",
+                    details: "IC儲值卡 (Suica/PASMO/Manaca/TOICA等) 強烈建議購買，全國大多互通。名古屋地鐵24小時券 (¥760)。東京Tokyo Subway Ticket (24/48/72小時券，外國旅客專用，¥800起) 非常推薦。本次行程購買JR Pass全國版極可能不划算。"
+                }
+            ],
+            dailyItinerary: {
+                day1: {
+                    title: "第一日 (8月4日，週一)：抵達名古屋，城堡初探",
+                    activities: [
+                        { time: "上午 (約 07:00-12:00 台灣時間)", description: "從台北萬華啟程，飛往名古屋 (NGO)", details: "前往桃園機場(TPE)可搭機場捷運(約1小時5分, NT$160-180)、巴士(約50-60分, NT$135-145)或計程車(約35-50分, NT$1000-1500)。提早3小時到機場。飛行時間約2小時45分-3小時。", icon: "✈️" },
+                        { time: "下午 (約 13:00-17:00 日本時間)", description: "機場入境，飯店入住，午餐時光", details: "抵達名古屋中部國際機場(NGO)。購買IC卡(Manaca/TOICA)。機場交通至市區：名鐵電車(μ-SKY最快約28分, ¥890-¥1250)或機場巴士(約1小時, ¥1500)。入住飯店後午餐。", icon: "🏨" },
+                        { time: "傍晚 (約 17:00-19:00 日本時間)", description: "名古屋城與本丸御殿巡禮", details: "搭地鐵名城線至「名古屋城站」。參觀名古屋城天守閣(外觀)及本丸御殿。門票：成人¥500，中學生以下免費。開放時間：09:00-16:30 (最後入場16:00)。注意當天抵達時間可能緊湊。", icon: "🏯" },
+                        { time: "晚間 (約 19:00 起 日本時間)", description: "晚餐及大須地區漫遊", details: "品嚐名古屋特色美食：味噌豬排、手羽先。可前往大須商店街及大須觀音寺(主殿至19:00)。", icon: "🍜" }
+                    ]
+                },
+                day2: {
+                    title: "第二日 (8月5日，週二)：名古屋奇趣探索，啟程東京",
+                    optionsIntro: "上午的名古屋親子景點，您可以從以下兩個選項中選擇一個：",
+                    options: [
+                        {
+                            id: "legoland", name: "日本樂高樂園 (LEGOLAND Japan)",
+                            details: "交通：名古屋站搭青波線至「金城埠頭站」(約25分)。開放時間：約10:00-17:00+。門票(網路預購)：成人約¥4,500起，兒童(3-18歲)約¥3,300起。特別推薦給小學生家庭。" , icon: "🧱"
+                        },
+                        {
+                            id: "toyotaMuseum", name: "豐田產業技術紀念館",
+                            details: "注意：SCMAGLEV與鐵道公園本日(週二)休館。豐田產業技術紀念館交通：名鐵至「榮生站」步行3分，或觀光巴士Me~guru。展示紡織與汽車工業，多互動展品。開放時間：09:30-17:00 (週一休)。門票：成人¥1,000，小學生¥200。適合對科技感興趣家庭。", icon: "🚗"
+                        }
+                    ],
+                    activities: [
+                        { time: "午餐 (約 13:00-14:00 日本時間)", description: "於所選景點附近或名古屋車站用餐", icon: "🍽️" },
+                        { time: "下午 (約 14:00-17:00 日本時間)", description: "搭乘新幹線前往東京，飯店入住", details: "取行李後前往名古屋車站搭東海道新幹線至東京。建議搭Nozomi號。車程約1.5-2小時。票價(指定席)：成人約¥10,000-¥11,500，兒童半價。抵達東京後轉乘至飯店。", icon: "🚄" },
+                        { time: "晚間 (約 18:00 起 日本時間)", description: "晚餐及飯店周邊熟悉", details: "於飯店附近享用晚餐。餐後可散步熟悉環境。", icon: "🌃" }
+                    ]
+                },
+                day3: {
+                    title: "第三日 (8月6日，週三)：東京傳統風情與都市高度",
+                    activities: [
+                        { time: "上午 (約 09:00-12:30 日本時間)", description: "淺草文化散策", details: "搭地鐵至「淺草站」。參訪淺草寺(本堂約06:00-17:00，免門票)。漫步仲見世通商店街(約09:00-19:00)。", icon: "🏮" },
+                        { time: "午餐及午後 (約 12:30-15:00 日本時間)", description: "東京晴空塔 (Tokyo Skytree) 登高望遠", details: "從淺草前往晴空塔。門票(預購平日參考)：天望甲板(350m)成人約¥2,100/小學生約¥850；天望甲板+回廊(450m)套票成人約¥3,100/小學生約¥1,300。底部有商場「東京晴空街道」可用餐。可選參觀墨田水族館(中小學生約¥1,200)。", icon: "🗼" }
+                    ],
+                    optionsIntro: "下午的行程，您可以從以下兩個選項中選擇一個：",
+                    options: [
+                        {
+                            id: "uenoZoo", name: "上野公園與動物園",
+                            details: "搭地鐵/JR至「上野站」。遊覽上野恩賜公園(免費)。參觀上野動物園(09:30-17:00, 週一休)。門票：成人¥600，小學生通常免費。", icon: "🐼"
+                        },
+                        {
+                            id: "ghibliMuseum", name: "三鷹之森吉卜力美術館",
+                            details: "極重要：門票需提前數月預訂，極難購得！若無票，請選上野動物園。交通：JR中央線至「三鷹站」轉巴士或步行。開放時間：10:00-18:00 (週二休)。門票：成人¥1,000，7-12歲¥400。", icon: "🖼️"
+                        }
+                    ],
+                    eveningActivity: { time: "晚間 (約 18:30 起 日本時間)", description: "晚餐時光", details: "若在上野，可於阿美橫丁用餐。若去吉卜力，可在吉祥寺用餐。或回飯店附近。", icon: "🍜" }
+                },
+                day4: {
+                    title: "第四日 (8月7日，週四)：東京現代科技與潮流體驗",
+                    activities: [
+                        { time: "上午 (約 09:30-13:00 日本時間)", description: "台場科學與娛樂探索", details: "搭百合海鷗號或臨海線至台場。參觀日本科學未來館(Miraikan, 10:00-17:00, 週二休)。門票(常設展)：成人約¥630，6-18歲約¥210。2025年夏季有「深空展」特展！遊覽台場海濱公園，看彩虹橋、自由女神像。", icon: "🔬" },
+                        { time: "午餐 (約 13:00-14:00 日本時間)", description: "台場購物中心用餐", details: "於AQUA CiTY ODAIBA或DECKS Tokyo Beach內用餐。", icon: "🍔" }
+                    ],
+                    optionsIntro: "下午的行程，您可以從以下兩個選項中選擇一個：",
+                    options: [
+                        {
+                            id: "sanrioPuroland", name: "三麗鷗彩虹樂園 (Hello Kitty主題樂園)",
+                            details: "交通：至「多摩中心站」，車程可能1小時以上。室內主題樂園。開放時間：約09:30/10:00-17:00。門票：約¥3,300-¥4,000。距離市區較遠。", icon: "🎀"
+                        },
+                        {
+                            id: "harajukuShibuya", name: "原宿與澀谷流行文化體驗",
+                            details: "交通至「原宿站」。漫步竹下通，逛特色小店。參觀明治神宮(免費)。可步行或搭JR至「澀谷站」，體驗澀谷十字路口，與忠犬八公像合影。", icon: "🛍️"
+                        }
+                    ],
+                    eveningActivity: { time: "晚間 (約 18:30 起 日本時間)", description: "購物及歡送晚餐", details: "購物點：東京車站一番街「東京動漫人物街」(寶可夢、吉卜力等)或秋葉原(動漫電玩)。晚餐可選主題餐廳或在新宿/澀谷用餐。", icon: "🎁" }
+                },
+                day5: {
+                    title: "第五日 (8月8日，週五)：東京晨間悠遊，溫馨返程",
+                    activities: [
+                        { time: "上午 (約 09:00-11:00 日本時間)", description: "飯店早餐，最後採買", details: "飯店早餐或附近咖啡廳。最後伴手禮採買。", icon: "🥐" },
+                        { time: "上午晚些時候 (約 11:00 起 日本時間)", description: "整理行囊，前往機場 (NRT 或 HND)", details: "飯店退房。前往成田(NRT)可搭利木津巴士(約90-120分, ¥3100)、N'EX(約60-90分, ¥3000+)或Skyliner(上野出發約40-50分, ¥2500)。前往羽田(HND)可搭利木津巴士(約30-70分, ¥1400)、東京單軌電車(濱松町出發約13-20分, ¥520)或京急線(品川出發約12-20分, ¥330)。羽田交通通常更優。提早3小時到機場。", icon: "🛫" },
+                        { time: "下午：搭機返回台北", details: "飛行時間約3-4小時。", icon: "🏠" }
+                    ]
+                }
+            },
+            accommodation: {
+                nagoya: [
+                    { name: "名古屋JR門樓大飯店", area: "名古屋車站", stars: "4★", features: "車站直結、景觀佳、早餐評價高、小學生共寢政策", price: "¥25,000 - ¥40,000" },
+                    { name: "名古屋三井花園飯店普米爾", area: "名古屋車站", stars: "4★", features: "距車站5分鐘、景觀房推薦、早餐佳", price: "¥20,000 - ¥35,000" },
+                    { name: "大和魯內飯店名古屋太閤通口", area: "名古屋車站", stars: "3.5★", features: "交通便利、乾淨友善、早餐評價優", price: "¥18,000 - ¥30,000" },
+                    { name: "名古屋希爾頓飯店", area: "榮/伏見", stars: "4.5★", features: "室內泳池、多家餐廳", price: "¥30,000 - ¥50,000" },
+                    { name: "名古屋東急飯店", area: "榮", stars: "4★", features: "房間寬敞、服務優良、0歲兒童免費入住政策", price: "查詢官網" }
+                ],
+                tokyo: [
+                    { name: "格拉斯麗新宿飯店", area: "新宿", stars: "4★", features: "哥吉拉主題、歌舞伎町中心、交通便利", price: "¥28,000 - ¥45,000" },
+                    { name: "京王廣場大飯店東京", area: "新宿", stars: "4.5★", features: "服務佳、高樓層貴賓廊、近新宿站、三人房型", price: "¥35,000 - ¥60,000" },
+                    { name: "澀谷藍塔東急飯店", area: "澀谷", stars: "5★", features: "室內泳池、多家餐廳", price: "價格較高，查詢官網" },
+                    { name: "上野飯店", area: "上野", stars: "3★", features: "地理位置優越、員工友善", price: "¥20,000 - ¥35,000" }
+                ]
+            },
+            transportation: {
+                local: [
+                    { title: "IC儲值卡 (Suica/PASMO/Manaca/TOICA)", content: "強烈建議購買。名古屋可用Manaca/TOICA，東京可用Suica/PASMO。已大致全國互通。Welcome Suica為短期旅客設計，免押金但餘額不退、效期28天。" },
+                    { title: "名古屋市區票券", content: "名古屋地鐵24小時券 (成人¥760)。巴士・地鐵一日券 (成人¥870)。Me~guru觀光巴士一日券 (¥500)。週末環保券本次不適用。" },
+                    { title: "東京市區票券", content: "Tokyo Subway Ticket (外國旅客專用，24/48/72小時，成人¥800/¥1200/¥1500，兒童半價)，可搭東京Metro及都營地鐵全線，非常推薦。都營一日乘車券 (成人¥700)。" }
+                ],
+                shinkansen: [
+                    { title: "名古屋至東京交通", content: "搭乘東海道新幹線。建議Nozomi號，最快且班次頻密。" },
+                    { title: "兒童票價政策", content: "6-11歲(小學生)為成人票價50%。1-5歲幼童不佔位可免費(每成人限2名)，若需座位則購兒童票。未滿1歲嬰兒免費(除非佔位)。" },
+                    { title: "座位預訂 (指定席)", content: "強烈建議家庭預訂指定席，確保座位相鄰。" },
+                    { title: "行李放置", content: "設有頭頂行李架及部分車廂後方空間。特大行李可能需預約。" },
+                    { title: "購票方式", content: "可透過網路平台(Klook, Japan Experience, JR官網)或車站窗口/售票機購買。網路購票QR Code可能需換實體票。" }
+                ]
+            },
+            foodShopping: {
+                nagoyaFood: [
+                    { name: "味噌豬排 (Miso Katsu)", description: "厚實炸豬排淋特製赤味噌醬。" },
+                    { name: "手羽先 (Tebasaki)", description: "風味獨特炸雞翅。推薦「世界の山ちゃん」(香辣)、「風来坊」(醬甜)。" },
+                    { name: "碁子麵 (Kishimen)", description: "扁平烏龍麵，口感滑順。" },
+                    { name: "鰻魚飯三吃 (Hitsumabushi)", description: "名古屋頂級美食，如「あつた蓬莱軒」。" },
+                    { name: "家庭餐廳 (Famiresu)", description: "Gusto、Saizeriya等，選擇多樣，價格親民。" }
+                ],
+                tokyoThemedFood: [
+                    { name: "三麗鷗角色花園咖啡廳 (上野)", description: "可愛三麗鷗角色環繞。" },
+                    { name: "白鬍子泡芙工房 (吉祥寺/代田)", description: "吉卜力授權龍貓泡芙。" },
+                    { name: "寶可夢咖啡廳 (日本橋)", description: "需預約，人氣高。" },
+                    { name: "卡比咖啡廳 (澀谷/晴空塔)", description: "需預約，一位難求。" }
+                ],
+                nagoyaShopping: [
+                    { name: "Grand Kiosk Nagoya (JR名古屋站)", description: "最大伴手禮店，特產紀念品豐富。" },
+                    { name: "JR名古屋高島屋百貨 (B1食品區)", description: "高級日式和洋菓子。" },
+                    { name: "ESCA地下街", description: "土產店及餐廳。" },
+                    { name: "推薦伴手禮", description: "「青柳総本家」的「カエルまんじゅう」(青蛙饅頭)。" }
+                ],
+                tokyoShopping: [
+                    { name: "東京車站一番街「東京動漫人物街」", description: "動漫迷天堂：Pokémon Store, 吉卜力橡子共和國, Hello Kitty, JUMP SHOP等。" },
+                    { name: "秋葉原", description: "動漫、漫畫、電玩、模型公仔、電子產品。" },
+                    { name: "原宿竹下通", description: "青少年流行文化，可愛服飾飾品雜貨，DAISO, 三麗鷗專賣店。" },
+                    { name: "Kiddy Land 原宿店", description: "大型玩具店，各式品牌玩具玩偶。" },
+                    { name: "各景點附設商店", description: "販售限定獨家商品。" }
+                ]
+            },
+            budget: {
+                summary: "以下為本次五天四夜名古屋及東京親子之旅的預估費用，幣值為日圓(JPY)，並提供新台幣(TWD)約略換算參考 (1 JPY ≈ 0.21 TWD)。此預算為概估，實際支出會因個人選擇及消費習慣而異。8月為旺季，機票住宿價格可能偏高。",
+                tableData: [
+                    { category: "國際機票 (台北-名古屋, 東京-台北)", jpy_per_person: "¥60,000 - ¥90,000", jpy_family_total: "¥240,000 - ¥360,000", twd_family_total: "NT$50,400 - NT$75,600" },
+                    { category: "住宿 (4晚)", jpy_per_person: "¥30,000 - ¥50,000 (每房¥15k-25k x 2人攤)", jpy_family_total: "¥120,000 - ¥200,000 (每房¥30k-50k x 4晚)", twd_family_total: "NT$25,200 - NT$42,000" },
+                    { category: "城際交通 (新幹線名古屋-東京)", jpy_per_person: "成人: ¥11,000, 兒童: ¥5,500", jpy_family_total: "¥33,000", twd_family_total: "NT$6,930" },
+                    { category: "機場交通 (台灣及日本境內)", jpy_per_person: "¥3,000 - ¥6,000 (來回)", jpy_family_total: "¥12,000 - ¥24,000", twd_family_total: "NT$2,520 - NT$5,040" },
+                    { category: "市區交通 (IC卡/一日券)", jpy_per_person: "¥1,000 - ¥1,500 (每日)", jpy_family_total: "¥16,000 - ¥24,000 (4人x4天)", twd_family_total: "NT$3,360 - NT$5,040" },
+                    { category: "餐飲費用", jpy_per_person: "¥5,000 - ¥8,000 (每日)", jpy_family_total: "¥80,000 - ¥128,000 (4人x4天)", twd_family_total: "NT$16,800 - NT$26,880" },
+                    { category: "景點門票", jpy_per_person: "¥8,000 - ¥12,000 (總計)", jpy_family_total: "¥32,000 - ¥48,000", twd_family_total: "NT$6,720 - NT$10,080" },
+                    { category: "購物/紀念品", jpy_per_person: "(個人決定)", jpy_family_total: "¥30,000 - ¥60,000 (預估)", twd_family_total: "NT$6,300 - NT$12,600" },
+                    { category: "雜項/預備金 (10-15%)", jpy_per_person: "", jpy_family_total: "¥50,000 - ¥100,000", twd_family_total: "NT$10,500 - NT$21,000" },
+                    { category: "預估總計", jpy_per_person: "", jpy_family_total: "<strong>¥583,000 - ¥944,000</strong>", twd_family_total: "<strong>NT$122,430 - NT$198,240</strong>" }
+                ],
+                chartData: {
+                    labels: ["國際機票", "住宿", "城際交通", "機場交通", "市區交通", "餐飲費用", "景點門票", "購物/紀念品", "雜項/預備金"],
+                    data: [240000, 120000, 33000, 12000, 16000, 80000, 32000, 30000, 50000] 
+                },
+                tips: [
+                    "提早預訂機票和住宿。",
+                    "善用交通票券，評估是否購買一日券。",
+                    "餐飲可搭配便利商店輕食、平價定食與特色餐廳。",
+                    "利用免費景點如淺草寺、明治神宮、上野公園。",
+                    "設定購物預算，避免不必要開銷。"
+                ]
+            },
+            additionalTips: [
+                { title: "了解日本兒童政策", content: "兒童票價通常以學齡(小學生6-11歲)或年齡劃分，學齡前常有免費或優惠。餐廳對兒童友善，部分飯店允許幼童免費同住(不佔床，需確認細節)。" },
+                { title: "攜帶幼童注意事項", content: "地鐵站多有電梯，但小型站或轉乘仍可能遇階梯。8月炎熱，注意休息與水分補充。百貨/車站多有育嬰室。" },
+                { title: "實用日語與禮儀", content: "學習基本問候語。用餐時說「我開動了」(Itadakimasu)、「謝謝招待」(Gochisōsama deshita)。公共交通保持安靜。" },
+                { title: "應變計畫", content: "攜帶常用藥品。護照影本與正本分開存放。記錄飯店地址電話、台灣駐日代表處聯絡方式。" },
+                { title: "電器使用", content: "日本電壓100V，插座A/B型。台灣兩腳扁平插頭電器通常可直接用，請確認電器支援100V。" }
+            ]
+        };
+
+        const tabs = [
+            { id: "overview", name: "旅程總覽", icon: "🗺️" },
+            { id: "preDeparture", name: "行前準備", icon: "📋" },
+            { id: "dailyItinerary", name: "每日行程", icon: "🗓️" },
+            { id: "accommodation", name: "住宿推薦", icon: "🏨" },
+            { id: "transportation", name: "交通指南", icon: " транспорт" },
+            { id: "foodShopping", name: "美食購物", icon: "🍜" },
+            { id: "budget", name: "預算規劃", icon: "📊" },
+            { id: "additionalTips", name: "額外提示", icon: "💡" }
+        ];
+
+        const tabsContainer = document.getElementById('tabsContainer');
+        const tabContentsContainer = document.getElementById('tabContentsContainer');
+        let budgetChartInstance = null;
+
+        function initTabs() {
+            tabs.forEach((tab, index) => {
+                const button = document.createElement('button');
+                button.className = `tab-button text-sm sm:text-base font-medium py-2 px-3 sm:px-4 rounded-t-lg border-b-2 border-transparent focus:outline-none ${index === 0 ? 'active' : ''}`;
+                button.textContent = `${tab.icon} ${tab.name}`;
+                button.onclick = () => openTab(tab.id);
+                tabsContainer.appendChild(button);
+
+                const contentDiv = document.createElement('div');
+                contentDiv.id = tab.id;
+                contentDiv.className = `tab-content p-4 md:p-6 bg-white rounded-b-lg shadow-md ${index === 0 ? 'active' : ''}`;
+                tabContentsContainer.appendChild(contentDiv);
+            });
+            renderTabContent('overview'); 
+        }
+
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            const activeButton = Array.from(tabsContainer.children).find(btn => btn.textContent.includes(tabs.find(t => t.id === tabId).name));
+            if (activeButton) activeButton.classList.add('active');
+            
+            renderTabContent(tabId);
+        }
+
+        function renderTabContent(tabId) {
+            const container = document.getElementById(tabId);
+            container.innerHTML = ''; 
+
+            switch (tabId) {
+                case 'overview':
+                    container.innerHTML = `
+                        <h2 class="text-2xl font-semibold text-teal-700 mb-4">${appData.tripDetails.title}</h2>
+                        <div class="section-intro">
+                            <p>${appData.tripDetails.introduction}</p>
+                        </div>
+                        <div class="mt-6 p-4 bg-sky-50 rounded-lg">
+                            <h3 class="text-xl font-semibold text-sky-700 mb-2">旅程核心資訊：</h3>
+                            <ul class="list-disc list-inside space-y-1 text-stone-700">
+                                <li><strong>日期：</strong>今年8月4日 至 8月8日 (五天四夜)</li>
+                                <li><strong>地點：</strong>日本名古屋 & 東京</li>
+                                <li><strong>旅客：</strong>2位成人 & 2位小學生</li>
+                                <li><strong>出發地：</strong>台灣台北萬華區</li>
+                            </ul>
+                        </div>`;
+                    break;
+                case 'preDeparture':
+                    container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">安心啟程：行前準備全攻略</h2>
+                        <div class="section-intro">
+                            <p>為確保您的日本親子之旅順利無憂，充分的行前準備至關重要。本區段將引導您逐項確認護照簽證、機票住宿、旅遊保險、行李打包、通訊網路、貨幣兌換及交通票券等關鍵事項，並提供報告中的詳細建議，讓您輕鬆啟程，迎接美好的旅程。</p>
+                        </div>
+                        <div class="space-y-4">
+                            ${appData.preDeparture.map(item => `
+                                <div class="checklist-item bg-white p-4 rounded-lg shadow border border-stone-200">
+                                    <input type="checkbox" id="check-${item.id}" class="form-checkbox h-5 w-5 text-sky-600 rounded">
+                                    <label for="check-${item.id}" class="text-lg font-medium text-sky-700 flex justify-between items-center">
+                                        <span><span class="arrow text-sky-600 transition-transform duration-300">&#9654;</span> ${item.title}</span>
+                                    </label>
+                                    <div class="checklist-details ml-7 mt-2 text-stone-700 text-sm">
+                                        <p>${item.details.replace(/\n/g, '<br>')}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                    break;
+                case 'dailyItinerary':
+                    renderDailyItinerary(container);
+                    break;
+                case 'accommodation':
+                    container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">住宿選擇深度解析：名古屋與東京的親子安居之所</h2>
+                        <div class="section-intro">
+                            <p>舒適的住宿是愉快旅程的基石。本節將根據報告內容，為您推薦位於名古屋及東京，適合親子家庭的飯店選項，綜合考量地理位置、家庭房型、設施服務與參考評價，助您找到旅途中的溫馨港灣。</p>
+                        </div>
+                        ${renderAccommodation(appData.accommodation)}
+                    `;
+                    break;
+                case 'transportation':
+                    container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">交通暢行無阻：日本境內移動指南</h2>
+                        <div class="section-intro">
+                            <p>日本擁有世界一流的大眾運輸系統。了解如何有效利用IC卡、市區票券及新幹線，將使您的家庭旅行更加順暢與經濟。本節將彙整報告中關於名古屋和東京市區交通，以及新幹線搭乘的實用資訊。</p>
+                        </div>
+                        ${renderTransportation(appData.transportation)}
+                    `;
+                    break;
+                case 'foodShopping':
+                    container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">美食購物全體驗：名古屋特色與東京潮流</h2>
+                        <div class="section-intro">
+                            <p>品嚐在地美食與搜羅特色紀念品是旅途中不可或缺的樂趣。本節將帶您探索名古屋的道地佳餚、東京的親子主題餐廳，以及兩地的購物熱點，讓您的味蕾與行囊都滿載而歸。</p>
+                        </div>
+                        ${renderFoodShopping(appData.foodShopping)}
+                    `;
+                    break;
+                case 'budget':
+                    container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">家庭旅遊預算詳盡解析</h2>
+                        <div class="section-intro">
+                            <p>${appData.budget.summary}</p>
+                        </div>
+                        <div class="my-6">
+                            <h3 class="text-xl font-semibold text-sky-700 mb-3">預算比例圖 (JPY, 取預估低值)</h3>
+                            <div class="chart-container bg-white p-2 rounded-lg shadow">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-sky-700 mb-3 mt-8">預算細目表</h3>
+                        <div class="overflow-x-auto bg-white p-1 rounded-lg shadow">
+                            <table class="min-w-full divide-y divide-stone-200 text-sm">
+                                <thead class="bg-stone-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left font-medium text-stone-600">費用類別</th>
+                                        <th class="px-4 py-2 text-left font-medium text-stone-600">家庭四人總計 (JPY)</th>
+                                        <th class="px-4 py-2 text-left font-medium text-stone-600">家庭四人總計 (TWD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-stone-200">
+                                    ${appData.budget.tableData.map(row => `
+                                        <tr>
+                                            <td class="px-4 py-2 whitespace-nowrap">${row.category}</td>
+                                            <td class="px-4 py-2 whitespace-nowrap">${row.jpy_family_total}</td>
+                                            <td class="px-4 py-2 whitespace-nowrap">${row.twd_family_total}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <h3 class="text-xl font-semibold text-sky-700 mb-3 mt-8">預算管理建議</h3>
+                        <ul class="list-disc list-inside space-y-1 text-stone-700 bg-sky-50 p-4 rounded-lg">
+                            ${appData.budget.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>`;
+                    renderBudgetChart();
+                    break;
+                case 'additionalTips':
+                     container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">額外加分小貼士：讓您的日本親子遊更臻完美</h2>
+                        <div class="section-intro">
+                            <p>除了詳盡的行程規劃，這些額外提示將有助於您與家人在日本的旅程更加順利愉快，應對各種可能情況，並更深入地體驗當地文化。</p>
+                        </div>
+                        <div class="space-y-4">
+                            ${appData.additionalTips.map(tip => `
+                                <div class="bg-white p-4 rounded-lg shadow border border-stone-200">
+                                    <h3 class="text-lg font-medium text-sky-700 mb-1">${tip.title}</h3>
+                                    <p class="text-stone-700 text-sm">${tip.content.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                    break;
+            }
+        }
+        
+        function renderDailyItinerary(container) {
+            container.innerHTML = `<h2 class="text-2xl font-semibold text-teal-700 mb-4">精彩五日行程詳解：名古屋與東京的親子時光</h2>
+                <div class="section-intro">
+                    <p>這部分將為您詳細展開五天四夜的每日行程。您可以點選下方的日期按鈕，查看當天的活動、交通、餐飲及景點等具體安排。行程已考量親子需求及八月天氣，適度穿插室內活動。請記得隨時補充水分！</p>
+                </div>
+                <div id="dayButtonsContainer" class="flex flex-wrap justify-center gap-2 mb-6"></div>
+                <div id="itineraryContent" class="mt-4"></div>`;
+
+            const dayButtonsContainer = container.querySelector('#dayButtonsContainer');
+            Object.keys(appData.dailyItinerary).forEach((dayKey, index) => {
+                const dayData = appData.dailyItinerary[dayKey];
+                const dayNum = parseInt(dayKey.replace('day', ''));
+                const button = document.createElement('button');
+                button.className = `day-button py-2 px-4 rounded-md text-sm font-medium border border-sky-500 focus:outline-none ${index === 0 ? 'active' : ''}`;
+                button.textContent = `第 ${dayNum} 天`;
+                button.onclick = () => showDayItinerary(dayKey, container);
+                dayButtonsContainer.appendChild(button);
+            });
+            showDayItinerary('day1', container); 
+        }
+
+        function showDayItinerary(dayKey, mainContainer) {
+            mainContainer.querySelectorAll('.day-button').forEach(btn => btn.classList.remove('active'));
+            const activeButton = Array.from(mainContainer.querySelector('#dayButtonsContainer').children).find(btn => btn.textContent.includes(dayKey.replace('day', '第 ') + " 天"));
+            if (activeButton) activeButton.classList.add('active');
+
+            const itineraryContent = mainContainer.querySelector('#itineraryContent');
+            const dayData = appData.dailyItinerary[dayKey];
+            let contentHtml = `<h3 class="text-xl font-semibold text-sky-700 mb-4">${dayData.title}</h3>`;
+
+            if (dayData.optionsIntro) {
+                contentHtml += `<p class="mb-3 text-stone-700">${dayData.optionsIntro}</p>`;
+                contentHtml += `<div class="grid md:grid-cols-${dayData.options.length} gap-4 mb-6">`;
+                dayData.options.forEach((option, index) => {
+                    contentHtml += `
+                        <div class="activity-card bg-white p-4 rounded-lg shadow border-sky-500">
+                            <h4 class="text-lg font-medium text-sky-600 mb-2">${option.icon} ${option.name}</h4>
+                            <p class="text-sm text-stone-600">${option.details.replace(/\n/g, '<br>')}</p>
+                        </div>`;
+                });
+                contentHtml += `</div>`;
+            }
+            
+            contentHtml += `<div class="space-y-4">`;
+            dayData.activities.forEach(activity => {
+                contentHtml += `
+                    <div class="activity-card bg-white p-4 rounded-lg shadow border-teal-500">
+                        <p class="text-xs text-teal-600 font-medium mb-1">${activity.time} ${activity.icon}</p>
+                        <h4 class="text-md font-semibold text-teal-800 mb-1">${activity.description}</h4>
+                        ${activity.details ? `<p class="text-sm text-stone-600">${activity.details.replace(/\n/g, '<br>')}</p>` : ''}
+                    </div>`;
+            });
+            contentHtml += `</div>`;
+
+            if (dayData.eveningActivity) {
+                 contentHtml += `
+                    <div class="activity-card bg-white p-4 rounded-lg shadow border-teal-500 mt-4">
+                        <p class="text-xs text-teal-600 font-medium mb-1">${dayData.eveningActivity.time} ${dayData.eveningActivity.icon}</p>
+                        <h4 class="text-md font-semibold text-teal-800 mb-1">${dayData.eveningActivity.description}</h4>
+                        ${dayData.eveningActivity.details ? `<p class="text-sm text-stone-600">${dayData.eveningActivity.details.replace(/\n/g, '<br>')}</p>` : ''}
+                    </div>`;
+            }
+            itineraryContent.innerHTML = contentHtml;
+        }
+        
+        function renderAccommodation(data) {
+            let html = '';
+            html += '<div class="mb-8">';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">名古屋推薦親子飯店 (鄰近名古屋車站)</h3>';
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            data.nagoya.forEach(hotel => {
+                html += `
+                    <div class="bg-white p-4 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-lg font-medium text-sky-600">${hotel.name} <span class="text-sm font-normal text-yellow-500">(${hotel.stars})</span></h4>
+                        <p class="text-sm text-stone-600"><strong>區域：</strong>${hotel.area}</p>
+                        <p class="text-sm text-stone-600"><strong>特色：</strong>${hotel.features}</p>
+                        <p class="text-sm text-stone-600"><strong>價格範圍 (家庭房每晚)：</strong>${hotel.price}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+
+            html += '<div>';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">東京推薦親子飯店 (新宿、上野、澀谷等地區)</h3>';
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            data.tokyo.forEach(hotel => {
+                html += `
+                    <div class="bg-white p-4 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-lg font-medium text-sky-600">${hotel.name} <span class="text-sm font-normal text-yellow-500">(${hotel.stars})</span></h4>
+                        <p class="text-sm text-stone-600"><strong>區域：</strong>${hotel.area}</p>
+                        <p class="text-sm text-stone-600"><strong>特色：</strong>${hotel.features}</p>
+                        <p class="text-sm text-stone-600"><strong>價格範圍 (家庭房每晚)：</strong>${hotel.price}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderTransportation(data) {
+            let html = '';
+            html += '<div class="mb-8">';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">市區交通 (地鐵、巴士、一日券)</h3>';
+            html += '<div class="space-y-3">';
+            data.local.forEach(item => {
+                html += `
+                    <div class="bg-white p-3 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-md font-medium text-sky-600">${item.title}</h4>
+                        <p class="text-sm text-stone-600">${item.content}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+
+            html += '<div>';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">新幹線指南 (名古屋-東京)</h3>';
+            html += '<div class="space-y-3">';
+            data.shinkansen.forEach(item => {
+                html += `
+                    <div class="bg-white p-3 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-md font-medium text-sky-600">${item.title}</h4>
+                        <p class="text-sm text-stone-600">${item.content}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderFoodShopping(data) {
+            let html = '';
+            html += '<div class="mb-8">';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">名古屋特色美食</h3>';
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            data.nagoyaFood.forEach(item => {
+                html += `
+                    <div class="bg-white p-3 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-md font-medium text-sky-600">${item.name}</h4>
+                        <p class="text-sm text-stone-600">${item.description}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+            
+            html += '<div class="mb-8">';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">東京主題餐廳/咖啡廳 (兒童最愛)</h3><p class="text-sm text-red-600 mb-2">注意：熱門主題餐廳大多需要提前預約！</p>';
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            data.tokyoThemedFood.forEach(item => {
+                html += `
+                    <div class="bg-white p-3 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-md font-medium text-sky-600">${item.name}</h4>
+                        <p class="text-sm text-stone-600">${item.description}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+
+            html += '<div class="mb-8">';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">名古屋購物熱點</h3>';
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            data.nagoyaShopping.forEach(item => {
+                html += `
+                    <div class="bg-white p-3 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-md font-medium text-sky-600">${item.name}</h4>
+                        <p class="text-sm text-stone-600">${item.description}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+
+            html += '<div>';
+            html += '<h3 class="text-xl font-semibold text-sky-700 mb-3">東京購物熱點</h3>';
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            data.tokyoShopping.forEach(item => {
+                html += `
+                    <div class="bg-white p-3 rounded-lg shadow border border-stone-200">
+                        <h4 class="text-md font-medium text-sky-600">${item.name}</h4>
+                        <p class="text-sm text-stone-600">${item.description}</p>
+                    </div>`;
+            });
+            html += '</div></div>';
+            return html;
+        }
+        
+        function renderBudgetChart() {
+            const ctx = document.getElementById('budgetChart');
+            if (!ctx) return;
+
+            if (budgetChartInstance) {
+                budgetChartInstance.destroy();
+            }
+
+            const chartData = appData.budget.chartData;
+            budgetChartInstance = new Chart(ctx.getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: '預算分配 (JPY)',
+                        data: chartData.data,
+                        backgroundColor: [
+                            '#06b6d4', '#38bdf8', '#67e8f9', '#a5f3fc',
+                            '#059669', '#34d399', '#6ee7b7', '#a7f3d0',
+                            '#fb923c' 
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { size: 10 },
+                                boxWidth: 15,
+                                padding: 10
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initTabs);
+    </script>
+</body>
+</html>
