@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-TF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPUB 轉純文字轉換器</title>
+    <title>EPUB 轉純文字轉換器 (提取元數據)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
@@ -38,10 +38,35 @@
         #outputText {
             min-height: 200px;
             border-radius: 0.5rem;
+            white-space: pre-wrap; /* 保留 textarea 中的換行 */
         }
         #fileName {
             font-style: italic;
             color: #4b5563; /* 灰色 */
+        }
+        #metadataDisplay {
+            border: 1px solid #e5e7eb; /* 淺灰色邊框 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem; /* 與下方文字區域的間距 */
+            background-color: #f9fafb; /* 非常淺的灰色背景 */
+        }
+        #metadataDisplay h3 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            margin-bottom: 0.75rem;
+            color: #1f2937; /* 深灰色 */
+        }
+        #metadataDisplay p {
+            font-size: 0.875rem; /* text-sm */
+            color: #374151; /* 中灰色 */
+            margin-bottom: 0.25rem;
+        }
+        #metadataDisplay p strong {
+            color: #111827; /* 更深的灰色 */
+        }
+        .hidden {
+            display: none;
         }
         /* 針對行動裝置優化 */
         @media (max-width: 640px) {
@@ -56,6 +81,9 @@
             .flex-col-reverse { /* 在小螢幕上反轉按鈕順序 */
                 flex-direction: column-reverse;
             }
+            #metadataDisplay {
+                padding: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -63,7 +91,7 @@
     <div class="container bg-white shadow-lg rounded-lg">
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-bold text-gray-800">EPUB 轉純文字轉換器</h1>
-            <p class="text-gray-600 mt-2">選擇一個 EPUB 檔案，程式將提取其文字內容。</p>
+            <p class="text-gray-600 mt-2">選擇一個 EPUB 檔案，程式將提取其元數據和文字內容，並盡力保留段落結構。</p>
         </header>
 
         <div class="mb-6">
@@ -73,6 +101,11 @@
         </div>
 
         <div id="statusMessage" class="mb-4 text-sm text-blue-600"></div>
+
+        <div id="metadataDisplay" class="hidden">
+            <h3>書籍元數據：</h3>
+            <div id="metadataContent"></div>
+        </div>
 
         <div class="mb-6">
             <label for="outputText" class="block mb-2 text-sm font-medium text-gray-700">提取的文字：</label>
@@ -98,6 +131,9 @@
         const clearButton = document.getElementById('clearButton');
         const statusMessage = document.getElementById('statusMessage');
         const fileNameDisplay = document.getElementById('fileName');
+        const metadataDisplayDiv = document.getElementById('metadataDisplay');
+        const metadataContentDiv = document.getElementById('metadataContent');
+
 
         let currentFileName = ''; // 用於儲存目前檔案名稱供下載使用
 
@@ -115,6 +151,7 @@
             if (!file) {
                 setStatus('未選擇檔案。', 'text-gray-600');
                 fileNameDisplay.textContent = '';
+                hideMetadata();
                 return;
             }
 
@@ -122,6 +159,7 @@
                 setStatus('錯誤：請選擇一個 .epub 檔案。', 'text-red-600');
                 epubFileInput.value = ''; // 清除無效的檔案選擇
                 fileNameDisplay.textContent = '';
+                hideMetadata();
                 return;
             }
 
@@ -129,22 +167,27 @@
             fileNameDisplay.textContent = `已選擇檔案: ${file.name}`;
             outputTextarea.value = '';
             downloadButton.disabled = true;
+            hideMetadata();
             setStatus('正在處理 EPUB 檔案...', 'text-blue-600 animate-pulse');
 
             try {
                 const arrayBuffer = await readFileAsArrayBuffer(file);
-                const textContent = await processEpub(arrayBuffer);
+                const { textContent, metadata } = await processEpub(arrayBuffer); // processEpub 現在回傳物件
+                
+                displayMetadata(metadata); // 顯示元數據
                 outputTextarea.value = textContent;
-                if (textContent.trim() !== '') {
+
+                if (textContent.trim() !== '' || Object.keys(metadata).length > 0) {
                     downloadButton.disabled = false;
                     setStatus('EPUB 檔案處理完成！', 'text-green-600');
                 } else {
-                    setStatus('處理完成，但未提取到文字內容。可能是 EPUB 結構特殊或無文字。', 'text-yellow-600');
+                    setStatus('處理完成，但未提取到文字或元數據內容。可能是 EPUB 結構特殊或無相關內容。', 'text-yellow-600');
                 }
             } catch (error) {
                 console.error('處理 EPUB 時發生錯誤:', error);
                 setStatus(`錯誤: ${error.message}`, 'text-red-600');
                 outputTextarea.value = `處理過程中發生錯誤：\n${error.message}\n\n請檢查瀏覽器控制台以獲取更多詳細資訊。`;
+                hideMetadata();
             } finally {
                 statusMessage.classList.remove('animate-pulse');
             }
@@ -165,139 +208,11 @@
         }
 
         /**
-         * 處理 EPUB 檔案數據
-         * @param {ArrayBuffer} epubData - EPUB 檔案的 ArrayBuffer 數據
-         * @returns {Promise<string>} - 提取的純文字內容
-         */
-        async function processEpub(epubData) {
-            const zip = await JSZip.loadAsync(epubData);
-            const parser = new DOMParser();
-
-            // 1. 找到 container.xml 以取得 OPF 檔案路徑
-            const containerXmlString = await zip.file("META-INF/container.xml")?.async("string");
-            if (!containerXmlString) {
-                throw new Error("無效的 EPUB：找不到 META-INF/container.xml。");
-            }
-            const containerDoc = parser.parseFromString(containerXmlString, "application/xml");
-            const rootfilePath = containerDoc.getElementsByTagName("rootfile")[0]?.getAttribute("full-path");
-            if (!rootfilePath) {
-                throw new Error("無效的 EPUB：在 container.xml 中找不到 OPF 檔案路徑。");
-            }
-
-            // 2. 讀取並解析 OPF 檔案
-            const opfFileDirectory = rootfilePath.substring(0, rootfilePath.lastIndexOf('/') + 1);
-            const opfString = await zip.file(rootfilePath)?.async("string");
-            if (!opfString) {
-                throw new Error(`無效的 EPUB：找不到 OPF 檔案於 ${rootfilePath}。`);
-            }
-            const opfDoc = parser.parseFromString(opfString, "application/xml");
-
-            // 3. 從 manifest 獲取內容檔案
-            const manifestItems = {};
-            const manifestNode = opfDoc.getElementsByTagName("manifest")[0];
-            if (manifestNode) {
-                const items = manifestNode.getElementsByTagName("item");
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    const id = item.getAttribute("id");
-                    const href = item.getAttribute("href");
-                    // 檢查 media-type 是否為 HTML/XHTML
-                    const mediaType = item.getAttribute("media-type");
-                    if (id && href && (mediaType === "application/xhtml+xml" || mediaType === "text/html")) {
-                        manifestItems[id] = href;
-                    }
-                }
-            } else {
-                 throw new Error("無效的 EPUB：OPF 檔案中找不到 manifest。");
-            }
-
-
-            // 4. 從 spine 獲取內容檔案的順序
-            const spineNode = opfDoc.getElementsByTagName("spine")[0];
-            if (!spineNode) {
-                throw new Error("無效的 EPUB：OPF 檔案中找不到 spine。");
-            }
-            const itemrefs = spineNode.getElementsByTagName("itemref");
-            const contentFilePaths = [];
-            for (let i = 0; i < itemrefs.length; i++) {
-                const idref = itemrefs[i].getAttribute("idref");
-                if (manifestItems[idref]) {
-                    // 構建相對於 ZIP 根目錄的完整路徑
-                    let fullPath = manifestItems[idref];
-                    if (!fullPath.startsWith(opfFileDirectory) && opfFileDirectory) {
-                         // href 是相對於 OPF 檔案的，需要加上 OPF 檔案的目錄
-                        fullPath = opfFileDirectory + manifestItems[idref];
-                    }
-                    // 處理路徑中的相對部分，例如 './' 或 '../' (簡易處理)
-                    fullPath = normalizePath(fullPath);
-                    contentFilePaths.push(fullPath);
-                }
-            }
-            
-            if (contentFilePaths.length === 0) {
-                setStatus('警告：在 EPUB spine 中未找到有效的 HTML/XHTML 內容項目。嘗試直接從 manifest 讀取。', 'text-yellow-600');
-                // 後備方案：如果 spine 為空或無效，嘗試讀取 manifest 中的所有 HTML/XHTML 檔案
-                for (const id in manifestItems) {
-                    let fullPath = manifestItems[id];
-                     if (!fullPath.startsWith(opfFileDirectory) && opfFileDirectory) {
-                        fullPath = opfFileDirectory + manifestItems[id];
-                    }
-                    fullPath = normalizePath(fullPath);
-                    if (!contentFilePaths.includes(fullPath)) { // 避免重複
-                        contentFilePaths.push(fullPath);
-                    }
-                }
-                 if (contentFilePaths.length === 0) {
-                    throw new Error("在 EPUB 中未找到任何 HTML/XHTML 內容檔案。");
-                }
-            }
-
-
-            // 5. 讀取並提取每個內容檔案的文字
-            let allTextContent = "";
-            for (const filePath of contentFilePaths) {
-                try {
-                    const contentFileString = await zip.file(filePath)?.async("string");
-                    if (contentFileString) {
-                        const contentDoc = parser.parseFromString(contentFileString, "application/xhtml+xml");
-                        // 嘗試 body, 如果沒有 body (例如某些 XML 結構), 嘗試 documentElement
-                        const textSourceElement = contentDoc.body || contentDoc.documentElement;
-                        if (textSourceElement && textSourceElement.textContent) {
-                             // 移除多餘的空白和換行符
-                            const cleanedText = textSourceElement.textContent.replace(/\s\s+/g, ' ').trim();
-                            allTextContent += cleanedText + "\n\n"; // 段落間用雙換行分隔
-                        }
-                    } else {
-                        console.warn(`警告：無法讀取內容檔案 ${filePath}`);
-                    }
-                } catch (docError) {
-                    console.warn(`警告：解析檔案 ${filePath} 時發生錯誤: ${docError.message}`);
-                    // 嘗試使用 text/html 解析器作為後備
-                    try {
-                        const contentFileString = await zip.file(filePath)?.async("string");
-                        if (contentFileString) {
-                            const contentDoc = parser.parseFromString(contentFileString, "text/html");
-                            const textSourceElement = contentDoc.body || contentDoc.documentElement;
-                             if (textSourceElement && textSourceElement.textContent) {
-                                const cleanedText = textSourceElement.textContent.replace(/\s\s+/g, ' ').trim();
-                                allTextContent += cleanedText + "\n\n";
-                            }
-                        }
-                    } catch (fallbackError) {
-                         console.warn(`警告：使用 text/html 解析檔案 ${filePath} 仍然失敗: ${fallbackError.message}`);
-                    }
-                }
-            }
-            return allTextContent.trim();
-        }
-
-        /**
          * 簡易路徑標準化函式
          * @param {string} path - 原始路徑
          * @returns {string} - 標準化後的路徑
          */
         function normalizePath(path) {
-            // 處理 "A/B/../C" -> "A/C"
             const parts = path.split('/');
             const newParts = [];
             for (const part of parts) {
@@ -305,7 +220,6 @@
                     if (newParts.length > 0 && newParts[newParts.length - 1] !== '..') {
                         newParts.pop();
                     } else {
-                        // 如果 ../ 出現在開頭或連續出現，則保留 (雖然在 EPUB 中不常見)
                         newParts.push(part);
                     }
                 } else if (part !== '.' && part !== '') {
@@ -315,36 +229,283 @@
             return newParts.join('/');
         }
 
+        /**
+         * 遞迴函式，將 DOM 節點轉換為帶有段落的純文字
+         * @param {Node} node - 要處理的 DOM 節點
+         * @returns {string} - 從節點提取的文字
+         */
+        function domToText(node) {
+            let text = '';
+            if (node.nodeType === Node.TEXT_NODE) {
+                let TNodeText = node.nodeValue.replace(/[ \t]+/g, ' ');
+                text += TNodeText;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const tagName = node.tagName.toLowerCase();
+                const blockElements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'li', 'blockquote', 'pre', 'tr', 'th', 'td', 'section', 'article', 'header', 'footer', 'aside', 'figure', 'figcaption', 'address', 'dt', 'dd', 'hr', 'table', 'ul', 'ol', 'dl'];
+                const lineBreakElement = 'br';
+
+                if (tagName === lineBreakElement) {
+                    text += '\n';
+                } else {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        text += domToText(node.childNodes[i]);
+                    }
+                    if (blockElements.includes(tagName)) {
+                        text = text.trimRight();
+                        if (text.length > 0 && !text.endsWith('\n')) {
+                            text += '\n';
+                        }
+                    }
+                }
+            }
+            return text;
+        }
+
+        /**
+         * 從 OPF metadata 元素中提取特定標籤的文字內容
+         * @param {Element} metadataElement - OPF 檔案中的 <metadata> DOM 元素
+         * @param {string} tagName - 要提取的標籤名稱 (例如 "dc:title")
+         * @returns {string | null} - 提取到的文字內容，或 null
+         */
+        function getMetadataField(metadataElement, tagName) {
+            const elements = metadataElement.getElementsByTagName(tagName);
+            if (elements.length > 0 && elements[0].textContent) {
+                return elements[0].textContent.trim();
+            }
+            // 有些 EPUB 可能會使用不帶命名空間的標籤，例如 <title> 而非 <dc:title>
+            // 作為後備，嘗試不帶 dc: 前綴的標籤
+            if (tagName.startsWith("dc:")) {
+                const simpleTagName = tagName.substring(3);
+                const simpleElements = metadataElement.getElementsByTagName(simpleTagName);
+                 if (simpleElements.length > 0 && simpleElements[0].textContent) {
+                    return simpleElements[0].textContent.trim();
+                }
+            }
+            return null;
+        }
+        
+        /**
+         * 顯示提取到的元數據
+         * @param {object} metadata - 包含元數據的物件
+         */
+        function displayMetadata(metadata) {
+            metadataContentDiv.innerHTML = ''; // 清空先前的元數據
+            let hasMetadata = false;
+            const fields = [
+                { label: '書名', value: metadata.title },
+                { label: '作者', value: metadata.creator },
+                { label: '出版者', value: metadata.publisher },
+                { label: '語言', value: metadata.language },
+                { label: 'ISBN/識別碼', value: metadata.identifier },
+                { label: '出版日期', value: metadata.date }
+            ];
+
+            fields.forEach(field => {
+                if (field.value) {
+                    const p = document.createElement('p');
+                    p.innerHTML = `<strong>${field.label}：</strong> ${field.value}`;
+                    metadataContentDiv.appendChild(p);
+                    hasMetadata = true;
+                }
+            });
+
+            if (hasMetadata) {
+                metadataDisplayDiv.classList.remove('hidden');
+            } else {
+                const p = document.createElement('p');
+                p.textContent = '未在此 EPUB 檔案中找到可顯示的元數據。';
+                metadataContentDiv.appendChild(p);
+                metadataDisplayDiv.classList.remove('hidden'); // 仍然顯示容器，但提示無元數據
+            }
+        }
+
+        /**
+         * 隱藏元數據顯示區域
+         */
+        function hideMetadata() {
+            metadataDisplayDiv.classList.add('hidden');
+            metadataContentDiv.innerHTML = '';
+        }
+
+
+        /**
+         * 處理 EPUB 檔案數據
+         * @param {ArrayBuffer} epubData - EPUB 檔案的 ArrayBuffer 數據
+         * @returns {Promise<{textContent: string, metadata: object}>} - 包含提取文字和元數據的物件
+         */
+        async function processEpub(epubData) {
+            const zip = await JSZip.loadAsync(epubData);
+            const parser = new DOMParser();
+
+            const containerXmlString = await zip.file("META-INF/container.xml")?.async("string");
+            if (!containerXmlString) throw new Error("無效的 EPUB：找不到 META-INF/container.xml。");
+            
+            const containerDoc = parser.parseFromString(containerXmlString, "application/xml");
+            const rootfilePath = containerDoc.getElementsByTagName("rootfile")[0]?.getAttribute("full-path");
+            if (!rootfilePath) throw new Error("無效的 EPUB：在 container.xml 中找不到 OPF 檔案路徑。");
+
+            const opfFileDirectory = rootfilePath.substring(0, rootfilePath.lastIndexOf('/') + 1);
+            const opfString = await zip.file(rootfilePath)?.async("string");
+            if (!opfString) throw new Error(`無效的 EPUB：找不到 OPF 檔案於 ${rootfilePath}。`);
+            
+            const opfDoc = parser.parseFromString(opfString, "application/xml");
+
+            // 提取元數據
+            const extractedMetadata = {};
+            const metadataElement = opfDoc.getElementsByTagName("metadata")[0];
+            if (metadataElement) {
+                extractedMetadata.title = getMetadataField(metadataElement, "dc:title");
+                extractedMetadata.creator = getMetadataField(metadataElement, "dc:creator");
+                extractedMetadata.publisher = getMetadataField(metadataElement, "dc:publisher");
+                extractedMetadata.language = getMetadataField(metadataElement, "dc:language");
+                extractedMetadata.identifier = getMetadataField(metadataElement, "dc:identifier"); // 通常是 ISBN
+                extractedMetadata.date = getMetadataField(metadataElement, "dc:date");
+            }
+
+
+            const manifestItems = {};
+            const manifestNode = opfDoc.getElementsByTagName("manifest")[0];
+            if (!manifestNode) throw new Error("無效的 EPUB：OPF 檔案中找不到 manifest。");
+            
+            const items = manifestNode.getElementsByTagName("item");
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const id = item.getAttribute("id");
+                const href = item.getAttribute("href");
+                const mediaType = item.getAttribute("media-type");
+                if (id && href && (mediaType === "application/xhtml+xml" || mediaType === "text/html")) {
+                    manifestItems[id] = href;
+                }
+            }
+
+            const spineNode = opfDoc.getElementsByTagName("spine")[0];
+            if (!spineNode) throw new Error("無效的 EPUB：OPF 檔案中找不到 spine。");
+            
+            const itemrefs = spineNode.getElementsByTagName("itemref");
+            const contentFilePaths = [];
+            for (let i = 0; i < itemrefs.length; i++) {
+                const idref = itemrefs[i].getAttribute("idref");
+                if (manifestItems[idref]) {
+                    const itemHref = manifestItems[idref];
+                    const fullPath = normalizePath(opfFileDirectory + itemHref);
+                    contentFilePaths.push(fullPath);
+                }
+            }
+            
+            if (contentFilePaths.length === 0) {
+                setStatus('警告：在 EPUB spine 中未找到有效的 HTML/XHTML 內容項目。嘗試直接從 manifest 讀取。', 'text-yellow-600');
+                for (const id in manifestItems) {
+                    const itemHref = manifestItems[id];
+                    const fullPath = normalizePath(opfFileDirectory + itemHref);
+                    if (!contentFilePaths.includes(fullPath)) {
+                        contentFilePaths.push(fullPath);
+                    }
+                }
+                 if (contentFilePaths.length === 0) {
+                    // 即使沒有內容檔案，也可能只想提取元數據
+                    console.warn("在 EPUB 中未找到任何 HTML/XHTML 內容檔案，但仍會嘗試提供元數據。");
+                    // throw new Error("在 EPUB 中未找到任何 HTML/XHTML 內容檔案。");
+                }
+            }
+
+            let allTextContent = "";
+            for (const filePath of contentFilePaths) {
+                try {
+                    const contentFileString = await zip.file(filePath)?.async("string");
+                    if (contentFileString) {
+                        const contentDoc = parser.parseFromString(contentFileString, "application/xhtml+xml");
+                        const body = contentDoc.body || contentDoc.documentElement;
+                        if (body) {
+                            let fileContent = domToText(body);
+                            fileContent = fileContent.replace(/\r\n?/g, '\n').trim().replace(/\n{3,}/g, '\n\n');
+                            if (fileContent) {
+                                allTextContent += fileContent + "\n\n";
+                            }
+                        }
+                    } else {
+                        console.warn(`警告：無法讀取內容檔案 ${filePath}`);
+                    }
+                } catch (docError) {
+                    console.warn(`警告：解析檔案 ${filePath} 時發生錯誤: ${docError.message}. 嘗試使用 text/html 解析器。`);
+                    try {
+                        const contentFileString = await zip.file(filePath)?.async("string");
+                        if (contentFileString) {
+                            const contentDoc = parser.parseFromString(contentFileString, "text/html");
+                            const body = contentDoc.body || contentDoc.documentElement;
+                            if (body) {
+                                let fileContent = domToText(body);
+                                fileContent = fileContent.replace(/\r\n?/g, '\n').trim().replace(/\n{3,}/g, '\n\n');
+                                if (fileContent) {
+                                    allTextContent += fileContent + "\n\n";
+                                }
+                            }
+                        }
+                    } catch (fallbackError) {
+                         console.warn(`警告：使用 text/html 解析檔案 ${filePath} 仍然失敗: ${fallbackError.message}`);
+                    }
+                }
+            }
+
+            allTextContent = allTextContent.replace(/\r\n?/g, '\n').trim().replace(/\n{3,}/g, '\n\n');
+            
+            // 返回包含文字內容和元數據的物件
+            return { textContent: allTextContent, metadata: extractedMetadata };
+        }
 
         /**
          * 下載提取的文字為 .txt 檔案
          */
         function downloadTextFile() {
-            if (outputTextarea.value.trim() === "") {
-                setStatus('沒有文字內容可供下載。', 'text-yellow-600');
+            // 現在即使只有元數據也允許下載，文字內容會包含元數據
+            const metadataText = formatMetadataForDownload(JSON.parse(JSON.stringify(metadataContentDiv.innerText || ""))); // 獲取顯示的元數據文字
+            const mainText = outputTextarea.value;
+            
+            let combinedText = "";
+            if (metadataText.trim() !== "" && !metadataText.includes("未在此 EPUB 檔案中找到可顯示的元數據。")) {
+                combinedText += "書籍元數據：\n" + metadataText + "\n\n--------------------\n\n";
+            }
+            combinedText += mainText;
+
+
+            if (combinedText.trim() === "") {
+                setStatus('沒有文字或元數據內容可供下載。', 'text-yellow-600');
                 return;
             }
-            const blob = new Blob([outputTextarea.value], { type: 'text/plain;charset=utf-8' });
+
+            const blob = new Blob([combinedText.trim()], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${currentFileName || 'extracted_text'}.txt`; // 使用處理過的檔名
+            a.download = `${currentFileName || 'extracted_content'}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            setStatus('文字檔已下載！', 'text-green-600');
+            setStatus('內容檔已下載！', 'text-green-600');
         }
+
+        /**
+         * 格式化元數據供下載使用
+         * @param {string} displayedMetadataText - 從 metadataContentDiv.innerText 獲取的文字
+         * @returns {string} - 格式化後的元數據文字
+         */
+        function formatMetadataForDownload(displayedMetadataText) {
+            if (!displayedMetadataText || typeof displayedMetadataText !== 'string') return "";
+            // 移除 "書籍元數據：" 標題，因為下載時會重新加上
+            return displayedMetadataText.replace(/^書籍元數據：\s*/i, '').trim();
+        }
+
 
         /**
          * 清除所有輸入和輸出
          */
         function clearAll() {
-            epubFileInput.value = ''; // 清除檔案選擇
+            epubFileInput.value = '';
             outputTextarea.value = '';
             downloadButton.disabled = true;
             currentFileName = '';
             fileNameDisplay.textContent = '';
+            hideMetadata();
             setStatus('已清除。請選擇一個新的 EPUB 檔案。', 'text-gray-600');
         }
 
@@ -355,9 +516,8 @@
          */
         function setStatus(message, colorClass) {
             statusMessage.textContent = message;
-            statusMessage.className = `mb-4 text-sm ${colorClass}`; // 重設 class
+            statusMessage.className = `mb-4 text-sm ${colorClass}`;
         }
-
     </script>
 </body>
 </html>
