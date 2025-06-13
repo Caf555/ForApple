@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>萬華桃園親子假期互動規劃</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Ocean Blues -->
+    <!-- Application Structure Plan: A tabbed/single-page dashboard design with top navigation (Overview, Itinerary, Dining, Budget, Checklist). This non-linear structure allows users to quickly access specific information relevant to their planning stage (e.g., just checking the budget, or reviewing the packing list), which is more usable than a long, narrative report. The interactive budget calculator is the central feature, turning a static table into a dynamic planning tool. -->
+    <!-- Visualization & Content Choices: Itinerary -> Goal: Organize -> Method: Interactive HTML/CSS Timeline -> Interaction: Day 1/2 toggle. Justification: Visually separates the two days for clarity. | Budget -> Goal: Compare/Analyze -> Method: Chart.js Doughnut Chart & HTML Form -> Interaction: User selections on form update chart and total. Justification: Transforms static budget data into an interactive planning tool, clearly showing cost proportions. | Dining -> Goal: Organize -> Method: Filterable HTML/CSS Card Grid -> Interaction: Category filters. Justification: Allows users to easily find restaurants based on their current context (e.g., "Where can we eat in the Outlet?"). | Checklist -> Goal: Inform/Utility -> Method: Interactive HTML/CSS List -> Interaction: Click to toggle checkmark. Justification: Provides a simple, useful tool for trip preparation. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF7;
+            color: #3D4852;
+        }
+        .nav-link {
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active {
+            color: #3B82F6;
+            border-bottom-color: #3B82F6;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+            padding-left: 2.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0.45rem;
+            top: 0.5rem;
+            bottom: -0.5rem;
+            width: 2px;
+            background-color: #93C5FD;
+        }
+        .timeline-item:last-child::before {
+            height: 0;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            height: 1rem;
+            width: 1rem;
+            background-color: #3B82F6;
+            border-radius: 50%;
+            border: 2px solid #FDFBF7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .checklist-item {
+            cursor: pointer;
+        }
+        .checklist-item .icon::before {
+            content: '☐';
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+            color: #60A5FA;
+        }
+        .checklist-item.checked .icon::before {
+            content: '☑';
+            color: #22C55E;
+        }
+        .checklist-item.checked .text {
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="container mx-auto px-4 py-8 max-w-5xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600">桃園親子二日遊</h1>
+            <p class="mt-2 text-lg text-gray-600">萬華出發，高鐵假期互動規劃</p>
+        </header>
+
+        <nav class="flex justify-center border-b mb-8 flex-wrap">
+            <a href="#overview" class="nav-link active py-4 px-4 text-sm md:text-base font-medium">總覽</a>
+            <a href="#itinerary" class="nav-link py-4 px-4 text-sm md:text-base font-medium">行程</a>
+            <a href="#accommodation" class="nav-link py-4 px-4 text-sm md:text-base font-medium">住宿</a>
+            <a href="#dining" class="nav-link py-4 px-4 text-sm md:text-base font-medium">餐飲</a>
+            <a href="#budget" class="nav-link py-4 px-4 text-sm md:text-base font-medium">預算</a>
+            <a href="#checklist" class="nav-link py-4 px-4 text-sm md:text-base font-medium">準備清單</a>
+        </nav>
+
+        <main>
+            <!-- 總覽 Section -->
+            <section id="overview" class="section active">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg animate-fade-in">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-4">打造您的完美親子假期</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        這是一份為您和您9歲及11歲的孩子精心設計的兩天一夜高鐵假期提案。此行程以「極簡步行」為核心，所有景點、住宿和餐飲都圍繞在高鐵桃園站周邊，讓您無需費力奔波，能將寶貴的時間和精力全然投入於創造美好的親子回憶。
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <span class="text-2xl font-bold text-blue-600">2</span>
+                            <p class="text-sm text-blue-800">天</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <span class="text-2xl font-bold text-blue-600">1</span>
+                            <p class="text-sm text-blue-800">夜</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <span class="text-2xl font-bold text-green-600">4</span>
+                            <p class="text-sm text-green-800">位 (2大2小)</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <span class="text-2xl font-bold text-yellow-600">🚶</span>
+                            <p class="text-sm text-yellow-800">極簡步行</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 行程 Section -->
+            <section id="itinerary" class="section">
+                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-2">動感十足二日遊</h2>
+                    <p class="text-gray-600 mb-6">這是一個動靜穿插的建議行程。點擊下方按鈕切換日期，查看詳細活動安排。</p>
+                    <div class="text-center mb-6">
+                        <button id="day1-btn" class="bg-blue-500 text-white px-6 py-2 rounded-full shadow hover:bg-blue-600 transition-all">第一天</button>
+                        <button id="day2-btn" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-full shadow hover:bg-gray-300 transition-all ml-2">第二天</button>
+                    </div>
+                    <div id="day1-timeline"></div>
+                    <div id="day2-timeline" class="hidden"></div>
+                </div>
+            </section>
+
+            <!-- 住宿 Section -->
+            <section id="accommodation" class="section">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-4">親子住宿首選：COZZI Blu 和逸飯店</h2>
+                    <p class="text-gray-600 mb-6">飯店以《海底兩萬哩》為設計靈感，結合便利的地理位置與豐富的親子設施，為您的旅程提供夢幻般的海洋主題驛站。</p>
+                     <div class="grid md:grid-cols-2 gap-6">
+                        <img src="https://placehold.co/600x400/A0C4FF/333333?text=COZZI+Blu" class="rounded-lg object-cover w-full h-full">
+                        <div class="space-y-4">
+                            <div class="flex items-start bg-blue-50 p-4 rounded-lg">
+                                <span class="text-2xl mr-4">📍</span>
+                                <div><h3 class="font-bold text-blue-800">絕佳位置</h3><p class="text-sm text-gray-700">緊鄰高鐵站，與Xpark、Outlet相連，實現真正的極簡步行。</p></div>
+                            </div>
+                            <div class="flex items-start bg-blue-50 p-4 rounded-lg">
+                                <span class="text-2xl mr-4">🐧</span>
+                                <div><h3 class="font-bold text-blue-800">趣味設施</h3><p class="text-sm text-gray-700">企鵝機器人送餐、Cabin ZONE遊戲區、房內Xpark直播，驚喜不斷。</p></div>
+                            </div>
+                             <div class="flex items-start bg-blue-50 p-4 rounded-lg">
+                                <span class="text-2xl mr-4">🛌</span>
+                                <div><h3 class="font-bold text-blue-800">推薦房型</h3><p class="text-sm text-gray-700">建議選擇「和逸客房 兩大床」，確保全家都有舒適的睡眠空間。</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 餐飲 Section -->
+            <section id="dining" class="section">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-2">美味隨行：親子餐飲選擇</h2>
+                    <p class="text-gray-600 mb-6">高鐵桃園站周邊餐飲選擇豐富，從主題餐廳到精緻Buffet應有盡有。使用下方按鈕篩選您感興趣的餐廳類型。</p>
+                    <div id="dining-filters" class="flex justify-center gap-2 mb-6 flex-wrap">
+                        <button class="filter-btn active px-4 py-2 bg-blue-500 text-white rounded-full text-sm" data-filter="all">全部</button>
+                        <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm" data-filter="outlet">Outlet</button>
+                        <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm" data-filter="hotel">飯店內</button>
+                        <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm" data-filter="xpark">Xpark</button>
+                    </div>
+                    <div id="dining-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </section>
+
+            <!-- 預算 Section -->
+            <section id="budget" class="section">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-2">精明規劃：互動預算預估</h2>
+                    <p class="text-gray-600 mb-6">此為2大2小(9歲、11歲)的旅費概估。您可以透過下方的選項，即時調整行程內容，查看預算變化。最終費用以實際預訂為準。</p>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <div class="chart-container">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="font-bold text-gray-700">第一天晚餐選擇</label>
+                                <select id="dinner-choice" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="4686">逸·市集 (約 $4,686)</option>
+                                    <option value="2000" selected>其他單點餐廳 (約 $2,000)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="font-bold text-gray-700">第二天自選活動</label>
+                                <div id="activity-choice" class="mt-2 space-y-2">
+                                    <label class="flex items-center"><input type="radio" name="activity" class="form-radio" value="0" checked> <span class="ml-2">高鐵探索館 (免費)</span></label>
+                                    <label class="flex items-center"><input type="radio" name="activity" class="form-radio" value="200"> <span class="ml-2">兒童美術館 (約 $200)</span></label>
+                                    <label class="flex items-center"><input type="radio" name="activity" class="form-radio" value="2000"> <span class="ml-2">巧虎夢想樂園 (約 $2,000)</span></label>
+                                </div>
+                            </div>
+                            <div class="mt-6 p-4 bg-blue-50 rounded-lg text-center">
+                                <p class="text-lg text-blue-800">預估總花費</p>
+                                <p id="total-budget" class="text-3xl font-bold text-blue-600">NT$ 17,400</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 準備清單 Section -->
+            <section id="checklist" class="section">
+                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-4">行前必備清單</h2>
+                     <p class="text-gray-600 mb-6">點擊項目即可標示為完成，讓您出發前不遺漏任何重要事項。</p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold text-lg mb-3 text-gray-800">預訂事項 📌</h3>
+                            <ul id="booking-list" class="space-y-3"></ul>
+                        </div>
+                         <div>
+                            <h3 class="font-bold text-lg mb-3 text-gray-800">打包清單 🎒</h3>
+                            <ul id="packing-list" class="space-y-3"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const data = {
+                itinerary: {
+                    day1: [
+                        { time: '10:00-11:00', title: '高鐵啟程與抵達', description: '從台北/板橋搭高鐵至桃園站，步行至飯店寄放行李。', icon: '🚆' },
+                        { time: '11:30-13:00', title: '午餐時光', description: '於華泰名品城或Xpark周邊用餐，如「饅頭家族」或「貳樓」。', icon: '🍴' },
+                        { time: '13:00-16:30', title: 'Xpark水族館探索', description: '探索福爾摩沙大洋池、癒見水母，並欣賞全新光影特展「潛浸海洋」。', icon: '🐠' },
+                        { time: '16:30-18:30', title: '華泰名品城悠閒時光', description: '輕鬆漫步、逛街購物，或視孩子體力前往主題樂園。', icon: '🛍️' },
+                        { time: '18:30-20:00', title: '晚餐饗宴', description: '可選擇飯店「逸·市集」自助餐或華泰名品城內各式餐廳。', icon: '🍽️' },
+                        { time: '晚間', title: '飯店休憩或電影欣賞', description: '返回飯店放鬆，或至鄰近新光影城觀賞電影。', icon: '🌙' },
+                    ],
+                    day2: [
+                        { time: '08:00-09:30', title: '飯店豐盛早餐', description: '於「逸·市集」享用高鐵假期包含的自助早餐。', icon: '☀️' },
+                        { time: '09:30-10:00', title: '辦理退房', description: '將行李寄放於飯店櫃檯。', icon: '🏨' },
+                        { time: '10:00-12:30', title: '親子自選活動', description: '四選一：高鐵探索館、兒童美術館、橫山書法藝術館或巧虎樂園。', icon: '🎨' },
+                        { time: '12:30-13:30', title: '午餐', description: '依上午活動地點，彈性選擇用餐地點。', icon: '🍴' },
+                        { time: '13:30-14:00', title: '領取行李', description: '返回飯店領取寄放的行李。', icon: '🧳' },
+                        { time: '14:30後', title: '搭乘高鐵返程', description: '由桃園站搭車，滿載愉快回憶返家。', icon: '🏠' },
+                    ]
+                },
+                dining: [
+                    { name: 'Xcafe by PRONTO', type: '義式輕食', location: 'Xpark', price: '$$', feature: '企鵝景觀座位', category: 'xpark' },
+                    { name: '貳樓餐廳', type: '美式/義式', location: 'Outlet', price: '$$', feature: '提供「小大人餐」兒童餐', category: 'outlet' },
+                    { name: '饅頭家族主題餐廳', type: '主題美式', location: 'Outlet', price: '$$', feature: '卡通主題裝潢與餐點', category: 'outlet' },
+                    { name: 'JK STUDIO', type: '義法料理', location: 'Outlet', price: '$$$', feature: '氣氛佳，適合特殊聚餐', category: 'outlet' },
+                    { name: '逸·市集 (自助餐)', type: '多國百匯', location: '飯店內', price: '$$$', feature: '海洋/露營主題，兒童零食區', category: 'hotel' },
+                    { name: '逸薈軒 (中餐廳)', type: '川揚中式', location: '飯店內', price: '$$$', feature: '精緻中菜，裝潢典雅', category: 'hotel' },
+                ],
+                checklist: {
+                    booking: ['高鐵假期套裝 (住宿+車票)', 'Xpark水族館門票 (預約時段)', '熱門晚餐餐廳 (如逸·市集)'],
+                    packing: ['舒適的鞋子', '輕便透氣衣物、雨具', '個人常備藥品', '個人盥洗用品 (牙刷/牙膏等)', '孩童娛樂小物 (書籍/桌遊)', '手機、相機、行動電源']
+                },
+                budget: {
+                    base: {
+                        '高鐵假期': 10500,
+                        'Xpark門票': 1700,
+                        '基本餐飲': 3200, 
+                    },
+                    options: {
+                        dinner: {
+                            '4686': 4686,
+                            '2000': 2000,
+                        },
+                        activity: {
+                            '0': 0,
+                            '200': 200,
+                            '2000': 2000,
+                        }
+                    }
+                }
+            };
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+
+            function navigateTo(hash) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.hash === hash);
+                });
+                sections.forEach(section => {
+                    section.classList.toggle('active', `#${section.id}` === hash);
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    history.pushState(null, '', e.currentTarget.hash);
+                    navigateTo(e.currentTarget.hash);
+                });
+            });
+
+            if (window.location.hash) {
+                navigateTo(window.location.hash);
+            } else {
+                navigateTo('#overview');
+            }
+            
+            function createTimeline(day, containerId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = data.itinerary[day].map(item => `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="flex items-center mb-1">
+                            <span class="text-sm font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded">${item.time}</span>
+                             <span class="text-2xl ml-3">${item.icon}</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800">${item.title}</h4>
+                        <p class="text-sm text-gray-600">${item.description}</p>
+                    </div>
+                `).join('');
+            }
+
+            createTimeline('day1', 'day1-timeline');
+            createTimeline('day2', 'day2-timeline');
+
+            const day1Btn = document.getElementById('day1-btn');
+            const day2Btn = document.getElementById('day2-btn');
+            const day1Timeline = document.getElementById('day1-timeline');
+            const day2Timeline = document.getElementById('day2-timeline');
+
+            day1Btn.addEventListener('click', () => {
+                day1Timeline.classList.remove('hidden');
+                day2Timeline.classList.add('hidden');
+                day1Btn.classList.replace('bg-gray-200', 'bg-blue-500');
+                day1Btn.classList.replace('text-gray-700', 'text-white');
+                day2Btn.classList.replace('bg-blue-500', 'bg-gray-200');
+                day2Btn.classList.replace('text-white', 'text-gray-700');
+            });
+
+            day2Btn.addEventListener('click', () => {
+                day2Timeline.classList.remove('hidden');
+                day1Timeline.classList.add('hidden');
+                day2Btn.classList.replace('bg-gray-200', 'bg-blue-500');
+                day2Btn.classList.replace('text-gray-700', 'text-white');
+                day1Btn.classList.replace('bg-blue-500', 'bg-gray-200');
+                day1Btn.classList.replace('text-white', 'text-gray-700');
+            });
+
+            const diningGrid = document.getElementById('dining-grid');
+            const diningFilters = document.getElementById('dining-filters');
+
+            function renderDining(filter = 'all') {
+                diningGrid.innerHTML = data.dining
+                    .filter(item => filter === 'all' || item.category === filter)
+                    .map(item => `
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                         <h4 class="font-bold text-lg text-gray-800">${item.name}</h4>
+                         <p class="text-sm text-gray-500 mb-2">${item.type} | <span class="font-semibold text-amber-600">${item.price}</span></p>
+                         <p class="text-sm text-gray-700">${item.feature}</p>
+                         <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mt-2 px-2.5 py-0.5 rounded-full">${item.location}</span>
+                    </div>
+                `).join('');
+            }
+
+            diningFilters.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active', 'bg-blue-500', 'text-white'));
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.add('bg-gray-200', 'text-gray-700'));
+                    
+                    e.target.classList.add('active', 'bg-blue-500', 'text-white');
+                    e.target.classList.remove('bg-gray-200', 'text-gray-700');
+                    renderDining(e.target.dataset.filter);
+                }
+            });
+
+            renderDining();
+
+            function createChecklist(listId, items) {
+                const list = document.getElementById(listId);
+                list.innerHTML = items.map(item => `
+                    <li class="checklist-item flex items-center">
+                        <span class="icon"></span>
+                        <span class="text text-gray-700">${item}</span>
+                    </li>
+                `).join('');
+                 list.addEventListener('click', (e) => {
+                    const item = e.target.closest('.checklist-item');
+                    if(item) {
+                        item.classList.toggle('checked');
+                    }
+                });
+            }
+
+            createChecklist('booking-list', data.checklist.booking);
+            createChecklist('packing-list', data.checklist.packing);
+
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            let budgetChart;
+
+            const dinnerSelect = document.getElementById('dinner-choice');
+            const activityRadios = document.getElementById('activity-choice');
+            const totalBudgetElement = document.getElementById('total-budget');
+
+            function calculateAndUpdateBudget() {
+                const dinnerCost = parseInt(dinnerSelect.value);
+                const activityCost = parseInt(document.querySelector('input[name="activity"]:checked').value);
+                
+                const currentBudget = {
+                    '高鐵假期': data.budget.base['高鐵假期'],
+                    'Xpark門票': data.budget.base['Xpark門票'],
+                    '基本餐飲': data.budget.base['基本餐飲'],
+                    '第一天晚餐': dinnerCost - 2000, 
+                    '第二天活動': activityCost
+                };
+                
+                const filteredLabels = Object.keys(currentBudget).filter(k => currentBudget[k] > 0);
+                const filteredData = filteredLabels.map(k => currentBudget[k]);
+
+                let total = Object.values(currentBudget).reduce((sum, val) => sum + val, 0);
+
+                totalBudgetElement.textContent = `NT$ ${total.toLocaleString()}`;
+
+                if (budgetChart) {
+                    budgetChart.data.labels = filteredLabels;
+                    budgetChart.data.datasets[0].data = filteredData;
+                    budgetChart.update();
+                }
+            }
+
+            function initBudgetChart() {
+                const initialDinnerCost = parseInt(dinnerSelect.value);
+                const initialActivityCost = parseInt(document.querySelector('input[name="activity"]:checked').value);
+
+                const budgetData = {
+                    '高鐵假期': data.budget.base['高鐵假期'],
+                    'Xpark門票': data.budget.base['Xpark門票'],
+                    '基本餐飲': data.budget.base['基本餐飲'],
+                    '第一天晚餐': initialDinnerCost - 2000,
+                    '第二天活動': initialActivityCost,
+                };
+
+                const initialLabels = Object.keys(budgetData).filter(k => budgetData[k] > 0);
+                const initialValues = initialLabels.map(k => budgetData[k]);
+
+                budgetChart = new Chart(budgetCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: initialLabels,
+                        datasets: [{
+                            data: initialValues,
+                            backgroundColor: ['#60A5FA', '#34D399', '#FBBF24', '#F87171', '#A78BFA'],
+                            borderColor: '#FDFBF7',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: {
+                                        family: "'Noto Sans TC', sans-serif"
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', minimumFractionDigits: 0 }).format(context.parsed);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                calculateAndUpdateBudget();
+            }
+
+            dinnerSelect.addEventListener('change', calculateAndUpdateBudget);
+            activityRadios.addEventListener('change', calculateAndUpdateBudget);
+
+            initBudgetChart();
+        });
+    </script>
+
+</body>
+</html>
