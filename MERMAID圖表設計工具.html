@@ -709,83 +709,61 @@
             }
         }
         
-        // 渲染圖表
+        // 渲染圖表 (已修改為支援多圖表)
         function renderDiagram() {
             try {
                 // 確保 Mermaid 已初始化
                 if (!mermaidInitialized && !initializeMermaid()) {
                     return; // 如果初始化失敗則退出
                 }
-                
-                var code = codeInput.value.trim();
-                if (!code) {
+        
+                var fullCode = codeInput.value.trim();
+                if (!fullCode) {
                     diagramOutput.innerHTML = "<p>請輸入 MERMAID 語法來繪製圖表</p>";
                     errorOutput.innerHTML = "";
                     return;
                 }
-                
+        
                 // 清除舊的圖表和錯誤訊息
                 diagramOutput.innerHTML = "";
                 errorOutput.innerHTML = "";
-                
-                // 創建容器包裝
-                var wrapperContainer = document.createElement('div');
-                wrapperContainer.className = 'diagram-container';
-                
-                // 如果使用固定尺寸，則設置容器大小
-                if (config.useFixedSize) {
-                    wrapperContainer.style.width = config.diagramWidth + 'px';
-                    wrapperContainer.style.height = config.diagramHeight + 'px';
-                }
-                
-                // 創建新的Mermaid容器
-                var container = document.createElement('div');
-                container.className = 'mermaid';
-                container.textContent = code;
-                
-                // 如果設置了縮放，應用縮放
-                if (config.diagramScale !== 1.0) {
-                    container.style.transform = 'scale(' + config.diagramScale + ')';
-                    container.style.transformOrigin = 'top left';
-                }
-                
-                wrapperContainer.appendChild(container);
-                diagramOutput.appendChild(wrapperContainer);
-                
-                // 渲染新圖表
-                mermaid.init(undefined, document.querySelectorAll('.mermaid'));
-                
-                // 渲染完成後調整SVG大小
-                setTimeout(function() {
-                    var svgElement = container.querySelector('svg');
-                    if (svgElement && config.useFixedSize) {
-                        if (config.maintainAspectRatio) {
-                            // 保持比例的情況下調整大小
-                            var originalWidth = svgElement.viewBox.baseVal.width;
-                            var originalHeight = svgElement.viewBox.baseVal.height;
-                            var widthRatio = config.diagramWidth / originalWidth;
-                            var heightRatio = config.diagramHeight / originalHeight;
-                            var ratio = Math.min(widthRatio, heightRatio);
-                            
-                            svgElement.style.width = (originalWidth * ratio) + 'px';
-                            svgElement.style.height = (originalHeight * ratio) + 'px';
-                            svgElement.style.display = 'block';
-                            svgElement.style.margin = '0 auto';
-                        } else {
-                            // 直接設置寬高
-                            svgElement.style.width = '100%';
-                            svgElement.style.height = '100%';
-                        }
+        
+                // 使用 "---" 作為分隔符，將程式碼分割成多個區塊
+                var codeBlocks = fullCode.split(/\n---\n/);
+        
+                // 遍歷每一個程式碼區塊並創建對應的圖表容器
+                codeBlocks.forEach(function(code, index) {
+                    if (code.trim() === "") return; // 忽略空的區塊
+        
+                    var wrapperContainer = document.createElement('div');
+                    wrapperContainer.className = 'diagram-container';
+                    wrapperContainer.style.marginBottom = '20px'; // 為多個圖表之間增加間距
+        
+                    if (config.useFixedSize) {
+                        wrapperContainer.style.width = config.diagramWidth + 'px';
+                        wrapperContainer.style.height = config.diagramHeight + 'px';
                     }
-                }, 100); // 給渲染一點時間
-                
+        
+                    var container = document.createElement('div');
+                    container.className = 'mermaid';
+                    container.textContent = code.trim();
+        
+                    if (config.diagramScale !== 1.0) {
+                        container.style.transform = 'scale(' + config.diagramScale + ')';
+                        container.style.transformOrigin = 'top left';
+                    }
+        
+                    wrapperContainer.appendChild(container);
+                    diagramOutput.appendChild(wrapperContainer);
+                });
+        
+                // 初始化所有找到的 .mermaid 容器
+                mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+        
             } catch (error) {
                 console.error("渲染圖表錯誤:", error);
-                
-                // 嘗試獲取錯誤行號
                 var lineMatch = error.message.match(/Line (\d+)/i);
                 var lineNumber = lineMatch ? parseInt(lineMatch[1]) - 1 : undefined;
-                
                 showError("渲染錯誤: " + error.message, lineNumber);
             }
         }
