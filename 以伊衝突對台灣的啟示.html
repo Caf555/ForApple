@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>以伊衝突對台灣的啟示：互動式分析報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Tones -->
+    <!-- Application Structure Plan: A tabbed single-page application. The structure will be thematic, not linear, to improve usability. 1. 總覽 (Overview): Landing section with a summary, a casualty comparison chart, and an interactive conflict timeline. Goal: Quick understanding of the conflict's scale and progression. 2. 戰術與外交 (Tactics & Diplomacy): Combines military analysis and international reactions. Will feature interactive cards comparing asymmetric tactics and summarizing international stances. Goal: Deeper analysis of how the conflict unfolded. 3. 台灣的鏡鑑 (Taiwan's Mirror): Focuses on the core takeaways for Taiwan, broken down by defense, social resilience, and diplomatic strategy. Uses clear, digestible info blocks. Goal: Connect the conflict directly to Taiwan's situation. 4. 行動方案 (Action Plan): An interactive matrix of recommendations, filterable by government agency and priority. Goal: Provide clear, actionable policy suggestions derived from the report. This structure guides the user from a broad overview to specific, actionable insights, which is more effective for learning and retention than a simple long-form report. -->
+    <!-- Visualization & Content Choices: 1. Casualty Data -> Compare -> Bar Chart (Chart.js/Canvas): To visually compare the human cost on both sides. Interaction: Tooltips on hover. 2. Conflict Events (Table 1) -> Show Change -> Interactive Timeline (HTML/CSS/JS): To present the rapid escalation of events chronologically. Interaction: Click to expand details. 3. International Stances (Table 2) & Asymmetric Tactics (Table 3) -> Compare/Organize -> Interactive Cards (HTML/CSS/JS): To summarize complex information in a clear, categorized way. Interaction: Hover effects. 4. Action Plan (Table 4) -> Organize/Inform -> Filterable Grid (HTML/CSS/JS): To make the dense list of recommendations queryable. Interaction: Clickable filter buttons. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 50vh;
+        }
+        .tab-active {
+            border-color: #0369a1;
+            color: #0369a1;
+            background-color: #f0f9ff;
+        }
+        .timeline-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .timeline-item.active .timeline-item-content {
+            max-height: 500px; 
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div id="app" class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">影子戰爭的爆發</h1>
+            <p class="text-lg md:text-xl text-slate-600 mt-2">2025年伊朗-以色列衝突對台灣國防與韌性的戰略啟示</p>
+        </header>
+
+        <nav id="tabs" class="flex flex-wrap justify-center border-b border-slate-200 mb-8">
+            <button data-tab="overview" class="px-4 py-3 text-sm md:text-base font-medium border-b-2 border-transparent hover:text-sky-600 hover:border-sky-300 transition-colors duration-300 tab-active">衝突總覽</button>
+            <button data-tab="tactics" class="px-4 py-3 text-sm md:text-base font-medium border-b-2 border-transparent hover:text-sky-600 hover:border-sky-300 transition-colors duration-300">戰術與外交</button>
+            <button data-tab="lessons" class="px-4 py-3 text-sm md:text-base font-medium border-b-2 border-transparent hover:text-sky-600 hover:border-sky-300 transition-colors duration-300">台灣的鏡鑑</button>
+            <button data-tab="action" class="px-4 py-3 text-sm md:text-base font-medium border-b-2 border-transparent hover:text-sky-600 hover:border-sky-300 transition-colors duration-300">行動方案</button>
+        </nav>
+
+        <main>
+            <!-- 衝突總覽 Tab -->
+            <div id="overview" class="tab-content space-y-12">
+                <section>
+                    <h2 class="text-2xl font-bold text-center mb-6 text-slate-800">衝突概述</h2>
+                    <p class="max-w-4xl mx-auto text-center text-slate-600 leading-relaxed">
+                        2025年6月的事件標誌著伊朗與以色列之間長期的「影子戰爭」進入了全新的、直接對抗的階段。以色列認定伊朗的核子計畫已構成生存威脅，因而發動了代號「崛起雄獅行動」的先制攻擊，旨在癱瘓其核武、軍事指揮與經濟能力。伊朗則以大規模的飛彈飽和攻擊進行報復，造成雙方顯著傷亡，並引發劇烈的外交博弈。本互動報告旨在剖析此次衝突，並為台灣提煉關鍵的戰略啟示。
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-center mb-6 text-slate-800">傷亡數據比較</h2>
+                     <div class="chart-container">
+                        <canvas id="casualtyChart"></canvas>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2 class="text-2xl font-bold text-center mb-8 text-slate-800">衝突關鍵時間軸</h2>
+                    <div id="timeline-container" class="relative max-w-3xl mx-auto border-l-2 border-sky-200 pl-6 space-y-8">
+                    </div>
+                </section>
+            </div>
+
+            <!-- 戰術與外交 Tab -->
+            <div id="tactics" class="tab-content hidden space-y-12">
+                <section>
+                    <h2 class="text-2xl font-bold text-center mb-2 text-slate-800">不對稱作戰展演</h2>
+                    <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8 leading-relaxed">
+                        此次衝突是兩種「不對稱作戰」思維的正面對決。以色列運用其情報與技術優勢，進行高價值的「外科手術式」打擊；伊朗則利用數量與低成本優勢，發動旨在消耗與癱瘓對手的「飽和攻擊」。
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                            <h3 class="text-xl font-bold text-sky-700 mb-3">以色列：高技術、情報主導型</h3>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-start"><span class="mr-2 mt-1 text-sky-600">🎯</span><div><strong class="text-slate-700">目標：</strong>斬首、癱瘓、先制打擊</div></li>
+                                <li class="flex items-start"><span class="mr-2 mt-1 text-sky-600">🛠️</span><div><strong class="text-slate-700">方法：</strong>情報滲透、特種作戰、網路攻擊、精準打擊</div></li>
+                                <li class="flex items-start"><span class="mr-2 mt-1 text-sky-600">📈</span><div><strong class="text-slate-700">成效：</strong>極高。成功暗殺多名高層，達成戰略奇襲。</div></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                            <h3 class="text-xl font-bold text-red-700 mb-3">伊朗：低技術、數量飽和型</h3>
+                             <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-start"><span class="mr-2 mt-1 text-red-600">🎯</span><div><strong class="text-slate-700">目標：</strong>突破防禦網、製造恐慌、消耗資源</div></li>
+                                <li class="flex items-start"><span class="mr-2 mt-1 text-red-600">🛠️</span><div><strong class="text-slate-700">方法：</strong>大量發射低成本彈道飛彈與無人機</div></li>
+                                <li class="flex items-start"><span class="mr-2 mt-1 text-red-600">📉</span><div><strong class="text-slate-700">成效：</strong>中等。雖大部分被攔截，但仍成功造成傷亡與社會恐慌。</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2 class="text-2xl font-bold text-center mb-2 text-slate-800">外交戰場與變動的同盟</h2>
+                    <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8 leading-relaxed">
+                        軍事衝突之外，外交戰場的角力同樣激烈。各國的反應揭示了地緣政治的現實主義——國家利益與區域穩定，往往優先於意識形態同盟。
+                    </p>
+                    <div id="diplomacy-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+                </section>
+            </div>
+            
+            <!-- 台灣的鏡鑑 Tab -->
+            <div id="lessons" class="tab-content hidden space-y-12">
+                 <section>
+                    <h2 class="text-2xl font-bold text-center mb-2 text-slate-800">台灣可以學到的四個關鍵經驗</h2>
+                    <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8 leading-relaxed">
+                        這場遠在中東的戰爭，為台灣提供了一堂寶貴的國防課。從中，我們能提煉出關乎生存的四個核心經驗，指引我們未來的方向。
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <h3 class="text-xl font-bold text-slate-800 mb-3">1. 嚇阻的真諦：抵抗意志</h3>
+                            <p class="text-slate-600">嚇阻力量不僅來自先進武器，更來自人民保家衛國的集體意志。高昂的抵抗決心，能極大提升侵略成本，是嚇阻的基石。</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <h3 class="text-xl font-bold text-slate-800 mb-3">2. 戰爭的樣貌：全民皆兵</h3>
+                            <p class="text-slate-600">現代戰爭沒有前方後方，民生設施、關鍵基礎設施皆是戰場。台灣人必須拋棄「戰爭是軍人的事」的舊觀念，全民都需具備應變能力。</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <h3 class="text-xl font-bold text-slate-800 mb-3">3. 不對稱作戰：尖刺與毒液</h3>
+                            <p class="text-slate-600">豪豬戰略需攻守兼備。我們不僅需要低成本、高效能的防禦性「尖刺」，也需要能源頭打擊、讓敵劇痛的攻擊性「毒液」。</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <h3 class="text-xl font-bold text-slate-800 mb-3">4. 國際現實主義：自助者人恆助之</h3>
+                            <p class="text-slate-600">國際支持是有條件的。唯有展現堅強的自我防衛決心與實力，讓國際相信「幫助台灣符合其利益」，才能爭取到最有利的外部支持。</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 行動方案 Tab -->
+            <div id="action" class="tab-content hidden space-y-12">
+                <section>
+                     <h2 class="text-2xl font-bold text-center mb-2 text-slate-800">台灣國防領域行動建議</h2>
+                    <p class="max-w-4xl mx-auto text-center text-slate-600 mb-8 leading-relaxed">
+                        將衝突教訓轉化為具體行動。以下是針對台灣國防各領域的建議方案，可依權責單位或優先級進行篩選，以聚焦關鍵改革方向。
+                    </p>
+                    <div id="filters" class="flex flex-wrap justify-center gap-2 mb-8">
+                        <button class="filter-btn bg-white border border-slate-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-100 transition-colors" data-filter="all">所有單位</button>
+                        <button class="filter-btn bg-white border border-slate-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-100 transition-colors" data-filter="國防部">國防部</button>
+                        <button class="filter-btn bg-white border border-slate-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-100 transition-colors" data-filter="國安會">國安會</button>
+                        <button class="filter-btn bg-white border border-slate-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-100 transition-colors" data-filter="行政院">行政院</button>
+                        <button class="filter-btn bg-white border border-slate-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-100 transition-colors" data-filter="內政部">內政部</button>
+                        <button class="filter-btn bg-white border border-slate-300 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-100 transition-colors" data-filter="高">高優先級</button>
+                    </div>
+                    <div id="action-plan-container" class="space-y-4">
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA ---
+            const casualtyData = {
+                labels: ['死亡人數', '受傷人數'],
+                datasets: [
+                    {
+                        label: '伊朗',
+                        data: [224, 1277],
+                        backgroundColor: 'rgba(220, 38, 38, 0.6)',
+                        borderColor: 'rgba(220, 38, 38, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '以色列',
+                        data: [24, 500],
+                        backgroundColor: 'rgba(3, 105, 161, 0.6)',
+                        borderColor: 'rgba(3, 105, 161, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            const timelineData = [
+                { date: "6月12-13日", title: "以色列發動「崛起雄獅行動」", details: "對伊朗核設施、IRGC總部、飛彈基地等發動大規模空襲，造成伊朗方面重大傷亡。", icon: "✈️" },
+                { date: "6月13日晚間", title: "伊朗發動第一波報復", details: "向以色列特拉維夫等中部城市發射彈道飛彈與無人機。", icon: "🚀" },
+                { date: "6月14日", title: "衝突擴大", details: "以色列擴大空襲範圍至伊朗能源設施；伊朗持續對以色列住宅區發射飛彈。", icon: "💥" },
+                { date: "6月15日", title: "戰況膠著", details: "以色列宣稱掌握德黑蘭制空權，並攻擊伊朗國防部。伊朗死亡人數升至224人，以色列升至14人。", icon: "📈" },
+                { date: "6月16日", title: "攻擊資訊樞紐", details: "以色列空襲伊朗國家廣播電視台（IRIB）總部，伊朗則以飛彈攻擊以色列海法煉油廠。", icon: "📡" },
+                { date: "6月17日", title: "外交斡旋加強", details: "國際社會呼籲克制，歐盟外長召開緊急會議。衝突總傷亡持續攀升。", icon: "🕊️" }
+            ];
+
+            const diplomacyData = [
+                { actor: "美國", stance: "立場複雜矛盾，一方面撇清關係，一方面又暗示協調，反映內部鷹派與孤立主義的拉扯。", color: "blue" },
+                { actor: "歐盟 (EU)", stance: "一致譴責暴力，呼籲外交解決，但同時指責伊朗為不穩定來源，肯定以色列自衛權。", color: "yellow" },
+                { actor: "聯合國 (UN)", stance: "秘書長與IAEA譴責攻擊核設施，呼籲克制，但在安理會因大國分歧而無力做出決議。", color: "cyan" },
+                { actor: "阿拉伯國家", stance: "驚人轉向，強烈譴責以色列侵略，表達對伊朗的支持。區域穩定考量壓倒了傳統對立。", color: "green" },
+                { actor: "俄羅斯/中國", stance: "譴責以色列的軍事行動，支持伊朗立場，藉此挑戰西方主導的國際秩序。", color: "red" }
+            ];
+            
+            const actionPlanData = [
+                 { title: "空防/飛彈防禦", lesson: "高成本攔截系統在飽和攻擊下經濟上不可持續。", implication: "純粹依賴高價攔截彈的防禦模式將迅速耗盡庫存。", actions: "1.加速投資與部署低成本攔截器（如定向能武器）。<br>2.強化關鍵防空設施的實體防護與分散部署。<br>3.發展並整合可信的遠程反制打擊能力。", agency: "國防部", priority: "高" },
+                 { title: "情報與特種作戰", lesson: "深度『情報-特戰融合』是實現先制打擊與戰略奇襲的關鍵。", implication: "『豪豬戰略』需具備『劇毒』的反擊能力，而不僅是被動防禦。", actions: "1.成立跨部會的『情報-特戰融合』任務編組。<br>2.大幅增加對人力情報與特種作戰的長期投資。<br>3.將『不對稱防空壓制』納入台海防衛作戰想定。", agency: "國安會", priority: "高" },
+                 { title: "網路/資訊作戰", lesson: "敵方宣傳機器在戰時被視為合法軍事目標；認知作戰貫穿始終。", implication: "中共的認知作戰在戰時將極度激化，旨在癱瘓社會、瓦解意志。", actions: "1.將反制認知作戰納入『漢光演習』。<br>2.建立具備高度抗毀性的全國緊急通訊備援系統。<br>3.推動全民媒體識讀教育。", agency: "行政院", priority: "高" },
+                 { title: "全民防衛/民防", lesson: "具備高度韌性的公民社會是國家總體防衛的重要支柱。", implication: "強化民防不僅是災防準備，更是提升國家嚇阻能力的一環。", actions: "1.擴大『民安演習』的規模與擬真度。<br>2.立法鼓勵並整合民間自發的民防訓練組織。<br>3.加強宣導，將民防與國家安全連結。", agency: "內政部", priority: "中" },
+                 { title: "不對稱戰力", lesson: "成功的不對稱戰略需要高技術精準打擊與低技術數量飽和的結合。", implication: "台灣應同時發展『精準致命』與『量大低廉』兩種不對稱戰力。", actions: "1.持續量產部署各型飛彈、無人機與智慧水雷。<br>2.發展用於癱瘓敵方C4ISR節點的精準打擊能力。<br>3.將不對稱作戰思維融入後備部隊訓練。", agency: "國防部", priority: "高" }
+            ];
+
+
+            // --- RENDER FUNCTIONS ---
+            function renderCasualtyChart() {
+                const ctx = document.getElementById('casualtyChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: casualtyData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '人數'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: '伊朗 vs 以色列 衝突傷亡統計'
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y + ' 人';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function renderTimeline() {
+                const container = document.getElementById('timeline-container');
+                container.innerHTML = timelineData.map(item => `
+                    <div class="timeline-item cursor-pointer group">
+                        <div class="flex items-center">
+                             <div class="absolute w-8 h-8 bg-sky-100 rounded-full -left-4 border-4 border-white flex items-center justify-center text-xl group-hover:bg-sky-200 transition-colors">
+                                ${item.icon}
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="font-bold text-lg text-slate-800">${item.date}: ${item.title}</h3>
+                            </div>
+                        </div>
+                        <div class="timeline-item-content ml-4 mt-2 pl-8 border-l border-slate-200">
+                            <p class="text-slate-600">${item.details}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.querySelectorAll('.timeline-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        item.classList.toggle('active');
+                    });
+                });
+            }
+
+            function renderDiplomacy() {
+                const container = document.getElementById('diplomacy-container');
+                const colors = {
+                    blue: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-800' },
+                    yellow: { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-800' },
+                    cyan: { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-800' },
+                    green: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-800' },
+                    red: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-800' },
+                };
+                container.innerHTML = diplomacyData.map(item => `
+                    <div class="p-4 rounded-lg shadow-sm border ${colors[item.color].bg} ${colors[item.color].border}">
+                        <h4 class="font-bold ${colors[item.color].text} mb-2">${item.actor}</h4>
+                        <p class="text-sm text-slate-600">${item.stance}</p>
+                    </div>
+                `).join('');
+            }
+            
+            function renderActionPlan(filter = 'all') {
+                const container = document.getElementById('action-plan-container');
+                const filteredData = actionPlanData.filter(item => {
+                    if (filter === 'all') return true;
+                    if (filter === '高' || filter === '中') return item.priority === filter;
+                    return item.agency.includes(filter);
+                });
+
+                if (filteredData.length === 0) {
+                    container.innerHTML = `<p class="text-center text-slate-500">沒有符合篩選條件的項目。</p>`;
+                    return;
+                }
+
+                container.innerHTML = filteredData.map(item => `
+                    <div class="action-card bg-white p-6 rounded-lg shadow-md border border-slate-200 transition-all duration-300">
+                        <div class="flex justify-between items-start">
+                             <h3 class="text-xl font-bold text-slate-800 mb-2">${item.title}</h3>
+                             <span class="text-xs font-bold ${item.priority === '高' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'} px-2 py-1 rounded-full">${item.priority}優先級</span>
+                        </div>
+                        <p class="text-sm text-slate-500 mb-4"><strong>關鍵教訓：</strong>${item.lesson}</p>
+                        <div class="bg-slate-50 p-4 rounded-md">
+                            <h4 class="font-bold text-slate-700 mb-2">建議行動方案 (負責單位：${item.agency})</h4>
+                            <div class="text-slate-600 text-sm leading-relaxed">${item.actions}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // --- EVENT LISTENERS ---
+            const tabs = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('#tabs button');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+
+                    tabs.forEach(tab => {
+                        if (tab.id === targetTab) {
+                            tab.classList.remove('hidden');
+                        } else {
+                            tab.classList.add('hidden');
+                        }
+                    });
+
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    button.classList.add('tab-active');
+                });
+            });
+            
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            let activeFilter = 'all';
+            
+            filterButtons.forEach(button => {
+                 button.addEventListener('click', () => {
+                    activeFilter = button.dataset.filter;
+                    renderActionPlan(activeFilter);
+                    filterButtons.forEach(btn => btn.classList.remove('bg-sky-600', 'text-white'));
+                    button.classList.add('bg-sky-600', 'text-white');
+                });
+            });
+
+
+            // --- INITIALIZATION ---
+            renderCasualtyChart();
+            renderTimeline();
+            renderDiplomacy();
+            renderActionPlan();
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('bg-sky-600', 'text-white');
+
+        });
+    </script>
+</body>
+</html>
