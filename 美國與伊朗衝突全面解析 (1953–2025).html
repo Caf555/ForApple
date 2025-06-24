@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美伊衝突：一段關係的瓦解 (1953–2025)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Desert Diplomacy -->
+    <!-- Application Structure Plan: The application is designed as a vertical, scroll-driven interactive timeline. This chronological structure is the most intuitive way for users to understand the cause-and-effect progression of the 70-year conflict. The user journey starts with a high-level introduction and then flows through four distinct historical eras, each presented as a self-contained section. Key data points (JCPOA terms, 2025 conflict timeline) are transformed into interactive elements (clickable highlights, expanding details) to encourage exploration and improve comprehension. The final sections provide strategic analysis and conclusions, moving from historical narrative to high-level takeaways. This structure breaks down a complex report into manageable, engaging segments, prioritizing user understanding over a literal reproduction of the report's layout. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: US-Iran conflict history (narrative). Goal: Organize. Viz: Vertical Timeline (HTML/CSS/JS). Interaction: Scroll-triggered section reveals. Justification: Provides a clear, chronological navigation spine for the entire story.
+        - Report Info: JCPOA Terms (Table 1). Goal: Compare/Inform. Viz: Interactive two-column layout (HTML/CSS/JS). Interaction: Hover/click to highlight corresponding commitments and rewards. Justification: More engaging than a static table; visually reinforces the "deal" aspect of the agreement.
+        - Report Info: Centrifuge Reduction under JCPOA. Goal: Compare. Viz: Bar Chart (Chart.js/Canvas). Interaction: Tooltips on hover. Justification: Visually quantifies the significant impact of the JCPOA in a simple, clear format.
+        - Report Info: 2025 Conflict Timeline (Table 2). Goal: Change/Inform. Viz: Clickable timeline (HTML/CSS/JS). Interaction: Click to expand and show details for each event. Justification: Allows users to explore the rapid escalation of events at their own pace without cluttering the main view.
+        - Report Info: US-Israel-Iran Power Triangle. Goal: Relationships. Viz: Simple diagram (HTML/CSS/Tailwind). Interaction: None. Justification: A simple visual aid to clarify the complex trilateral relationship described in the text, avoiding complex graphics.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF7;
+            color: #3D405B;
+        }
+        .timeline-item {
+            opacity: 0.3;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .timeline-item.active {
+            opacity: 1;
+        }
+        .section-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            will-change: opacity, transform;
+        }
+        .section-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .jcpoa-item:hover {
+            background-color: #F4F1DE;
+        }
+        .jcpoa-link {
+            transition: background-color 0.2s;
+        }
+        .jcpoa-link.highlight {
+            background-color: #E0DBC5;
+        }
+        .event-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { 
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="text-center py-8 md:py-16 bg-[#F4F1DE]">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-bold text-[#3D405B] leading-tight">一段關係的瓦解</h1>
+            <p class="mt-4 text-lg md:text-2xl text-[#827A70]">美國與伊朗衝突全面解析 (1953–2025)</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        
+        <section id="intro" class="text-center max-w-4xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold mb-4">一場長達70年的悲劇</h2>
+            <p class="text-lg text-gray-700 leading-relaxed">
+                從1953年中情局策動的政變，到2025年B-2轟炸機投下的炸彈，美伊關係史是一部從錯誤干預開始，歷經怨恨積累、敵意固化，最終演變為高風險地緣政治對抗的悲劇。這是一個典型的「安全困境」：一方的防禦被另一方視為威脅，從而引發更激烈的反制，將雙方鎖死在無法擺脫的敵對螺旋之中。本頁將帶您回顧這段複雜的歷史，探索其背後的深層動因。
+            </p>
+        </section>
+
+        <div class="flex flex-col md:flex-row">
+            <!-- Timeline Navigation -->
+            <nav id="timeline-nav" class="md:w-1/4 mb-12 md:mb-0 md:sticky top-8 self-start">
+                <ul class="space-y-4">
+                    <li><a href="#era-1" class="timeline-item active block font-bold text-lg p-3 rounded-lg hover:bg-gray-200 transition-colors">1953–1979: 不信任的種子</a></li>
+                    <li><a href="#era-2" class="timeline-item block font-bold text-lg p-3 rounded-lg hover:bg-gray-200 transition-colors">1980–2014: 漫長的影子戰爭</a></li>
+                    <li><a href="#era-3" class="timeline-item block font-bold text-lg p-3 rounded-lg hover:bg-gray-200 transition-colors">2015–2020: 短暫的緩和及其崩潰</a></li>
+                    <li><a href="#era-4" class="timeline-item block font-bold text-lg p-3 rounded-lg hover:bg-gray-200 transition-colors">2020–2025: 戰爭邊緣</a></li>
+                    <li><a href="#era-5" class="timeline-item block font-bold text-lg p-3 rounded-lg hover:bg-gray-200 transition-colors">戰略分析與未來</a></li>
+                </ul>
+            </nav>
+
+            <!-- Content Sections -->
+            <div class="md:w-3/4 md:pl-12">
+                <section id="era-1" class="mb-24 section-content">
+                    <h3 class="text-2xl font-bold mb-2 text-[#8D8741]">第一階段：聯盟的斷裂 (1953-1979)</h3>
+                    <h2 class="text-4xl font-bold mb-6">不信任的種子</h2>
+                    <div class="space-y-6 text-gray-800 leading-relaxed text-lg">
+                        <p>美伊關係的轉捩點，始於1953年。當時，美國CIA與英國MI6聯手策劃「阿賈克斯行動」，推翻了推行石油國有化的民選總理摩薩台，扶植親西方的巴勒維國王重掌大權。這次政變在伊朗人心中留下了不可磨滅的創傷，被視為美國踐踏其主權的「原罪」，為後來的反美情緒提供了最有力的燃料。</p>
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#8D8741]">
+                            <h4 class="font-bold text-xl mb-2">1979年人質危機：決定性的決裂</h4>
+                            <p>1979年，伊朗爆發伊斯蘭革命，巴勒維國王流亡。同年11月，在何梅尼「大撒旦」的號召下，伊朗激進學生衝入美國大使館，扣留52名美國人長達444天。這場危機不僅導致兩國正式斷交，更在人民心中刻下深深的敵意，將曾經的盟友徹底變成了宿敵。</p>
+                        </div>
+                        <p>美國對巴勒維國王長達26年專制統治的支持，使得在許多伊朗人眼中，美國與國王的壓迫和腐敗緊密捆綁。最終，社會各階層的不滿情緒匯集成洪流，徹底改變了兩國關係的性質。</p>
+                    </div>
+                </section>
+
+                <section id="era-2" class="mb-24 section-content">
+                    <h3 class="text-2xl font-bold mb-2 text-[#659DBD]">第二階段：漫長的冷戰 (1980-2014)</h3>
+                    <h2 class="text-4xl font-bold mb-6">影子戰爭</h2>
+                     <div class="space-y-6 text-gray-800 leading-relaxed text-lg">
+                        <p>人質危機後，美伊進入長達三十餘年的「冷戰」時期。雙方避免直接衝突，轉而採取間接較量：美國實施經濟圍堵和制裁，伊朗則發展非對稱的代理人戰爭，扶植「抵抗軸心」（如黎巴嫩真主黨）來對抗美國及其盟友。</p>
+                         <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#659DBD]">
+                            <h4 class="font-bold text-xl mb-2">核問題浮現</h4>
+                            <p>2002年，伊朗被揭露秘密建造核設施，震驚國際社會。美國指責其秘密研發核武，伊朗則堅稱用於和平目的。自此，核問題成為兩國間最危險的引爆點，並引發了多輪嚴厲的國際制裁。</p>
+                        </div>
+                        <p>在此期間，還發生了1986年的「伊朗門事件」（美國秘密向伊朗出售武器）和1988年美軍擊落伊朗民航客機（造成290人遇難）等事件，這些摩擦共同構成了「影子戰爭」的圖景，加深了雙方的敵意。</p>
+                    </div>
+                </section>
+
+                <section id="era-3" class="mb-24 section-content">
+                    <h3 class="text-2xl font-bold mb-2 text-[#DAAD86]">第三階段：JCPOA時代 (2015-2020)</h3>
+                    <h2 class="text-4xl font-bold mb-6">曇花一現的緩和</h2>
+                    <div class="space-y-6 text-gray-800 leading-relaxed text-lg">
+                        <p>2015年，經過艱苦談判，伊朗與世界六強（含美國）達成歷史性的《聯合全面行動計畫》（JCPOA），又稱伊朗核協議。這是一項清晰的交易：伊朗同意嚴格限制其核活動，以換取國際社會解除 crippling 的經濟制裁。這被視為多邊外交的重大勝利。</p>
+                        
+                        <div class="chart-container my-8">
+                            <canvas id="centrifugeChart"></canvas>
+                        </div>
+                        <p class="text-center text-sm text-gray-600">圖表顯示：JCPOA協議顯著削減了伊朗運作中的離心機數量，將其「突破時間」（製造一枚核彈所需時間）延長至一年以上。</p>
+
+                        <div class="bg-white p-6 rounded-xl shadow-md mt-8 border-l-4 border-[#DAAD86]">
+                            <h4 class="font-bold text-xl mb-4 text-center">探索JCPOA協議核心條款</h4>
+                            <p class="text-center text-gray-600 mb-6">點擊或將滑鼠移至任一項，查看對應的交換條件。</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-bold text-center mb-2">伊朗的承諾</h5>
+                                    <ul class="space-y-2">
+                                        <li class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="reward-1">限制鈾濃縮水平至3.67%</li>
+                                        <li class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="reward-2">削減濃縮鈾庫存至300公斤</li>
+                                        <li class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="reward-3">削減離心機數量</li>
+                                        <li class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="reward-4">接受嚴格的國際核查</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-center mb-2">國際社會的回報</h5>
+                                    <ul class="space-y-2">
+                                        <li id="reward-1" class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="commitment-1">解除石油禁運</li>
+                                        <li id="reward-2" class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="commitment-2">解凍數百億美元資產</li>
+                                        <li id="reward-3" class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="commitment-3">恢復銀行體系(SWIFT)</li>
+                                        <li id="reward-4" class="p-3 rounded-lg border jcpoa-item jcpoa-link" data-link="commitment-4">解除貿易限制</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="font-bold mt-8">協議的崩潰：</p>
+                        <p>然而，2018年，美國川普政府單方面退出JCPOA，並重啟所有制裁，發起「極限施壓」運動。此舉未能迫使伊朗屈服，反而導致伊朗採取「極限抵抗」策略，逐步中止履行協議承諾，使其核計畫以前所未有的速度發展，催生出一個更不受控的危險局面。</p>
+                    </div>
+                </section>
+
+                <section id="era-4" class="mb-24 section-content">
+                    <h3 class="text-2xl font-bold mb-2 text-[#BC4749]">第四階段：直接對抗 (2020-2025)</h3>
+                    <h2 class="text-4xl font-bold mb-6">戰爭邊緣</h2>
+                    <div class="space-y-6 text-gray-800 leading-relaxed text-lg">
+                        <p>JCPOA的崩潰，標誌著「影子戰爭」時代的終結。2020年1月，美國在巴格達發動無人機空襲，擊殺伊朗高級將領蘇萊曼尼。這次「斬首」行動徹底打破了雙方默契，將直接軍事打擊正常化，衝突進入了更加危險的階段。</p>
+                        
+                        <div class="bg-white p-6 rounded-xl shadow-md mt-8 border-l-4 border-[#BC4749]">
+                            <h4 class="font-bold text-xl mb-4 text-center">2025年6月衝突升級時間線</h4>
+                            <p class="text-center text-gray-600 mb-6">點擊事件以展開詳細資訊。</p>
+                            <div class="space-y-2">
+                                <div class="event-item border-b pb-2">
+                                    <button class="event-toggle w-full text-left font-bold py-2 flex justify-between items-center">
+                                        <span>6月初：外交努力失敗</span>
+                                        <span class="transform transition-transform duration-300">▼</span>
+                                    </button>
+                                    <div class="event-details px-4 pt-2 text-gray-700">
+                                        <p>伊朗最高領袖哈梅內伊公開拒絕美國的最後外交提議，核談判徹底破裂，軍事選項的倒計時開始。</p>
+                                    </div>
+                                </div>
+                                <div class="event-item border-b pb-2">
+                                    <button class="event-toggle w-full text-left font-bold py-2 flex justify-between items-center">
+                                        <span>6月21-22日：「午夜之鎚行動」</span>
+                                        <span class="transform transition-transform duration-300">▼</span>
+                                    </button>
+                                    <div class="event-details px-4 pt-2 text-gray-700">
+                                        <p>在以色列遊說下，美國發起「午夜之鎚行動」，B-2隱形轟炸機對伊朗三處關鍵核設施（福爾多、納坦茲、伊斯法罕）實施精準打擊，旨在阻止伊朗獲得核武器。</p>
+                                    </div>
+                                </div>
+                                <div class="event-item border-b pb-2">
+                                    <button class="event-toggle w-full text-left font-bold py-2 flex justify-between items-center">
+                                        <span>6月22日：伊朗報復</span>
+                                        <span class="transform transition-transform duration-300">▼</span>
+                                    </button>
+                                    <div class="event-details px-4 pt-2 text-gray-700">
+                                        <p>伊朗向以色列發射數十枚彈道導彈進行「經過計算的」報復。美國國防部稱行動成功，但強調不尋求與伊朗開戰。</p>
+                                    </div>
+                                </div>
+                                 <div class="event-item">
+                                    <button class="event-toggle w-full text-left font-bold py-2 flex justify-between items-center">
+                                        <span>6月23日：全球市場動盪</span>
+                                        <span class="transform transition-transform duration-300">▼</span>
+                                    </button>
+                                    <div class="event-details px-4 pt-2 text-gray-700">
+                                        <p>全球油價、金價因避險情緒急劇上漲。中俄在聯合國譴責美國。國際社會擔憂伊朗可能封鎖霍爾木茲海峽，引發區域性大戰。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="era-5" class="section-content">
+                    <h3 class="text-2xl font-bold mb-2 text-[#3D405B]">最終章</h3>
+                    <h2 class="text-4xl font-bold mb-6">戰略分析與未來</h2>
+                    <div class="space-y-6 text-gray-800 leading-relaxed text-lg">
+                        <p>2025年的軍事衝突，是美伊70年恩怨的頂點，但遠非終點。它確立了一種基於美國軍事威懾的、新的「脆弱穩定」。要理解這場危機，必須剖析其背後的戰略邏輯。</p>
+
+                        <div class="bg-white p-6 rounded-xl shadow-md mt-8 border-l-4 border-[#3D405B]">
+                             <h4 class="font-bold text-xl mb-4">「精算型衝突」：一種新的戰爭模式？</h4>
+                             <p>此次衝突被稱為「高強度、低規模的精算型報復衝突」。雙方都在追求重大戰略目標（美：摧毀核能力；伊：展現報復決心）的同時，極力控制衝突規模，避免失控升級為全面戰爭。這種模式或許是未來大國博弈的新常態，但它建立在脆弱的假設之上，極其危險。</p>
+                        </div>
+                        
+                         <div class="bg-white p-6 rounded-xl shadow-md mt-8 border-l-4 border-[#3D405B]">
+                             <h4 class="font-bold text-xl mb-4">區域權力三角與全球棋盤</h4>
+                            <div class="flex flex-col md:flex-row items-center gap-4 text-center">
+                                <div class="p-4 border-2 border-dashed rounded-lg">
+                                    <span class="text-2xl">🇺🇸</span><br>美國<br><small>常規軍事優勢<br>全球實力投射</small>
+                                </div>
+                                <div class="text-2xl font-bold">🤝</div>
+                                 <div class="p-4 border-2 border-dashed rounded-lg">
+                                    <span class="text-2xl">🇮🇱</span><br>以色列<br><small>核心地區盟友<br>安全威脅關切</small>
+                                </div>
+                                <div class="text-2xl font-bold text-red-500">⚔️</div>
+                                <div class="p-4 border-2 border-dashed rounded-lg">
+                                    <span class="text-2xl">🇮🇷</span><br>伊朗<br><small>非對稱代理人網絡<br>地區影響力</small>
+                                </div>
+                            </div>
+                             <p class="mt-4">美伊衝突從來不是雙邊問題，以色列是關鍵的第三方。美國的軍事行動很大程度是為了解決其核心盟友以色列的安全威脅。而伊朗則利用其代理人網絡（如真主黨）來非對稱地制衡美以的常規軍事優勢。至於中國和俄羅斯，儘管道義上支持伊朗，但出於自身戰略考量，並未提供實質性援助，其挑戰美國中東主導地位的能力仍然有限。</p>
+                        </div>
+
+                        <div class="mt-12 bg-yellow-100/50 p-6 rounded-xl">
+                            <h4 class="font-bold text-2xl mb-4">結論與展望</h4>
+                            <p>軍事打擊並未終結衝突，火種仍在。未來衝突很可能重回「影子戰爭」，但雙方已跨過直接打擊的門檻，下一次危機爆發將更不可預測。要走出困境，需要超越短期危機管理，重建可信、持續的外交渠道，並尋求包含中、俄、歐在內的多邊主義路徑，正視彼此的核心安全關切。打破長達七十年的敵意循環絕非易事，但唯一的替代方案，是走向一條對全世界都將是災難性的道路。</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-8 mt-16 bg-[#E0DBC5]/50">
+        <p class="text-sm text-gray-600">此互動式報告根據公開歷史資料與戰略分析編制，僅供參考。</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Timeline Navigation Scroll highlighting
+            const sections = document.querySelectorAll('section[id^="era-"]');
+            const navLinks = document.querySelectorAll('#timeline-nav a');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+            
+            // Content fade-in animation
+            const contentSections = document.querySelectorAll('.section-content');
+            const contentObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            contentSections.forEach(section => {
+                contentObserver.observe(section);
+            });
+
+            // Centrifuge Chart
+            const ctx = document.getElementById('centrifugeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['JCPOA前 (約)', 'JCPOA後'],
+                    datasets: [{
+                        label: '運作中的離心機數量',
+                        data: [19000, 6000],
+                        backgroundColor: [
+                            'rgba(188, 71, 73, 0.6)',
+                            'rgba(101, 157, 189, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(188, 71, 73, 1)',
+                            'rgba(101, 157, 189, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'JCPOA對伊朗離心機數量的影響',
+                            font: { size: 16 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-US').format(context.parsed.y) + ' 台';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                             title: {
+                                display: true,
+                                text: '數量 (台)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // JCPOA Interactive Table
+            const jcpoaLinks = document.querySelectorAll('.jcpoa-link');
+            jcpoaLinks.forEach(link => {
+                const targetId = link.dataset.link;
+                const targetElement = document.getElementById(targetId);
+
+                const highlight = () => {
+                    if (targetElement) {
+                        link.classList.add('highlight');
+                        targetElement.classList.add('highlight');
+                    }
+                };
+
+                const unhighlight = () => {
+                    if (targetElement) {
+                        link.classList.remove('highlight');
+                        targetElement.classList.remove('highlight');
+                    }
+                };
+
+                link.addEventListener('mouseenter', highlight);
+                link.addEventListener('mouseleave', unhighlight);
+                link.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    highlight();
+                }, { passive: true });
+                link.addEventListener('touchend', unhighlight);
+            });
+
+            // Conflict Timeline Accordion
+            const eventToggles = document.querySelectorAll('.event-toggle');
+            eventToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const details = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('span:last-child');
+                    
+                    if (details.style.maxHeight && details.style.maxHeight !== '0px') {
+                        details.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        // Close other open items
+                        document.querySelectorAll('.event-details').forEach(d => d.style.maxHeight = '0px');
+                        document.querySelectorAll('.event-toggle span:last-child').forEach(i => i.style.transform = 'rotate(0deg)');
+
+                        details.style.maxHeight = details.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
