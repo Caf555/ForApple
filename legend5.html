@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勇者傳說：五域征途 (強化版)</title>
+    <meta name="description" content="專為手機優化的文字冒險RPG遊戲 - 包含所有AI生成圖片、完整的裝備與技能系統。">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        .game-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            touch-action: manipulation;
+            padding: 0.5rem 1rem;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(50%);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary { background: linear-gradient(45deg, #dc2626, #ef4444); }
+        .btn-secondary { background: linear-gradient(45deg, #2563eb, #3b82f6); }
+        .btn-success { background: linear-gradient(45deg, #16a34a, #22c55e); }
+        .btn-purple { background: linear-gradient(45deg, #7c3aed, #8b5cf6); }
+        .btn-warning { background: linear-gradient(45deg, #d97706, #f59e0b); }
+
+        .health-bar, .mp-bar, .exp-bar {
+            transition: width 0.5s ease-in-out;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 1; transform: translateY(0px); }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes gentleBreathing {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.005); filter: brightness(1.02); }
+        }
+
+        @keyframes combatShake {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.02) rotate(0.5deg); }
+            75% { transform: scale(0.98) rotate(-0.5deg); }
+        }
+
+        .combat-animation {
+            position: absolute;
+            font-weight: bold;
+            pointer-events: none;
+            animation: fadeUp 2s ease-out forwards;
+            z-index: 1000;
+        }
+
+        /* 圖片框樣式 */
+        .image-container {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #64748b;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+        }
+
+        .image-placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+        
+        .image-gentle-transition {
+            animation: gentleBreathing 4s ease-in-out infinite;
+        }
+
+        .image-combat-shake {
+            animation: combatShake 0.6s ease-in-out;
+        }
+
+        /* 手機優化布局 */
+        .mobile-layout {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 0.5rem;
+            gap: 0.75rem;
+        }
+
+        .top-panel { flex-shrink: 0; }
+        .main-game-area { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+        .bottom-panel { flex-shrink: 0; max-height: 40vh; overflow-y: auto; }
+
+        /* 戰鬥界面特殊布局 */
+        .battle-container { display: flex; flex-direction: column; height: 100%; }
+        .battle-info { flex-shrink: 0; }
+        .battle-log { flex: 1; min-height: 80px; overflow-y: auto; margin: 0.5rem 0; }
+        .battle-actions { flex-shrink: 0; margin-top: 0.5rem; }
+
+        /* 標籤頁系統 */
+        .tab-bar { display: flex; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .tab-button { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.3s ease; font-size: 0.8rem; }
+        .tab-button.active { border-bottom-color: #3b82f6; background: rgba(59, 130, 246, 0.1); font-weight: bold; }
+        .tab-content { padding: 0.75rem; animation: fadeIn 0.3s; min-height: 150px; max-height: 250px; overflow-y: auto; }
+
+        /* 緊湊的日誌樣式 */
+        .compact-log { height: 100%; overflow-y: auto; background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 0.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .log-entry { font-size: 0.75rem; padding: 0.25rem; margin-bottom: 0.2rem; border-radius: 4px; line-height: 1.2; border-left: 3px solid transparent; }
+        .log-entry:first-child { border-left-color: #10b981; }
+
+        /* 進度條優化 */
+        .progress-container { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .progress-bar { flex: 1; height: 8px; background: #374151; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 4px; }
+
+        /* 快速行動列 */
+        .quick-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+        .quick-action-btn { flex: 1; min-width: 70px; max-width: 120px; padding: 0.75rem 0.5rem; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; text-align: center; line-height: 1.2; min-height: 65px; }
+        .quick-action-btn span:first-child { font-size: 1rem; margin-bottom: 0.25rem; }
+
+        /* 裝備視覺化 */
+        .equipment-visual { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .equipment-slot { background: rgba(0, 0, 0, 0.3); border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 0.5rem; text-align: center; transition: all 0.3s ease; min-height: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .equipment-slot.equipped { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; border-style: solid; }
+        .equipment-slot-icon { font-size: 1.2rem; margin-bottom: 0.25rem; }
+        .equipment-slot-name { font-size: 0.6rem; color: #9ca3af; word-break: break-all; }
+
+        /* 背包和技能面板樣式 */
+        .inventory-item, .skill-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; margin-bottom: 0.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 6px; }
+        .item-info, .skill-info { flex: 1; }
+        .item-name, .skill-name { font-weight: bold; font-size: 0.9rem; }
+        .item-stats, .skill-desc { font-size: 0.7rem; color: #9ca3af; margin-top: 0.2rem; }
+        .item-actions, .skill-actions { display: flex; gap: 0.5rem; }
+        .item-actions .btn, .skill-actions .btn { font-size: 0.7rem; padding: 0.25rem 0.5rem; }
+        
+        /* 響應式網格 - 電腦版優化 */
+        @media (min-width: 768px) {
+            .mobile-layout { display: grid; grid-template-columns: 350px 1fr 300px; grid-template-rows: auto 1fr; gap: 1rem; padding: 1rem; max-width: 1400px; margin: 0 auto; }
+            .top-panel { grid-column: 1; grid-row: 1 / -1; }
+            .main-game-area { grid-column: 2; grid-row: 1 / -1; }
+            .bottom-panel { grid-column: 3; grid-row: 1 / -1; max-height: none; }
+            .image-container { height: 250px; }
+            .tab-content { max-height: calc(100vh - 100px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-size: 1.2rem;">
+            ⚔️ 正在載入勇者傳說...
+        </div>
+    </div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useRef } = React;
+        
+        const AdventureGame = () => {
+            // --- STATE MANAGEMENT ---
+            const [gameState, setGameState] = useState('menu');
+            const [selectedClass, setSelectedClass] = useState(null);
+            const [currentImage, setCurrentImage] = useState({ prompt: '', title: '', imageUrl: '' });
+            const [isLoading, setIsLoading] = useState(true);
+            const [isPlayerTurn, setIsPlayerTurn] = useState(true);
+            const [activeTab, setActiveTab] = useState('inventory');
+            const [name, setName] = useState('');
+            
+            // 預設圖片庫
+            const defaultImageUrls = { "menu": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/遊戲開始畫面.jpg", "exploration": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/勇敢探索.jpg", "combat": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/激烈戰鬥.jpg", "levelUp": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/等級提升.jpg", "treasureFound": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/發現寶藏.jpg", "goldCoins": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/發現金幣.jpg", "victory": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/凱旋.jpg", "gameOver": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/英雄隕落.jpg", "warrior": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/戰士職業.jpg", "mage": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/法師.jpg", "rogue": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/盜賊.jpg", "forest": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/森林.jpg", "mountain": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/蒼穹山脈.jpg", "desert": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/焦熱沙漠.jpg", "icefield": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/極凍冰原.jpg", "volcano": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/地獄火山.jpg", "demonKing": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/毀滅魔王.jpg", "forestWolf": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/森林狼.jpg", "corruptedTreespirit": "https://raw.githubusercontent.com/Caf555/ForApple/d1640533d2a08f16bc7d1ced7101e4f6798c2f07/RPG%20JPG/腐化樹精.jpg", "forestGuardian": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/森林守護者.jpg", "mountainKing": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/山脈之王.jpg", "desertOverlord": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/沙漠霸主.jpg", "frostQueen": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/冰霜女王.jpg", "fireLord": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/火焰領主.jpg", "healthPotion": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/生命藥水.jpg", "forestSword": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/森林之劍.jpg", "holyBlade": "https://raw.githubusercontent.com/Caf555/ForApple/124c96adbdf8ffcb8787899adf64176ad8dbd879/RPG%20JPG/聖光劍.jpg" };
+            const [uploadedImages, setUploadedImages] = useState(defaultImageUrls);
+
+            const [player, setPlayer] = useState(null);
+            const [battleState, setBattleState] = useState(null);
+            const [gameLog, setGameLog] = useState([]);
+            const [currentAreaIndex, setCurrentAreaIndex] = useState(0);
+            const [combatAnimations, setCombatAnimations] = useState([]);
+
+            // --- HELPER FUNCTIONS ---
+            const addLog = useCallback((message, type = "normal") => {
+                setGameLog(prev => [{ message, type, timestamp: new Date().toLocaleTimeString() }, ...prev.slice(0, 49)]);
+            }, []);
+            
+            const addCombatAnimation = useCallback((text, type = "damage") => {
+                const id = Date.now() + Math.random();
+                setCombatAnimations(prev => [...prev, { id, text, type }]);
+                setTimeout(() => setCombatAnimations(prev => prev.filter(anim => anim.id !== id)), 2000);
+            }, []);
+
+            const setImage = useCallback((imageKey) => {
+                setCurrentImage({ imageUrl: uploadedImages[imageKey] || '' });
+            }, [uploadedImages]);
+
+            // --- GAME DATA ---
+            const itemDatabase = {
+                1: { id: 1, name: "生命藥水", type: "potion", heal: 60, value: 20, imageKey: "healthPotion" },
+                2: { id: 2, name: "魔力藥水", type: "potion", mp: 40, value: 25 },
+                3: { id: 3, name: "全復藥水", type: "potion", heal: 100, mp: 70, value: 50 },
+                101: { id: 101, name: "短劍", type: "weapon", attack: 5, value: 30 },
+                102: { id: 102, name: "森林之劍", type: "weapon", attack: 8, value: 50, imageKey: "forestSword" },
+                103: { id: 103, name: "山脈之斧", type: "weapon", attack: 12, value: 150 },
+                104: { id: 104, name: "聖光劍", type: "weapon", attack: 25, value: 300, imageKey: "holyBlade" },
+                201: { id: 201, name: "皮甲", type: "armor", defense: 5, value: 40 },
+                202: { id: 202, name: "鱗甲", type: "armor", defense: 12, value: 80 },
+                203: { id: 203, name: "熾天使護甲", type: "armor", defense: 25, value: 250 },
+                301: { id: 301, name: "速度之靴", type: "accessory", speed: 5, value: 100 },
+            };
+
+            const classes = {
+                warrior: { name: "戰士", emoji: "⚔️", description: "近戰專家，高攻擊和防禦力", bonuses: { attack: 10, defense: 8, hp: 30, mp: 0, speed: 0, luck: 0 }, skills: ["重擊", "防禦姿態"] },
+                mage: { name: "法師", emoji: "🔮", description: "魔法使用者，高魔力和技能傷害", bonuses: { attack: 5, defense: 3, hp: 0, mp: 30, speed: 0, luck: 5 }, skills: ["火球術", "治療術"] },
+                rogue: { name: "盜賊", emoji: "🗡️", description: "敏捷刺客，高暴擊和速度", bonuses: { attack: 8, defense: 0, hp: 0, mp: 0, speed: 10, luck: 8 }, skills: ["背刺", "毒刃"] }
+            };
+            const skillDatabase = {
+                "重擊": { name: "重擊", mp: 10, power: 1.8, type: "damage", desc: "造成180%物理傷害", level: 1 },
+                "防禦姿態": { name: "防禦姿態", mp: 10, type: "buff", effect: { type: "defense_boost", value: 2, duration: 2 }, desc: "2回合內防禦加倍", level: 1 },
+                "戰吼": { name: "戰吼", mp: 15, type: "buff", effect: { type: "attack_boost", value: 1.5, duration: 3 }, desc: "3回合內攻擊提升50%", unlockLevel: 5 },
+                "火球術": { name: "火球術", mp: 12, power: 2.0, type: "damage", desc: "造成200%魔法傷害", level: 1 },
+                "治療術": { name: "治療術", mp: 15, power: 0.5, type: "heal", desc: "恢復50%最大生命", level: 1 },
+                "魔法護盾": { name: "魔法護盾", mp: 20, type: "buff", effect: { type: "shield", value: 50 }, desc: "產生一個50點的護盾", unlockLevel: 5 },
+                "背刺": { name: "背刺", mp: 10, power: 1.5, critChance: 0.5, type: "damage", desc: "高暴擊率的攻擊", level: 1 },
+                "毒刃": { name: "毒刃", mp: 12, type: "buff", effect: { type: "poison", damage: 10, duration: 3 }, desc: "使敵人中毒3回合", level: 1 },
+                "閃避": { name: "閃避", mp: 15, type: "buff", effect: { type: "dodge_boost", value: 0.5, duration: 2 }, desc: "2回合內閃避率提升50%", unlockLevel: 5 },
+            };
+            const areas = [
+                { 
+                    name: "迷霧森林", imageKey: "forest", 
+                    enemies: [ 
+                        { name: "森林狼", hp: 60, attack: 18, defense: 5, exp: 25, gold: 15, imageKey: "forestWolf", drops: [{itemId: 1, chance: 0.3}, {itemId: 101, chance: 0.1}] },
+                        { name: "腐化樹精", hp: 90, attack: 15, defense: 12, exp: 35, gold: 20, imageKey: "corruptedTreespirit", drops: [{itemId: 201, chance: 0.15}] }
+                    ], 
+                    boss: { name: "森林守護者", hp: 200, attack: 25, defense: 15, exp: 100, gold: 80, imageKey: "forestGuardian", drops: [{itemId: 102, chance: 1}] }, 
+                    treasures: [1, 101, 201] 
+                },
+                { 
+                    name: "蒼穹山脈", imageKey: "mountain", 
+                    enemies: [ 
+                        { name: "石巨人", hp: 120, attack: 28, defense: 20, exp: 45, gold: 25, drops: [{itemId: 2, chance: 0.2}] },
+                        { name: "風暴鷹", hp: 100, attack: 30, defense: 10, exp: 40, gold: 30, drops: [{itemId: 301, chance: 0.1}] }
+                    ], 
+                    boss: { name: "山脈之王", hp: 280, attack: 32, defense: 25, exp: 120, gold: 100, imageKey: "mountainKing", drops: [{itemId: 103, chance: 1}, {itemId: 202, chance: 0.5}] }, 
+                    treasures: [2, 202, 301]
+                },
+                { 
+                    name: "地獄火山", imageKey: "volcano", 
+                    enemies: [ 
+                        { name: "熔岩獸", hp: 150, attack: 36, defense: 15, exp: 45, gold: 30, drops: [{itemId: 3, chance: 0.1}] },
+                         { name: "火焰惡魔", hp: 180, attack: 40, defense: 12, exp: 60, gold: 40, drops: [{itemId: 3, chance: 0.2}] }
+                    ], 
+                    boss: { name: "火焰領主", hp: 500, attack: 45, defense: 25, exp: 200, gold: 180, imageKey: "fireLord", drops: [{itemId: 104, chance: 1}, {itemId: 203, chance: 1}] }, 
+                    treasures: [3, 104, 203] 
+                }
+            ];
+            const demonKing = { name: "毀滅魔王", hp: 800, maxHp: 800, attack: 55, defense: 30, exp: 500, gold: 1000, imageKey: "demonKing", drops: [] };
+            
+            // --- LIFECYCLE & CORE LOGIC ---
+            useEffect(() => {
+                setImage('menu');
+                setIsLoading(false);
+            }, []);
+
+            const getPlayerStats = useCallback(() => {
+                if (!player) return {};
+                const equipment = player.equipment;
+                const baseAttack = player.baseAttack;
+                const baseDefense = player.baseDefense;
+                const baseSpeed = player.baseSpeed;
+
+                const weaponAttack = equipment.weapon ? equipment.weapon.attack || 0 : 0;
+                const armorDefense = equipment.armor ? equipment.armor.defense || 0 : 0;
+                const accessorySpeed = equipment.accessory ? equipment.accessory.speed || 0 : 0;
+
+                return {
+                    attack: baseAttack + weaponAttack,
+                    defense: baseDefense + armorDefense,
+                    speed: baseSpeed + accessorySpeed,
+                };
+            }, [player]);
+
+            const startGame = (name, className) => {
+                const classData = classes[className];
+                const initialPlayer = {
+                    name,
+                    class: className,
+                    level: 1,
+                    hp: 100 + (classData.bonuses.hp || 0),
+                    maxHp: 100 + (classData.bonuses.hp || 0),
+                    mp: 50 + (classData.bonuses.mp || 0),
+                    maxMp: 50 + (classData.bonuses.mp || 0),
+                    baseAttack: 20 + classData.bonuses.attack,
+                    baseDefense: 10 + classData.bonuses.defense,
+                    baseSpeed: 15 + classData.bonuses.speed,
+                    luck: 10 + classData.bonuses.luck,
+                    exp: 0,
+                    gold: 100,
+                    skillPoints: 1,
+                    inventory: [{...itemDatabase[1], instanceId: Date.now()}], // Start with a health potion
+                    equipment: { weapon: null, armor: null, accessory: null },
+                    skills: Object.fromEntries(classData.skills.map(skill => [skill, skillDatabase[skill]])),
+                    statusEffects: [],
+                    stats: { enemiesDefeated: 0, treasuresFound: 0, goldEarned: 100, criticalHits: 0, bossesDefeated: 0 }
+                };
+                setPlayer(initialPlayer);
+                setCurrentAreaIndex(0);
+                setGameState('playing');
+                setImage(areas[0].imageKey);
+                addLog(`${classData.emoji} ${name} 選擇了${classData.name}職業，開始冒險！`, "important");
+            };
+            
+            const handlePlayerAction = useCallback((action) => {
+                if (!isPlayerTurn || !battleState || !player) return;
+                setIsPlayerTurn(false);
+
+                let newPlayer = JSON.parse(JSON.stringify(player)); // Deep copy
+                let newBattleState = { ...battleState };
+                const playerStats = getPlayerStats();
+                let playerDamage = 0;
+                let isCrit = false;
+
+                // 玩家行動
+                if (action.type === 'attack') {
+                    isCrit = Math.random() < (player.luck / 200 + 0.05);
+                    let baseDamage = Math.floor(playerStats.attack * (isCrit ? 1.5 : 1) * (0.8 + Math.random() * 0.4));
+                    playerDamage = Math.max(1, baseDamage - (newBattleState.defense || 0));
+                    addLog(`你造成了 ${playerDamage} 點傷害${isCrit ? '！暴擊！' : ''}`, 'attack');
+                    addCombatAnimation(`-${playerDamage}`, isCrit ? 'critical' : 'damage');
+                } else if (action.type === 'skill') {
+                    const skill = newPlayer.skills[action.skillName];
+                    if (newPlayer.mp < skill.mp) {
+                        addLog("MP不足！", "error");
+                        setIsPlayerTurn(true);
+                        return;
+                    }
+                    newPlayer.mp -= skill.mp;
+                    if (skill.type === 'damage') {
+                        let baseDamage = Math.floor(playerStats.attack * skill.power);
+                        playerDamage = Math.max(1, baseDamage - (newBattleState.defense || 0));
+                        addLog(`你使用 ${skill.name}，造成 ${playerDamage} 點傷害！`, 'attack');
+                        addCombatAnimation(`-${playerDamage}`, 'damage');
+                    } else if (skill.type === 'heal') {
+                        const healAmount = Math.floor(newPlayer.maxHp * skill.power);
+                        newPlayer.hp = Math.min(newPlayer.maxHp, newPlayer.hp + healAmount);
+                        addLog(`你使用 ${skill.name}，恢復了 ${healAmount} 點生命！`, 'heal');
+                        addCombatAnimation(`+${healAmount}`, 'heal');
+                    }
+                } else if (action.type === 'use_potion') {
+                    const itemIndex = newPlayer.inventory.findIndex(i => i.instanceId === action.item.instanceId);
+                    if (itemIndex > -1) {
+                        const item = newPlayer.inventory[itemIndex];
+                        if(item.heal) newPlayer.hp = Math.min(newPlayer.maxHp, newPlayer.hp + item.heal);
+                        if(item.mp) newPlayer.mp = Math.min(newPlayer.maxMp, newPlayer.mp + item.mp);
+                        newPlayer.inventory.splice(itemIndex, 1);
+                        addLog(`你使用了 ${item.name}！`, 'heal');
+                    }
+                }
+
+                newBattleState.hp -= playerDamage;
+
+                // 勝利判斷
+                if (newBattleState.hp <= 0) {
+                    setTimeout(() => {
+                        addLog(`你擊敗了 ${newBattleState.name}！`, "victory");
+                        const expGained = newBattleState.exp;
+                        const goldGained = newBattleState.gold;
+                        newPlayer.exp += expGained;
+                        newPlayer.gold += goldGained;
+                        
+                        // 掉落物品
+                        if(newBattleState.drops){
+                            newBattleState.drops.forEach(drop => {
+                                if(Math.random() < drop.chance){
+                                    const droppedItem = {...itemDatabase[drop.itemId], instanceId: Date.now() + Math.random()};
+                                    newPlayer.inventory.push(droppedItem);
+                                    addLog(`你獲得了 [${droppedItem.name}]！`, 'treasure');
+                                }
+                            });
+                        }
+
+                        // 升級判斷
+                        const expToNextLevel = newPlayer.level * 100;
+                        if (newPlayer.exp >= expToNextLevel) {
+                            newPlayer.level++;
+                            newPlayer.exp -= expToNextLevel;
+                            newPlayer.skillPoints++;
+                            newPlayer.maxHp += 20;
+                            newPlayer.maxMp += 10;
+                            newPlayer.hp = newPlayer.maxHp;
+                            newPlayer.mp = newPlayer.maxMp;
+                            newPlayer.baseAttack += 3;
+                            newPlayer.baseDefense += 2;
+                            addLog(`等級提升！你現在是 ${newPlayer.level} 級！`, "level_up");
+                            setImage('levelUp');
+                        }
+                        
+                        setPlayer(newPlayer);
+                        setBattleState(null);
+                        setIsPlayerTurn(true);
+                        if(newBattleState.name === demonKing.name) {
+                            setGameState('victory');
+                            setImage('victory');
+                        } else {
+                           setImage(areas[currentAreaIndex].imageKey);
+                        }
+                    }, 500);
+                    return;
+                }
+                
+                setBattleState(newBattleState);
+                setPlayer(newPlayer);
+
+                // 敵人回合
+                setTimeout(() => {
+                    let enemyDamage = Math.max(1, newBattleState.attack - playerStats.defense);
+                    addLog(`${newBattleState.name} 攻擊你，造成 ${enemyDamage} 點傷害！`, 'enemy_attack');
+                    addCombatAnimation(`-${enemyDamage}`, 'enemy_damage');
+                    
+                    setPlayer(prev => {
+                        const newHp = prev.hp - enemyDamage;
+                        if (newHp <= 0) {
+                            setTimeout(() => {
+                                setGameState('gameOver');
+                                setImage('gameOver');
+                            }, 1000);
+                            return { ...prev, hp: 0 };
+                        }
+                        return { ...prev, hp: newHp };
+                    });
+                    setIsPlayerTurn(true);
+                }, 1200);
+
+            }, [isPlayerTurn, battleState, player, getPlayerStats, addLog, addCombatAnimation, setImage, currentAreaIndex]);
+            
+            const explore = () => {
+                const area = areas[currentAreaIndex];
+                const eventRoll = Math.random();
+                if (eventRoll < 0.6) { // 遭遇敵人
+                    const enemyTemplate = area.enemies[Math.floor(Math.random() * area.enemies.length)];
+                    const enemy = {...enemyTemplate, maxHp: enemyTemplate.hp};
+                    setBattleState(enemy);
+                    setImage(enemy.imageKey || 'combat');
+                    addLog(`遭遇 ${enemy.name}！`, "encounter");
+                } else if (eventRoll < 0.8) { // 發現寶藏
+                    const treasureId = area.treasures[Math.floor(Math.random() * area.treasures.length)];
+                    const treasure = {...itemDatabase[treasureId], instanceId: Date.now()};
+                    setPlayer(prev => ({ ...prev, inventory: [...prev.inventory, treasure] }));
+                    addLog(`發現 ${treasure.name}！`, "treasure");
+                    setImage(treasure.imageKey || 'treasureFound');
+                } else { // 發現金幣
+                    const goldFound = Math.floor(Math.random() * 50) + 20;
+                    setPlayer(prev => ({ ...prev, gold: prev.gold + goldFound }));
+                    addLog(`發現 ${goldFound} 金幣！`, "gold");
+                    setImage('goldCoins');
+                }
+            };
+
+            const equipItem = (itemToEquip) => {
+                setPlayer(prev => {
+                    const newInventory = [...prev.inventory];
+                    const itemIndex = newInventory.findIndex(i => i.instanceId === itemToEquip.instanceId);
+                    if (itemIndex === -1) return prev; 
+
+                    newInventory.splice(itemIndex, 1);
+
+                    const newEquipment = { ...prev.equipment };
+                    const currentItem = newEquipment[itemToEquip.type];
+
+                    if (currentItem) {
+                        newInventory.push(currentItem);
+                    }
+
+                    newEquipment[itemToEquip.type] = itemToEquip;
+                    
+                    addLog(`裝備了 ${itemToEquip.name}。`, 'system');
+                    return { ...prev, inventory: newInventory, equipment: newEquipment };
+                });
+            };
+
+            const useItem = (itemToUse) => {
+                setPlayer(prev => {
+                    const newInventory = [...prev.inventory];
+                    const itemIndex = newInventory.findIndex(i => i.instanceId === itemToUse.instanceId);
+                    if (itemIndex === -1) return prev;
+
+                    const item = newInventory[itemIndex];
+                    let newHp = prev.hp;
+                    let newMp = prev.mp;
+
+                    if (item.heal) newHp = Math.min(prev.maxHp, prev.hp + item.heal);
+                    if (item.mp) newMp = Math.min(prev.maxMp, prev.mp + item.mp);
+                    
+                    newInventory.splice(itemIndex, 1);
+                    addLog(`使用了 ${item.name}。`, 'heal');
+                    return { ...prev, hp: newHp, mp: newMp, inventory: newInventory };
+                });
+            };
+            
+            const sellItem = (itemToSell) => {
+                setPlayer(prev => {
+                    const newInventory = prev.inventory.filter(i => i.instanceId !== itemToSell.instanceId);
+                    const newGold = prev.gold + itemToSell.value;
+                    addLog(`賣掉了 ${itemToSell.name}，獲得 ${itemToSell.value} 金幣。`, 'gold');
+                    return { ...prev, inventory: newInventory, gold: newGold };
+                });
+            };
+
+            const learnSkill = (skillToLearn) => {
+                setPlayer(prev => {
+                    if (prev.skillPoints < 1) {
+                        addLog("技能點數不足！", "error");
+                        return prev;
+                    }
+                    if (prev.skills[skillToLearn.name]) {
+                        addLog("你已經學會這個技能了！", "error");
+                        return prev;
+                    }
+
+                    const newSkills = {...prev.skills, [skillToLearn.name]: skillToLearn};
+                    addLog(`學會了新技能：${skillToLearn.name}！`, 'level_up');
+                    return { ...prev, skills: newSkills, skillPoints: prev.skillPoints - 1 };
+                });
+            };
+
+            // --- RENDER COMPONENTS ---
+            const ImageDisplay = () => (
+                <div className="image-container">
+                    {currentImage.imageUrl ? (
+                        <img 
+                            src={currentImage.imageUrl} 
+                            alt="遊戲場景"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            className={battleState ? 'image-combat-shake' : 'image-gentle-transition'}
+                        />
+                    ) : (
+                        <div className="image-placeholder"><div className="image-placeholder-icon">🖼️</div><div>圖片載入中...</div></div>
+                    )}
+                    {combatAnimations.map(anim => (
+                        <div key={anim.id} className="combat-animation" style={{
+                            left: `${Math.random() * 60 + 20}%`, top: `${Math.random() * 40 + 30}%`,
+                            color: anim.type === 'critical' ? '#dc2626' : anim.type === 'heal' ? '#22c55e' : '#f97316'
+                        }}>{anim.text}</div>
+                    ))}
+                </div>
+            );
+
+            const ProgressBar = ({ current, max, color, emoji }) => (
+                <div className="progress-container">
+                    <span style={{ fontSize: '0.8rem', minWidth: '40px' }}>{emoji}</span>
+                    <div className="progress-bar"><div className="progress-fill" style={{ width: `${(current / max) * 100}%`, background: color }} /></div>
+                    <span style={{ fontSize: '0.8rem', minWidth: '60px' }}>{Math.ceil(current)}/{max}</span>
+                </div>
+            );
+
+            // --- GAME STATE RENDER LOGIC ---
+            if (gameState === 'menu') {
+                return (
+                    <div style={{ minHeight: '100vh', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+                            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#fbbf24' }}>⚔️ 勇者傳說 ⚔️</h1>
+                            <h2 style={{ fontSize: '1.2rem', marginBottom: '2rem', color: '#60a5fa' }}>五域征途 - 強化版</h2>
+                            <ImageDisplay />
+                            <div className="game-card" style={{ padding: '1.5rem' }}>
+                                <button onClick={() => setGameState('character_creation')} className="btn btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2rem', width: '100%' }}>🚀 開始新冒險</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'character_creation') {
+                return (
+                    <div style={{ minHeight: '100vh', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+                             <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem', color: '#fbbf24' }}>👤 創建你的英雄</h1>
+                             <ImageDisplay />
+                             <div className="game-card" style={{ padding: '1.5rem' }}>
+                                <input type="text" placeholder="輸入你的英雄名字" value={name} onChange={(e) => setName(e.target.value)} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #4b5563', background: '#1f2937', color: 'white', marginBottom: '1rem' }} />
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                                    {Object.keys(classes).map(key => (
+                                        <button key={key} onClick={() => setSelectedClass(key)} className={`btn ${selectedClass === key ? 'btn-success' : 'btn-secondary'}`} onMouseEnter={() => setImage(key)}>
+                                            {classes[key].emoji} {classes[key].name}
+                                        </button>
+                                    ))}
+                                </div>
+                                {selectedClass && <p style={{fontSize: '0.8rem', color: '#d1d5db', marginBottom: '1rem'}}>{classes[selectedClass].description}</p>}
+                                <button onClick={() => startGame(name, selectedClass)} disabled={!name || !selectedClass} className="btn btn-primary" style={{ width: '100%' }}>✔️ 確認創建</button>
+                             </div>
+                        </div>
+                    </div>
+                );
+            }
+            
+            if (gameState === 'victory' || gameState === 'gameOver') {
+                const isVictory = gameState === 'victory';
+                return (
+                    <div style={{ minHeight: '100vh', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+                            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem', color: isVictory ? '#fbbf24' : '#ef4444' }}>{isVictory ? '🏆 傳說誕生！' : '💀 英雄隕落'}</h1>
+                            <ImageDisplay />
+                            <div className="game-card" style={{ padding: '1.5rem' }}>
+                                <p style={{ marginBottom: '1rem' }}>{isVictory ? `恭喜 ${player.name}，你拯救了世界！` : '你的冒險到此為止...'}</p>
+                                <button onClick={() => window.location.reload()} className="btn btn-purple" style={{ width: '100%' }}>🔄 重新開始</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'playing' && player) {
+                const playerStats = getPlayerStats();
+                const currentArea = areas[currentAreaIndex];
+                
+                const availableSkillsToLearn = Object.values(skillDatabase).filter(skill => 
+                    !player.skills[skill.name] && skill.unlockLevel && player.level >= skill.unlockLevel
+                );
+
+                return (
+                    <div className="mobile-layout">
+                        {/* 頂部狀態欄 */}
+                        <div className="top-panel">
+                            <div className="game-card" style={{ padding: '1rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                    <div style={{ fontSize: '1rem', fontWeight: 'bold', color: '#fbbf24' }}>{classes[player.class]?.emoji} {player.name}</div>
+                                    <div style={{ fontSize: '0.8rem', color: '#9ca3af' }}>Lv.{player.level}</div>
+                                </div>
+                                <ProgressBar emoji="❤️" current={player.hp} max={player.maxHp} color="linear-gradient(90deg, #dc2626, #ef4444)" />
+                                <ProgressBar emoji="⚡" current={player.mp} max={player.maxMp} color="linear-gradient(90deg, #2563eb, #3b82f6)" />
+                                <ProgressBar emoji="⭐" current={player.exp} max={player.level * 100} color="linear-gradient(90deg, #fbbf24, #f59e0b)" />
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', fontSize: '0.75rem', marginTop: '0.75rem', textAlign: 'center' }}>
+                                    <div>⚔️ {playerStats.attack}</div>
+                                    <div>🛡️ {playerStats.defense}</div>
+                                    <div>🏃 {playerStats.speed}</div>
+                                    <div>💰 {player.gold}</div>
+                                </div>
+                                <div className="equipment-visual" style={{ marginTop: '0.75rem' }}>
+                                    <div className={`equipment-slot ${player.equipment.weapon ? 'equipped' : ''}`}><div className="equipment-slot-icon">⚔️</div><div className="equipment-slot-name">{player.equipment.weapon?.name || '武器'}</div></div>
+                                    <div className={`equipment-slot ${player.equipment.armor ? 'equipped' : ''}`}><div className="equipment-slot-icon">🛡️</div><div className="equipment-slot-name">{player.equipment.armor?.name || '護甲'}</div></div>
+                                    <div className={`equipment-slot ${player.equipment.accessory ? 'equipped' : ''}`}><div className="equipment-slot-icon">💍</div><div className="equipment-slot-name">{player.equipment.accessory?.name || '飾品'}</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 主遊戲區域 */}
+                        <div className="main-game-area game-card" style={{ padding: '1rem' }}>
+                            <ImageDisplay />
+                            {battleState ? (
+                                <div className="battle-container">
+                                    <div className="battle-info">
+                                        <div style={{ background: 'rgba(127, 29, 29, 0.7)', padding: '0.75rem', borderRadius: '0.75rem', marginBottom: '0.5rem' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <span style={{ fontWeight: 'bold' }}>{battleState.name}</span>
+                                                <span>{Math.ceil(battleState.hp)}/{battleState.maxHp}</span>
+                                            </div>
+                                            <ProgressBar current={battleState.hp} max={battleState.maxHp} color="#dc2626" emoji="🩸" />
+                                        </div>
+                                    </div>
+                                    <div className="battle-log compact-log">
+                                        {gameLog.slice(0, 5).map((log, index) => <div key={index} className="log-entry" style={{ color: log.type === 'attack' ? '#fca5a5' : log.type === 'enemy_attack' ? '#fca5a5' : log.type === 'heal' ? '#86efac' : log.type === 'treasure' ? '#fbbf24' : '#d1d5db' }}>{log.message}</div>)}
+                                    </div>
+                                    <div className="battle-actions">
+                                        <div className="quick-actions">
+                                            <button onClick={() => handlePlayerAction({ type: 'attack' })} disabled={!isPlayerTurn} className="btn btn-primary quick-action-btn"><span>⚔️</span><span>攻擊</span></button>
+                                            {Object.values(player.skills).map(skill => (
+                                                <button key={skill.name} onClick={() => handlePlayerAction({ type: 'skill', skillName: skill.name })} disabled={!isPlayerTurn || player.mp < skill.mp} className="btn btn-purple quick-action-btn"><span>✨</span><span>{skill.name}</span></button>
+                                            ))}
+                                            <button onClick={() => useItem(player.inventory.find(i => i.type === 'potion'))} disabled={!isPlayerTurn || !player.inventory.some(i => i.type === 'potion')} className="btn btn-success quick-action-btn"><span>🧪</span><span>藥水</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h2 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#10b6d4' }}>{currentArea.name}</h2>
+                                    <div className="quick-actions" style={{ marginTop: '1rem' }}>
+                                        <button onClick={explore} className="btn btn-success quick-action-btn"><span>🔍</span><span>探索</span></button>
+                                        <button onClick={() => { const boss = {...currentArea.boss}; boss.maxHp = boss.hp; setBattleState(boss); setImage(boss.imageKey || 'combat'); }} className="btn btn-primary quick-action-btn"><span>💀</span><span>挑戰首領</span></button>
+                                        {currentAreaIndex < areas.length - 1 ? (
+                                            <button onClick={() => { setCurrentAreaIndex(i => i + 1); setImage(areas[currentAreaIndex + 1].imageKey); }} className="btn btn-secondary quick-action-btn"><span>➡️</span><span>前往下一區</span></button>
+                                        ) : (
+                                            <button onClick={() => { setBattleState(demonKing); setImage('demonKing'); }} className="btn btn-primary quick-action-btn"><span>🔥</span><span>最終決戰</span></button>
+                                        )}
+                                    </div>
+                                    <div className="compact-log" style={{ marginTop: '1rem', height: '120px' }}>
+                                        {gameLog.slice(0, 5).map((log, index) => <div key={index} className="log-entry" style={{color: log.type === 'treasure' ? '#fbbf24' : '#d1d5db' }}>{log.message}</div>)}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* 底部面板 */}
+                        <div className="bottom-panel">
+                            <div className="game-card">
+                                <div className="tab-bar">
+                                    <div onClick={() => setActiveTab('inventory')} className={`tab-button ${activeTab === 'inventory' ? 'active' : ''}`}>🎒 背包</div>
+                                    <div onClick={() => setActiveTab('skills')} className={`tab-button ${activeTab === 'skills' ? 'active' : ''}`}>🌟 技能</div>
+                                    <div onClick={() => setActiveTab('stats')} className={`tab-button ${activeTab === 'stats' ? 'active' : ''}`}>📊 狀態</div>
+                                </div>
+                                <div className="tab-content">
+                                    {activeTab === 'inventory' && (
+                                        <div>
+                                            {player.inventory.length === 0 ? <p style={{textAlign: 'center', color: '#9ca3af'}}>背包是空的</p> : player.inventory.map(item => (
+                                                <div key={item.instanceId} className="inventory-item">
+                                                    <div className="item-info">
+                                                        <div className="item-name">{item.name}</div>
+                                                        <div className="item-stats">
+                                                            {item.attack && `攻擊+${item.attack} `}
+                                                            {item.defense && `防禦+${item.defense} `}
+                                                            {item.speed && `速度+${item.speed} `}
+                                                            {item.heal && `恢復${item.heal}HP `}
+                                                            {item.mp && `恢復${item.mp}MP `}
+                                                            價值: {item.value}金
+                                                        </div>
+                                                    </div>
+                                                    <div className="item-actions">
+                                                        {['weapon', 'armor', 'accessory'].includes(item.type) && <button onClick={() => equipItem(item)} className="btn btn-success">裝備</button>}
+                                                        {item.type === 'potion' && <button onClick={() => useItem(item)} className="btn btn-success">使用</button>}
+                                                        <button onClick={() => sellItem(item)} className="btn btn-warning">出售</button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {activeTab === 'skills' && (
+                                        <div>
+                                            <p style={{textAlign: 'center', color: '#9ca3af', marginBottom: '0.5rem'}}>技能點數: {player.skillPoints}</p>
+                                            {availableSkillsToLearn.map(skill => (
+                                                 <div key={skill.name} className="skill-item">
+                                                    <div className="skill-info">
+                                                        <div className="skill-name">{skill.name} (新!)</div>
+                                                        <div className="skill-desc">{skill.desc}</div>
+                                                    </div>
+                                                    <div className="skill-actions">
+                                                        <button onClick={() => learnSkill(skill)} disabled={player.skillPoints < 1} className="btn btn-success">學習</button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {Object.values(player.skills).map(skill => (
+                                                <div key={skill.name} className="skill-item" style={{opacity: 0.7}}>
+                                                    <div className="skill-info">
+                                                        <div className="skill-name">{skill.name}</div>
+                                                        <div className="skill-desc">{skill.desc}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {activeTab === 'stats' && (
+                                        <div style={{fontSize: '0.8rem', color: '#d1d5db'}}>
+                                            <p>擊敗敵人: {player.stats.enemiesDefeated}</p>
+                                            <p>發現寶藏: {player.stats.treasuresFound}</p>
+                                            <p>獲得金幣: {player.stats.goldEarned}</p>
+                                            <p>暴擊次數: {player.stats.criticalHits}</p>
+                                            <p>擊敗首領: {player.stats.bossesDefeated}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh'}}>載入中或發生錯誤...</div>;
+        };
+
+        ReactDOM.render(<AdventureGame />, document.getElementById('root'));
+    </script>
+</body>
+</html>
