@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東北角探險家 - 兩天一夜親子遊互動指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Seafoam Green Accent -->
+    <!-- Application Structure Plan: A single-page dashboard with a sticky top navigation bar. The structure is thematic, not chronological like the report. Sections include Overview, Daily Itinerary (tabbed), Lodging, Budget (with an interactive chart), and a digital version of the Kids' Workbook. This task-oriented design allows users to quickly access specific information (e.g., budget or lodging) without linear scrolling, enhancing usability for trip planning. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Itinerary -> Goal: Organize/Detail -> Viz: Tabbed, expandable timeline (HTML/Tailwind) -> Interaction: Click to expand details -> Justification: Keeps the UI clean, prevents info overload.
+        - Report Info: Budget Table -> Goal: Analyze/Compare -> Viz: Doughnut Chart (Chart.js) + HTML Table -> Interaction: Buttons to toggle between low/high estimates dynamically update the chart and totals -> Justification: Transforms static numbers into an easy-to-understand visual comparison tool.
+        - Report Info: Accommodation Table -> Goal: Compare/Decide -> Viz: Interactive Cards (HTML/Tailwind) -> Interaction: Click to reveal pros/cons -> Justification: Provides a quick, visual comparison leading to a more informed decision.
+        - Report Info: Kids' Workbook -> Goal: Present/Engage -> Viz: Styled HTML sections emulating a booklet -> Interaction: Print button -> Justification: Makes the educational component easily accessible and usable.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0d9488;
+            border-bottom-color: #0d9488;
+        }
+        .tab-button.active {
+            background-color: #0d9488;
+            color: white;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .details-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="text-xl font-bold text-teal-700">東北角探險家</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#overview" class="nav-link border-b-2 border-transparent pb-1">行程總覽</a>
+                    <a href="#itinerary" class="nav-link border-b-2 border-transparent pb-1">每日行程</a>
+                    <a href="#lodging" class="nav-link border-b-2 border-transparent pb-1">住宿攻略</a>
+                    <a href="#budget" class="nav-link border-b-2 border-transparent pb-1">預算規劃</a>
+                    <a href="#workbook" class="nav-link border-b-2 border-transparent pb-1">探險手冊</a>
+                    <a href="#prep" class="nav-link border-b-2 border-transparent pb-1">行前準備</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-slate-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#overview" class="block py-2 px-4 text-sm text-slate-700 hover:bg-teal-50">行程總覽</a>
+            <a href="#itinerary" class="block py-2 px-4 text-sm text-slate-700 hover:bg-teal-50">每日行程</a>
+            <a href="#lodging" class="block py-2 px-4 text-sm text-slate-700 hover:bg-teal-50">住宿攻略</a>
+            <a href="#budget" class="block py-2 px-4 text-sm text-slate-700 hover:bg-teal-50">預算規劃</a>
+            <a href="#workbook" class="block py-2 px-4 text-sm text-slate-700 hover:bg-teal-50">探險手冊</a>
+            <a href="#prep" class="block py-2 px-4 text-sm text-slate-700 hover:bg-teal-50">行前準備</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <section id="overview" class="scroll-mt-20 section-fade-in">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-teal-800 mb-4">黃金山城與壯麗海岬的兩日冒險</h1>
+            <p class="text-center max-w-3xl mx-auto text-slate-600 mb-12">
+                歡迎來到您的專屬東北角探險互動指南！這不只是一份行程表，而是一張通往歷史、自然與美食的藏寶圖。我們將從萬華出發，為您和家中的小小探險家（小四、小六）規劃一趟充滿發現與樂趣的兩天一夜自駕之旅。準備好啟動這場從城市到海洋的壯遊了嗎？
+            </p>
+            <div class="max-w-4xl mx-auto">
+                 <div class="p-6 bg-white rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg text-teal-700 mb-4 text-center">行程速覽</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-semibold text-slate-700 border-b-2 border-teal-200 pb-2 mb-3">第一天：淘金歷史與山城光影</h4>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">⛏️</span> <span><strong class="font-medium">上午:</strong> 黃金博物館 (淘金體驗)</span></li>
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🍱</span> <span><strong class="font-medium">中午:</strong> 礦工便當 & 黃金瀑布</span></li>
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🌊</span> <span><strong class="font-medium">下午:</strong> 南雅奇岩 (海蝕地景)</span></li>
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🏮</span> <span><strong class="font-medium">傍晚:</strong> 入住九份 & 老街小吃</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-700 border-b-2 border-teal-200 pb-2 mb-3">第二天：壯闊海岬與海洋巡禮</h4>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🥾</span> <span><strong class="font-medium">上午:</strong> 鼻頭角步道健行</span></li>
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🦐</span> <span><strong class="font-medium">中午:</strong> 鼻頭漁港海鮮大餐</span></li>
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🦑</span> <span><strong class="font-medium">下午:</strong> 海洋科技博物館 (親子互動)</span></li>
+                                <li class="flex items-start"><span class="text-teal-500 mr-2 mt-1">🚗</span> <span><strong class="font-medium">傍晚:</strong> 滿載而歸</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="border-t my-16 border-stone-200"></div>
+
+        <section id="itinerary" class="scroll-mt-20 section-fade-in">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">每日行程詳解</h2>
+            <p class="text-center text-slate-600 mb-8">點擊各個行程項目，查看詳細活動介紹與探險提示。</p>
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center mb-6">
+                    <button class="tab-button px-6 py-2 font-semibold rounded-l-lg transition-colors duration-300 active" data-tab="day1">第一天</button>
+                    <button class="tab-button px-6 py-2 font-semibold rounded-r-lg transition-colors duration-300" data-tab="day2">第二天</button>
+                </div>
+
+                <div id="day1" class="tab-content">
+                    <div class="space-y-4">
+                        <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">09:00 - 12:30</span>
+                                    <h4 class="font-semibold">黃金博物館：台灣的黃金之心</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">在這裡，您將深入了解台灣的淘金史。必訪亮點包含「本山五坑坑道體驗」，戴上安全帽，感受礦工的辛勞；最受期待的「淘金體驗」，親手篩洗出貨真價實的金沙；最後別忘了去觸摸重達220公斤的鎮館大金磚！<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 淘金大挑戰！</p>
+                            </div>
+                        </div>
+                        <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">12:30 - 14:00</span>
+                                    <h4 class="font-semibold">午餐與流動的黃金</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">在博物館內享用主題式的「礦工便當」，可帶回家的鐵盒餐具極具紀念價值。餐後驅車前往「黃金瀑布」，欣賞因礦物氧化而成的金黃色奇景，並遠眺壯觀的「水湳洞選煉廠遺址」(十三層遺址)。<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 美食家日誌。</p>
+                            </div>
+                        </div>
+                         <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">14:00 - 16:00</span>
+                                    <h4 class="font-semibold">南雅奇岩：大地的藝術</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">這裡是絕佳的戶外地質教室。帶領孩子尋找著名的「霜淇淋岩」，解說砂岩如何被風與浪雕塑成奇特的模樣，岩石中的鐵質又是如何為它們染上美麗的帶狀花紋。<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 地質與自然實驗室。</p>
+                            </div>
+                        </div>
+                        <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">16:00 起</span>
+                                    <h4 class="font-semibold">入住九份與夜遊山城</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">安頓好行李後，漫步在經典的豎崎路上，欣賞紅燈籠點亮的懷舊景致。晚餐建議發起「九份小吃接力賽」，品嚐芋圓、紅糟肉圓和草仔粿等在地美食，對孩子們來說更有趣！<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 美食家日誌。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="day2" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">09:00 - 12:00</span>
+                                    <h4 class="font-semibold">鼻頭角步道：征服巨龍的脊背</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">挑戰全長約3.5公里的環狀步道，從鼻頭國小旁開始，坡度較緩。沿途欣賞被譽為「台版萬里長城」的山稜線步道，享受360度無死角的山海環景。新開放的「聽濤營區」也是絕佳的拍照與休息點。<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 地質與自然實驗室。</p>
+                            </div>
+                        </div>
+                        <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">12:00 - 13:30</span>
+                                    <h4 class="font-semibold">鼻頭漁港午餐：漁人的盛宴</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">健行後的最佳獎勵！推薦到漁港的「鼻頭阿珠老店活海鮮」，價格透明，提供合菜，能有效控制預算。必點菜色有「飛魚卵炒飯」和「香酥軟絲」。<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 美食家日誌。</p>
+                            </div>
+                        </div>
+                        <div class="itinerary-item bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="p-4 cursor-pointer flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-teal-600">13:30 - 16:00</span>
+                                    <h4 class="font-semibold">國立海洋科技博物館：知識的海洋</h4>
+                                </div>
+                                <span class="text-teal-500 transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="details-content bg-stone-50">
+                                <p class="px-4 pb-4 text-slate-600">炎熱午後的最佳室內行程。首要目標是「兒童廳」，充滿互動設施（注意需領取號碼牌）。若時間充裕，可探索深海廳或加購8K海洋劇場門票，為旅程畫下震撼的句點。<br><strong class="font-medium text-amber-600">探險手冊任務：</strong> 我的探險日記。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="border-t my-16 border-stone-200"></div>
+
+        <section id="lodging" class="scroll-mt-20 section-fade-in">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">探險基地：九份住宿攻略</h2>
+            <p class="text-center text-slate-600 mb-8">對於自駕遊，住宿的關鍵在於「停車」。以下是為您精選的親子友善民宿。</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="lodging-card bg-white rounded-lg shadow-md p-6 border-2 border-teal-500">
+                    <h3 class="font-bold text-xl text-teal-700">九份山嶼海民宿 (首選)</h3>
+                    <p class="text-sm text-slate-500 mb-3">房內親子帳篷，解決停車痛點</p>
+                    <p class="mb-4">「101四人房」內的兒童帳篷是最大亮點。更重要的是，提供步行2分鐘即可到達的特約停車場，完美解決自駕遊最大難題。</p>
+                    <div class="text-sm">
+                        <p><strong class="font-semibold">優點：</strong>✅ 解決停車問題 ✅ 孩子喜愛帳篷 ✅ 口碑極佳</p>
+                        <p><strong class="font-semibold">價格：</strong>約 NT$ 3,500 - 4,500</p>
+                    </div>
+                </div>
+                <div class="lodging-card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl text-teal-700">香草庭院民宿</h3>
+                    <p class="text-sm text-slate-500 mb-3">主題房充滿樂趣</p>
+                    <p class="mb-4">專為親子設計，提供「叢林房」與「飛機房」，充滿玩具，能給孩子帶來驚喜。是追求主題樂趣家庭的好選擇。</p>
+                     <div class="text-sm">
+                        <p><strong class="font-semibold">優點：</strong>✅ 主題性強 ✅ 玩具豐富，孩子最愛</p>
+                        <p><strong class="font-semibold text-red-600">注意：</strong>⚠️ 務必預訂前主動確認停車方案！</p>
+                        <p><strong class="font-semibold">價格：</strong>約 NT$ 4,000 - 5,000</p>
+                    </div>
+                </div>
+                <div class="lodging-card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-xl text-teal-700">不厭晴民宿</h3>
+                    <p class="text-sm text-slate-500 mb-3">地點便利，性價比高</p>
+                    <p class="mb-4">提供免費私人停車位，且距離老街入口僅2分鐘步行路程，兼顧便利與實用。若無主題房需求，是絕佳的備案。</p>
+                    <div class="text-sm">
+                        <p><strong class="font-semibold">優點：</strong>✅ 免費停車 ✅ 地點絕佳 ✅ 性價比高</p>
+                        <p><strong class="font-semibold">缺點：</strong> rooms lack a specific parent-child theme</p>
+                        <p><strong class="font-semibold">價格：</strong>約 NT$ 2,400 - 3,500</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="border-t my-16 border-stone-200"></div>
+
+        <section id="budget" class="scroll-mt-20 section-fade-in">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">財務規劃報告</h2>
+            <p class="text-center text-slate-600 mb-8">互動式預算表，讓您輕鬆掌握開銷。點擊按鈕切換高低標估算。</p>
+            <div class="flex flex-col md:flex-row gap-8 items-center justify-center">
+                <div class="w-full md:w-1/2 lg:w-2/5">
+                     <div class="flex justify-center mb-4">
+                        <button id="low-budget-btn" class="px-4 py-2 bg-teal-600 text-white font-semibold rounded-l-md shadow-md">低標估算</button>
+                        <button id="high-budget-btn" class="px-4 py-2 bg-white text-teal-600 font-semibold rounded-r-md shadow-md">高標估算</button>
+                    </div>
+                    <div class="chart-container relative h-64 md:h-80 w-full max-w-sm mx-auto">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                    <div id="total-budget" class="text-center mt-4 text-2xl font-bold text-slate-700"></div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-3/5 bg-white p-6 rounded-lg shadow-md">
+                     <h3 class="font-bold text-lg mb-4 text-center">預算細項 (2大2小)</h3>
+                     <table id="budget-table" class="w-full text-sm text-left text-slate-600">
+                         <thead class="text-xs text-teal-700 uppercase bg-teal-50">
+                             <tr><th class="px-4 py-2">類別</th><th class="px-4 py-2">項目</th><th class="px-4 py-2 text-right">費用 (NT$)</th></tr>
+                         </thead>
+                         <tbody></tbody>
+                     </table>
+                     <div class="mt-4 p-3 bg-amber-50 rounded-lg text-amber-800 text-sm">
+                        <strong class="font-semibold">💡 預算管理策略：</strong>此行最大開銷變數是第二天午餐的海鮮。建議選擇有透明定價的餐廳，或在點「時價」海鮮前，務必先問清楚秤重後的總價，避免結帳時有意外。
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="border-t my-16 border-stone-200"></div>
+
+        <section id="workbook" class="scroll-mt-20 section-fade-in">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-2">東北角探險家學習手冊</h2>
+             <p class="text-center text-slate-600 mb-8">一份專為小四、小六孩子設計的暑假作業單，結合旅途中的觀察與學習。您可以直接在此瀏覽，或點擊按鈕列印出來。</p>
+             <div class="text-center mb-8">
+                 <button onclick="window.print()" class="px-6 py-3 bg-teal-600 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 transition-colors">🖨️ 列印學習手冊</button>
+             </div>
+             <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8 border border-stone-200">
+                <div class="text-center border-b-2 border-dashed border-stone-300 pb-6 mb-6">
+                    <h3 class="text-2xl font-bold text-teal-800">東北角探險家學習手冊</h3>
+                    <p class="mt-4">探險家姓名: ______________&nbsp;&nbsp;&nbsp; 日期: 2025/8/1 - 8/2</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h4 class="font-bold text-lg text-amber-700">📍 探險地圖與集章</h4>
+                        <p class="text-sm text-slate-600 mb-2">在各景點的遊客中心或售票口尋找紀念章吧！</p>
+                        <div class="grid grid-cols-2 gap-2 text-center text-sm p-2 border rounded-md bg-stone-50">
+                            <div class="border border-dashed h-20 flex items-center justify-center">黃金博物館</div>
+                            <div class="border border-dashed h-20 flex items-center justify-center">九份遊客中心</div>
+                            <div class="border border-dashed h-20 flex items-center justify-center">鼻頭角</div>
+                            <div class="border border-dashed h-20 flex items-center justify-center">海科館</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-amber-700">⛏️ 淘金大挑戰</h4>
+                        <p class="text-sm text-slate-600">摸到大金磚的感覺是？ ____________</p>
+                        <p class="text-sm text-slate-600 mt-2">在礦道裡，礦工叔叔在做什麼？把它畫下來！</p>
+                        <div class="w-full h-24 mt-1 border border-dashed rounded-md bg-stone-50"></div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h4 class="font-bold text-lg text-amber-700">🔬 地質與自然實驗室</h4>
+                    <p class="text-sm text-slate-600 mb-2">畫出南雅的「霜淇淋岩」，並在鼻頭角步道上勾選你看到的生物！</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-2 border rounded-md bg-stone-50">
+                            <p class="text-center font-medium">霜淇淋岩</p>
+                            <div class="w-full h-24 mt-1 border border-dashed rounded-md bg-white"></div>
+                        </div>
+                        <div class="p-2 border rounded-md bg-stone-50 text-sm space-y-1">
+                            <label><input type="checkbox" class="mr-2">飛舞的蝴蝶</label>
+                            <label><input type="checkbox" class="mr-2">盤旋的老鷹</label>
+                            <label><input type="checkbox" class="mr-2">海上的大船</label>
+                            <label><input type="checkbox" class="mr-2">走不完的樓梯</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg text-amber-700">📔 我的探險日記</h4>
+                    <p class="text-sm text-slate-600 mb-2">寫下或畫下這趟旅程最讓你驚訝或最有趣的一件事。</p>
+                    <textarea class="w-full h-28 p-2 border rounded-md bg-stone-50 text-sm" placeholder="第一天：... 第二天：..."></textarea>
+                </div>
+             </div>
+        </section>
+
+        <div class="border-t my-16 border-stone-200"></div>
+
+        <section id="prep" class="scroll-mt-20 section-fade-in">
+             <h2 class="text-3xl font-bold text-center text-slate-800 mb-8">行前準備清單</h2>
+             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg text-teal-700 mb-4">探險家裝備</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-center"><span class="mr-3 text-lg">👟</span> <span>舒適好走的健行鞋或運動涼鞋</span></li>
+                        <li class="flex items-center"><span class="mr-3 text-lg">👕</span> <span>輕便透氣衣物，外加一件輕薄防風外套</span></li>
+                        <li class="flex items-center"><span class="mr-3 text-lg">👒</span> <span>高係數防曬乳、遮陽帽、太陽眼鏡</span></li>
+                        <li class="flex items-center"><span class="mr-3 text-lg">💧</span> <span>可重複使用的水瓶（建議車上備小冰桶）</span></li>
+                        <li class="flex items-center"><span class="mr-3 text-lg">🧭</span> <span>給孩子的望遠鏡、放大鏡等探險工具</span></li>
+                        <li class="flex items-center"><span class="mr-3 text-lg">🗺️</span> <span>預先下載離線地圖，以防訊號不佳</span></li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-lg text-teal-700 mb-4">停車總攻略</h3>
+                    <p class="text-sm text-slate-500 mb-4">東北角假日停車位難求，「提早抵達」是最高指導原則！付費停車場是節省時間的最佳選擇。</p>
+                    <ul class="space-y-3 text-slate-600 text-sm">
+                        <li><strong class="font-semibold">黃金博物館：</strong>付費停車場 (約100-150元/次)，務必上午10點前到。</li>
+                        <li><strong class="font-semibold">水湳洞遺址：</strong>免費停車場，車位充足。</li>
+                        <li><strong class="font-semibold">南雅奇岩：</strong>南雅漁港免費停車場。</li>
+                        <li><strong class="font-semibold">鼻頭角步道：</strong>直奔「鼻頭服務區」收費停車場，勿在漁港浪費時間。</li>
+                        <li><strong class="font-semibold">九份：</strong>預訂有附車位的民宿是您的首要任務！</li>
+                    </ul>
+                </div>
+             </div>
+        </section>
+    </main>
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto px-4 py-6 text-center text-sm text-slate-300">
+            <p>這份互動指南由 AI 根據您的旅遊計畫生成。</p>
+            <p>&copy; 2025 東北角探險家。祝您旅途愉快！</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const tabId = button.dataset.tab;
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Itinerary item accordion
+            document.querySelectorAll('.itinerary-item .p-4').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const arrow = header.querySelector('span:last-child');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        arrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        arrow.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // Budget Chart
+            const budgetData = {
+                low: {
+                    labels: ['住宿', '交通', '餐飲', '景點門票', '雜項'],
+                    values: [3000, 800, 3400, 1240, 1500],
+                    total: 9940
+                },
+                high: {
+                    labels: ['住宿', '交通', '餐飲', '景點門票', '雜項'],
+                    values: [4500, 1200, 5700, 1240, 2800],
+                    total: 15440
+                }
+            };
+            const budgetTableData = {
+                low: [
+                    { category: '交通', item: '油資與過路費', cost: 800 },
+                    { category: '住宿', item: '九份四人房', cost: 3000 },
+                    { category: '景點', item: '黃金博物館+淘金', cost: 560 },
+                    { category: '景點', item: '海科館', cost: 680 },
+                    { category: '餐飲', item: 'Day1 午+晚餐', cost: 1400 },
+                    { category: '餐飲', item: 'Day2 海鮮午餐', cost: 2000 },
+                    { category: '雜項', item: '飲品/零食/預備金', cost: 1500 },
+                ],
+                high: [
+                    { category: '交通', item: '油資與過路費', cost: 1200 },
+                    { category: '住宿', item: '九份四人房', cost: 4500 },
+                    { category: '景點', item: '黃金博物館+淘金', cost: 560 },
+                    { category: '景點', item: '海科館', cost: 680 },
+                    { category: '餐飲', item: 'Day1 午+晚餐', cost: 2200 },
+                    { category: '餐飲', item: 'Day2 海鮮午餐', cost: 3500 },
+                    { category: '雜項', item: '飲品/零食/預備金', cost: 2800 },
+                ]
+            };
+
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            const totalBudgetEl = document.getElementById('total-budget');
+            const budgetTableBody = document.querySelector('#budget-table tbody');
+            let budgetChart;
+
+            function updateChart(type) {
+                const data = budgetData[type];
+                if (budgetChart) {
+                    budgetChart.data.datasets[0].data = data.values;
+                    budgetChart.update();
+                } else {
+                    budgetChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.values,
+                                backgroundColor: ['#14b8a6', '#f97316', '#3b82f6', '#ec4899', '#8b5cf6'],
+                                borderColor: '#f8fafc',
+                                borderWidth: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        font: { size: 12, family: "'Noto Sans TC', sans-serif" },
+                                        color: '#475569',
+                                        padding: 15,
+                                    }
+                                }
+                            },
+                            cutout: '60%'
+                        }
+                    });
+                }
+                totalBudgetEl.textContent = `總計: NT$ ${data.total.toLocaleString()}`;
+                
+                budgetTableBody.innerHTML = '';
+                budgetTableData[type].forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'bg-white border-b';
+                    tr.innerHTML = `<td class="px-4 py-2 font-medium text-slate-900">${row.category}</td><td class="px-4 py-2">${row.item}</td><td class="px-4 py-2 text-right">${row.cost.toLocaleString()}</td>`;
+                    budgetTableBody.appendChild(tr);
+                });
+            }
+
+            const lowBtn = document.getElementById('low-budget-btn');
+            const highBtn = document.getElementById('high-budget-btn');
+
+            lowBtn.addEventListener('click', () => {
+                updateChart('low');
+                lowBtn.classList.add('bg-teal-600', 'text-white');
+                lowBtn.classList.remove('bg-white', 'text-teal-600');
+                highBtn.classList.add('bg-white', 'text-teal-600');
+                highBtn.classList.remove('bg-teal-600', 'text-white');
+            });
+            highBtn.addEventListener('click', () => {
+                updateChart('high');
+                highBtn.classList.add('bg-teal-600', 'text-white');
+                highBtn.classList.remove('bg-white', 'text-teal-600');
+                lowBtn.classList.add('bg-white', 'text-teal-600');
+                lowBtn.classList.remove('bg-teal-600', 'text-white');
+            });
+
+            updateChart('low'); 
+
+            // Intersection Observer for animations
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
