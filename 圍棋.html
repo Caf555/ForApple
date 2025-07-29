@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>氣眼之弈 - 數地/9路棋盤增強版</title>
+    <title>氣眼之弈 - 網路功能修正版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
@@ -23,13 +23,17 @@
         .btn {
             transition: all 0.2s ease-in-out;
         }
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .btn:active {
+        .btn:active:not(:disabled) {
             transform: translateY(0px);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .btn:disabled {
+            cursor: not-allowed;
+            background-color: #9ca3af;
         }
         canvas {
             cursor: pointer;
@@ -143,7 +147,7 @@
             <div class="space-y-4">
                 <button data-mode="vs-computer" class="btn mode-select-btn w-full bg-green-500 text-white py-3 rounded-lg text-lg">單人對戰 (MCTS AI)</button>
                 <button data-mode="local-2p" class="btn mode-select-btn w-full bg-purple-500 text-white py-3 rounded-lg text-lg">雙人對戰 (本機)</button>
-                <button data-mode="network-2p" class="btn mode-select-btn w-full bg-indigo-500 text-white py-3 rounded-lg text-lg">雙人對戰 (網路)</button>
+                <button data-mode="network-2p" id="network-2p-btn" class="btn mode-select-btn w-full bg-indigo-500 text-white py-3 rounded-lg text-lg">雙人對戰 (網路)</button>
             </div>
         </div>
     </div>
@@ -215,25 +219,53 @@
     import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     let auth, db, app, userId, gameUnsubscribe = null;
+    let firebaseAvailable = false;
 
     async function initFirebase() {
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'go-game-default';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        if (Object.keys(firebaseConfig).length === 0) { console.warn("Firebase config is empty. Network mode will be disabled."); return; }
-        app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-        return new Promise((resolve) => {
-            onAuthStateChanged(auth, async (user) => {
-                if (user) { userId = user.uid; resolve(userId); } 
-                else {
-                    try {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
-                        else await signInAnonymously(auth);
-                    } catch (error) { console.error("Authentication failed:", error); resolve(null); }
-                }
+        try {
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'go-game-default';
+            const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+            const firebaseConfig = JSON.parse(firebaseConfigStr);
+            
+            if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
+                console.warn("Firebase config is empty or invalid. Network mode will be disabled.");
+                firebaseAvailable = false;
+                return false;
+            }
+
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            await new Promise((resolve, reject) => {
+                const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                    unsubscribe(); // Unsubscribe after first auth state change
+                    if (user) {
+                        userId = user.uid;
+                        resolve(userId);
+                    } else {
+                        try {
+                            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                await signInWithCustomToken(auth, __initial_auth_token);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                            userId = auth.currentUser.uid;
+                            resolve(userId);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    }
+                }, reject);
             });
-        });
+
+            firebaseAvailable = true;
+            return true;
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            firebaseAvailable = false;
+            return false;
+        }
     }
     
     class MCTSNode {
@@ -328,8 +360,11 @@ class GoGame {
         document.querySelectorAll('.mode-select-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 this.selectedMode = e.target.dataset.mode;
+                if (this.selectedMode === 'network-2p' && !firebaseAvailable) { 
+                    this.setMessage("網路功能無法使用 (未設定Firebase)", "error"); 
+                    return; 
+                }
                 this.mainMenuModal.classList.remove('visible');
-                if (this.selectedMode === 'network-2p' && !userId) { this.setMessage("網路模式需要Firebase連線", "error"); this.mainMenuModal.classList.add('visible'); return; }
                 this.sizeSelectionModal.classList.add('visible');
             });
         });
@@ -359,7 +394,32 @@ class GoGame {
         document.getElementById('confirm-resign-btn').addEventListener('click', () => this.resignGame());
         this.scoringBtn.addEventListener('click', () => this.finalizeScore());
         this.playAgainBtn.addEventListener('click', () => { this.gameOverModal.classList.remove('visible'); this.goBackToMainMenu(); });
-        this.gameIdDisplay.addEventListener('click', () => { if(this.networkGameId) { navigator.clipboard.writeText(this.networkGameId).then(() => this.setMessage("房間ID已複製!", "info")); } });
+        
+        // *** FIX: Replace navigator.clipboard.writeText with a fallback ***
+        this.gameIdDisplay.addEventListener('click', () => {
+            if (this.networkGameId) {
+                const textArea = document.createElement("textarea");
+                textArea.value = this.networkGameId;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        this.setMessage("房間ID已複製!", "info");
+                    } else {
+                        this.setMessage("複製失敗", "error");
+                    }
+                } catch (err) {
+                    console.error('Fallback: Unable to copy', err);
+                    this.setMessage("複製失敗", "error");
+                }
+                document.body.removeChild(textArea);
+            }
+        });
+
         window.addEventListener('resize', this.resizeCanvas.bind(this));
     }
 
@@ -406,9 +466,10 @@ class GoGame {
     async createNetworkGame() {
         if (!userId) { this.setMessage("錯誤：無法取得玩家ID", "error"); return; }
         const size = this.selectedSize;
+        const initialBoard = Array(size).fill(0).map(() => Array(size).fill(0));
         const gameId = doc(collection(db, "temp")).id.substring(0, 6).toUpperCase();
         this.networkGameId = gameId; this.playerRole = 'black';
-        const initialGameState = { size, board: this.getBoardString(), currentPlayer: 1, captures: { 1: 0, 2: 0 }, passCount: 0, gameOver: false, isScoringPhase: false, deadGroups: [], lastMove: null, players: { black: userId, white: null }, createdAt: serverTimestamp() };
+        const initialGameState = { size, board: this.getBoardString(initialBoard), currentPlayer: 1, captures: { 1: 0, 2: 0 }, passCount: 0, gameOver: false, isScoringPhase: false, deadGroups: [], lastMove: null, players: { black: userId, white: null }, createdAt: serverTimestamp() };
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'go-game-default';
         const gameRef = doc(db, `artifacts/${appId}/public/data/go-games`, gameId);
         try {
@@ -709,7 +770,14 @@ class GameStateForMCTS {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await initFirebase();
+    const firebaseReady = await initFirebase();
+    if (!firebaseReady) {
+        const networkBtn = document.getElementById('network-2p-btn');
+        if (networkBtn) {
+            networkBtn.disabled = true;
+            networkBtn.textContent = '雙人對戰 (網路 - 無法使用)';
+        }
+    }
     new GoGame();
 });
 
