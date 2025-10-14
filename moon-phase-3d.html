@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太陽-地球-月球系統 3D展示(修正版)</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #000;
+        }
+        #infoPanel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            border-radius: 8px;
+            border: 1px solid #444;
+            max-width: 320px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        #infoPanel h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+        #infoPanel label {
+            display: block;
+            margin-bottom: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        #datePicker, #timePicker, #centerSelect, #citySelect {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .time-location-group {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        #moonPhaseText {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 1.1em;
+        }
+        #locationInfo {
+            font-size: 0.85em;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        #playButton {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        #playButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        #playButton:active {
+            transform: translateY(0);
+        }
+        #playButton.playing {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .controls-hint {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #444;
+        }
+        .error-message {
+            color: #ff6b6b;
+            background: #4d0000;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="infoPanel">
+        <h2>🌍 互動控制</h2>
+        
+        <div class="time-location-group">
+            <label for="citySelect">🌏 觀測地點:</label>
+            <select id="citySelect">
+                <option value="25.0330,121.5654">台北 Taipei 🇹🇼</option>
+                <option value="40.7128,-74.0060">紐約 New York 🇺🇸</option>
+                <option value="51.5074,-0.1278">倫敦 London 🇬🇧</option>
+                <option value="48.8566,2.3522">巴黎 Paris 🇫🇷</option>
+                <option value="35.6762,139.6503">東京 Tokyo 🇯🇵</option>
+                <option value="22.3193,114.1694">香港 Hong Kong 🇭🇰</option>
+                <option value="1.3521,103.8198">新加坡 Singapore 🇸🇬</option>
+                <option value="-33.8688,151.2093">雪梨 Sydney 🇦🇺</option>
+                <option value="-23.5505,-46.6333">聖保羅 São Paulo 🇧🇷</option>
+                <option value="55.7558,37.6173">莫斯科 Moscow 🇷🇺</option>
+                <option value="30.0444,31.2357">開羅 Cairo 🇪🇬</option>
+                <option value="-1.2921,36.8219">奈洛比 Nairobi 🇰🇪</option>
+            </select>
+            <div id="locationInfo"></div>
+            
+            <label for="datePicker">📅 觀測日期:</label>
+            <input type="date" id="datePicker">
+            
+            <label for="timePicker">🕐 觀測時間:</label>
+            <input type="time" id="timePicker" step="600">
+        </div>
+        
+        <label for="centerSelect">👁️ 視角中心:</label>
+        <select id="centerSelect">
+            <option value="sun">太陽 ☀️</option>
+            <option value="earth" selected>地球 🌍</option>
+            <option value="moon">月球 🌙</option>
+        </select>
+        
+        <button id="resetViewButton" style="width: 100%; padding: 8px; margin-top: 10px; background: #444; color: white; border: none; border-radius: 4px; cursor: pointer;">🧭 重置為北極俯視角</button>
+        
+        <button id="playButton">▶ 播放 30 天動畫</button>
+        
+        <p id="moonPhaseText">月相: 載入中...</p>
+        <p id="moonPhaseDetail" style="font-size: 0.85em; color: #aaa;"></p>
+        
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="controls-hint">
+            操作提示:<br>
+            - 按住左鍵拖曳:旋轉視角<br>
+            - 滾動滑鼠滾輪:縮放<br>
+            - 按住右鍵拖曳:平移<br>
+            <br>
+            💡 提示:地球自轉軸已修正為傾斜 23.5°。注意觀察不同季節、不同地點的日照變化!
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js"
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+    
+    <script type="module">
+        import * as THREE from 'three';
+
+        // 城市資料
+        const cities = {
+            '25.0330,121.5654': { name: '台北', lat: 25.0330, lng: 121.5654, hemisphere: 'N' },
+            '40.7128,-74.0060': { name: '紐約', lat: 40.7128, lng: -74.0060, hemisphere: 'N' },
+            '51.5074,-0.1278': { name: '倫敦', lat: 51.5074, lng: -0.1278, hemisphere: 'N' },
+            '48.8566,2.3522': { name: '巴黎', lat: 48.8566, lng: 2.3522, hemisphere: 'N' },
+            '35.6762,139.6503': { name: '東京', lat: 35.6762, lng: 139.6503, hemisphere: 'N' },
+            '22.3193,114.1694': { name: '香港', lat: 22.3193, lng: 114.1694, hemisphere: 'N' },
+            '1.3521,103.8198': { name: '新加坡', lat: 1.3521, lng: 103.8198, hemisphere: 'N' },
+            '-33.8688,151.2093': { name: '雪梨', lat: -33.8688, lng: 151.2093, hemisphere: 'S' },
+            '-23.5505,-46.6333': { name: '聖保羅', lat: -23.5505, lng: -46.6333, hemisphere: 'S' },
+            '55.7558,37.6173': { name: '莫斯科', lat: 55.7558, lng: 37.6173, hemisphere: 'N' },
+            '30.0444,31.2357': { name: '開羅', lat: 30.0444, lng: 31.2357, hemisphere: 'N' },
+            '-1.2921,36.8219': { name: '奈洛比', lat: -1.2921, lng: 36.8219, hemisphere: 'S' }
+        };
+        
+        let currentCity = cities['25.0330,121.5654'];
+
+        // 改進的 OrbitControls 實作
+        class SimpleOrbitControls {
+            constructor(camera, domElement, getTargetFunc) {
+                this.camera = camera;
+                this.domElement = domElement;
+                this.getTargetFunc = getTargetFunc;
+                this.spherical = new THREE.Spherical(100, Math.PI / 3, 0);
+                this.isRotating = false;
+                this.isPanning = false;
+                this.lastMouseX = 0;
+                this.lastMouseY = 0;
+                this.panOffset = new THREE.Vector3(0, 0, 0);
+                this.updateCameraPosition();
+                this.init();
+            }
+            init() {
+                this.domElement.addEventListener('mousedown', (e) => this.onMouseDown(e));
+                this.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                this.domElement.addEventListener('mouseup', () => this.onMouseUp());
+                this.domElement.addEventListener('mouseleave', () => this.onMouseUp());
+                this.domElement.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
+                this.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+            }
+            onMouseDown(e) {
+                if (e.button === 0) this.isRotating = true;
+                else if (e.button === 2) this.isPanning = true;
+                this.lastMouseX = e.clientX;
+                this.lastMouseY = e.clientY;
+            }
+            onMouseMove(e) {
+                if (!this.isRotating && !this.isPanning) return;
+                const deltaX = e.clientX - this.lastMouseX;
+                const deltaY = e.clientY - this.lastMouseY;
+                if (this.isRotating) {
+                    this.spherical.theta -= deltaX * 0.01;
+                    this.spherical.phi -= deltaY * 0.01;
+                    this.spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, this.spherical.phi));
+                }
+                if (this.isPanning) {
+                    const factor = this.spherical.radius * 0.0005;
+                    const offset = new THREE.Vector3();
+                    const cameraRight = new THREE.Vector3().setFromMatrixColumn(this.camera.matrix, 0);
+                    const cameraUp = new THREE.Vector3().setFromMatrixColumn(this.camera.matrix, 1);
+                    offset.add(cameraRight.multiplyScalar(-deltaX * factor));
+                    offset.add(cameraUp.multiplyScalar(deltaY * factor));
+                    this.panOffset.add(offset);
+                }
+                this.lastMouseX = e.clientX;
+                this.lastMouseY = e.clientY;
+                this.updateCameraPosition();
+            }
+            onMouseUp() {
+                this.isRotating = false;
+                this.isPanning = false;
+            }
+            onWheel(e) {
+                e.preventDefault();
+                const zoomSpeed = this.spherical.radius * 0.001;
+                this.spherical.radius += e.deltaY * zoomSpeed;
+                this.spherical.radius = Math.max(10, Math.min(1500, this.spherical.radius));
+                this.updateCameraPosition();
+            }
+            resetView() {
+                this.spherical.radius = 150;
+                this.spherical.theta = 0;
+                this.spherical.phi = Math.PI / 4;
+                this.panOffset.set(0, 0, 0);
+                this.updateCameraPosition();
+            }
+            updateCameraPosition() {
+                const target = this.getTargetFunc();
+                const offset = new THREE.Vector3().setFromSpherical(this.spherical);
+                this.camera.position.copy(target).add(offset).add(this.panOffset);
+                this.camera.lookAt(target.clone().add(this.panOffset));
+            }
+        }
+
+        // 場景設定
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000510);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // 全域變數與常數
+        const SUN_RADIUS = 20;
+        const EARTH_RADIUS = 5;
+        const MOON_RADIUS = 1.5;
+        const EARTH_ORBIT_RADIUS = 250;
+        const MOON_ORBIT_RADIUS = 30;
+        const AXIAL_TILT = 23.5 * Math.PI / 180;
+
+        // 創建天體
+        const sun = new THREE.Mesh(
+            new THREE.SphereGeometry(SUN_RADIUS, 64, 64),
+            new THREE.MeshBasicMaterial({ color: 0xffdd44 })
+        );
+        scene.add(sun);
+        
+        const sunGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(SUN_RADIUS * 1.2, 32, 32),
+            new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.3 })
+        );
+        sun.add(sunGlow);
+
+        const earthSystem = new THREE.Group();
+        earthSystem.rotation.z = AXIAL_TILT;
+        scene.add(earthSystem);
+
+        const earth = new THREE.Mesh(
+            new THREE.SphereGeometry(EARTH_RADIUS, 64, 64),
+            new THREE.MeshPhongMaterial({ color: 0x2233ff, emissive: 0x112244, shininess: 25 })
+        );
+        earthSystem.add(earth);
+        
+        const atmosphere = new THREE.Mesh(
+            new THREE.SphereGeometry(EARTH_RADIUS * 1.1, 32, 32),
+            new THREE.MeshBasicMaterial({ color: 0x4488ff, transparent: true, opacity: 0.2, side: THREE.BackSide })
+        );
+        earth.add(atmosphere);
+
+        const observerMarker = new THREE.Mesh(
+            new THREE.ConeGeometry(0.3, 1, 8),
+            new THREE.MeshBasicMaterial({ color: 0xff0000 })
+        );
+        observerMarker.position.set(0, EARTH_RADIUS, 0);
+        earth.add(observerMarker);
+
+        const moon = new THREE.Mesh(
+            new THREE.SphereGeometry(MOON_RADIUS, 64, 64),
+            new THREE.MeshPhongMaterial({ color: 0xcccccc, emissive: 0x111111, shininess: 5 })
+        );
+        scene.add(moon);
+
+        const pointLight = new THREE.PointLight(0xffffff, 2.5, 2000);
+        sun.add(pointLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+        scene.add(ambientLight);
+        
+        const createOrbit = (radius) => {
+            const orbit = new THREE.Mesh(
+                new THREE.TorusGeometry(radius, 0.3, 16, 100),
+                new THREE.MeshBasicMaterial({ color: 0x444444, transparent: true, opacity: 0.4 })
+            );
+            orbit.rotation.x = Math.PI / 2;
+            return orbit;
+        };
+        const earthOrbit = createOrbit(EARTH_ORBIT_RADIUS);
+        scene.add(earthOrbit);
+
+        const moonOrbit = createOrbit(MOON_ORBIT_RADIUS);
+        earthSystem.add(moonOrbit);
+
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsVertices = [];
+        for (let i = 0; i < 1500; i++) {
+            starsVertices.push(THREE.MathUtils.randFloatSpread(2000));
+            starsVertices.push(THREE.MathUtils.randFloatSpread(2000));
+            starsVertices.push(THREE.MathUtils.randFloatSpread(2000));
+        }
+        starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+        const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0xffffff, size: 1.5 }));
+        scene.add(stars);
+        
+        let currentCenter = 'earth';
+        const getTarget = () => {
+            const targetPosition = new THREE.Vector3();
+            switch(currentCenter) {
+                case 'sun': sun.getWorldPosition(targetPosition); break;
+                case 'earth': earth.getWorldPosition(targetPosition); break;
+                case 'moon': moon.getWorldPosition(targetPosition); break;
+                default: earth.getWorldPosition(targetPosition); break;
+            }
+            return targetPosition;
+        };
+        const controls = new SimpleOrbitControls(camera, renderer.domElement, getTarget);
+        controls.resetView();
+
+        const datePicker = document.getElementById('datePicker');
+        const timePicker = document.getElementById('timePicker');
+        const moonPhaseText = document.getElementById('moonPhaseText');
+        const moonPhaseDetail = document.getElementById('moonPhaseDetail');
+        const centerSelect = document.getElementById('centerSelect');
+        const playButton = document.getElementById('playButton');
+        const citySelect = document.getElementById('citySelect');
+        const locationInfo = document.getElementById('locationInfo');
+        const resetViewButton = document.getElementById('resetViewButton');
+        const errorMessage = document.getElementById('errorMessage');
+
+        const now = new Date();
+        datePicker.value = now.toISOString().slice(0, 10);
+        timePicker.value = now.toTimeString().slice(0, 5);
+        
+        function updateLocationInfo() {
+            locationInfo.textContent = `緯度: ${currentCity.lat.toFixed(2)}°, 經度: ${currentCity.lng.toFixed(2)}° (${currentCity.hemisphere === 'N' ? '北半球' : '南半球'})`;
+        }
+        
+        let isPlaying = false;
+        let playInterval = null;
+        
+        [datePicker, timePicker].forEach(el => el.addEventListener('input', updateSystemForDateTime));
+        citySelect.addEventListener('change', (e) => {
+            currentCity = cities[e.target.value];
+            updateLocationInfo();
+            updateSystemForDateTime();
+        });
+        centerSelect.addEventListener('change', (e) => {
+            currentCenter = e.target.value;
+            controls.resetView();
+        });
+        resetViewButton.addEventListener('click', () => controls.resetView());
+        playButton.addEventListener('click', () => {
+            if (isPlaying) stopAnimation(); else startAnimation();
+        });
+
+        function startAnimation() {
+            isPlaying = true;
+            playButton.textContent = '⏸ 暫停';
+            playButton.classList.add('playing');
+            let currentDate = new Date(`${datePicker.value}T${timePicker.value}`);
+            playInterval = setInterval(() => {
+                currentDate.setDate(currentDate.getDate() + 1);
+                datePicker.value = currentDate.toISOString().slice(0, 10);
+                updateSystemForDateTime();
+            }, 500);
+        }
+        
+        function stopAnimation() {
+            isPlaying = false;
+            if (playInterval) clearInterval(playInterval);
+            playButton.textContent = '▶ 播放 30 天動畫';
+            playButton.classList.remove('playing');
+        }
+
+        function updateSystemForDateTime() {
+            const dateStr = datePicker.value;
+            const timeStr = timePicker.value;
+            if (!dateStr || !timeStr) return;
+            
+            const date = new Date(`${dateStr}T${timeStr}`);
+            if (isNaN(date)) {
+                errorMessage.textContent = '無效的日期或時間格式。';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            errorMessage.style.display = 'none';
+
+            const start = new Date(date.getFullYear(), 0, 0);
+            const diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const earthAngle = (dayOfYear / 365.25) * 2 * Math.PI;
+            earthSystem.position.x = Math.cos(earthAngle) * EARTH_ORBIT_RADIUS;
+            earthSystem.position.z = -Math.sin(earthAngle) * EARTH_ORBIT_RADIUS;
+
+            const noonAngle = Math.atan2(-earthSystem.position.z, -earthSystem.position.x);
+            const hours = date.getUTCHours();
+            const minutes = date.getUTCMinutes();
+            const seconds = date.getSeconds();
+            const timeOfDayInHours = hours + minutes / 60 + seconds / 3600;
+            const timeAngle = (timeOfDayInHours / 24) * 2 * Math.PI;
+            earth.rotation.y = noonAngle + Math.PI - timeAngle;
+
+            const latRad = currentCity.lat * Math.PI / 180;
+            const lonRad = currentCity.lng * Math.PI / 180;
+            observerMarker.position.set(
+                EARTH_RADIUS * Math.cos(latRad) * Math.cos(lonRad),
+                EARTH_RADIUS * Math.sin(latRad),
+                -EARTH_RADIUS * Math.cos(latRad) * Math.sin(lonRad)
+            );
+            observerMarker.lookAt(earth.position);
+            observerMarker.rotateX(Math.PI / 2);
+
+            const illumination = SunCalc.getMoonIllumination(date);
+            const sunDirection = Math.atan2(-earthSystem.position.z, -earthSystem.position.x);
+            const moonPhaseAngle = illumination.phase * 2 * Math.PI;
+            
+            // 修正:使用加號讓月球逆時鐘繞地球(從北極看)
+            const moonAngle = sunDirection + moonPhaseAngle + Math.PI;
+            
+            const moonX = Math.cos(moonAngle) * MOON_ORBIT_RADIUS;
+            const moonZ = -Math.sin(moonAngle) * MOON_ORBIT_RADIUS;
+            
+            const moonPositionInSystem = new THREE.Vector3(moonX, 0, moonZ);
+            const moonWorldPosition = earthSystem.localToWorld(moonPositionInSystem.clone());
+            moon.position.copy(moonWorldPosition);
+            
+            const earthWorldPosition = new THREE.Vector3();
+            earth.getWorldPosition(earthWorldPosition);
+            moon.lookAt(earthWorldPosition);
+            
+            updateMoonPhaseText(illumination.phase);
+            controls.updateCameraPosition();
+        }
+
+        function updateMoonPhaseText(phase) {
+            let phaseName = "";
+            if (phase < 0.03 || phase > 0.97) phaseName = "新月 🌑";
+            else if (phase < 0.22) phaseName = "眉月 🌒";
+            else if (phase < 0.28) phaseName = "上弦月 🌓";
+            else if (phase < 0.47) phaseName = "盈凸月 🌔";
+            else if (phase < 0.53) phaseName = "滿月 🌕";
+            else if (phase < 0.72) phaseName = "虧凸月 🌖";
+            else if (phase < 0.78) phaseName = "下弦月 🌗";
+            else phaseName = "殘月 🌘";
+            
+            moonPhaseText.textContent = `月相: ${phaseName}`;
+            const lunarDay = Math.round(phase * 29.53);
+            moonPhaseDetail.textContent = `亮度: ${(phase * 100).toFixed(1)}% | 約農曆${lunarDay}日`;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            moon.rotation.y += 0.002;
+            sun.rotation.y += 0.001;
+            stars.rotation.y += 0.0001;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        updateLocationInfo();
+        updateSystemForDateTime();
+        animate();
+    </script>
+</body>
+</html>
