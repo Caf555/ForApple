@@ -15,121 +15,119 @@
             font-family: 'Microsoft JhengHei', 'Segoe UI', Tahoma, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            height: calc(100vh - 20px);
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 12px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 1.6em;
+            margin: 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
         }
 
         .calendar-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 30px;
+            padding: 8px 15px;
             background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .calendar-controls button {
             background: #667eea;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.85em;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .calendar-controls button:hover {
             background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
         }
 
         .current-month {
-            font-size: 1.5em;
+            font-size: 1.1em;
             font-weight: bold;
             color: #333;
         }
 
-        .view-controls {
+        .button-group {
             display: flex;
-            gap: 10px;
-        }
-
-        .view-controls button {
-            padding: 8px 16px;
-            font-size: 0.9em;
-        }
-
-        .view-controls button.active {
-            background: #764ba2;
+            gap: 8px;
+            align-items: center;
         }
 
         .calendar-main {
-            padding: 30px;
+            padding: 10px 15px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 4px;
+            margin-bottom: 10px;
         }
 
         .day-header {
             text-align: center;
             font-weight: bold;
-            padding: 15px;
+            padding: 6px;
             background: #667eea;
             color: white;
-            border-radius: 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
         }
 
         .day-cell {
-            min-height: 100px;
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
+            min-height: 60px;
+            padding: 4px;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             background: white;
             position: relative;
         }
 
         .day-cell:hover {
             border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .day-cell.other-month {
-            opacity: 0.4;
+            opacity: 0.3;
             background: #f8f9fa;
         }
 
@@ -140,10 +138,10 @@
         }
 
         .day-number {
-            font-size: 1.2em;
+            font-size: 0.95em;
             font-weight: bold;
             color: #333;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .day-cell.today .day-number {
@@ -159,10 +157,10 @@
         }
 
         .event-item {
-            font-size: 0.75em;
-            padding: 3px 6px;
-            margin: 2px 0;
-            border-radius: 4px;
+            font-size: 0.65em;
+            padding: 2px 4px;
+            margin: 1px 0;
+            border-radius: 3px;
             background: #e3f2fd;
             color: #1976d2;
             white-space: nowrap;
@@ -174,7 +172,6 @@
 
         .event-item:hover {
             background: #bbdefb;
-            transform: scale(1.02);
         }
 
         .event-item.work { background: #e3f2fd; color: #1976d2; }
@@ -313,31 +310,32 @@
 
         .events-sidebar {
             background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
         }
 
         .events-sidebar h3 {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             color: #333;
             border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
+            padding-bottom: 6px;
+            font-size: 1em;
         }
 
         .event-list-item {
             background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+            padding: 8px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .event-list-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateX(3px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .event-list-item.work { border-left-color: #1976d2; }
@@ -346,19 +344,20 @@
         .event-list-item.meeting { border-left-color: #2e7d32; }
 
         .event-date {
-            font-size: 0.9em;
+            font-size: 0.75em;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .event-title {
             font-weight: bold;
             color: #333;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
+            font-size: 0.9em;
         }
 
         .event-description {
-            font-size: 0.9em;
+            font-size: 0.75em;
             color: #666;
         }
 
@@ -393,25 +392,24 @@
 
         .export-import-section {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
         }
 
         .export-import-section button {
-            flex: 1;
-            padding: 10px;
+            padding: 6px 12px;
             background: #28a745;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.85em;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .export-import-section button:hover {
             background: #218838;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         #importFile {
@@ -419,34 +417,63 @@
         }
 
         @media (max-width: 768px) {
-            .calendar-grid {
-                gap: 5px;
-            }
-
-            .day-cell {
-                min-height: 80px;
+            body {
                 padding: 5px;
             }
 
+            .container {
+                height: calc(100vh - 10px);
+            }
+
+            .calendar-grid {
+                gap: 2px;
+            }
+
+            .day-cell {
+                min-height: 50px;
+                padding: 3px;
+            }
+
             .day-number {
-                font-size: 1em;
+                font-size: 0.8em;
             }
 
             .event-item {
-                font-size: 0.65em;
+                font-size: 0.6em;
+                padding: 1px 3px;
             }
 
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.3em;
+                padding: 8px;
             }
 
             .calendar-controls {
                 flex-direction: column;
-                gap: 10px;
+                gap: 5px;
+                padding: 5px 10px;
+            }
+
+            .button-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .calendar-controls button {
+                font-size: 0.75em;
+                padding: 5px 10px;
+            }
+
+            .current-month {
+                font-size: 0.95em;
             }
 
             .modal-content {
-                padding: 20px;
+                padding: 15px;
+            }
+
+            .calendar-main {
+                padding: 5px 8px;
             }
         }
     </style>
@@ -454,24 +481,22 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📅 桌面行事曆工具</h1>
-            <p>輕鬆管理您的日程安排 | 免安裝 | 數據本地保存</p>
+            <h1>📅 桌面行事曆</h1>
         </div>
 
         <div class="calendar-controls">
-            <button onclick="previousMonth()">◀ 上月</button>
-            <div class="current-month" id="currentMonth"></div>
-            <button onclick="nextMonth()">下月 ▶</button>
-        </div>
-
-        <div class="calendar-controls">
-            <button onclick="today()">今天</button>
-            <div class="export-import-section">
-                <button onclick="exportEvents()">匯出事件</button>
-                <button onclick="document.getElementById('importFile').click()">匯入事件</button>
+            <div class="button-group">
+                <button onclick="previousMonth()">◀ 上月</button>
+                <div class="current-month" id="currentMonth"></div>
+                <button onclick="nextMonth()">下月 ▶</button>
+            </div>
+            <div class="button-group">
+                <button onclick="today()">今天</button>
+                <button onclick="exportEvents()">匯出</button>
+                <button onclick="document.getElementById('importFile').click()">匯入</button>
+                <button onclick="clearAllEvents()">清除</button>
                 <input type="file" id="importFile" accept=".json" onchange="importEvents(event)">
             </div>
-            <button onclick="clearAllEvents()">清除所有事件</button>
         </div>
 
         <div class="calendar-main">
@@ -616,7 +641,7 @@
                     if (dateCompare !== 0) return dateCompare;
                     return (a.time || '').localeCompare(b.time || '');
                 })
-                .slice(0, 10);
+                .slice(0, 5);
 
             let html = '';
             if (upcoming.length === 0) {
