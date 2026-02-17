@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuso 馬年賀卡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+
+        body {
+            background-color: #1a1a1a;
+            font-family: 'ZCOOL KuaiLe', cursive; /* 使用看起來比較快樂/搞怪的字體 */
+        }
+
+        .card-container {
+            background: radial-gradient(circle, #ff5e5e 0%, #d62828 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 4px solid #ffd700;
+        }
+
+        /* 黑金相間線條的魔法 */
+        .black-gold-stroke {
+            fill: none;
+            stroke: #000; /* 底色黑色 */
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .gold-dash {
+            fill: none;
+            stroke: #FFD700; /* 金色 */
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 15, 15; /* 實線15, 空白15 */
+            stroke-dashoffset: 0;
+        }
+
+        /* 讓馬抖動的動畫 */
+        @keyframes kuso-shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .shaking {
+            animation: kuso-shake 0.5s infinite;
+        }
+
+        .eye-pupil {
+            transition: transform 0.2s;
+        }
+        
+        .confused-text {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .show-text {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="flex flex-col items-center gap-6 w-full max-w-md">
+        
+        <!-- 卡片本體 -->
+        <div id="card" class="card-container relative w-full aspect-[3/4] rounded-xl overflow-hidden cursor-pointer group hover:scale-[1.02] transition-transform duration-300">
+            
+            <!-- 背景裝飾文字 -->
+            <div class="absolute top-4 left-4 text-yellow-200/20 text-6xl font-bold select-none rotate-12">HORSE?</div>
+            <div class="absolute bottom-10 right-4 text-yellow-200/20 text-8xl font-bold select-none -rotate-12">NO!</div>
+
+            <!-- SVG 畫布 -->
+            <svg viewBox="0 0 400 500" class="w-full h-full drop-shadow-xl" id="horseSvg">
+                
+                <!-- 標題 -->
+                <text x="200" y="60" text-anchor="middle" fill="#FFD700" stroke="#000" stroke-width="1" font-size="32">KUSO 馬年快樂</text>
+
+                <!-- 馬的群組，用於動畫 -->
+                <g id="uglyHorse" transform="translate(0, 50)">
+                    
+                    <!-- 身體 (馬鈴薯狀) -->
+                    <!-- 先畫黑色底線 -->
+                    <path d="M 120 200 Q 80 200 80 250 Q 80 350 150 380 Q 250 400 320 350 Q 350 300 320 250 Q 300 180 200 180 Q 150 180 120 200 Z" class="black-gold-stroke" />
+                    <!-- 再畫金色虛線覆蓋，形成黑金相間 -->
+                    <path d="M 120 200 Q 80 200 80 250 Q 80 350 150 380 Q 250 400 320 350 Q 350 300 320 250 Q 300 180 200 180 Q 150 180 120 200 Z" class="gold-dash" />
+
+                    <!-- 頭部 (歪七扭八的長條) -->
+                    <path d="M 150 200 Q 140 100 180 80 Q 220 60 250 100 Q 280 150 260 220" class="black-gold-stroke" fill="#fff" />
+                    <path d="M 150 200 Q 140 100 180 80 Q 220 60 250 100 Q 280 150 260 220" class="gold-dash" />
+
+                    <!-- 鬃毛 (幾根亂毛) -->
+                    <path d="M 180 80 L 170 40 M 200 70 L 200 30 M 220 75 L 240 40" stroke="#FFD700" stroke-width="4" fill="none" stroke-linecap="round" />
+
+                    <!-- 腿 (火柴棒腿，超級細) -->
+                    <line x1="100" y1="360" x2="90" y2="450" stroke="#000" stroke-width="3" />
+                    <line x1="140" y1="380" x2="150" y2="460" stroke="#000" stroke-width="3" />
+                    <line x1="280" y1="360" x2="290" y2="450" stroke="#000" stroke-width="3" />
+                    <line x1="310" y1="340" x2="330" y2="430" stroke="#000" stroke-width="3" />
+
+                    <!-- 眼睛 (一大一小，脫窗) -->
+                    <circle cx="190" cy="120" r="15" fill="white" stroke="black" stroke-width="2" />
+                    <circle cx="230" cy="115" r="10" fill="white" stroke="black" stroke-width="2" />
+                    
+                    <!-- 眼珠 (會跟著滑鼠動) -->
+                    <circle id="eyeLeft" class="eye-pupil" cx="190" cy="120" r="4" fill="black" />
+                    <circle id="eyeRight" class="eye-pupil" cx="230" cy="115" r="3" fill="black" />
+
+                    <!-- 鼻子 (兩個洞) -->
+                    <circle cx="240" cy="160" r="3" fill="black" />
+                    <circle cx="255" cy="155" r="4" fill="black" />
+
+                    <!-- 嘴巴與舌頭 -->
+                    <path d="M 230 180 Q 250 190 270 170" fill="none" stroke="black" stroke-width="3" />
+                    <path d="M 240 185 Q 240 210 255 205" fill="none" stroke="#ff6b6b" stroke-width="8" stroke-linecap="round" />
+
+                    <!-- 尾巴 (像掃把) -->
+                    <path d="M 320 300 Q 360 280 380 320" stroke="#000" stroke-width="3" fill="none" />
+                    <path d="M 380 320 L 390 350 M 380 320 L 370 350 M 380 320 L 380 355" stroke="#FFD700" stroke-width="2" />
+                </g>
+
+                <!-- 隱藏的 KUSO 對話框 -->
+                <g id="kusoText" class="confused-text" transform="translate(0, 30)">
+                    <path d="M 260 100 L 350 50 L 380 100 Z" fill="white" stroke="black" stroke-width="2" />
+                    <rect x="250" y="20" width="140" height="60" rx="10" fill="white" stroke="black" stroke-width="2" />
+                    <text x="320" y="55" text-anchor="middle" font-size="18" fill="black" font-weight="bold">神馬東西!??</text>
+                </g>
+
+                <text id="bottomText" x="200" y="450" text-anchor="middle" fill="#fff" font-size="24">點擊這隻馬...</text>
+
+            </svg>
+        </div>
+
+        <div class="text-center text-gray-400 text-sm">
+            <p>※ 警告：這隻馬可能含有微量瘋狂成分</p>
+        </div>
+
+        <button onclick="downloadCard()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-full transition-colors shadow-lg flex items-center gap-2">
+            <span>📸 下載這張怪圖</span>
+        </button>
+
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const horse = document.getElementById('uglyHorse');
+        const kusoText = document.getElementById('kusoText');
+        const bottomText = document.getElementById('bottomText');
+        const eyeLeft = document.getElementById('eyeLeft');
+        const eyeRight = document.getElementById('eyeRight');
+
+        // 點擊互動
+        card.addEventListener('click', () => {
+            // 切換抖動 class
+            if (horse.classList.contains('shaking')) {
+                horse.classList.remove('shaking');
+                kusoText.classList.remove('show-text');
+                bottomText.textContent = "點擊這隻馬...";
+            } else {
+                horse.classList.add('shaking');
+                kusoText.classList.add('show-text');
+                
+                const phrases = [
+                    "馬馬虎虎啦!",
+                    "神馬東西!??",
+                    "馬上有錢...嗎?",
+                    "我就爛 (嚼)",
+                    "發財! 發財!"
+                ];
+                const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+                kusoText.querySelector('text').textContent = randomPhrase;
+                
+                bottomText.textContent = "好了，別搖了...";
+            }
+        });
+
+        // 眼球跟隨滑鼠 (增加詭異感)
+        document.addEventListener('mousemove', (e) => {
+            const rekt = card.getBoundingClientRect();
+            const cardCenterX = rekt.left + rekt.width / 2;
+            const cardCenterY = rekt.top + rekt.height / 2;
+            
+            const angle = Math.atan2(e.clientY - cardCenterY, e.clientX - cardCenterX);
+            const distance = Math.min(5, Math.hypot(e.clientX - cardCenterX, e.clientY - cardCenterY) / 20);
+            
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+
+            // 讓兩眼稍微不同步，看起來更智障
+            eyeLeft.style.transform = `translate(${x}px, ${y}px)`;
+            eyeRight.style.transform = `translate(${x * 0.8}px, ${y * 1.2}px)`;
+        });
+
+        // 簡單的下載功能 (將 SVG 轉為 Canvas 再下載，或是直接提示截圖)
+        function downloadCard() {
+             // 由於瀏覽器安全限制，直接將 DOM 轉圖片較複雜，這裡使用簡單提示
+             alert("這隻馬太醜了，建議您直接使用手機截圖保存，或是右鍵另存新檔！\n(馬：不要抓我走～)");
+        }
+    </script>
+</body>
+</html>
