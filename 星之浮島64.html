@@ -127,6 +127,7 @@ body.touch #btnPause{display:block;left:auto;right:calc(14px + var(--sar));top:c
 #title .foot{font-size:13px;opacity:.85;text-align:center;line-height:1.6}
 #title .press{font-family:var(--num);font-size:22px;letter-spacing:2px;animation:blink 1.1s steps(2) infinite}
 @keyframes blink{50%{opacity:.25}}
+.starlist small{font-size:12px}
 .menu.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
 .menu.grid2 .btn{padding:10px 14px;font-size:17px;letter-spacing:1px}
 .menu.row2{flex-direction:row;flex-wrap:wrap;justify-content:center}
@@ -170,6 +171,8 @@ body.touch #btnPause{display:block;left:auto;right:calc(14px + var(--sar));top:c
   .menu{gap:8px}.btn{padding:9px 22px;font-size:18px}
   body.touch #btnPause{top:calc(100px + var(--sat))}
 }
+@media (max-height:600px){.starlist{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}.starlist li:last-child{grid-column:1/-1}}
+#timer.big{font-size:30px;opacity:1;bottom:auto;top:calc(56px + var(--sat));color:#fff}
 </style>
 </head>
 <body>
@@ -273,7 +276,7 @@ body.touch #btnPause{display:block;left:auto;right:calc(14px + var(--sar));top:c
 <div id="ending" class="screen hidden">
   <div class="big">恭喜通關！</div>
   <div class="panel">
-    <div class="outline" style="font-size:18px;line-height:1.7;margin-bottom:6px">三顆能量之星全數歸位，<br>星之浮島再次閃耀光芒！</div>
+    <div class="outline" style="font-size:18px;line-height:1.7;margin-bottom:6px">五顆能量之星全數歸位，<br>星之浮島再次閃耀光芒！</div>
     <div class="record hidden" id="endRecord">★ 新紀錄！★</div>
     <div class="stats" id="endStats"></div>
     <div class="menu row2" style="margin:0 auto">
@@ -992,7 +995,7 @@ function farColor(x, z, y, c) {
 
 // ---------- 關卡物件容器 ----------
 const World = {
-  movers: [], coins: [], stars: [], signs: [], enemies: [], decor: [], clouds: [], flags: [], springs: [], fallers: [],
+  movers: [], cpFlags: [], coins: [], stars: [], signs: [], enemies: [], decor: [], clouds: [], flags: [], springs: [], fallers: [],
   boss: null, water: null, redMarker: null, time: 0,
 };
 
@@ -1087,8 +1090,8 @@ function makeRock(x, z, s) {
   m.scale.set(s * 1.2, s * 0.9, s); m.rotation.set(rng(), rng() * TAU, rng() * 0.3); scene.add(m);
   new Solid({ kind: 'cyl', x, z, y: y + s * 0.45, r: s * 1.05, hy: s * 0.85 });
 }
-function makeSign(x, z, yaw, title, pages) {
-  const y = groundH(x, z);
+function makeSign(x, z, yaw, title, pages, yOverride) {
+  const y = yOverride ?? groundH(x, z);
   const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = yaw;
   mesh(new THREE.BoxGeometry(0.25, 1.4, 0.25), lam('#7a4a24'), 0, 0.7, 0, g);
   const board = mesh(new THREE.BoxGeometry(1.8, 1.1, 0.18), lam('#c98b4a', { map: TEX.wood }), 0, 1.55, 0, g);
@@ -1109,6 +1112,7 @@ function scatterDecor() {
     if (Math.hypot(x - POND.x, z - POND.z) < POND.r + 3) return false;
     if (Math.hypot(x - BOSS_C.x, z - BOSS_C.z) < 17) return false;
     if (Math.hypot(x - START.x, z - START.z) < 9) return false;
+    if (Math.hypot(x - HILLS[4].x, z - HILLS[4].z) < 9) return false;
     if (z < NORTH_EDGE + 16 && Math.abs(x) < 14) return false;
     for (const t of trees) if (Math.hypot(t[0] - x, t[1] - z) < minTree) return false;
     return true;
@@ -1249,41 +1253,44 @@ function buildLevel() {
   // ===== 天空賽道（北方） =====
   const Z = (d) => NORTH_EDGE - d;
   const edgeY = groundH(0, NORTH_EDGE + 4);
-  World.checkpoint = { x: 0, y: groundH(0, NORTH_EDGE + 8), z: NORTH_EDGE + 8 };
-  makeFlag(3.2, NORTH_EDGE + 6);
-  addBox(0, edgeY + 1.0, Z(5), 3.2, 1.2, 3.2, checker);
-  addBox(3.5, edgeY + 2.0, Z(10.5), 3.2, 1.2, 3.2, checker);
-  addBox(-1, edgeY + 3.0, Z(16), 3.2, 1.2, 3.2, checker);
+  // 觸控友善版：平台加大、間距縮短、移動變慢，並多設兩個檢查點
+  makeFlag(3.2, NORTH_EDGE + 6, null, { x: 0, y: groundH(0, NORTH_EDGE + 8), z: NORTH_EDGE + 8, facing: Math.PI });
+  addBox(0, edgeY + 1.0, Z(5), 4.4, 1.2, 4.4, checker);
+  addBox(2.5, edgeY + 2.0, Z(10.5), 4.4, 1.2, 4.4, checker);
+  addBox(-1, edgeY + 3.0, Z(16), 4.4, 1.2, 4.4, checker);
   const reds = [];
   reds.push([-1, edgeY + 4.4, Z(16)]);
   // 左右來回的平台
-  const sh = addBox(0, edgeY + 3.0, Z(23), 3.6, 1, 3.6, blueCk);
-  World.movers.push({ s: sh, type: 'shuttle', ax: -7, bx: 7, z: Z(23), top: edgeY + 3.0, sp: 0.55 });
-  reds.push([0, edgeY + 4.6, Z(23)]);
-  addBox(-4, edgeY + 4.0, Z(29.5), 3.2, 1.2, 3.2, checker);
+  const sh = addBox(0, edgeY + 3.0, Z(22.5), 4.6, 1, 4.6, blueCk);
+  World.movers.push({ s: sh, type: 'shuttle', ax: -6, bx: 6, z: Z(22.5), top: edgeY + 3.0, sp: 0.4 });
+  reds.push([0, edgeY + 4.6, Z(22.5)]);
+  // 中繼平台（檢查點）
+  addBox(-3, edgeY + 4.0, Z(30), 7, 1.2, 6, checker);
+  makeFlag(-5.6, Z(32), edgeY + 4.0, { x: -2.5, y: edgeY + 4.0, z: Z(29.5), facing: Math.PI });
   // 旋轉長板
-  const rot = addBox(0, edgeY + 4.0, Z(40), 14, 0.8, 2.2, wood);
-  World.movers.push({ s: rot, type: 'rotate', x: 0, z: Z(40), top: edgeY + 4.0, sp: 0.55 });
-  mesh(new THREE.CylinderGeometry(0.6, 0.9, 30, 10), lam('#8a6a4a'), 0, edgeY + 4 - 15.4, Z(40), scene);
-  reds.push([0, edgeY + 5.2, Z(46.2)]);
+  const rot = addBox(0, edgeY + 4.0, Z(41), 14, 0.8, 3.4, wood);
+  World.movers.push({ s: rot, type: 'rotate', x: 0, z: Z(41), top: edgeY + 4.0, sp: 0.4 });
+  mesh(new THREE.CylinderGeometry(0.6, 0.9, 30, 10), lam('#8a6a4a'), 0, edgeY + 4 - 15.4, Z(41), scene);
+  reds.push([0, edgeY + 5.2, Z(47)]);
   // 會掉落的平台
-  const f1 = addBox(0, edgeY + 4.6, Z(52), 3, 0.7, 3, blueCk); makeFaller(f1);
-  const f2 = addBox(3, edgeY + 5.3, Z(57), 3, 0.7, 3, blueCk); makeFaller(f2);
-  const f3 = addBox(-1, edgeY + 6.0, Z(62), 3, 0.7, 3, blueCk); makeFaller(f3);
-  reds.push([3, edgeY + 6.9, Z(57)]);
+  const f1 = addBox(0, edgeY + 4.6, Z(52), 4, 0.7, 4, blueCk); makeFaller(f1);
+  const f2 = addBox(2.5, edgeY + 5.2, Z(57), 4, 0.7, 4, blueCk); makeFaller(f2);
+  const f3 = addBox(-1, edgeY + 5.8, Z(62), 4, 0.7, 4, blueCk); makeFaller(f3);
+  reds.push([2.5, edgeY + 6.8, Z(57)]);
   // 升降梯
-  const el = addBox(0, edgeY + 6.0, Z(67.5), 3.6, 0.8, 3.6, checker);
-  World.movers.push({ s: el, type: 'lift', x: 0, z: Z(67.5), y0: edgeY + 5.5, y1: FAR.y + 1.2, sp: 0.5 });
+  const el = addBox(0, edgeY + 5.8, Z(67.5), 4.6, 0.8, 4.6, checker);
+  World.movers.push({ s: el, type: 'lift', x: 0, z: Z(67.5), y0: edgeY + 5.3, y1: FAR.y + 1.2, sp: 0.4 });
   // 天空小島上的挑戰
-  addBox(-8, FAR.y + 1.6, FAR.z + 4, 2.6, 2.6, 2.6, wood);
-  addBox(-10.5, FAR.y + 3.6, FAR.z, 2.6, 1, 2.6, checker);
-  addBox(-8, FAR.y + 5.6, FAR.z - 4, 2.6, 1, 2.6, checker);
+  makeFlag(-9, FAR.z + 11, null, { x: -6.5, y: groundH(-6.5, FAR.z + 9), z: FAR.z + 9, facing: Math.PI });
+  addBox(-8, FAR.y + 1.6, FAR.z + 4, 3.2, 2.6, 3.2, wood);
+  addBox(-10.5, FAR.y + 3.6, FAR.z, 3.2, 1, 3.2, checker);
+  addBox(-8, FAR.y + 5.6, FAR.z - 4, 3.2, 1, 3.2, checker);
   reds.push([-8, FAR.y + 6.9, FAR.z - 4]);
-  addBox(19.5, FAR.y + 0.4, FAR.z + 1, 3, 1, 3, checker);
+  addBox(19.5, FAR.y + 0.4, FAR.z + 1, 4, 1, 4, checker);
   reds.push([19.5, FAR.y + 1.7, FAR.z + 1]);
   reds.push([7.5, FAR.y + 3.8, FAR.z - 11]);
-  addCyl(12, FAR.y - 1, FAR.y + 2.2, FAR.z + 7, 1.4, stone, { seg: 10 });
-  reds.push([12, FAR.y + 5.3, FAR.z + 7]);
+  addCyl(12, FAR.y - 1, FAR.y + 2.2, FAR.z + 7, 1.8, stone, { seg: 12 });
+  reds.push([12, FAR.y + 4.8, FAR.z + 7]);
   World.redCoins = reds;
   World.redStar = { x: FAR.x, y: FAR.y + 2.6, z: FAR.z };
   // 彈簧：飛回主島
@@ -1296,13 +1303,13 @@ function buildLevel() {
 function makeFaller(s) {
   World.fallers.push({ s, home: { x: s.x, y: s.y, z: s.z }, t: -1, state: 'idle' });
 }
-function makeFlag(x, z) {
-  const y = groundH(x, z);
+function makeFlag(x, z, y, cp) {
+  if (y == null) y = groundH(x, z);
   const g = new THREE.Group(); g.position.set(x, y, z); scene.add(g);
   mesh(new THREE.CylinderGeometry(0.1, 0.12, 4.2, 8), lam('#dddddd'), 0, 2.1, 0, g);
   mesh(GEO.sphereLo, lam('#ffd23f'), 0, 4.3, 0, g).scale.setScalar(0.22);
   const cloth = mesh(new THREE.PlaneGeometry(1.5, 1), lam('#999999', { side: THREE.DoubleSide, unique: true }), 0.75, 1.0, 0, g);
-  World.cpFlag = { g, cloth, raised: false, h: 1.0 };
+  World.cpFlags.push({ g, cloth, raised: false, h: 1.0, cp });
   new Solid({ kind: 'cyl', x, z, y: y + 2, r: 0.25, hy: 2.1 });
 }
 function makeSpring(x, z, target) {
@@ -1316,6 +1323,32 @@ function makeSpring(x, z, target) {
   const s = new Solid({ kind: 'cyl', x, z, y: y + 0.75, r: 1.2, hy: 0.75 });
   return { g, coil, top, s, target, t: 0, x, z, y };
 }
+
+// 傳送門
+const rainbowTex = canvasTex(256, (g, s) => {
+  const gr = g.createLinearGradient(0, 0, s, 0);
+  ['#ff4d4d', '#ffa53a', '#ffe14a', '#5fe06b', '#4fb4ff', '#8a6cff', '#ff4d4d'].forEach((c, i, a) => gr.addColorStop(i / (a.length - 1), c));
+  g.fillStyle = gr; g.fillRect(0, 0, s, s);
+});
+const swirlTex = canvasTex(128, (g, s) => {
+  g.translate(s / 2, s / 2);
+  const gr = g.createRadialGradient(0, 0, 0, 0, 0, s / 2); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.5, 'rgba(255,255,255,0.5)'); gr.addColorStop(1, 'rgba(255,255,255,0.15)');
+  g.fillStyle = gr; g.beginPath(); g.arc(0, 0, s / 2, 0, TAU); g.fill();
+  g.strokeStyle = 'rgba(255,255,255,0.9)'; g.lineWidth = 4;
+  for (let k = 0; k < 4; k++) { g.rotate(TAU / 4); g.beginPath(); for (let t = 0; t < 1; t += 0.02) { const r = t * s * 0.48, a = t * 5; g.lineTo(Math.cos(a) * r, Math.sin(a) * r); } g.stroke(); }
+}, { repeat: false });
+function makePortal(x, y, z, yaw, kind, dest, label) {
+  const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = yaw; scene.add(g);
+  const ringMat = kind === 'blue' ? new THREE.MeshBasicMaterial({ color: 0x4fb4ff }) : new THREE.MeshBasicMaterial({ map: rainbowTex });
+  const ring = mesh(new THREE.TorusGeometry(1.9, 0.28, 12, 40), ringMat, 0, 2.3, 0, g);
+  const disc = mesh(new THREE.CircleGeometry(1.75, 32), new THREE.MeshBasicMaterial({ map: swirlTex, color: kind === 'blue' ? 0x5fb8ff : 0xc890ff, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }), 0, 2.3, 0, g);
+  const base = mesh(new THREE.CylinderGeometry(1.6, 1.9, 0.4, 20), lam('#ece6ff'), 0, 0.2, 0, g);
+  void ring; void base;
+  const pt = { x, y, z, g, disc, dest, label, armed: true, kind };
+  World.portals.push(pt);
+  return pt;
+}
+World.portals = [];
 
 // =========================================================
 // 粒子與陰影
@@ -1418,20 +1451,23 @@ function buildHeroModel() {
   // 頭
   const head = new THREE.Group(); head.position.set(0, 0.8, 0.02); body.add(head);
   const skull = mesh(GEO.sphere, skin, 0, 0, 0, head); skull.scale.set(0.34, 0.33, 0.32);
-  const nose = mesh(GEO.sphere, skin, 0, -0.04, 0.32, head); nose.scale.set(0.1, 0.09, 0.09);
+  const nose = mesh(GEO.sphere, skin, 0, -0.07, 0.32, head); nose.scale.set(0.1, 0.09, 0.09);
   for (const sx of [-1, 1]) {
-    const eye = mesh(GEO.sphere, white, sx * 0.11, 0.07, 0.26, head); eye.scale.set(0.07, 0.1, 0.05);
-    const pup = mesh(GEO.sphere, lam('#1d4fb8'), sx * 0.105, 0.065, 0.3, head); pup.scale.set(0.04, 0.06, 0.02);
-    const hl = mesh(GEO.sphereLo, white, sx * 0.1 + 0.015, 0.09, 0.315, head); hl.scale.setScalar(0.013);
-    const ear = mesh(GEO.sphereLo, skin, sx * 0.32, -0.02, -0.02, head); ear.scale.set(0.05, 0.08, 0.06);
-    const side = mesh(GEO.sphereLo, hair, sx * 0.29, 0.02, -0.12, head); side.scale.set(0.06, 0.12, 0.1);
+    const eye = mesh(GEO.sphere, white, sx * 0.115, 0.02, 0.27, head); eye.scale.set(0.075, 0.105, 0.05);
+    const pup = mesh(GEO.sphere, lam('#1d4fb8'), sx * 0.11, 0.01, 0.312, head); pup.scale.set(0.042, 0.064, 0.02);
+    const hl = mesh(GEO.sphereLo, white, sx * 0.105 + 0.016, 0.04, 0.329, head); hl.scale.setScalar(0.014);
+    const brow = mesh(GEO.box, hair, sx * 0.115, 0.14, 0.29, head); brow.scale.set(0.1, 0.022, 0.03); brow.rotation.z = -sx * 0.12;
+    const ear = mesh(GEO.sphereLo, skin, sx * 0.32, -0.03, -0.02, head); ear.scale.set(0.05, 0.08, 0.06);
+    const side = mesh(GEO.sphereLo, hair, sx * 0.29, 0.0, -0.12, head); side.scale.set(0.06, 0.12, 0.1);
   }
-  const mouth = mesh(GEO.sphereLo, lam('#8a2b1a'), 0, -0.16, 0.26, head); mouth.scale.set(0.07, 0.03, 0.03);
-  // 帽子
-  const cap = mesh(new THREE.SphereGeometry(1, 20, 10, 0, TAU, 0, Math.PI * 0.55), red, 0, 0.06, -0.02, head); cap.scale.set(0.36, 0.33, 0.35);
-  const brim = mesh(new THREE.CylinderGeometry(1, 1, 1, 20, 1, false, -Math.PI / 2, Math.PI), red, 0, 0.08, 0.14, head); brim.scale.set(0.31, 0.04, 0.3); brim.rotation.x = 0.12;
-  const emb = mesh(new THREE.CircleGeometry(0.1, 20), white, 0, 0.24, 0.3, head); emb.rotation.x = -0.5;
-  const embStar = mesh(new THREE.CircleGeometry(0.065, 5), gold, 0, 0.243, 0.305, head); embStar.rotation.x = -0.5; embStar.rotation.z = Math.PI / 2;
+  const mouth = mesh(GEO.sphereLo, lam('#8a2b1a'), 0, -0.18, 0.26, head); mouth.scale.set(0.07, 0.03, 0.03);
+  // 帽子：往上抬並向後傾，帽沿停在額頭上方，不會遮住眼睛
+  const capG = new THREE.Group(); capG.position.set(0, 0.1, -0.01); capG.rotation.x = -0.28; head.add(capG);
+  const cap = mesh(new THREE.SphereGeometry(1, 22, 10, 0, TAU, 0, Math.PI * 0.5), red, 0, 0, 0, capG); cap.scale.set(0.365, 0.34, 0.36);
+  const band = mesh(new THREE.CylinderGeometry(1, 1, 1, 22, 1, true), red, 0, -0.02, 0, capG); band.scale.set(0.365, 0.05, 0.36); band.material = lam('#c81e22', { side: THREE.DoubleSide });
+  const brim = mesh(new THREE.CylinderGeometry(1, 1, 1, 20, 1, false, -Math.PI / 2, Math.PI), red, 0, -0.02, 0.14, capG); brim.scale.set(0.32, 0.035, 0.34); brim.rotation.x = 0.08;
+  const emb = mesh(new THREE.CircleGeometry(0.095, 20), white, 0, 0.17, 0.305, capG); emb.rotation.x = -0.55;
+  const embStar = mesh(new THREE.CircleGeometry(0.062, 5), gold, 0, 0.172, 0.309, capG); embStar.rotation.x = -0.55; embStar.rotation.z = Math.PI / 2;
   // 手臂
   const mkArm = (sx) => {
     const g = new THREE.Group(); g.position.set(sx * 0.36, 0.48, 0); body.add(g);
@@ -1515,7 +1551,7 @@ class Hero {
         if (this.jumpBuf > 0) { this.groundJump(inp, mag, inAng); break; }
         if (mag > 0.08) {
           const d = angDiff(this.facing, inAng);
-          if (Math.abs(d) > 2.3 && this.speed > 6.8) { this.setState('skid'); Sound.play('skid'); this.skidTo = inAng; break; }
+          if (Math.abs(d) > 2.5 && this.speed > 7.5) { this.setState('skid'); Sound.play('skid'); this.skidTo = inAng; break; }
           const tr = this.speed < 3 ? 18 : HP.turn;
           this.facing += clamp(d, -tr * dt, tr * dt);
           let target = mag * HP.run * (Math.abs(d) > 1.5 ? 0.35 : 1) * (water ? 0.55 : 1);
@@ -1609,6 +1645,7 @@ class Hero {
         break;
       }
       case 'frozen': { this.vel.set(0, 0, 0); return; }
+      case 'ride': { Slide.step(this, dt, inp); return; }
       case 'dance': case 'dead': {
         this.vel.x = this.vel.z = 0;
         break;
@@ -1638,15 +1675,21 @@ class Hero {
     }
     const max = Math.max(HP.run, this.airMax);
     if (mag > 0.08) {
-      const k = this.air === 'long' ? 2.5 : 8;
-      this.vel.x += inp.wx * mag * k * 2.2 * dt * 5 * (this.air === 'long' ? 0.3 : 1);
-      this.vel.z += inp.wz * mag * k * 2.2 * dt * 5 * (this.air === 'long' ? 0.3 : 1);
-      const n = Math.hypot(this.vel.x, this.vel.z);
-      const lim = Math.max(hs, Math.min(max, mag * HP.run));
-      if (n > lim) { this.vel.x *= lim / n; this.vel.z *= lim / n; }
-      if (this.air !== 'back') this.facing = dampAngle(this.facing, Math.atan2(inp.wx, inp.wz), this.air === 'long' ? 1.5 : 5, dt);
+      if (this.air === 'long') {
+        this.vel.x += inp.wx * mag * 8 * dt; this.vel.z += inp.wz * mag * 8 * dt;
+        const n = Math.hypot(this.vel.x, this.vel.z), lim = Math.max(hs, HP.run);
+        if (n > lim) { this.vel.x *= lim / n; this.vel.z *= lim / n; }
+        this.facing = dampAngle(this.facing, Math.atan2(inp.wx, inp.wz), 1.5, dt);
+      } else {
+        // 空中轉向：速度直接朝搖桿方向靠攏，反應快、好瞄準落點（觸控友善）
+        const tsp = mag * Math.max(HP.run * 0.85, Math.min(max, hs));
+        const k = 1 - Math.exp(-5.5 * dt);
+        this.vel.x += (inp.wx * tsp - this.vel.x) * k; this.vel.z += (inp.wz * tsp - this.vel.z) * k;
+        this.facing = dampAngle(this.facing, Math.atan2(inp.wx, inp.wz), 9, dt);
+      }
     } else if (hs > 0) {
-      const d = Math.max(0, hs - 3 * dt) / hs; this.vel.x *= d; this.vel.z *= d;
+      // 放開搖桿時在空中減速，比較容易停在小平台上
+      const d = Math.max(0, hs - 9 * dt) / hs; this.vel.x *= d; this.vel.z *= d;
     }
   }
   groundJump(inp, mag, inAng) {
@@ -1764,7 +1807,7 @@ class Hero {
       }
     }
     // 地面
-    const f = floorAt(p.x, p.z, Math.max(prevY, p.y) + HP.STEP, 0.22);
+    const f = floorAt(p.x, p.z, Math.max(prevY, p.y) + HP.STEP, 0.38);
     this.floorY = f.y;
     if (this.grounded) {
       if (f.y > -1e8 && p.y - f.y < 0.65 && f.y - p.y < HP.STEP + 0.05) { p.y = f.y; v.y = 0; this.ground = f.obj; }
@@ -1860,6 +1903,9 @@ class Hero {
       else { tgt.armR = -3.1; tgt.armRz = -0.2; tgt.armL = 0.2; tgt.armLz = 0.9; tgt.lean = -0.15; tgt.headX = -0.25; tgt.legL = 0.2; tgt.legR = -0.2; }
     } else if (S === 'dead') {
       yawAdd = this.t * 10; tgt.armLz = 2.2; tgt.armRz = -2.2; tgt.lean = -0.4; tgt.crouch = 0.3;
+    } else if (S === 'ride') {
+      tgt.crouch = 0.75; tgt.lean = -0.35; tgt.legL = -1.45; tgt.legR = -1.45; tgt.armL = -0.5; tgt.armR = -0.5; tgt.armLz = 1.0; tgt.armRz = -1.0;
+      roll = clamp(-Slide.ride.vu * 0.03, -0.35, 0.35); if (Slide.ride.y > 0.05) { tgt.armL = -2.6; tgt.armR = -2.6; }
     } else if (S === 'launch') {
       tgt.armL = -3.0; tgt.armR = -3.0; tgt.legL = 0.3; tgt.legR = -0.2; tgt.lean = 0.2;
     } else if (!this.grounded || S === 'air') {
@@ -1903,7 +1949,8 @@ class Hero {
     m.root.scale.set(0.95 * sq.x * (1 - stretch * 0.5), 0.95 * sq.y * (1 + stretch), 0.95 * sq.x * (1 - stretch * 0.5));
     // 無敵閃爍
     m.root.visible = this.inv > 0 && S !== 'dead' ? Math.floor(this.inv * 16) % 2 === 0 : true;
-    placeBlob(this.shadow, this.pos.x, this.pos.y, this.pos.z, this.pos.y + 0.2);
+    if (S === 'ride') { const b = this.shadow; b.visible = true; b.position.set(this.pos.x, this.rideFloor + 0.05, this.pos.z); b.scale.setScalar(1.3); b.material.opacity = 1; }
+    else placeBlob(this.shadow, this.pos.x, this.pos.y, this.pos.z, this.pos.y + 0.2);
     // 軌跡特效
     if ((a === 'triple' || a === 'long' || a === 'wall' || a === 'side') && S === 'air' && Math.random() < 0.6) Particles.trail(_v.set(this.pos.x, this.pos.y + 0.8, this.pos.z));
     if (S === 'gpSpin' && Math.random() < 0.8) Particles.trail(_v.set(this.pos.x + rr(-0.5, 0.5), this.pos.y + 0.8, this.pos.z + rr(-0.5, 0.5)));
@@ -2072,7 +2119,7 @@ function updateMovers(dt) {
     else if (f.state === 'shake') {
       s.setPos(s.x, s.y, s.z);
       s.mesh.position.set(s.x + Math.sin(f.t * 60) * 0.08, s.y, s.z + Math.cos(f.t * 50) * 0.08);
-      if (f.t > 0.55) { f.state = 'fall'; f.t = 0; f.vy = 0; Sound.play('crumble'); }
+      if (f.t > 1.1) { f.state = 'fall'; f.t = 0; f.vy = 0; Sound.play('crumble'); }
       continue;
     } else if (f.state === 'fall') {
       f.vy -= 30 * dt; s.setPos(s.x, s.y + f.vy * dt, s.z);
@@ -2345,6 +2392,205 @@ class Boss {
 }
 
 // =========================================================
+// 新關卡：彩虹滑梯（觸控友善：只要左右轉向，兩側有護牆不會掉下去）
+// =========================================================
+const Slide = (() => {
+  const O = { x: -196, z: 118 };
+  const raw = [
+    [0, 190, 0], [0, 187, -24], [16, 180, -48], [42, 172, -60], [68, 163, -46], [76, 154, -18],
+    [60, 145, 8], [32, 137, 18], [8, 128, 36], [8, 119, 64], [30, 111, 82], [58, 103, 82],
+    [80, 96, 64], [86, 90, 38], [86, 87, 20],
+  ];
+  const curve = new THREE.CatmullRomCurve3(raw.map(p => V3(O.x + p[0], p[1], O.z + p[2])), false, 'centripetal');
+  const N = 900, W = 3.8, WALL = 1.6;
+  const P = [], T = [], R = [], L = [0], H = [], K = [];
+  const up = V3(0, 1, 0);
+  for (let i = 0; i <= N; i++) {
+    const p = curve.getPointAt(i / N), t = curve.getTangentAt(i / N).normalize();
+    const r = V3().crossVectors(t, up).normalize();
+    P.push(p); T.push(t); R.push(r); H.push(Math.atan2(t.x, t.z));
+    if (i) L.push(L[i - 1] + p.distanceTo(P[i - 1]));
+  }
+  for (let i = 0; i <= N; i++) { const j = Math.min(N, i + 1), k = Math.max(0, i - 1); K.push(angDiff(H[k], H[j]) / Math.max(0.01, L[j] - L[k])); }
+  const LEN = L[N];
+  function sample(s) {
+    s = clamp(s, 0, LEN);
+    let lo = 0, hi = N;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (L[m] <= s) lo = m; else hi = m; }
+    const f = (s - L[lo]) / Math.max(1e-6, L[hi] - L[lo]);
+    return {
+      p: _sp.copy(P[lo]).lerp(P[hi], f), t: _st.copy(T[lo]).lerp(T[hi], f).normalize(), r: _sr.copy(R[lo]).lerp(R[hi], f).normalize(),
+      h: H[lo] + angDiff(H[lo], H[hi]) * f, k: lerp(K[lo], K[hi], f),
+    };
+  }
+  const _sp = V3(), _st = V3(), _sr = V3();
+
+  // ---------- 網格 ----------
+  function build() {
+    const cs = [[-W - 0.5, WALL], [-W, WALL], [-W, 0], [W, 0], [W, WALL], [W + 0.5, WALL], [W + 0.5, -1.2], [-W - 0.5, -1.2], [-W - 0.5, WALL]];
+    const pos = [], col = [], uv = [], idx = [];
+    const c = new THREE.Color(), cw = new THREE.Color('#fff7ee'), cs2 = new THREE.Color('#c9b8e8');
+    const groups = [];
+    let base = 0;
+    for (let k = 0; k < cs.length - 1; k++) {
+      const floor = k === 2;
+      const start = idx.length;
+      for (let i = 0; i <= N; i++) {
+        for (const q of [cs[k], cs[k + 1]]) {
+          const p = P[i], r = R[i];
+          pos.push(p.x + r.x * q[0], p.y + q[1], p.z + r.z * q[0]);
+          if (floor) { c.setHSL(((L[i] / 60) + (q[0] + W) / (2 * W) * 0.15) % 1, 0.75, 0.62); col.push(c.r, c.g, c.b); }
+          else if (k === 1 || k === 3) { col.push(cw.r, cw.g, cw.b); }
+          else { col.push(cs2.r, cs2.g, cs2.b); }
+          uv.push((q[0] + W) / (2 * W), L[i] / 6);
+        }
+      }
+      for (let i = 0; i < N; i++) {
+        const a = base + i * 2, b = a + 1, cc = a + 2, d = a + 3;
+        idx.push(a, cc, b, b, cc, d);
+      }
+      base += (N + 1) * 2;
+      groups.push([start, idx.length - start, floor ? 0 : 1]);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    g.setIndex(idx); g.computeVertexNormals();
+    for (const [s, n, m] of groups) g.addGroup(s, n, m);
+    const laneTex = canvasTex(64, (ctx, s) => {
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, s, s);
+      ctx.fillStyle = 'rgba(255,255,255,0.0)';
+      ctx.fillStyle = '#ffffffaa'; ctx.fillRect(s * 0.49, 0, s * 0.02, s * 0.5);
+      ctx.fillStyle = 'rgba(0,0,0,0.08)'; ctx.fillRect(0, 0, s * 0.03, s); ctx.fillRect(s * 0.97, 0, s * 0.03, s);
+      ctx.fillStyle = 'rgba(255,255,255,0.35)'; for (let i = 0; i < 6; i++) ctx.fillRect(Math.random() * s, Math.random() * s, 2, 2);
+    });
+    const m = new THREE.Mesh(g, [
+      new THREE.MeshLambertMaterial({ vertexColors: true, map: laneTex, side: THREE.DoubleSide, emissive: 0x222222 }),
+      new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }),
+    ]);
+    scene.add(m);
+    // 支撐的雲朵
+    const cloudMat = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0x8a9bb0 });
+    for (let i = 60; i < N; i += 110) {
+      const p = P[i]; const gq = new THREE.Group(); gq.position.set(p.x, p.y - 5, p.z);
+      for (let k = 0; k < 4; k++) { const s = rr(3, 6); const q = mesh(GEO.sphereLo, cloudMat, rr(-4, 4), rr(-1, 1), rr(-4, 4), gq); q.scale.set(s * 1.2, s * 0.7, s); }
+      scene.add(gq);
+    }
+    // 加速板
+    const boostMat = new THREE.MeshBasicMaterial({ color: 0xffe14a, transparent: true, opacity: 0.9 });
+    const chev = new THREE.Shape(); chev.moveTo(-1.2, 0); chev.lineTo(0, 1.1); chev.lineTo(1.2, 0); chev.lineTo(1.2, -0.6); chev.lineTo(0, 0.5); chev.lineTo(-1.2, -0.6);
+    const chevGeo = new THREE.ShapeGeometry(chev); chevGeo.rotateX(-Math.PI / 2); chevGeo.rotateY(Math.PI);
+    for (const s of BOOSTS) {
+      for (let k = 0; k < 3; k++) {
+        const q = sample(s + k * 1.4);
+        const c2 = mesh(chevGeo, boostMat, q.p.x, q.p.y + 0.06, q.p.z); c2.rotation.y = q.h + Math.PI; scene.add(c2);
+        c2.renderOrder = 3;
+      }
+    }
+  }
+  const BOOSTS = [70, 170, 265, 360];
+
+  // ---------- 起點／終點平台 ----------
+  const start = { p: P[0].clone(), t: T[0].clone() };
+  const end = { p: P[N].clone(), t: T[N].clone() };
+  function ringWall(cx, cy, cz, rad, gapA, gapW, mat) {
+    const n = 26;
+    for (let i = 0; i < n; i++) {
+      const a = (i + 0.5) / n * TAU; if (Math.abs(angDiff(a, gapA)) < gapW) continue;
+      const x = cx + Math.cos(a) * rad, z = cz + Math.sin(a) * rad;
+      const w = TAU * rad / n + 0.3;
+      addBox(x, cy + 1.6, z, 0.6, 2.4, w, mat, { yaw: -a });
+    }
+  }
+  function buildPlatforms() {
+    const stone = lam('#f4ecff', { map: TEX.rock });
+    const rail = lam('#ffffff', { map: TEX.blueChecker });
+    // 起點
+    const sc = start.p.clone().addScaledVector(start.t, -8); sc.y = start.p.y;
+    start.c = sc;
+    addCyl(sc.x, sc.y - 2, sc.y, sc.z, 8.5, stone, { uv: [4, 0.3] });
+    mesh(new THREE.ConeGeometry(8.5, 10, 12), lam('#b9a6e0', { flatShading: true }), sc.x, sc.y - 7, sc.z, scene).rotation.x = Math.PI;
+    ringWall(sc.x, sc.y - 0.8, sc.z, 8.2, Math.atan2(start.t.z, start.t.x), 0.5, rail);
+    // 終點
+    const ec = end.p.clone().addScaledVector(end.t, 14); ec.y = end.p.y;
+    end.c = ec;
+    end.solid = addCyl(ec.x, ec.y - 2, ec.y, ec.z, 15, stone, { uv: [6, 0.3] });
+    mesh(new THREE.ConeGeometry(15, 16, 14), lam('#b9a6e0', { flatShading: true }), ec.x, ec.y - 10, ec.z, scene).rotation.x = Math.PI;
+    ringWall(ec.x, ec.y - 0.8, ec.z, 14.7, Math.atan2(-end.t.z, -end.t.x), 0.28, rail);
+    // 終點拱門
+    const gate = end.p.clone().addScaledVector(end.t, 2);
+    const rr2 = V3().crossVectors(end.t, up).normalize();
+    for (const sgn of [-1, 1]) mesh(new THREE.CylinderGeometry(0.35, 0.35, 6, 10), lam('#ffffff'), gate.x + rr2.x * (W + 0.8) * sgn, gate.y + 3, gate.z + rr2.z * (W + 0.8) * sgn, scene);
+    const banner = mesh(new THREE.BoxGeometry(2 * W + 2.4, 1.2, 0.3), new THREE.MeshLambertMaterial({ map: canvasTex(256, (g, s) => {
+      g.fillStyle = '#111'; g.fillRect(0, 0, s, s);
+      for (let y = 0; y < 4; y++) for (let x = 0; x < 16; x++) { g.fillStyle = (x + y) % 2 ? '#fff' : '#111'; g.fillRect(x * 16, y * 16 + 96, 16, 16); }
+    }, { repeat: false }) }), gate.x, gate.y + 6, gate.z, scene);
+    banner.rotation.y = Math.atan2(end.t.x, end.t.z);
+  }
+
+  // ---------- 騎乘物理 ----------
+  const ride = { s: 0, u: 0, v: 0, vu: 0, y: 0, vy: 0, t: 0, bonkT: 0 };
+  function begin(hero, s0, u0) {
+    Object.assign(ride, { s: s0, u: clamp(u0, -W + 0.6, W - 0.6), v: Math.max(6, hero.speed), vu: 0, y: 0, vy: 0, t: 0, bonkT: 0 });
+    hero.setState('ride'); hero.grounded = true; hero.ground = null;
+    Sound.play('long'); Particles.dust(hero.pos, 6, 1, 0.6);
+    Game.onSlideStart();
+  }
+  function step(hero, dt, inp) {
+    const r = ride; r.t += dt; r.bonkT -= dt;
+    let q = sample(r.s);
+    const slope = -q.t.y;
+    let a = 34 * slope - 1.2 - 0.0105 * r.v * r.v;
+    if (inp.sy > 0.3) a += 4 * inp.sy;
+    if (inp.sy < -0.3) a += 16 * inp.sy;
+    r.v = clamp(r.v + a * dt, 4, 44);
+    // 轉向：搖桿左右 = 畫面左右
+    const target = inp.sx * 12 + q.k * r.v * r.v * 0.09;
+    r.vu = damp(r.vu, target, 6, dt);
+    r.u += r.vu * dt;
+    const lim = W - 0.55;
+    if (Math.abs(r.u) > lim) {
+      const hard = Math.abs(r.vu) > 3;
+      r.u = Math.sign(r.u) * lim;
+      if (hard && r.bonkT <= 0) { Sound.play('bonk'); r.v *= 0.9; r.bonkT = 0.4; Particles.sparkle(_v.copy(hero.pos).addScaledVector(q.r, Math.sign(r.u) * 0.5).setY(hero.pos.y + 0.6), 4, 0xffffff, 3); }
+      r.vu = -r.vu * 0.25;
+    }
+    // 小跳
+    if (inp.jumpP && r.y <= 0.001) { r.vy = 9.5; Sound.play('jump'); }
+    if (r.y > 0 || r.vy > 0) { r.vy -= 36 * dt; r.y = Math.max(0, r.y + r.vy * dt); if (r.y === 0 && r.vy < 0) { r.vy = 0; Sound.play('land'); } }
+    const prevS = r.s;
+    r.s += r.v * dt;
+    for (const b of BOOSTS) if (prevS < b && r.s >= b && Math.abs(r.u) < 2.6 && r.y < 1) {
+      r.v = Math.max(r.v, 34) + 3; Sound.play('spring'); Particles.ring(hero.pos, 10, 5, 0xffe14a); Game.shake(0.12);
+    }
+    q = sample(r.s);
+    hero.pos.set(q.p.x + q.r.x * r.u, q.p.y + r.y, q.p.z + q.r.z * r.u);
+    hero.facing = q.h - r.vu * 0.025;
+    hero.vel.set(q.t.x * r.v + q.r.x * r.vu, 0, q.t.z * r.v + q.r.z * r.vu);
+    hero.speed = r.v; hero.grounded = true; hero.lastGround.copy(hero.pos);
+    hero.rideFloor = q.p.y;
+    if (Math.random() < r.v / 110) Particles.spawn({ pos: _v.set(hero.pos.x, q.p.y + 0.15, hero.pos.z), vel: V3(rr(-1, 1), 0.8, rr(-1, 1)), life: 0.3, s0: 0.25, s1: 0.6, color: 0xffffff, drag: 3 });
+    if (r.s >= LEN - 0.1) finish(hero, q);
+  }
+  function finish(hero, q) {
+    const t = ride.t;
+    hero.setState('move'); hero.speed = Math.min(ride.v, 15); hero.facing = q.h;
+    hero.pos.copy(q.p).addScaledVector(q.t, 0.6); hero.pos.y = end.p.y; hero.grounded = true; hero.ground = end.solid;
+    Game.onSlideFinish(t);
+  }
+  // 是否踏入滑道入口
+  function checkEnter(hero) {
+    if (hero.state === 'ride') return;
+    const dx = hero.pos.x - start.p.x, dz = hero.pos.z - start.p.z;
+    const along = dx * start.t.x + dz * start.t.z;
+    const lat = dx * R[0].x + dz * R[0].z;
+    if (along > -0.3 && along < 6 && Math.abs(lat) < W && Math.abs(hero.pos.y - start.p.y) < 2.5) begin(hero, Math.max(0, along), lat);
+  }
+  return { build, buildPlatforms, step, checkEnter, ride, start, end, sample, LEN, W, N, P, R };
+})();
+
+// =========================================================
 // 攝影機
 // =========================================================
 const Cam = {
@@ -2374,12 +2620,19 @@ const Cam = {
     if (I.pressed.cam) this.resetT = 0.45;
     if (this.resetT > 0) { this.resetT -= dt; this.yaw = dampAngle(this.yaw, hero.facing + Math.PI, 12, dt); this.pitch = damp(this.pitch, 0.34, 10, dt); }
     // 自動跟隨：只依橫向移動量轉動，不會在主角朝鏡頭跑時突然翻轉
-    if (this.manualT > 0.6 && hero.state !== 'dead') {
+    // 天空賽道：鏡頭自動朝向賽道前進方向（北方），搖桿「往上推」就是往前跳
+    const zone = Game.camZone(hero);
+    if (zone && (zone.force || this.manualT > 1.2) && hero.state !== 'dead') {
+      this.yaw = dampAngle(this.yaw, zone.yaw, zone.k || 1.6, dt);
+      this.pitch = damp(this.pitch, zone.pitch, 1.2, dt);
+    } else if (this.manualT > 0.6 && hero.state !== 'dead' && hero.grounded) {
+      // 空中不自動轉鏡頭，避免起跳後方向跑掉
       const rx = Math.cos(this.yaw), rz = -Math.sin(this.yaw);
       const lat = hero.vel.x * rx + hero.vel.z * rz;
-      this.yaw -= lat * 0.075 * dt * (hero.grounded ? 1 : 0.6);
-      if (hero.grounded && hero.speed > 1) this.pitch = damp(this.pitch, 0.34, 0.6, dt);
+      this.yaw -= lat * (I.usingTouch ? 0.05 : 0.075) * dt;
+      if (hero.speed > 1) this.pitch = damp(this.pitch, 0.34, 0.6, dt);
     }
+    if (zone) this.distT = zone.dist; else this.distT = null;
     // 焦點（跳躍時鏡頭不上下亂晃）
     const p = hero.pos;
     this.focus.x = damp(this.focus.x, p.x, 14, dt); this.focus.z = damp(this.focus.z, p.z, 14, dt);
@@ -2397,12 +2650,14 @@ const Cam = {
     if (Math.abs(camera.fov - f) > 0.05) { camera.fov = f; camera.updateProjectionMatrix(); }
   },
   place(dt, hero) {
+    this.distCur = damp(this.distCur || this.dist, this.distT || this.dist, 2, dt || 1);
     const cp = Math.cos(this.pitch), sp = Math.sin(this.pitch);
     const ox = Math.sin(this.yaw) * cp, oy = sp, oz = Math.cos(this.yaw) * cp;
     const F = this.focus;
-    let allowed = this.dist;
+    const D = this.distCur;
+    let allowed = D;
     for (let i = 1; i <= 16; i++) {
-      const t = 1.2 + (this.dist - 1.2) * i / 16;
+      const t = 1.2 + (D - 1.2) * i / 16;
       const x = F.x + ox * t, y = F.y + oy * t, z = F.z + oz * t;
       if (groundH(x, z) > y - 0.45 || pointInSolid(x, y, z, 0.45)) { allowed = Math.max(1.4, t - 0.7); break; }
     }
@@ -2501,8 +2756,9 @@ $('dialog').addEventListener('pointerdown', e => { e.preventDefault(); Dialog.ta
 // =========================================================
 const SAVE_KEY = 'starisle64.save.v1';
 const Save = {
-  data: { stars: [false, false, false], best: null, clears: 0 },
-  load() { try { const d = JSON.parse(localStorage.getItem(SAVE_KEY)); if (d && Array.isArray(d.stars)) this.data = Object.assign(this.data, d); } catch (_) { } },
+  data: { stars: [false, false, false, false, false], best: null, clears: 0 },
+  load() { try { const d = JSON.parse(localStorage.getItem(SAVE_KEY)); if (d && Array.isArray(d.stars)) this.data = Object.assign(this.data, d); } catch (_) { }
+    while (this.data.stars.length < STAR_COUNT) this.data.stars.push(false); },
   write() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.data)); } catch (_) { } },
 };
 
@@ -2512,20 +2768,23 @@ const Save = {
 const KL = () => Input.out.usingTouch
   ? { A: 'A 鈕', B: 'B 鈕', Z: 'Z 鈕', move: '左半邊的搖桿', cam: '右半邊畫面拖曳' }
   : { A: '空白鍵', B: 'J 鍵', Z: 'Shift 鍵', move: 'WASD 或方向鍵', cam: '滑鼠拖曳或 Q／E' };
-const STAR_NAMES = ['風車塔之巔', '栗子大王的逆襲', '天空的八枚紅幣'];
-const STAR_HINTS = ['爬上中央風車塔的螺旋階梯', '打倒東邊山頂的栗子大王', '北方天空賽道：收集 8 枚紅幣'];
+const STAR_NAMES = ['風車塔之巔', '栗子大王的逆襲', '天空的八枚紅幣', '彩虹滑梯', '極速滑梯挑戰'];
+const STAR_COUNT = STAR_NAMES.length;
+const SLIDE_TARGET = 15;
+const STAR_HINTS = ['爬上中央風車塔的螺旋階梯', '打倒東邊山頂的栗子大王', '北方天空賽道：收集 8 枚紅幣', '西邊山丘的彩虹傳送門 → 滑到終點', `在 ${SLIDE_TARGET} 秒內滑到彩虹滑梯終點`];
 
 // =========================================================
 // 遊戲主控
 // =========================================================
 const Game = {
   state: 'loading', hero: null, boss: null, stars: [], input: { wx: 0, wz: 0, mag: 0, jumpP: false, jumpH: false, attackP: false, crouchP: false, crouchH: false },
-  coins: 0, lives: 4, reds: 0, got: [false, false, false], playTime: 0, deaths: 0, checkpoint: null, hpShowT: 0, promptSign: null,
+  coins: 0, lives: 4, reds: 0, got: [false, false, false, false, false], playTime: 0, deaths: 0, checkpoint: null, hpShowT: 0, promptSign: null,
   acc: 0, titleT: 0, freeRoam: false,
 
   init() {
     Save.load();
     buildLevel();
+    Slide.build(); Slide.buildPlatforms();
     this.hero = new Hero();
     this.boss = new Boss();
     // 星星
@@ -2534,8 +2793,23 @@ const Game = {
       new Star(0, STAR_NAMES[0], tt.x, tt.y + 1.4, tt.z, true),
       new Star(1, STAR_NAMES[1], BOSS_C.x, World.bossY + 2.5, BOSS_C.z, false),
       new Star(2, STAR_NAMES[2], World.redStar.x, World.redStar.y, World.redStar.z, false),
+      new Star(3, STAR_NAMES[3], Slide.end.c.x - Slide.end.t.x * 8, Slide.end.c.y + 1.4, Slide.end.c.z - Slide.end.t.z * 8, true),
+      new Star(4, STAR_NAMES[4], Slide.end.c.x + Slide.end.t.x * 5, Slide.end.c.y + 1.6, Slide.end.c.z + Slide.end.t.z * 5, false),
     ];
     World.stars = this.stars;
+    // 彩虹滑梯與傳送門
+    const ph = HILLS[4]; const py = groundH(ph.x, ph.z);
+    const toIsland = Math.atan2(-ph.x, -ph.z);
+    const st = Slide.start, en = Slide.end, sf = Math.atan2(st.t.x, st.t.z), ef = Math.atan2(en.t.x, en.t.z);
+    const lat = V3().crossVectors(en.t, V3(0, 1, 0)).normalize();
+    const mainFront = { x: ph.x + Math.sin(toIsland) * 4, y: py, z: ph.z + Math.cos(toIsland) * 4, facing: toIsland };
+    const slideTop = { x: st.c.x, y: st.c.y, z: st.c.z, facing: sf, slide: true };
+    this.portals = [
+      makePortal(ph.x, py, ph.z, toIsland, 'rainbow', slideTop, '彩虹滑梯'),
+      makePortal(en.c.x + lat.x * 7 + en.t.x * 6, en.c.y, en.c.z + lat.z * 7 + en.t.z * 6, ef + Math.PI, 'rainbow', mainFront, '回到星之浮島'),
+      makePortal(en.c.x - lat.x * 7 + en.t.x * 6, en.c.y, en.c.z - lat.z * 7 + en.t.z * 6, ef + Math.PI, 'blue', slideTop, '再滑一次'),
+    ];
+    this.mainFront = mainFront;
     // 紅幣星星標記
     const mk = buildStarMesh(true); mk.scale.setScalar(0.9); mk.position.set(World.redStar.x, World.redStar.y, World.redStar.z); scene.add(mk);
     mk.children[0].material = new THREE.MeshBasicMaterial({ color: 0xff6a6a, transparent: true, opacity: 0.35, depthWrite: false });
@@ -2545,8 +2819,8 @@ const Game = {
     // 告示牌
     const sy = (x, z) => Math.atan2(START.x - x, START.z - z);
     makeSign(4.5, 59, sy(4.5, 59), '歡迎告示牌', L => [
-      '歡迎來到星之浮島！\n這座浮在天空中的小島，原本由三顆「能量之星」守護著……',
-      '可是調皮的栗子一族把星星弄得四散各地。\n中央的風車塔頂、東邊的山頂、北方的天空賽道，各藏著一顆！',
+      '歡迎來到星之浮島！\n這座浮在天空中的小島，原本由五顆「能量之星」守護著……',
+      '可是調皮的栗子一族把星星弄得四散各地。\n風車塔頂、東邊的山頂、北方的天空賽道，還有西邊傳送門通往的彩虹滑梯！',
       `用${L.move}移動，${L.A}跳躍。\n奔跑中在落地的瞬間再按${L.A}，可以連續跳得更高——三段跳！`,
       `${L.B}出拳，${L.Z}蹲下；在空中按${L.Z}使出臀部攻擊。\n從上方踩踏也能打倒栗寶寶。收集金幣可以回復體力！`,
       `${L.cam}可以旋轉視角。\n隨時按暫停可以查看目前的星星進度。祝你好運！`,
@@ -2563,12 +2837,22 @@ const Game = {
     ]);
     makeSign(-5, NORTH_EDGE + 10, 0.4, '天空賽道入口', L => [
       '前方是天空賽道！\n賽道上散落著 8 枚紅幣，全部收集之後，天空小島上會出現星星。',
-      '掉下去會損失 3 格體力，並回到旗子的位置重新開始。\n碰觸旗子就能更新重生點。',
+      '掉下去會損失 2 格體力，並回到最後碰觸的旗子重新開始。\n賽道中途和天空小島上都有旗子，記得去碰！',
       '移動平台上的你會跟著一起移動。\n藍色格子的踏板會掉落，要快速通過！',
     ]);
     makeSign(4, FAR.z + 12.5, Math.PI * 0.9, '彈簧', L => [
       '踩上紅色的大彈簧，\n就能一口氣飛回主島！',
     ]);
+    makeSign(ph.x + Math.sin(toIsland) * 3 + Math.cos(toIsland) * 3, ph.z + Math.cos(toIsland) * 3 - Math.sin(toIsland) * 3, toIsland, '彩虹傳送門', L => [
+      '穿過這座彩虹傳送門，就能抵達天空中的「彩虹滑梯」！',
+      `滑行時只要用${L.move}左右轉向，${L.A}可以小跳一下。\n往前推會加速，往後拉會煞車。`,
+      `兩側有護欄，完全不用擔心掉下去。\n在 ${SLIDE_TARGET} 秒內抵達終點，會出現另一顆星星！`,
+    ]);
+    const slat = V3().crossVectors(st.t, V3(0, 1, 0)).normalize();
+    makeSign(st.c.x + st.t.x * 3 + slat.x * 4.5, st.c.z + st.t.z * 3 + slat.z * 4.5, sf + Math.PI, '彩虹滑梯', L => [
+      `往前走進滑道入口就會開始滑行。\n${L.move}左右轉向，往前推加速、往後拉煞車，${L.A}小跳。`,
+      `踩過黃色箭頭可以加速！\n目標：${SLIDE_TARGET} 秒內抵達終點。`,
+    ], st.c.y);
     makeSign(-28, 22, -2.2, '進階招式', L => [
       `【跳遠】奔跑中按住${L.Z}，再按${L.A}。\n可以一口氣飛越很遠的距離！`,
       `【後空翻】站著按住${L.Z}，再按${L.A}。\n能跳到非常高的地方！`,
@@ -2589,6 +2873,10 @@ const Game = {
     const ey = groundH(0, NORTH_EDGE + 4);
     for (const d of [3, 8]) Coins.add(0, ey + 2.3 + d * 0.1, NORTH_EDGE - d);
     for (const [x, y, z] of World.redCoins) Coins.add(x, y, z, { red: true });
+    for (let sd = 40; sd < Slide.LEN - 30; sd += 12) {
+      const q = Slide.sample(sd), u = Math.sin(sd * 0.03) * 2.2;
+      Coins.add(q.p.x + q.r.x * u, q.p.y + 0.9, q.p.z + q.r.z * u);
+    }
     // 天空賽道重生點
     this.checkpoint = { x: START.x, y: groundH(START.x, START.z), z: START.z, facing: Math.PI };
     this.bindUI();
@@ -2596,6 +2884,12 @@ const Game = {
     Cam.snap(this.hero);
   },
 
+  camZone(h) {
+    const p = h.pos;
+    if (h.state === 'ride') { const q = Slide.sample(Slide.ride.s + 4); return { yaw: q.h + Math.PI, pitch: 0.42, dist: 10.5, force: true, k: 4 }; }
+    if (p.z < NORTH_EDGE + 12 && p.z > FAR.z + FAR.r + 1 && Math.abs(p.x) < 25) return { yaw: 0, pitch: 0.5, dist: 13 };
+    return null;
+  },
   onResize() {
     const w = innerWidth, h = innerHeight;
     renderer.setSize(w, h, false); camera.aspect = w / h;
@@ -2634,7 +2928,7 @@ const Game = {
     Save.load(); this.state = 'title'; UI.show('title'); UI.hide('hud'); this.showTouch(false);
     const n = Save.data.stars.filter(Boolean).length;
     $('bCont').classList.toggle('hidden', n === 0);
-    $('bCont').innerHTML = `繼續冒險 <span class="sm">★ ${n}/3</span>`;
+    $('bCont').innerHTML = `繼續冒險 <span class="sm">★ ${n}/${STAR_COUNT}</span>`;
     $('saveNote').textContent = Save.data.best ? `最佳通關時間 ${fmtTime(Save.data.best)}` : '';
     Cam.cine = { pos: V3(), look: V3(0, 14, 0), snap: true, k: 99 };
     this.titleT = 0; Music.play('field');
@@ -2655,32 +2949,34 @@ const Game = {
     }
     await UI.fade(1, 0.4);
     UI.hide('title');
-    if (fresh) { Save.data.stars = [false, false, false]; Save.write(); }
+    if (fresh) { Save.data.stars = Array(STAR_COUNT).fill(false); Save.write(); }
     this.got = Save.data.stars.slice();
     this.freeRoam = this.got.every(Boolean);
     this.coins = 0; this.lives = 4; this.reds = 0; this.playTime = 0; this.deaths = 0; this.coinLife = 50;
     // 世界狀態
     Coins.reset(); World.redMarker.visible = true;
+    $('timer').classList.remove('big'); $('timer').textContent = '';
+    for (const pt of this.portals) pt.armed = true;
     for (const e of World.enemies) e.revive();
     UI.hide('hud-redrow');
     for (const s of this.stars) {
       s.taken = false; s.fly = null; s.pos.copy(s.home);
       if (this.got[s.id]) s.setGhost();
-      s.visible = s.id === 0; s.g.visible = s.visible;
+      s.visible = s.id === 0 || s.id === 3 || (s.id === 4 && this.got[4]); s.g.visible = s.visible;
     }
     if (this.got[1]) { this.boss.defeated = true; this.boss.reset(false); this.stars[1].visible = true; this.stars[1].g.visible = true; }
     else this.boss.reset(true);
     resetFallers();
     this.checkpoint = { x: START.x, y: groundH(START.x, START.z), z: START.z, facing: Math.PI };
-    World.cpFlag.raised = false; World.cpFlag.cloth.material.color.set('#999999');
+    for (const cf of World.cpFlags) { cf.raised = false; cf.cloth.material.color.set('#999999'); }
     this.hero.reset(START.x, groundH(START.x, START.z), START.z, Math.PI);
     this.hero.hp = 8;
     this.updateHud(true);
     if (fresh) await this.intro();
     else { Cam.snap(this.hero); await UI.fade(0, 0.5); }
     this.beginPlay();
-    if (fresh) UI.caption('找回三顆能量之星！', '靠近告示牌按 B 可以閱讀說明', 3.5);
-    else UI.caption(`★ ${this.got.filter(Boolean).length} / 3`, '繼續你的冒險吧！', 2.5);
+    if (fresh) UI.caption('找回五顆能量之星！', '靠近告示牌按 B 可以閱讀說明', 3.5);
+    else UI.caption(`★ ${this.got.filter(Boolean).length} / ${STAR_COUNT}`, '繼續你的冒險吧！', 2.5);
     if (IS_TOUCH && innerHeight > innerWidth) { UI.show('rotateHint'); setTimeout(() => UI.hide('rotateHint'), 4500); }
   },
   beginPlay() {
@@ -2691,10 +2987,11 @@ const Game = {
     this.state = 'intro'; this.skipIntro = false; UI.show('skipHint');
     const tt = World.towerTop;
     const shots = [
-      { a: [60, 60, 170], b: [-30, 50, 150], look: [0, 12, 0], cap: '歡迎來到星之浮島', sub: '三顆能量之星散落在這座天空之島上', d: 3.8 },
+      { a: [60, 60, 170], b: [-30, 50, 150], look: [0, 12, 0], cap: '歡迎來到星之浮島', sub: '五顆能量之星散落在這座天空之島上', d: 3.8 },
       { a: [20, tt.y - 8, 22], b: [-16, tt.y + 6, 18], look: [0, tt.y, 0], cap: '★ 風車塔之巔', sub: '沿著螺旋階梯爬上塔頂', d: 3.2 },
       { a: [22, World.bossY + 10, 6], b: [28, World.bossY + 7, 2], look: [BOSS_C.x, World.bossY + 3, BOSS_C.z], cap: '★ 栗子大王的逆襲', sub: '打倒霸佔山頂的栗子大王', d: 3.2 },
       { a: [30, 34, NORTH_EDGE - 20], b: [26, 26, NORTH_EDGE - 60], look: [0, 8, FAR.z + 20], cap: '★ 天空的八枚紅幣', sub: '穿越北方的天空賽道收集紅幣', d: 3.4 },
+      { a: [-60, 150, 250], b: [-100, 130, 230], look: [-150, 130, 150], cap: '★ 彩虹滑梯', sub: '穿過西邊山丘的傳送門，一路滑向終點', d: 3.4 },
     ];
     let first = true;
     for (const s of shots) {
@@ -2762,7 +3059,7 @@ const Game = {
     const inp = this.input;
     inp.wx = fx * I.my + rx * I.mx; inp.wz = fz * I.my + rz * I.mx; inp.mag = I.mag;
     const l = Math.hypot(inp.wx, inp.wz); if (l > 1e-4) { inp.wx /= l; inp.wz /= l; }
-    inp.jumpH = I.held.jump; inp.crouchH = I.held.crouch;
+    inp.jumpH = I.held.jump; inp.crouchH = I.held.crouch; inp.sx = I.mx; inp.sy = I.my;
 
     const S = this.state;
     if (S === 'title' || S === 'paused' || S === 'ending') this.menuNav(I);
@@ -2831,8 +3128,9 @@ const Game = {
     for (const f of World.flags) f.m.rotation.y = Math.sin(t * 3 + f.ph) * 0.35;
     if (World.mill) World.mill.rotation.z = t * 0.8;
     if (World.water) { World.water.material.map.offset.set(t * 0.02, t * 0.013); }
-    const cf = World.cpFlag; if (cf) { cf.h = damp(cf.h, cf.raised ? 3.4 : 1.0, 3, dt); cf.cloth.position.y = cf.h; cf.cloth.rotation.y = Math.sin(t * 4) * 0.25; }
+    for (const cf of World.cpFlags) { cf.h = damp(cf.h, cf.raised ? 3.4 : 1.0, 3, dt); cf.cloth.position.y = cf.h; cf.cloth.rotation.y = Math.sin(t * 4) * 0.25; }
     World.redMarker.rotation.y = t * 1.2;
+    for (const pt of World.portals) { pt.disc.rotation.z = -t * 2.5; pt.disc.material.opacity = 0.7 + Math.sin(t * 4) * 0.15; }
     for (let i = World.floaters.length - 1; i >= 0; i--) {
       const f = World.floaters[i]; f.t += dt; f.s.position.y += dt * 1.6; f.s.material.opacity = f.t < 1 ? 1 : Math.max(0, 1 - (f.t - 1) * 2);
       if (f.t > 1.5) { scene.remove(f.s); World.floaters.splice(i, 1); }
@@ -2847,12 +3145,22 @@ const Game = {
     const showP = this.hpShowT > 0;
     if (this._lastHp !== h.hp || this._lastShow !== showP) { UI.power(h.hp, showP); this._lastHp = h.hp; this._lastShow = showP; }
     // 旗子
-    const cf = World.cpFlag, cp = World.checkpoint;
-    if (!cf.raised && Math.hypot(h.pos.x - cf.g.position.x, h.pos.z - cf.g.position.z) < 4.5 && Math.abs(h.pos.y - cf.g.position.y) < 3) {
-      cf.raised = true; cf.cloth.material.color.set('#ff4a3a'); Sound.play('check');
-      this.checkpoint = { x: cp.x, y: cp.y, z: cp.z, facing: Math.PI };
-      UI.caption('重生點已更新！', '', 1.8);
-      Particles.sparkle(_v.set(cf.g.position.x, cf.g.position.y + 3, cf.g.position.z), 14);
+    for (const cf of World.cpFlags) {
+      if (!cf.raised && Math.hypot(h.pos.x - cf.g.position.x, h.pos.z - cf.g.position.z) < 4.5 && Math.abs(h.pos.y - cf.g.position.y) < 3) {
+        for (const o of World.cpFlags) if (o !== cf && o.raised) { o.raised = false; o.cloth.material.color.set('#999999'); }
+        cf.raised = true; cf.cloth.material.color.set('#ff4a3a'); Sound.play('check');
+        this.checkpoint = Object.assign({}, cf.cp);
+        UI.caption('重生點已更新！', '', 1.8);
+        Particles.sparkle(_v.set(cf.g.position.x, cf.g.position.y + 3, cf.g.position.z), 14);
+      }
+    }
+    // 彩虹滑梯入口與傳送門
+    Slide.checkEnter(h);
+    if (h.state === 'ride') $('timer').textContent = '⏱ ' + Slide.ride.t.toFixed(2);
+    for (const pt of this.portals) {
+      const d = Math.hypot(h.pos.x - pt.x, h.pos.z - pt.z), dy = h.pos.y - pt.y;
+      if (!pt.armed) { if (d > 3.2) pt.armed = true; continue; }
+      if (d < 1.5 && dy > -0.5 && dy < 3.5 && h.state !== 'dead') { pt.armed = false; this.warp(pt); break; }
     }
     // 告示牌提示
     let near = null;
@@ -2935,6 +3243,31 @@ const Game = {
     Particles.ring(h.pos, 16, 6); h.squash(0.7, 1.4);
   },
 
+  onSlideStart() { const t = $('timer'); t.classList.add('big'); t.textContent = '⏱ 0.00'; },
+  onSlideFinish(t) {
+    const tm = $('timer'); tm.textContent = '⏱ ' + t.toFixed(2); setTimeout(() => { if (this.hero.state !== 'ride') { tm.classList.remove('big'); tm.textContent = ''; } }, 4000);
+    const fast = t <= SLIDE_TARGET;
+    Sound.play(fast ? 'check' : 'land');
+    UI.caption(`抵達終點！ ${t.toFixed(2)} 秒`, fast ? `${SLIDE_TARGET} 秒內達成！另一顆星星出現了！` : `在 ${SLIDE_TARGET} 秒內抵達，就會出現另一顆星星！`, 3.5);
+    const st = this.stars[4];
+    if (fast && !st.visible) { st.appear(V3(this.hero.pos.x, this.hero.pos.y + 3, this.hero.pos.z)); if (this.got[4]) st.setGhost(); setTimeout(() => Sound.play('starAppear'), 400); }
+  },
+  async warp(pt) {
+    if (this.state !== 'play') return;
+    this.state = 'cutscene'; const h = this.hero; UI.hide('prompt');
+    Sound.play('starAppear'); h.vel.set(0, 0, 0); h.speed = 0; h.setState('frozen');
+    Particles.sparkle(_v.set(h.pos.x, h.pos.y + 1, h.pos.z), 20, 0xffffff, 6);
+    await UI.fade(1, 0.45, true);
+    const d = pt.dest;
+    const hp = h.hp; h.reset(d.x, d.y, d.z, d.facing); h.hp = hp;
+    this.checkpoint = { x: d.x, y: d.y, z: d.z, facing: d.facing };
+    for (const p2 of this.portals) if (Math.hypot(p2.x - d.x, p2.z - d.z) < 6) p2.armed = false;
+    Cam.snap(h); this.updateHud(); this.onHpChange(false);
+    await wait(0.15);
+    this.state = 'play';
+    await UI.fade(0, 0.5, true);
+    if (d.slide) UI.caption('彩虹滑梯', `往前走進滑道就會開始 · 目標 ${SLIDE_TARGET} 秒`, 2.8);
+  },
   // ---------- 劇情事件 ----------
   async collectStar(star) {
     if (this.state !== 'play') return;
@@ -2952,7 +3285,7 @@ const Game = {
     follow();
     await wait(0.9);
     UI.banner('STAR GET!', `★ ${star.name}`);
-    Cam.cine.look.set(h.pos.x, h.pos.y + 1.6, h.pos.z);
+    if (Cam.cine) Cam.cine.look.set(h.pos.x, h.pos.y + 1.6, h.pos.z);
     await wait(2.6);
     UI.hide('banner');
     sg.visible = false; star.visible = false;
@@ -2966,7 +3299,7 @@ const Game = {
     star.setGhost(); star.taken = false; star.visible = true; star.g.visible = true; star.needLeave = true;
     star.pos.copy(star.home);
     h.setState('move'); this.state = 'play'; Cam.cine = null; Cam.snap(h); Music.play(this.boss.state !== 'gone' && this.boss.state !== 'sleep' && this.boss.introDone && !this.boss.defeated ? 'boss' : 'field');
-    UI.caption(`★ ${this.got.filter(Boolean).length} / 3`, this.got.every(Boolean) ? '全部收集完成！' : '還差 ' + (3 - this.got.filter(Boolean).length) + ' 顆！', 2.5);
+    UI.caption(`★ ${this.got.filter(Boolean).length} / ${STAR_COUNT}`, this.got.every(Boolean) ? '全部收集完成！' : '還差 ' + (STAR_COUNT - this.got.filter(Boolean).length) + ' 顆！', 2.5);
   },
   async redStarAppear() {
     const st = this.stars[2];
@@ -3040,7 +3373,7 @@ const Game = {
       const t0 = World.time;
       while (World.time - t0 < 1.0) { Cam.cine.look.copy(h.pos); await wait(0.03); }
       await UI.fade(1, 0.4);
-      h.hp -= 3;
+      h.hp -= 2;
       if (h.hp <= 0) { await this.loseLife(); }
       else { await this.respawn(true); }
       this._dying = false;
