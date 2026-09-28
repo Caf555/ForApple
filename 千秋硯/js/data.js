@@ -129,9 +129,9 @@ export const ENEMIES = {
     skills: [['攻擊', 2], ['刺擊', 2]], drops: [['竹片', 0.5]], desc: '社外刺竹林的影子。刺竹原本是守護聚落的圍籬，被蝕扭曲後開始攻擊所有外人。' },
   沙洲蟹魅: { element: '水', rank: '一般', lv: 4, hp: 64, atk: 12, def: 14, mag: 6, res: 8, spd: 6, luk: 6, exp: 16, money: 10,
     skills: [['攻擊', 2], ['夾擊', 2], ['硬殼', 1]], drops: [['貝殼', 0.5]], desc: '大員沙洲上被蝕附身的巨蟹。守很高，用術法對付比較有效。' },
-  褪聲鬼: { element: '陰', rank: '精英', lv: 5, hp: 190, atk: 13, def: 9, mag: 15, res: 10, spd: 11, luk: 8, exp: 60, money: 40,
+  褪聲鬼: { element: '陰', rank: '精英', lv: 5, hp: 240, atk: 14, def: 9, mag: 16, res: 10, spd: 11, luk: 8, exp: 60, money: 40,
     skills: [['攻擊', 2], ['抹字', 2], ['吞聲', 1]], drops: [['舊紙', 1]], desc: '吃掉了一首歌後半段的褪墨鬼。肚子裡隱約傳來斷斷續續的旋律。' },
-  失語之影: { element: '陰', rank: '首領', lv: 8, hp: 420, atk: 16, def: 12, mag: 19, res: 13, spd: 12, luk: 10, exp: 150, money: 90,
+  失語之影: { element: '陰', rank: '首領', lv: 8, hp: 540, atk: 18, def: 12, mag: 21, res: 13, spd: 12, luk: 10, exp: 150, money: 90,
     skills: [['攻擊', 2], ['沉默之潮', 2], ['追問', 2], ['回聲', 1]], drops: [], desc: '因失去語言而生的影子。它不是誰的仇人，只是一個再也說不出話的聲音。' },
 };
 

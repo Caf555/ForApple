@@ -86,12 +86,12 @@ export class Debate {
     const ui = this.ctx.ui;
     this.meters.innerHTML = '';
     const row = (label, v, max, cls) => el('div', { class: 'd-meter' }, el('span', {}, label), ui.bar(v, max, cls), el('b', {}, `${Math.max(0, v)}`));
-    this.meters.append(
+    this.meters.append(...[
       row(`${this.d.foe}的信念`, this.foeBelief, this.d.foeBelief, 'hp'),
       row('你的信念', this.myBelief, this.d.myBelief, 'mp'),
       el('div', { class: 'd-crowd' }, el('span', {}, '人心'), el('div', { class: 'crowd-track' }, ...Array.from({ length: 11 }, (_, i) => el('i', { class: i - 5 === this.crowd ? 'on' : (i === 5 ? 'mid' : '') }))), el('b', {}, (this.crowd > 0 ? '+' : '') + this.crowd)),
       this.empathy ? el('div', { class: 'd-accord' }, '和解 ' + '●'.repeat(this.accord) + '○'.repeat(Math.max(0, 3 - this.accord))) : null,
-      el('div', { class: 'd-round' }, `第 ${this.round} / ${this.d.rounds} 回合`));
+      el('div', { class: 'd-round' }, `第 ${this.round} / ${this.d.rounds} 回合`)].filter(Boolean));
   }
 
   line(who, text, cls = '') {
