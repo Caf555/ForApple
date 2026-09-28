@@ -1,0 +1,15 @@
+{
+  "name": "千秋硯",
+  "short_name": "千秋硯",
+  "description": "致敬軒轅劍與仙劍奇俠傳的文字角色扮演遊戲",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121418",
+  "theme_color": "#121418",
+  "lang": "zh-TW",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
