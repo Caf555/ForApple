@@ -110,7 +110,10 @@ export class Runner {
   }
 
   // 目前所在的卷代號，例如「卷一・大員」→「卷一」
-  volId() { return (this.g.loc.vol || '').split('・')[0]; }
+  volId() {
+    const v = (this.g.loc.vol || '').split('・')[0];
+    return /^(序卷|卷)/.test(v) ? v : (this.g.lastVol || '卷一');
+  }
 
   pushLog(c) {
     const g = this.g;
@@ -206,7 +209,7 @@ export class Runner {
     switch (c.name) {
       case '地點': g.loc.place = arg; ui.setHeader(g.loc); return;
       case '年代': g.loc.year = arg; ui.setHeader(g.loc); return;
-      case '卷': g.loc.vol = arg; ui.setHeader(g.loc); return;
+      case '卷': g.loc.vol = arg; if (/^(序卷|卷)/.test(arg)) g.lastVol = arg.split('・')[0]; ui.setHeader(g.loc); return;
       case '主題': g.loc.theme = arg; ui.setTheme(arg); return;
       case '音樂': g.loc.music = arg; audio.music(arg); return;
       case '章節': {
