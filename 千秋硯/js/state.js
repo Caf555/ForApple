@@ -12,7 +12,7 @@ export const AXES = {
   出世: ['出入', -1], 入世: ['出入', 1],
 };
 
-export function expToNext(lv) { return Math.round(20 * Math.pow(lv, 1.6)); }
+export function expToNext(lv) { return Math.round(15 * Math.pow(lv, 1.5)); }
 
 export function bondLevel(points) {
   if (points >= 140) return 5;
