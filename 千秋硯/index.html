@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16181d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="千秋硯">
+<meta name="description" content="致敬軒轅劍與仙劍奇俠傳的文字角色扮演遊戲。一方古硯，通往古今中外的歷史現場。">
+<title>千秋硯</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-mode="title" data-vtheme="hub">
+<div id="app">
+  <header id="topbar">
+    <div id="loc"><span id="loc-vol"></span><span id="loc-place"></span></div>
+    <button id="btn-menu" class="icon-btn" aria-label="選單">☰</button>
+  </header>
+
+  <div id="banner" aria-hidden="true">
+    <div class="banner-art"></div>
+    <div class="banner-text"><span id="banner-place"></span><span id="banner-year"></span></div>
+  </div>
+
+  <main id="story" aria-live="polite"></main>
+  <button id="advance-hint" aria-label="繼續">▼</button>
+  <div id="choices"></div>
+
+  <section id="hub"></section>
+
+  <nav id="bottomnav">
+    <button id="nav-party"><span class="ni">⚔</span>隊伍</button>
+    <button id="nav-items"><span class="ni">❖</span>道具</button>
+    <button id="nav-codex"><span class="ni">📜</span>史卷</button>
+    <button id="nav-spirit"><span class="ni">◉</span>硯池</button>
+    <button id="nav-sys"><span class="ni">⚙</span>系統</button>
+  </nav>
+</div>
+
+<div id="battle" class="overlay"></div>
+<div id="debate" class="overlay"></div>
+<div id="minigame" class="overlay"></div>
+<div id="card" class="overlay"></div>
+<div id="title" class="overlay"><p class="t-sub">載入中……</p></div>
+<div id="sheets"></div>
+<div id="toasts"></div>
+
+<noscript><p style="padding:2em">本遊戲需要啟用 JavaScript。</p></noscript>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

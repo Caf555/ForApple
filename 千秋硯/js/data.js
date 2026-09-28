@@ -1,0 +1,312 @@
+// 遊戲資料：角色、技能、敵人、道具、配方、史卷……
+// 數值依據：文字RPG企劃/設定集/04_系統數值.md
+
+export const ELEMENTS = ['金', '木', '水', '火', '土', '陰', '陽', '無'];
+
+// 相剋：key 剋 value
+export const OVERCOME = { 金: '木', 木: '土', 土: '水', 水: '火', 火: '金' };
+// 相生：key 生 value
+export const GENERATE = { 木: '火', 火: '土', 土: '金', 金: '水', 水: '木' };
+
+export function elementMult(atk, def) {
+  if (!atk || atk === '無' || !def || def === '無') return 1;
+  if ((atk === '陰' && def === '陽') || (atk === '陽' && def === '陰')) return 1.3;
+  if (atk === def) return 0.8;
+  if (OVERCOME[atk] === def) return 1.5;
+  if (OVERCOME[def] === atk) return 0.7;
+  return 1;
+}
+
+export const STAT_NAMES = { hp: '體', mp: '墨', atk: '力', def: '守', mag: '神', res: '定', spd: '疾', luk: '緣' };
+
+// ───────── 角色 ─────────
+export const CHARACTERS = {
+  知墨: {
+    title: '補史人', element: '水', weapon: '裁紙刀', charm: null,
+    base: { hp: 60, mp: 20, atk: 10, def: 9, mag: 10, res: 9, spd: 10, luk: 10 },
+    growth: { hp: 9, mp: 3, atk: 2.0, def: 1.8, mag: 2.0, res: 1.8, spd: 1.5, luk: 1.0 },
+    skills: [[1, '墨刃'], [3, '補字'], [6, '濃墨']],
+    desc: '臺南的古籍修復師。安靜、耐心，習慣對舊書說話。',
+  },
+  蘅: {
+    title: '硯中器靈', element: '水', weapon: '墨絲', charm: null,
+    base: { hp: 45, mp: 35, atk: 6, def: 7, mag: 14, res: 12, spd: 12, luk: 12 },
+    growth: { hp: 6, mp: 5, atk: 1.0, def: 1.3, mag: 2.8, res: 2.2, spd: 1.8, luk: 1.2 },
+    skills: [[1, '墨愈'], [1, '洞察'], [3, '寒墨'], [5, '潮息']],
+    desc: '從千秋硯中醒來的少女。好奇、愛吐槽，偶爾說出不屬於任何時代的詞。',
+  },
+  蒂娃: {
+    title: '新港社的少女', element: '木', weapon: '竹彈弓', charm: null,
+    base: { hp: 50, mp: 15, atk: 11, def: 7, mag: 8, res: 8, spd: 15, luk: 11 },
+    growth: { hp: 7, mp: 2, atk: 2.2, def: 1.4, mag: 1.4, res: 1.5, spd: 2.4, luk: 1.3 },
+    skills: [[1, '連射'], [3, '竹哨'], [5, '風中石']],
+    desc: '西拉雅族的少女，跟著傳教士學用羅馬字書寫自己的語言。（「蒂娃」為暫定名）',
+  },
+  楊: {
+    title: '公司的通譯', element: '金', weapon: '短火繩槍', charm: null,
+    base: { hp: 55, mp: 18, atk: 13, def: 8, mag: 9, res: 8, spd: 8, luk: 9 },
+    growth: { hp: 8, mp: 2.5, atk: 2.4, def: 1.6, mag: 1.5, res: 1.4, spd: 1.2, luk: 0.9 },
+    skills: [[1, '齊射'], [3, '雙語號令']],
+    desc: '楊・范登堡。荷蘭東印度公司的年輕通譯，真心喜歡西拉雅語。',
+  },
+  潮歌: {
+    title: '墨靈', element: '水', weapon: null, charm: null, spirit: true,
+    base: { hp: 70, mp: 30, atk: 9, def: 10, mag: 13, res: 12, spd: 11, luk: 8 },
+    growth: { hp: 8, mp: 3, atk: 1.5, def: 1.8, mag: 2.3, res: 2.0, spd: 1.5, luk: 1.0 },
+    skills: [[1, '潮音'], [1, '墨愈']],
+    desc: '由失去聲音的妖物煉成的墨靈。偶爾會哼出一段沒有歌詞的旋律。',
+  },
+};
+
+// ───────── 技能 ─────────
+// type: phy 物理 / mag 術法 / heal 治療 / buff 增益 / debuff 減益 / cure 解除
+// target: enemy / enemies / ally / allies / self
+export const SKILLS = {
+  墨刃: { cost: 4, type: 'mag', target: 'enemy', power: 18, element: '水', desc: '以墨凝成薄刃，水屬性術法攻擊。' },
+  補字: { cost: 5, type: 'cure', target: 'ally', power: 20, cures: ['褪色', '失語'], desc: '替隊友補回被抹去的字，解除褪色與失語並少量回復。' },
+  濃墨: { cost: 9, type: 'mag', target: 'enemy', power: 40, element: '水', desc: '研出最濃的一筆，強力水屬性攻擊。' },
+  雙語對照: { cost: 6, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.65, desc: '【大員法統】同時說出兩種語言，使敵人迷惘。' },
+  牽星: { cost: 6, type: 'buff', target: 'allies', buff: { stat: 'acc', mult: 1.2, turns: 3 }, desc: '【大員法統】依星位定向，全隊攻擊更準。' },
+
+  墨愈: { cost: 5, type: 'heal', target: 'ally', power: 30, desc: '以溫潤的墨色撫平傷口。' },
+  洞察: { cost: 4, type: 'debuff', target: 'enemy', buff: { stat: 'def', mult: 0.75, turns: 3 }, desc: '看穿敵人的破綻，降低其守與定。' },
+  寒墨: { cost: 8, type: 'mag', target: 'enemies', power: 14, element: '水', desc: '冰冷的墨雨，水屬性全體攻擊。' },
+  潮息: { cost: 12, type: 'heal', target: 'allies', power: 28, desc: '像潮水一樣的呼吸，全隊回復。' },
+
+  連射: { cost: 4, type: 'phy', target: 'enemy', power: 0.65, hits: 2, element: '木', desc: '連續射出兩顆石子。' },
+  竹哨: { cost: 6, type: 'buff', target: 'allies', buff: { stat: 'spd', mult: 1.25, turns: 3 }, desc: '吹響竹哨，全隊疾提升。' },
+  風中石: { cost: 7, type: 'phy', target: 'enemy', power: 1.6, element: '木', desc: '順著風勢射出，木屬性強力一擊。' },
+
+  齊射: { cost: 5, type: 'phy', target: 'enemies', power: 0.8, element: '金', desc: '火繩槍的轟鳴，金屬性全體攻擊。' },
+  雙語號令: { cost: 6, type: 'buff', target: 'allies', buff: { stat: 'atk', mult: 1.2, turns: 3 }, desc: '用兩種語言喊出號令，全隊力提升。' },
+
+  潮音: { cost: 6, type: 'mag', target: 'enemies', power: 12, element: '水', status: '迷惘', chance: 0.25, desc: '無字的歌聲，水屬性全體攻擊，可能使敵人迷惘。' },
+
+  // 敵人技能
+  抹字: { cost: 0, type: 'mag', target: 'enemy', power: 8, element: '陰', status: '褪色', chance: 0.4, desc: '白色的筆刷抹過，使對象褪色。' },
+  瘴氣: { cost: 0, type: 'mag', target: 'enemies', power: 5, element: '木', status: '瘴毒', chance: 0.35, desc: '濕熱的霧氣。' },
+  刺擊: { cost: 0, type: 'phy', target: 'enemy', power: 1.3, element: '木', desc: '竹刺猛然刺出。' },
+  硬殼: { cost: 0, type: 'buff', target: 'self', buff: { stat: 'def', mult: 1.5, turns: 3 }, desc: '縮進硬殼裡。' },
+  夾擊: { cost: 0, type: 'phy', target: 'enemy', power: 1.2, element: '水', status: '定身', chance: 0.2, desc: '巨螯一夾。' },
+  吞聲: { cost: 0, type: 'debuff', target: 'enemies', status: '失語', chance: 0.5, desc: '把聲音吞進肚子裡。' },
+  沉默之潮: { cost: 0, type: 'mag', target: 'enemies', power: 16, element: '陰', status: '失語', chance: 0.35, desc: '無聲的潮水漫過所有人。' },
+  回聲: { cost: 0, type: 'heal', target: 'self', power: 45, desc: '吞下的聲音在體內回響，回復自身。' },
+  追問: { cost: 0, type: 'mag', target: 'enemy', power: 14, element: '陰', status: '迷惘', chance: 0.3, desc: '「你真的記得嗎？」' },
+};
+
+// ───────── 合擊技 ─────────
+export const COMBOS = {
+  墨潮: { members: ['知墨', '蘅'], bond: 2, cost: 8, type: 'mag', target: 'enemies', power: 34, element: '水', cures: true, desc: '知墨研墨、蘅引潮，水屬性全體攻擊並解除我方異常。' },
+  牽星一箭: { members: ['蒂娃', '蘅'], bond: 2, cost: 6, type: 'phy', target: 'enemy', power: 2.4, element: '木', crit: true, desc: '蘅指出星位，蒂娃一發命中，必定暴擊。' },
+  雙語之盾: { members: ['楊', '蒂娃'], bond: 3, cost: 8, type: 'buff', target: 'allies', buff: { stat: 'res', mult: 2, turns: 2 }, desc: '兩種語言交織成盾，全隊術法傷害減半。' },
+};
+
+// ───────── 陣法 ─────────
+export const FORMATIONS = {
+  一字陣: { desc: '並肩而立，沒有加成也沒有弱點。', mods: {} },
+  鋒矢陣: { desc: '全隊力 +15%，守 −10%。', mods: { atk: 1.15, def: 0.9 } },
+  方圓陣: { desc: '全隊守、定 +15%，力 −10%。', mods: { def: 1.15, res: 1.15, atk: 0.9 } },
+  雁行陣: { desc: '全隊疾 +10%，首回合必定先攻。', mods: { spd: 1.1 }, firstStrike: true },
+};
+
+// ───────── 異常狀態 ─────────
+export const STATUSES = {
+  褪色: { turns: 3, desc: '無法使用術法' },
+  失語: { turns: 3, desc: '無法使用合擊' },
+  迷惘: { turns: 2, desc: '可能攻擊錯誤的目標' },
+  瘴毒: { turns: 5, desc: '每回合損失體' },
+  定身: { turns: 1, desc: '無法行動' },
+};
+
+// ───────── 敵人 ─────────
+// rank: 一般 / 精英 / 首領
+export const ENEMIES = {
+  褪墨鬼: { element: '陰', rank: '一般', lv: 1, hp: 38, atk: 9, def: 5, mag: 9, res: 5, spd: 8, luk: 5, exp: 8, money: 6,
+    skills: [['攻擊', 3], ['抹字', 1]], drops: [['舊紙', 0.5]], desc: '被蝕吃掉的記憶殘片，形狀像一團會走路的灰色墨漬。' },
+  瘴霧: { element: '木', rank: '一般', lv: 2, hp: 34, atk: 7, def: 4, mag: 11, res: 8, spd: 9, luk: 5, exp: 10, money: 5,
+    skills: [['攻擊', 2], ['瘴氣', 2]], drops: [['薑', 0.4], ['草藥', 0.2]], desc: '人們對瘧疾與疫病的恐懼凝成的霧，在溼熱的黃昏裡特別濃。' },
+  刺竹影: { element: '木', rank: '一般', lv: 3, hp: 52, atk: 13, def: 8, mag: 5, res: 5, spd: 10, luk: 6, exp: 13, money: 8,
+    skills: [['攻擊', 2], ['刺擊', 2]], drops: [['竹片', 0.5]], desc: '社外刺竹林的影子。刺竹原本是守護聚落的圍籬，被蝕扭曲後開始攻擊所有外人。' },
+  沙洲蟹魅: { element: '水', rank: '一般', lv: 4, hp: 64, atk: 12, def: 14, mag: 6, res: 8, spd: 6, luk: 6, exp: 16, money: 10,
+    skills: [['攻擊', 2], ['夾擊', 2], ['硬殼', 1]], drops: [['貝殼', 0.5]], desc: '大員沙洲上被蝕附身的巨蟹。守很高，用術法對付比較有效。' },
+  褪聲鬼: { element: '陰', rank: '精英', lv: 5, hp: 190, atk: 13, def: 9, mag: 15, res: 10, spd: 11, luk: 8, exp: 60, money: 40,
+    skills: [['攻擊', 2], ['抹字', 2], ['吞聲', 1]], drops: [['舊紙', 1]], desc: '吃掉了一首歌後半段的褪墨鬼。肚子裡隱約傳來斷斷續續的旋律。' },
+  失語之影: { element: '陰', rank: '首領', lv: 8, hp: 420, atk: 16, def: 12, mag: 19, res: 13, spd: 12, luk: 10, exp: 150, money: 90,
+    skills: [['攻擊', 2], ['沉默之潮', 2], ['追問', 2], ['回聲', 1]], drops: [], desc: '因失去語言而生的影子。它不是誰的仇人，只是一個再也說不出話的聲音。' },
+};
+
+// 敵人組
+export const ENCOUNTERS = {
+  序_褪墨鬼: { enemies: ['褪墨鬼', '褪墨鬼'], tutorial: true },
+  序_封靈: { enemies: ['褪墨鬼'], tutorial: 'seal' },
+  v1_田野一: { enemies: ['瘴霧', '褪墨鬼'] },
+  v1_田野二: { enemies: ['刺竹影'] },
+  v1_田野三: { enemies: ['瘴霧', '瘴霧'] },
+  v1_田野四: { enemies: ['刺竹影', '褪墨鬼'] },
+  v1_沙洲一: { enemies: ['沙洲蟹魅'] },
+  v1_沙洲二: { enemies: ['沙洲蟹魅', '褪墨鬼'] },
+  v1_竹林: { enemies: ['刺竹影', '刺竹影'] },
+  v1_褪聲鬼: { enemies: ['褪墨鬼', '褪聲鬼', '褪墨鬼'], boss: true, noFlee: true },
+  v1_山路一: { enemies: ['瘴霧', '刺竹影', '瘴霧'] },
+  v1_山路二: { enemies: ['刺竹影', '刺竹影', '褪墨鬼'] },
+  v1_失語之影: { enemies: ['失語之影'], boss: true, noFlee: true },
+};
+
+// 隨機遭遇池
+export const POOLS = {
+  新港田野: ['v1_田野一', 'v1_田野二', 'v1_田野三', 'v1_田野四'],
+  大員沙洲: ['v1_沙洲一', 'v1_沙洲二', 'v1_田野一'],
+  北方山路: ['v1_山路一', 'v1_山路二', 'v1_田野三'],
+};
+
+// ───────── 道具 ─────────
+// type: use 消耗 / weapon 武器 / charm 飾品 / material 素材 / key 重要
+export const ITEMS = {
+  草藥: { type: 'use', heal: 50, price: 12, desc: '搗碎的青草，敷在傷口上。回復 50 體。' },
+  麻糬: { type: 'use', heal: 110, price: 30, desc: '用小米搗成的糕點，黏牙又耐餓。回復 110 體。' },
+  墨丸: { type: 'use', mp: 25, price: 25, desc: '壓成小丸的松煙墨。回復 25 墨。' },
+  薑湯: { type: 'use', heal: 70, cures: ['瘴毒'], price: 20, desc: '辛辣的薑湯。回復 70 體並解除瘴毒。' },
+  補字符: { type: 'use', heal: 20, cures: ['褪色', '失語'], price: 0, desc: '【煉化】解除褪色與失語，回復 20 體。' },
+  驅瘴湯: { type: 'use', heal: 200, cures: ['瘴毒', '迷惘'], price: 0, desc: '【煉化】回復 200 體，並解除瘴毒與迷惘。' },
+  還魂墨: { type: 'use', revive: 0.5, price: 0, desc: '【煉化】使倒下的隊友以一半的體復甦。' },
+
+  裁紙刀: { type: 'weapon', who: ['知墨'], element: '金', stats: { atk: 4 }, desc: '修復工作室用的裁紙刀，意外地順手。' },
+  竹骨扇: { type: 'weapon', who: ['知墨'], element: '木', stats: { atk: 7, mag: 5 }, desc: '【煉化】刺竹削成的扇骨，開合之間有風。' },
+  雙語筆: { type: 'weapon', who: ['知墨'], element: '陰', stats: { atk: 10, mag: 12 }, desc: '【煉化】一端寫羅馬字、一端寫漢字的筆。' },
+  墨絲: { type: 'weapon', who: ['蘅'], element: '水', stats: { mag: 4 }, desc: '從蘅的髮梢延伸出的墨色絲線。' },
+  竹彈弓: { type: 'weapon', who: ['蒂娃'], element: '木', stats: { atk: 4 }, desc: '蒂娃自己做的彈弓，準頭比社裡的男孩還好。' },
+  短火繩槍: { type: 'weapon', who: ['楊'], element: '金', stats: { atk: 8 }, desc: '公司配發的火繩槍，裝填很慢。' },
+
+  鹿皮護腕: { type: 'charm', stats: { def: 4 }, price: 40, desc: '梅花鹿皮做的護腕。守 +4。' },
+  貝殼項鍊: { type: 'charm', stats: { res: 5 }, price: 45, desc: '海邊撿來的貝殼串成的項鍊。定 +5。' },
+  田埂護符: { type: 'charm', stats: { def: 8 }, price: 0, desc: '【煉化】守 +8。' },
+  潮聲耳墜: { type: 'charm', stats: { mag: 6, res: 4 }, price: 0, desc: '【煉化】神 +6、定 +4。耳邊總有細細的浪聲。' },
+
+  舊紙: { type: 'material', price: 5, desc: '泛黃的紙片。煉化素材。' },
+  薑: { type: 'material', price: 6, desc: '辛辣的老薑。煉化素材。' },
+  竹片: { type: 'material', price: 6, desc: '削好的刺竹片。煉化素材。' },
+  貝殼: { type: 'material', price: 8, desc: '大員沙洲上的貝殼。煉化素材。' },
+  鹿角: { type: 'material', price: 15, desc: '梅花鹿脫落的角。煉化素材。' },
+
+  新港文書: { type: 'key', desc: '清代的西拉雅語羅馬字契約。契尾有一個被蟲蛀掉一半的名字。' },
+  祖父的手冊: { type: 'key', desc: '沈牧之留下的手冊，寫滿了看不懂的年份與地名。' },
+  楊的單字表: { type: 'key', desc: '楊手抄的荷蘭語—西拉雅語單字表，邊角被翻得起毛。' },
+};
+
+// ───────── 煉化配方 ─────────
+// 兩種靈（不分順序）＋素材 → 成果
+export const RECIPES = [
+  { a: '褪墨鬼', b: '褪墨鬼', m: '舊紙', out: '補字符', n: 2, hint: '同樣的灰色墨漬，也許和「紙」有關。' },
+  { a: '瘴霧', b: '刺竹影', m: '薑', out: '驅瘴湯', n: 2, hint: '溼熱與刺痛……需要一點辛辣的東西。' },
+  { a: '刺竹影', b: '沙洲蟹魅', m: '竹片', out: '竹骨扇', n: 1, hint: '竹林與沙洲，也許能削成什麼。' },
+  { a: '褪墨鬼', b: '瘴霧', m: '草藥', out: '還魂墨', n: 1, hint: '褪去的東西，也許能被草木喚回。' },
+  { a: '沙洲蟹魅', b: '沙洲蟹魅', m: '鹿角', out: '田埂護符', n: 1, hint: '堅硬的殼，還需要更堅硬的東西。' },
+  { a: '褪聲鬼', b: '沙洲蟹魅', m: '貝殼', out: '潮聲耳墜', n: 1, hint: '失去的聲音與海……貝殼裡有海的聲音。' },
+  { a: '褪聲鬼', b: '失語之影', m: '貝殼', out: '潮歌', n: 1, spirit: true, hint: '兩個失去聲音的靈，也許能一起重新唱歌。' },
+];
+
+// ───────── 商店 ─────────
+export const SHOPS = {
+  漢人商販: { name: '往來社間的漢人商販', items: ['草藥', '麻糬', '墨丸', '薑湯', '鹿皮護腕', '貝殼項鍊', '薑', '竹片', '鹿角'] },
+};
+
+// ───────── 夜話（時之書齋・茶室） ─────────
+export const TALKS = [
+  { id: '蘅一', who: '蘅', title: '塗掉的字', need: [['羈絆', '蘅', 2]], scene: '夜話.蘅一' },
+  { id: '蘅二', who: '蘅', title: '這裡是哪一年', need: [['羈絆', '蘅', 3], ['旗標', 'v1.回二完']], scene: '夜話.蘅二' },
+];
+
+// ───────── 卷 ─────────
+export const VOLUMES = [
+  { id: '卷一', name: '大員', era: '1636～1662 年・臺灣', theme: 'dayuan', ready: true, start: 'v1.1.開始',
+    desc: '一紙新港文書，通往三百九十年前的海岸。' },
+  { id: '卷二', name: '牧野', era: '商末周初・華夏', ready: false },
+  { id: '卷三', name: '阿瑪納', era: '西元前 14 世紀・埃及', ready: false },
+  { id: '卷四', name: '雅典', era: '西元前 399 年・希臘', ready: false },
+  { id: '卷五', name: '羯陵伽', era: '西元前 3 世紀・印度', ready: false },
+];
+
+// ───────── 論辯戰 ─────────
+export const DEBATES = {
+  楊_教育: {
+    foe: '楊', topic: '把孩子教成會讀經的人，是不是就該讓他們放下祖先的信仰？',
+    foeBelief: 22, myBelief: 20, rounds: 7,
+    foeCards: { 立論: 3, 反詰: 2, 引證: 2, 讓步: 1 },
+    lines: {
+      foe: {
+        立論: ['「學校讓他們讀書寫字，這是公司給這片土地最好的禮物。」', '「新的信仰會帶來秩序。沒有秩序，就沒有學校。」', '「我也是從貧窮裡爬出來的。讀書，才能改變命運。」'],
+        反詰: ['「那你說，不識字的人要怎麼跟公司簽約、保護自己的土地？」', '「你把舊信仰說得那麼好，可是你真的懂它嗎？」'],
+        引證: ['「尤羅伯牧師說過：只要孩子們讀懂經文，他們的心就會改變。」', '「阿姆斯特丹的孤兒院，也是靠讀書才讓孩子活下來。」'],
+        讓步: ['「……我承認，祖母們的歌很美。我聽得懂一點。」'],
+      },
+      me: {
+        立論: ['「學寫字，不需要先學會忘記。」', '「一個人可以同時會兩種語言，也可以同時記得兩種東西。」', '「字是用來記住的，不是用來取代的。」'],
+        反詰: ['「那麼，是誰決定哪一種知識算『秩序』？」', '「如果今天是公司的神被趕走，你會怎麼想？」', '「你學西拉雅語，不也是因為你喜歡這些人本來的樣子？」'],
+        引證: ['（引用史卷）「新港社的孩子們在學校裡，用羅馬字拼寫的正是祖母們的語言。」', '（引用史卷）「刺竹圍住的不只是聚落，也是一整套活法。」'],
+        讓步: ['「你說得對，讀書確實能保護他們。」', '「我知道你是真心為孩子們好。」'],
+        共感: ['「楊，你第一次聽懂她們的歌時，是什麼感覺？」'],
+      },
+    },
+  },
+};
+
+// ───────── 小遊戲：譯字 ─────────
+export const TRANSLATE = {
+  荷蘭語一: {
+    title: '楊的單字表', intro: '楊拿出一張手抄的單字表，蓋住中文的那一欄：「如果你真的從巴達維亞來，這些應該難不倒你。」',
+    need: 4,
+    items: [
+      { w: 'school', a: '學校', opts: ['學校', '船', '魚', '鹽'] },
+      { w: 'hert', a: '鹿', opts: ['心', '鹿', '樹', '雨'] },
+      { w: 'suiker', a: '糖', opts: ['鹽', '米', '糖', '酒'] },
+      { w: 'zee', a: '海', opts: ['山', '海', '河', '天'] },
+      { w: 'brief', a: '信', opts: ['信', '書', '筆', '紙'] },
+      { w: 'land', a: '土地', opts: ['房屋', '道路', '土地', '國王'] },
+    ],
+    note: '「hert」是鹿。這些年公司從大員運走的鹿皮，一年有好幾萬張。——楊',
+  },
+};
+
+// ───────── 史卷 ─────────
+// fact：史實 / 史實改編 / 虛構
+export const CODEX = {
+  // 器物誌
+  新港文書: { cat: '器物誌', fact: '史實', vol: '序卷',
+    text: '清代西拉雅族等平埔族群所留下的契約文書，常以羅馬字書寫族語，有時與漢字並列。這套書寫方式源自荷蘭時期傳教士在新港社等地以羅馬字拼寫西拉雅語的教育，在荷蘭人離開臺灣之後，仍被族人沿用了一百多年，現存的文書最晚約到十九世紀初。它們是研究西拉雅語最重要的材料之一。' },
+  千秋硯: { cat: '器物誌', fact: '虛構', vol: '序卷',
+    text: '巴掌大小的紫石硯，硯池中央有一道細如髮絲的裂痕，墨在其中會像潮水一樣自己流動。以它研出的「時墨」書寫，可以進入文字所記載的時空。傳說是倉頡造字時，落在人間的第一滴墨。' },
+  刺竹: { cat: '器物誌', fact: '史實', vol: '卷一',
+    text: '一種枝節上長著尖刺的竹子。早期臺灣的許多聚落會在周圍密植刺竹作為圍籬，用來防禦外人與野獸。漢人移民的村莊也常這樣做，所以臺灣至今仍有不少以「竹圍」為名的地方。' },
+  // 地理誌
+  神農街: { cat: '地理誌', fact: '史實', vol: '序卷',
+    text: '臺南市中西區的老街，清代稱為「北勢街」，位在當時繁忙的五條港水運區一帶。如今是兩旁保留老屋的窄巷，入夜後掛滿燈籠。' },
+  新港社: { cat: '地理誌', fact: '史實', vol: '卷一',
+    text: '十七世紀西拉雅族的大社之一，位在今天臺南新市一帶。它是荷蘭人最早接觸、傳教與設立學校的地方之一，「新港文書」的名稱就來自這裡。' },
+  大員: { cat: '地理誌', fact: '史實', vol: '卷一',
+    text: '今天臺南安平一帶，當時是臺江內海外側的一座沙洲。1624 年荷蘭東印度公司在此建城，城堡後來被命名為「熱蘭遮城」。「大員」一詞也被認為與「臺灣」這個名稱的由來有關。' },
+  // 人物誌
+  西拉雅族: { cat: '人物誌', fact: '史實', vol: '卷一',
+    text: '世居今天臺南一帶平原的原住民族群。十七世紀時，新港、目加溜灣、蕭壠、麻豆等是較大的社。女性負責耕作，男性狩獵，並以「社」為單位共同生活。當代的西拉雅族人持續推動族語與文化的復振，並爭取法定原住民族身分。' },
+  尤羅伯: { cat: '人物誌', fact: '史實', vol: '卷一',
+    text: '尤羅伯（Robert Junius），荷蘭改革宗傳教士，1629 年來到臺灣，在新港等社傳教、設立學校，教孩子以羅馬字讀寫西拉雅語，也把教義翻譯成族語。另一方面，他也推動了驅逐傳統女祭司的政策。1643 年離開臺灣。本作中僅作為背景人物出現。' },
+  楊范登堡: { cat: '人物誌', fact: '虛構', vol: '卷一',
+    text: '楊・范登堡，本作虛構的荷蘭東印度公司通譯。出身阿姆斯特丹的貧窮家庭，十九歲時在新港社協助傳教士辦學。他學西拉雅語，起初只是為了工作，後來卻真心喜歡上這個語言。' },
+  蒂娃: { cat: '人物誌', fact: '虛構', vol: '卷一',
+    text: '本作虛構的新港社少女（「蒂娃」為暫定名）。好奇、敢說話，是學校裡學羅馬字學得最快的孩子。她能看見知墨真正的樣子。' },
+  // 典故
+  荷蘭東印度公司: { cat: '典故', fact: '史實', vol: '卷一',
+    text: '1602 年成立於荷蘭的貿易公司，擁有建立據點、締約與動用武力的權力。1624 年至 1662 年間統治臺灣西南部，以大員為貿易據點，經營鹿皮、糖與轉口貿易。' },
+  鹿皮貿易: { cat: '典故', fact: '史實', vol: '卷一',
+    text: '十七世紀的臺灣平原上有大量梅花鹿。荷蘭東印度公司把鹿皮大量輸往日本，多的時候一年可達數萬張。過度獵捕使梅花鹿逐漸減少，臺灣野生的梅花鹿族群後來一度消失，現今的族群是經過復育而來。' },
+  尪姨: { cat: '典故', fact: '史實', vol: '卷一',
+    text: '西拉雅族傳統信仰中的女性祭司。荷蘭時期，傳教士為了推行基督教，將許多尪姨逐出部落。這項傳統並沒有因此斷絕，今天西拉雅族的阿立祖信仰仍由尪姨傳承。本作遵守原則：不把仍在延續的信仰寫成法術。' },
+  蝕: { cat: '典故', fact: '虛構', vol: '序卷',
+    text: '從史冊邊緣開始蔓延的「褪色」。被蝕吞噬的事物，會漸漸沒有人記得。它侵入人心時，會放大「想忘記」的念頭。' },
+  萬象史冊: { cat: '典故', fact: '虛構', vol: '序卷',
+    text: '人類所有被記住的事，都寫在這部看不見的書上。千萬人記得的「大字」墨跡太厚，誰也改不了；沒什麼人記得的「小字」，則可以改寫。' },
+  無面書記: { cat: '妖物誌', fact: '虛構', vol: '卷一',
+    text: '沒有五官的書記官，手持一支會抹去字跡的白筆。說話溫和有禮，似乎真心相信遺忘是一種仁慈。' },
+};
+
+// 敵人第一次被擊敗時自動加入妖物誌
+export function enemyCodexId(name) { return '妖・' + name; }
