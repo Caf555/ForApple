@@ -236,7 +236,7 @@ export class Runner {
       }
       case '進度': g.resume[this.volId()] = arg; return;
       case '開放': g.flags['開放.' + arg] = 1; ui.note(`時之書齋：「${arg}」開放了`, 'codex'); return;
-      case '卷完': g.flags['卷完.' + arg] = 1; return;
+      case '卷完': g.flags['卷完.' + arg] = 1; delete g.resume[arg]; return;
       case '商店': await this.ctx.hub.shop(arg); return;
       case '論辯': {
         const r = await this.ctx.debate.start(arg);

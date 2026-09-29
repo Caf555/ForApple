@@ -9,7 +9,7 @@ import { Debate, Translate } from './debate.js';
 import { Runner } from './runner.js';
 import { Hub } from './hub.js';
 
-export const VERSION = '試玩版 v0.3';
+export const VERSION = '試玩版 v0.4';
 const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/夜話.txt'];
 
 const $ = id => document.getElementById(id);
@@ -117,7 +117,7 @@ function showTitle() {
       el('button', { class: 'btn' + (auto ? '' : ' primary'), onclick: newJourney }, '新的旅程'),
       el('button', { class: 'btn', onclick: () => { ctx.g = ctx.g || newGame(); ctx.hub.saveMenu(); } }, '讀取存檔'),
       el('button', { class: 'btn', onclick: () => ctx.hub.settings() }, '設定')),
-    el('p', { class: 't-ver' }, VERSION + '・序卷＋卷一（回一～回四）'));
+    el('p', { class: 't-ver' }, VERSION + '・序卷＋卷一〈大員〉全五回'));
   t.classList.add('open');
 }
 

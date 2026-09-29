@@ -80,7 +80,7 @@ export class Battle {
       const d = ENEMIES[k];
       counts[k] = (counts[k] || 0) + 1;
       const dup = this.enc.enemies.filter(x => x === k).length > 1;
-      const hp = Math.round(d.hp * diff.hp);
+      const hp = Math.round(d.hp * diff.hp * (this.enc.hpMult || 1));
       return {
         side: 'foe', id: 'f' + i, key: k, name: k + (dup ? ' ' + '甲乙丙丁'[counts[k] - 1] : ''), def: d,
         st: { atk: Math.round(d.atk * diff.pow), def: d.def, mag: Math.round(d.mag * diff.pow), res: d.res, spd: d.spd, luk: d.luk },
