@@ -46,6 +46,7 @@ ctx.goHub = () => {
   healAll(g);
   ctx.ui.setHeader(g.loc);
   ctx.ui.setTheme('hub');
+  ctx.ui.setBanner('時之書齋');
   ctx.audio.music('書齋');
   ctx.hub.render();
   saveSlot(g, 'auto');
@@ -55,7 +56,8 @@ function isSpirit(n) { return !!(CHARACTERS[n] && CHARACTERS[n].spirit); }
 
 ctx.enterVolume = (v, scene) => {
   const g = ctx.g;
-  g.loc = { vol: `${v.id}・${v.name}`, place: '', year: '', theme: v.theme, music: '' };
+  g.loc = { vol: `${v.id}・${v.name}`, place: '', year: '', theme: v.theme, music: '', bg: '' };
+  ctx.ui.setBanner('');
   ctx.ui.setTheme(v.theme);
   ctx.ui.setHeader(g.loc);
   ctx.ui.clearStory();
@@ -70,6 +72,7 @@ ctx.loadGame = g => {
   if (!g.scene || !ctx.scenes[g.scene]) { ctx.goHub(); return; }
   ctx.ui.setTheme(g.loc.theme);
   ctx.ui.setHeader(g.loc);
+  ctx.ui.setBanner(g.loc.bg);
   ctx.audio.music(g.loc.music);
   (g.log || []).slice(-8).forEach(l => ctx.ui.addStatic(l));
   if (g.log && g.log.length) ctx.ui.story.appendChild(el('div', { class: 'line sys' }, '— 讀取存檔 —'));
@@ -144,12 +147,24 @@ async function loadContent() {
   }
 }
 
+// 圖片清單（可有可無）：img/manifest.json 形如 { "bg": ["新港社", ...], "cg": [...], "char": [...], "enemy": [...] }
+async function loadAssets() {
+  ctx.assets = { bg: new Set(), cg: new Set(), char: new Set(), enemy: new Set() };
+  try {
+    const res = await fetch('img/manifest.json', { cache: 'no-cache' });
+    if (!res.ok) return;
+    const m = await res.json();
+    for (const k in ctx.assets) (m[k] || []).forEach(n => ctx.assets[k].add(n));
+  } catch (e) { /* 沒有圖片清單時，全部使用紋樣 */ }
+}
+
 async function boot() {
   ctx.ui.applySettings();
   bindNav();
   // 第一次觸碰時啟動音訊（瀏覽器規定）
   const unlock = () => { if (ctx.settings.sound) ctx.audio.unlock(); };
   document.addEventListener('pointerdown', unlock, { once: false });
+  await loadAssets();
   try {
     await loadContent();
   } catch (e) {

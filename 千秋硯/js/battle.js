@@ -631,6 +631,7 @@ export class Battle {
     const foes = el('div', { class: 'b-foes n' + this.foes.length });
     for (const f of this.foes) {
       const n = el('div', { class: 'foe-card rank-' + f.def.rank },
+        this.ctx.ui.hasImg('enemy', f.key) ? el('img', { class: 'fc-img', src: this.ctx.ui.imgSrc('enemy', f.key), alt: '', decoding: 'async', onerror: e => e.target.remove() }) : null,
         el('div', { class: 'fc-name' }, f.name),
         el('div', { class: 'fc-meta' }, el('span', { class: 'elem e-' + f.el }, f.el), el('span', { class: 'rank' }, f.def.rank)),
         el('div', { class: 'fc-bar' }),

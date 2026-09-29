@@ -120,7 +120,7 @@ export class Runner {
 
   // 整頁模式：往後看，下一個「會停下來」的指令是不是一般文字
   nextIsText(scene, pc, depth = 0) {
-    const passive = ['地點', '年代', '音樂', '主題', '卷', '提示', '回復', '存檔點', '進度', '開放'];
+    const passive = ['地點', '年代', '音樂', '主題', '卷', '提示', '回復', '存檔點', '進度', '開放', '背景', '立繪'];
     for (let i = pc; i < scene.cmds.length; i++) {
       const c = scene.cmds[i];
       if (c.t === 'text' || c.t === 'say') return true;
@@ -237,6 +237,18 @@ export class Runner {
       case '年代': g.loc.year = arg; ui.setHeader(g.loc); return;
       case '卷': g.loc.vol = arg; if (/^(序卷|卷)/.test(arg)) g.lastVol = arg.split('・')[0]; ui.setHeader(g.loc); return;
       case '主題': g.loc.theme = arg; ui.setTheme(arg); return;
+      case '背景': g.loc.bg = arg === '無' ? '' : arg; ui.setBanner(g.loc.bg); return;
+      case '插圖': {
+        const [name, ...cap] = arg.split(/\s+/);
+        await ui.showCG(name, cap.join(' '));
+        return;
+      }
+      case '立繪': {
+        const [who, key] = arg.split(/\s+/);
+        g.portraits = g.portraits || {};
+        if (!key || key === '預設') delete g.portraits[who]; else g.portraits[who] = key;
+        return;
+      }
       case '音樂': g.loc.music = arg; audio.music(arg); return;
       case '章節': {
         const [t, s] = arg.split('｜');

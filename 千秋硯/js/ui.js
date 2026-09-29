@@ -53,6 +53,67 @@ export class UI {
     $('banner-place').textContent = loc.place || '';
   }
 
+  // ───────── 圖片 ─────────
+  // 圖片清單由 img/manifest.json 提供；沒有列在清單裡的圖不會被載入，畫面自動退回紋樣
+  hasImg(kind, name) { const a = this.ctx.assets; return !!(name && a && a[kind] && a[kind].has(name)); }
+
+  imgSrc(kind, name, w) {
+    const base = `img/${kind}/${encodeURIComponent(name)}`;
+    return w ? `${base}-${w}.webp` : `${base}.webp`;
+  }
+
+  // 大圖（背景、插圖）提供 800 與 1600 兩種寬度，手機只下載需要的那一張
+  pictureEl(kind, name, cls, sizes) {
+    return el('img', {
+      class: cls, alt: '', decoding: 'async', loading: 'lazy',
+      src: this.imgSrc(kind, name, 800),
+      srcset: `${this.imgSrc(kind, name, 800)} 800w, ${this.imgSrc(kind, name, 1600)} 1600w`,
+      sizes: sizes || 'min(720px, 100vw)',
+    });
+  }
+
+  setBanner(name) {
+    const art = document.querySelector('#banner .banner-art');
+    const banner = $('banner');
+    art.querySelectorAll('img').forEach(i => i.remove());
+    banner.classList.remove('has-img');
+    banner.onclick = null;
+    if (!this.hasImg('bg', name)) return;
+    const img = this.pictureEl('bg', name, 'banner-img');
+    img.loading = 'eager';
+    img.onload = () => banner.classList.add('has-img');
+    img.onerror = () => img.remove();
+    art.appendChild(img);
+    banner.onclick = () => this.viewImage('bg', name);
+  }
+
+  // 劇情插圖：放在文字流裡，點一下可以全螢幕檢視
+  showCG(name, caption) {
+    if (!this.hasImg('cg', name)) return Promise.resolve();
+    const fig = el('figure', { class: 'line cg' });
+    const img = this.pictureEl('cg', name, 'cg-img', 'min(688px, calc(100vw - 32px))');
+    img.addEventListener('click', e => { e.stopPropagation(); this.viewImage('cg', name); });
+    fig.appendChild(img);
+    if (caption) fig.appendChild(el('figcaption', {}, this.fmt(caption)));
+    this.story.appendChild(fig);
+    img.onload = () => this.scrollDown();
+    this.scrollDown();
+    return new Promise(resolve => {
+      $('advance-hint').classList.add('show');
+      this.waiting = () => { $('advance-hint').classList.remove('show'); this.waiting = null; this.skipPage = false; resolve(); };
+    });
+  }
+
+  viewImage(kind, name) {
+    const v = $('viewer');
+    v.innerHTML = '';
+    const img = el('img', { src: this.imgSrc(kind, name, 1600), alt: '' });
+    img.onerror = () => { img.src = this.imgSrc(kind, name, 800); };
+    v.append(img, el('div', { class: 'viewer-tip' }, '輕觸關閉'));
+    v.classList.add('open');
+    v.onclick = () => v.classList.remove('open');
+  }
+
   setTheme(theme) {
     document.body.dataset.vtheme = theme || 'modern';
   }
@@ -76,7 +137,10 @@ export class UI {
     let name = null;
     if (who) {
       const shown = who === '知墨' ? this.ctx.g.player.call : who;
-      name = el('div', { class: 'who', 'data-who': who }, shown);
+      const key = (this.ctx.g && this.ctx.g.portraits && this.ctx.g.portraits[who]) || who;
+      name = el('div', { class: 'who', 'data-who': who },
+        this.hasImg('char', key) ? el('img', { class: 'avatar', src: this.imgSrc('char', key), alt: '', decoding: 'async', onerror: e => e.target.remove() }) : null,
+        shown);
       wrap.appendChild(name);
     }
     const body = el('div', { class: 'body' });
