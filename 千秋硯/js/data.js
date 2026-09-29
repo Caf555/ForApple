@@ -180,7 +180,7 @@ export const ENEMIES = {
     skills: [['攻擊', 2], ['纏帆', 1]], drops: [['竹片', 0.4]], desc: '沉船的船帆與桅杆糾纏成形。它還在找回家的風。' },
   火藥精: { element: '火', rank: '一般', lv: 11, hp: 80, atk: 14, def: 9, mag: 24, res: 12, spd: 16, luk: 9, exp: 36, money: 20,
     skills: [['攻擊', 1], ['爆裂', 2]], drops: [['鐵片', 0.4]], desc: '戰船上的火藥桶裡鑽出來的東西。一碰就炸。' },
-  赫克托之火: { element: '火', rank: '精英', lv: 12, hp: 420, atk: 20, def: 13, mag: 26, res: 15, spd: 15, luk: 10, exp: 120, money: 80,
+  赫克托之火: { element: '火', rank: '精英', lv: 12, hp: 360, atk: 20, def: 13, mag: 26, res: 15, spd: 15, luk: 10, exp: 120, money: 80,
     skills: [['攻擊', 1], ['爆裂', 3], ['纏帆', 1]], drops: [['鐵片', 1]], desc: '海戰中爆炸沉沒的荷蘭戰船「赫克托號」上，數百人最後的驚恐所化。' },
   海翁之影: { element: '水', rank: '首領', lv: 14, hp: 1150, atk: 26, def: 17, mag: 25, res: 18, spd: 11, luk: 10, exp: 380, money: 200,
     skills: [['攻擊', 2], ['海嘯', 2], ['吞舟', 2], ['潮汐', 1]], drops: [], desc: '海翁，就是鯨。大航海時代，人們把對海洋一切的敬畏與恐懼，都投射在這片黑色的巨影上。它不恨誰，它只是太大了。' },
