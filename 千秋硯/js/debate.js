@@ -195,9 +195,9 @@ export class Translate {
   render() {
     const r = this.root; r.innerHTML = '';
     r.classList.add('open');
-    r.appendChild(el('div', { class: 'mg-title' }, '譯字・' + this.d.title));
+    r.appendChild(el('div', { class: 'mg-title' }, (this.d.kind || '譯字') + '・' + this.d.title));
     r.appendChild(el('p', { class: 'mg-intro' }, this.d.intro));
-    r.appendChild(el('p', { class: 'mg-rule' }, `選出每個荷蘭語單字的意思。答對 ${this.d.need} 題以上即過關。`));
+    r.appendChild(el('p', { class: 'mg-rule' }, `${this.d.rule || '選出每個荷蘭語單字的意思。'}答對 ${this.d.need} 題以上即過關。`));
     this.body = el('div', { class: 'mg-body' });
     r.appendChild(this.body);
     this.q();
@@ -209,7 +209,7 @@ export class Translate {
     const it = d.items[this.i];
     this.body.innerHTML = '';
     this.body.appendChild(el('div', { class: 'mg-progress' }, `${this.i + 1} / ${d.items.length}　答對 ${this.correct}`));
-    this.body.appendChild(el('div', { class: 'mg-word' }, it.w));
+    this.body.appendChild(el('div', { class: this.d.question ? 'mg-q' : 'mg-word' }, it.w));
     const opts = el('div', { class: 'mg-opts' });
     it.opts.forEach(o => {
       const b = el('button', { class: 'btn mg-opt', onclick: async () => {

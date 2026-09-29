@@ -397,3 +397,4 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .line.note { font-family: var(--sans); font-size: .72em; color: var(--muted); margin: -.4em 0 .8em; padding-left: .8em; border-left: 2px solid var(--line); animation: fadein .3s ease; }
 .line.note.codex { border-color: var(--good); } .line.note.bond { border-color: #c47a8a; } .line.note.item { border-color: var(--accent); }
 .line.note.level { border-color: #ffcf6a; } .line.note.seal { border-color: var(--seal); } .line.note.mind { border-color: #8fb3d9; }
+.mg-q { font-family: var(--serif); font-size: 1.15em; line-height: 1.7; text-align: center; padding: 8px 4px; min-height: 5em; }
