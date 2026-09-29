@@ -85,20 +85,30 @@ export class UI {
   }
 
   // 顯示一行字，等待點擊
-  say(line) {
+  // 顯示一行字。opts.wait=false：打完字就繼續（整頁模式）；opts.auto：打完字後自動繼續
+  say(line, opts = {}) {
+    const wait = opts.wait !== false;
     const text = this.fmt(line.text);
     const { wrap, body } = this.makeLine(line);
     this.story.appendChild(wrap);
     this.scrollDown();
     this.ctx.audio.speak(text, line.who);
-    const ms = SPEEDS[this.settings.speed] ?? 18;
+    const ms = this.skipPage ? 0 : (SPEEDS[this.settings.speed] ?? 18);
     return new Promise(resolve => {
       const finish = () => {
         body.textContent = text;
         this.typing = null;
         this.scrollDown();
+        if (!wait) { resolve(); return; }
         $('advance-hint').classList.add('show');
-        this.waiting = () => { $('advance-hint').classList.remove('show'); this.waiting = null; resolve(); };
+        this.waiting = () => {
+          clearTimeout(this.autoTimer);
+          $('advance-hint').classList.remove('show');
+          this.waiting = null;
+          this.skipPage = false;
+          resolve();
+        };
+        if (opts.auto) this.scheduleAuto(text);
       };
       if (!ms) { finish(); return; }
       let i = 0;
@@ -115,12 +125,31 @@ export class UI {
     });
   }
 
+  // 自動播放：依字數等待後自動翻頁；有選單打開時暫停
+  scheduleAuto(text) {
+    clearTimeout(this.autoTimer);
+    const delay = 1100 + Array.from(text).length * 55;
+    const tick = () => {
+      if (!this.waiting) return;
+      if (document.querySelector('.sheet.open')) { this.autoTimer = setTimeout(tick, 800); return; }
+      this.waiting();
+    };
+    this.autoTimer = setTimeout(tick, delay);
+  }
+
   advance() {
-    if (this.typing) { clearTimeout(this.typing.timer); this.typing.finish(); return; }
-    if (this.waiting) { this.ctx.audio.sfx('tap'); this.waiting(); }
+    if (this.typing) {
+      clearTimeout(this.typing.timer);
+      this.skipPage = true; // 整頁模式：點一下，這一頁剩下的字立刻顯示
+      this.typing.finish();
+      return;
+    }
+    if (this.waiting) { this.ctx.audio.sfx('tap'); this.ctx.audio.stopSpeak(); this.waiting(); }
   }
 
   cancelWait() {
+    clearTimeout(this.autoTimer);
+    this.skipPage = false;
     if (this.typing) { clearTimeout(this.typing.timer); this.typing = null; }
     this.waiting = null;
     $('advance-hint').classList.remove('show');

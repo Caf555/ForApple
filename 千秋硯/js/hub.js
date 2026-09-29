@@ -380,6 +380,7 @@ export class Hub {
         body.appendChild(row);
       };
       opt('文字大小', 'fontSize', [0, 1, 2, 3], ['小', '中', '大', '特大']);
+      opt('閱讀方式', 'readMode', ['line', 'page', 'auto'], ['逐句點擊', '整頁', '自動播放']);
       opt('文字速度', 'speed', [2, 1, 0], ['慢', '快', '立即']);
       opt('外觀', 'theme', ['auto', 'dark', 'light'], ['跟隨系統', '墨夜', '宣紙']);
       opt('音效與音樂', 'sound', [true, false], ['開', '關'], v => { if (v) { this.ctx.audio.unlock(); this.ctx.audio.music(this.g ? this.g.loc.music : '書齋', true); } else this.ctx.audio.stopMusic(); });
@@ -387,6 +388,7 @@ export class Hub {
       opt('朗讀劇情', 'tts', [false, true], ['關', '開']);
       opt('難度', 'difficulty', ['閱讀', '普通', '困難'], ['閱讀', '普通', '困難']);
       opt('戰鬥速度', 'battleSpeed', [1, 2, 3], ['1×', '2×', '4×']);
+      body.appendChild(el('p', { class: 'muted small' }, '閱讀方式——逐句點擊：每句都要點一下。整頁：一次跑完一頁（遇到選項或最多約六句），點一下再跑下一頁；打字中點一下可以立刻顯示整頁。自動播放：依字數停留後自動往下，打開選單時會暫停。'));
       body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥。難度不影響任何結局條件，隨時可以切換。朗讀使用手機內建的語音，效果依裝置而定。'));
     });
   }

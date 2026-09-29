@@ -256,6 +256,7 @@ export function importCode(code) {
 export const DEFAULT_SETTINGS = {
   fontSize: 1,      // 0 小 1 中 2 大 3 特大
   speed: 1,         // 0 立即 1 快 2 普通
+  readMode: 'page', // line 逐句 / page 整頁 / auto 自動播放
   theme: 'auto',    // auto / dark / light
   sound: true,
   volume: 0.6,

@@ -173,10 +173,11 @@ export class Audio {
     setTimeout(() => { cur.nodes.forEach(n => { try { n.stop(); } catch (e) { /* 已停止 */ } }); cur.bus.disconnect(); }, 1000);
   }
 
+  stopSpeak() { if (window.speechSynthesis) speechSynthesis.cancel(); }
+
   // 朗讀模式
   speak(text, who) {
     if (!this.ctx.settings.tts || !window.speechSynthesis) return;
-    speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text.replace(/[「」『』]/g, ''));
     u.lang = 'zh-TW';
     u.rate = 1.05;

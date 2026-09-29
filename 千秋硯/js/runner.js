@@ -46,7 +46,16 @@ export class Runner {
           case 'text':
           case 'say': {
             this.pushLog(c);
-            await ui.say({ who: c.who, text: c.text });
+            const mode = this.ctx.settings.readMode || 'page';
+            let wait = true;
+            if (mode === 'page') {
+              this.pageLines = (this.pageLines || 0) + 1;
+              this.pageChars = (this.pageChars || 0) + Array.from(c.text).length;
+              wait = !this.nextIsText(scene, pc + 1) || this.pageLines >= 6 || this.pageChars >= 200;
+            }
+            await ui.say({ who: c.who, text: c.text }, { wait, auto: mode === 'auto' });
+            if (!alive()) return;
+            if (wait) { this.pageLines = 0; this.pageChars = 0; }
             pc++;
             break;
           }
@@ -107,6 +116,23 @@ export class Runner {
         pc++;
       }
     }
+  }
+
+  // 整頁模式：往後看，下一個「會停下來」的指令是不是一般文字
+  nextIsText(scene, pc, depth = 0) {
+    const passive = ['地點', '年代', '音樂', '主題', '卷', '提示', '回復', '存檔點', '進度', '開放'];
+    for (let i = pc; i < scene.cmds.length; i++) {
+      const c = scene.cmds[i];
+      if (c.t === 'text' || c.t === 'say') return true;
+      if (c.t === 'fx') continue;
+      if (c.t === 'cmd' && passive.includes(c.name)) continue;
+      if (c.t === 'goto' && depth < 3) {
+        const s = this.scene(c.target);
+        return s ? this.nextIsText(s, 0, depth + 1) : false;
+      }
+      return false;
+    }
+    return false;
   }
 
   // 目前所在的卷代號，例如「卷一・大員」→「卷一」
