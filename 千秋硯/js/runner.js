@@ -246,7 +246,7 @@ export class Runner {
       }
       case '小遊戲': {
         const [kind, id] = arg.split(/\s+/);
-        if (kind !== '譯字') throw new Error('不認識的小遊戲：' + kind);
+        if (kind !== '譯字' && kind !== '牽星') throw new Error('不認識的小遊戲：' + kind);
         const r = await this.ctx.translate.start(id);
         const t = c.out && c.out[r];
         return t ? '→' + t : undefined;
