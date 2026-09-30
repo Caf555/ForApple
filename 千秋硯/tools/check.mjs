@@ -25,9 +25,17 @@ for (const f of files) {
 
 const at = (s, c) => `${s.file} 第 ${c.line} 行`;
 const FX = ['旗標', '羈絆', '心印', '道具', '錢', '經驗', '史卷', '隊友', '封靈', '陣法', '技能', '補史', '回復'];
-const CMDS = ['地點', '年代', '卷', '主題', '音樂', '章節', '清畫面', '提示', '回復', '存檔點', '教學', '取名', '回書齋', '進度', '開放', '卷完', '商店', '論辯', '小遊戲', '書齋', '試玩結束'];
+const CMDS = ['地點', '年代', '卷', '主題', '音樂', '章節', '清畫面', '提示', '回復', '存檔點', '教學', '取名', '回書齋', '進度', '開放', '卷完', '商店', '論辯', '小遊戲', '書齋', '試玩結束', '背景', '插圖', '立繪'];
 const MUSIC = ['府城夜', '海潮', '書齋', '緊張', '哀歌', '戰鬥', '首領', '無', ''];
 const THEMES = ['modern', 'dayuan', 'hub'];
+// 生圖清單裡的圖名（用來檢查 @背景、@插圖、@立繪 有沒有打錯字）
+import { readdirSync } from 'node:fs';
+const imgNames = new Set();
+try {
+  for (const f of readdirSync(join(root, 'tools/生圖')).filter(f => f.startsWith('清單') && f.endsWith('.json'))) {
+    for (const it of JSON.parse(readFileSync(join(root, 'tools/生圖', f), 'utf8')).items) imgNames.add(it.name);
+  }
+} catch (e) { /* 沒有生圖清單 */ }
 const allCodex = new Set([...Object.keys(D.CODEX), ...Object.keys(D.ENEMIES).map(D.enemyCodexId)]);
 const reached = new Set();
 
@@ -72,6 +80,8 @@ for (const id in scenes) {
       if (c.name === '主題' && !THEMES.includes(c.arg)) errors.push(`${at(s, c)}：沒有主題「${c.arg}」`);
       if (c.name === '商店' && !D.SHOPS[c.arg]) errors.push(`${at(s, c)}：沒有商店「${c.arg}」`);
       if (c.name === '論辯' && !D.DEBATES[c.arg]) errors.push(`${at(s, c)}：沒有論辯「${c.arg}」`);
+      if (imgNames.size && (c.name === '背景' || c.name === '插圖') && c.arg && c.arg !== '無' && !imgNames.has(c.arg.split(/\s+/)[0])) warns.push(`${at(s, c)}：圖「${c.arg.split(/\s+/)[0]}」不在生圖清單裡`);
+      if (imgNames.size && c.name === '立繪') { const k = c.arg.split(/\s+/)[1]; if (k && k !== '預設' && !imgNames.has(k) && !/_\d+$/.test(k)) warns.push(`${at(s, c)}：頭像「${k}」不在生圖清單裡`); }
       if (c.name === '小遊戲' && !D.TRANSLATE[c.arg.split(/\s+/)[1]]) errors.push(`${at(s, c)}：沒有小遊戲題組「${c.arg}」`);
     }
   }

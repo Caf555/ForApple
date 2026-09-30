@@ -1,0 +1,196 @@
+{
+  "2": {
+    "inputs": {
+      "unet_name": "qwen-image-2.1-UC-int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "載入擴散模型"
+    }
+  },
+  "3": {
+    "inputs": {
+      "lora_name": "Qwen-Image-2.1-viggle-turbo-v0.2-5step-lora-r128.safetensors",
+      "strength": 1,
+      "model": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ViggleTurboLora",
+    "_meta": {
+      "title": "Qwen-Image-2.1 Viggle Turbo LoRA (unmerged)"
+    }
+  },
+  "4": {
+    "inputs": {
+      "clip_name": "qwen3vl_8b_w4a8.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "載入 CLIP"
+    }
+  },
+  "5": {
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "載入 VAE"
+    }
+  },
+  "18": {
+    "inputs": {
+      "prompt": "1 girl dancing",
+      "negative_prompt": "worst quality, low quality, normal quality, jpeg artifacts, compression artifacts, blurry, out of focus, soft focus, haze, noise, grain, watermark, text, logo, signature, username, border, frame, bad anatomy, deformed, malformed, mutated, extra limbs, missing limbs, floating limbs, disconnected limbs, deformed face, asymmetrical face, cross-eyed, extra eyes, lazy eye, deformed hands, extra fingers, missing fingers, fused fingers, bad proportions, elongated neck, twisted torso, bad posture, skin blemishes, acne, moles, overexposed, underexposed, blown highlights, crushed shadows, HDR artifacts, chromatic aberration, lens flare, motion blur, depth of field artifacts, flat lighting, harsh shadows, multiple views, split image, collage, duplicate, clone, mirror artifact, speech bubble, comic panel, sketch lines, rough lines, unfinished, draft, style mixing, inconsistent rendering, multiple styles, anime and realism mixed, oil painting texture on photo, 3D render artifact, plastic skin, wax skin, mannequin, doll-like, airbrushed, overly smooth skin, toeless legwear, toeless pantyhose, toe socks, reinforced toes, open toe, bare feet, feet out, thighhighs, stirrup legwear, seam, control top, color mismatch, patchy",
+      "resolution": 1024,
+      "clip": [
+        "4",
+        0
+      ],
+      "images.image_1": [
+        "260",
+        0
+      ],
+      "vae": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "TextEncodeQwenImage21",
+    "_meta": {
+      "title": "Text Encode Qwen Image 2.1"
+    }
+  },
+  "19": {
+    "inputs": {
+      "model": [
+        "29",
+        0
+      ],
+      "conditioning": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "基礎引導器"
+    }
+  },
+  "20": {
+    "inputs": {
+      "noise_seed": 4225841059
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "隨機雜訊"
+    }
+  },
+  "21": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "K採樣器選擇"
+    }
+  },
+  "22": {
+    "inputs": {
+      "nodes": "1.0, 0.875, 0.75, 0.5, 0.25",
+      "latent": [
+        "18",
+        2
+      ]
+    },
+    "class_type": "ViggleTurboSigmas",
+    "_meta": {
+      "title": "Qwen-Image-2.1 Viggle Turbo Sigmas"
+    }
+  },
+  "23": {
+    "inputs": {
+      "noise": [
+        "20",
+        0
+      ],
+      "guider": [
+        "19",
+        0
+      ],
+      "sampler": [
+        "21",
+        0
+      ],
+      "sigmas": [
+        "22",
+        0
+      ],
+      "latent_image": [
+        "18",
+        2
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "24": {
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE 解碼"
+    }
+  },
+  "25": {
+    "inputs": {
+      "filename_prefix": "DrawStudio/2026-09-30/batch",
+      "images": [
+        "24",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "儲存圖片"
+    }
+  },
+  "29": {
+    "inputs": {
+      "device": "auto",
+      "dtype": "default",
+      "model": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "QwenImage21Cache",
+    "_meta": {
+      "title": "Qwen Image 2.1 Cache"
+    }
+  },
+  "260": {
+    "inputs": {
+      "image": "star_00002_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "載入圖片"
+    }
+  }
+}

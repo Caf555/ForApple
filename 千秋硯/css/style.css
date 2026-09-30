@@ -398,3 +398,20 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .line.note.codex { border-color: var(--good); } .line.note.bond { border-color: #c47a8a; } .line.note.item { border-color: var(--accent); }
 .line.note.level { border-color: #ffcf6a; } .line.note.seal { border-color: var(--seal); } .line.note.mind { border-color: #8fb3d9; }
 .mg-q { font-family: var(--serif); font-size: 1.15em; line-height: 1.7; text-align: center; padding: 8px 4px; min-height: 5em; }
+
+/* ───────── 圖片 ───────── */
+/* 有背景圖時，橫幅變高：手機直向約 3:1，平板與電腦最高 260px，手機橫向則縮小 */
+#banner.has-img { height: clamp(96px, min(34vw, 30vh), 260px); cursor: zoom-in; }
+@media (orientation: landscape) and (max-height: 500px) { #banner.has-img { height: 22vh; } }
+.banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 45%; opacity: 0; transition: opacity .8s; }
+#banner.has-img .banner-img { opacity: 1; }
+#banner.has-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55)); pointer-events: none; }
+#banner .banner-text { z-index: 1; }
+.line.cg { margin: .4em -4px 1.1em; }
+.cg-img { display: block; width: 100%; height: auto; max-height: 60vh; object-fit: contain; border-radius: 10px; background: var(--panel); cursor: zoom-in; aspect-ratio: 3 / 2; }
+.line.cg figcaption { font-family: var(--sans); font-size: .72em; color: var(--muted); text-align: center; margin-top: .4em; }
+.line .who .avatar { width: 2.2em; height: 2.2em; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: .5em; border: 1px solid var(--line); background: var(--panel); }
+.fc-img { float: right; width: 44px; height: 44px; border-radius: 10px; object-fit: cover; margin: 0 0 4px 6px; }
+#viewer { z-index: 55; background: rgba(0,0,0,.92); align-items: center; justify-content: center; flex-direction: column; cursor: zoom-out; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+#viewer img { max-width: 100vw; max-height: 90vh; object-fit: contain; }
+.viewer-tip { color: #bbb; font-family: var(--sans); font-size: 12px; margin-top: 8px; }
