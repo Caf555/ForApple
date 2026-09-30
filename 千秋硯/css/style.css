@@ -419,8 +419,9 @@ body:not([data-mode="hub"]) #hub { display: none; }
 #banner.has-img .banner-img { opacity: 1; }
 #banner.has-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55)); pointer-events: none; }
 #banner .banner-text { z-index: 1; }
-.line.cg { margin: .4em -4px 1.1em; }
-.cg-img { display: block; width: 100%; height: auto; max-height: 60vh; object-fit: contain; border-radius: 10px; background: var(--panel); cursor: zoom-in; aspect-ratio: 3 / 2; }
+.line.cg { position: relative; margin: .4em -4px 1.1em; }
+.cg-img { display: block; width: 100%; height: auto; max-height: 60vh; object-fit: contain; border-radius: 10px; background: var(--panel); aspect-ratio: 3 / 2; }
+.cg-zoom { position: absolute; right: 8px; top: 8px; min-height: 36px; padding: 4px 12px; border: 0; border-radius: 18px; background: rgba(0,0,0,.55); color: #f3ecdc; font-family: var(--sans); font-size: 13px; }
 .line.cg figcaption { font-family: var(--sans); font-size: .72em; color: var(--muted); text-align: center; margin-top: .4em; }
 .line .who .avatar { width: 2.2em; height: 2.2em; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: .5em; border: 1px solid var(--line); background: var(--panel); }
 .fc-img { float: right; width: 44px; height: 44px; border-radius: 10px; object-fit: cover; margin: 0 0 4px 6px; }
