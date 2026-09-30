@@ -200,8 +200,9 @@ export class Runner {
           if (a3 === '無提示') break;
           ui.note(`${displayName(g, a0)} 加入了隊伍`, 'bond');
         } else {
+          const was = g.party.includes(a0);
           removeMember(g, a0);
-          ui.note(`${displayName(g, a0)} 離開了隊伍`);
+          if (was && a1 !== '無提示') ui.note(`${displayName(g, a0)} 離開了隊伍`);
         }
         break;
       case '封靈':
@@ -284,7 +285,7 @@ export class Runner {
       }
       case '小遊戲': {
         const [kind, id] = arg.split(/\s+/);
-        if (kind !== '譯字' && kind !== '牽星') throw new Error('不認識的小遊戲：' + kind);
+        if (!['譯字', '牽星', '識字'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
         const r = await this.ctx.translate.start(id);
         const t = c.out && c.out[r];
         return t ? '→' + t : undefined;

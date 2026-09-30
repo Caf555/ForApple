@@ -46,11 +46,12 @@ export class Hub {
         const resume = g.resume[v.id];
         const done = g.flags['卷完.' + v.id];
         const started = !!resume || done;
-        const card = el('div', { class: 'vol' + (v.ready ? '' : ' locked') },
+        const card = el('div', { class: 'vol' + (v.ready && (!v.need || g.flags[v.need]) ? '' : ' locked') },
           el('div', { class: 'vol-name' }, `${v.id}　${v.name}`),
           el('div', { class: 'vol-era' }, v.era),
           v.desc ? el('p', {}, v.desc) : null);
-        if (v.ready) {
+        if (v.ready && v.need && !g.flags[v.need]) card.appendChild(el('p', { class: 'muted' }, v.needText || '尚未開放'));
+        else if (v.ready) {
           if (resume && this.ctx.scenes[resume]) card.appendChild(el('button', { class: 'btn primary', onclick: () => { api.close(); this.ctx.enterVolume(v, resume); } }, '繼續'));
           else if (resume) card.appendChild(el('p', { class: 'muted' }, '下一回製作中，敬請期待。'));
           else if (!started) card.appendChild(el('button', { class: 'btn primary', onclick: () => { api.close(); this.ctx.enterVolume(v, v.start); } }, '進入'));
@@ -403,12 +404,15 @@ export class Hub {
   }
 
   async demoEnd() {
-    const done = this.g.flags['卷完.卷一'];
-    await this.ui.alert(done ? '卷一〈大員〉完' : '試玩版到此為止', done ? [
-      '感謝你陪知墨與蘅走完卷一〈大員〉。',
-      '卷二至卷五（牧野、阿瑪納、雅典、羯陵伽）製作中。',
+    const g = this.g;
+    const vol = VOLUMES.find(v => v.id === g.lastVol);
+    const done = vol && g.flags['卷完.' + vol.id];
+    const todo = VOLUMES.filter(v => !g.flags['卷完.' + v.id]);
+    await this.ui.alert(done ? `${vol.id}〈${vol.name}〉完` : '試玩版到此為止', done ? [
+      `感謝你陪知墨與蘅走完${vol.id}〈${vol.name}〉。`,
+      todo.length ? `接下來還有：${todo.map(v => `${v.id}〈${v.name}〉`).join('、')}。${todo.some(v => v.ready) ? '可以從書架進入。' : '製作中。'}` : '',
       '你的存檔會保留。茶室裡，也許有人在等你。',
-    ] : [
+    ].filter(Boolean) : [
       '感謝遊玩《千秋硯》試玩版。',
       '下一回製作中。你的存檔會保留，新章節推出後可以直接繼續。',
     ], '回到書齋');

@@ -92,8 +92,9 @@ export class UI {
     if (!this.hasImg('cg', name)) return Promise.resolve();
     const fig = el('figure', { class: 'line cg' });
     const img = this.pictureEl('cg', name, 'cg-img', 'min(688px, calc(100vw - 32px))');
-    img.addEventListener('click', e => { e.stopPropagation(); this.viewImage('cg', name); });
-    fig.appendChild(img);
+    // 點圖本身＝繼續（和點文字一樣）；右下角的「放大」按鈕才是全螢幕檢視
+    const zoom = el('button', { class: 'cg-zoom', 'aria-label': '放大檢視', onclick: e => { e.stopPropagation(); this.viewImage('cg', name); } }, '⤢ 放大');
+    fig.append(img, zoom);
     if (caption) fig.appendChild(el('figcaption', {}, this.fmt(caption)));
     this.story.appendChild(fig);
     img.onload = () => this.scrollDown();

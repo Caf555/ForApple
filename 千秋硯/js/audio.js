@@ -155,6 +155,20 @@ export class Audio {
         }, () => 230);
         break;
       }
+      case '殷商': {
+        // 低沉的鼓、偶爾一聲像石磬或銅鐃的長音
+        pad([98, 146.8], 0.022);
+        let beat = 0;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 4 === 0) this.noise(t, 0.3, 90, 0.22, bus);
+          if (beat % 8 === 6) this.noise(t, 0.15, 110, 0.12, bus);
+          if (beat % 16 === 8) { this.note(587.3, t, 3.5, 'sine', 0.035, bus); this.note(880, t, 2.5, 'sine', 0.012, bus); }
+          if (Math.random() < 0.18) pluck(293.7, 0.03, 2);
+          beat++;
+        }, () => 520);
+        break;
+      }
       default:
         pad([130.8, 196], 0.02);
     }

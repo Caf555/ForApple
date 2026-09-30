@@ -41,14 +41,17 @@ html[data-fs="3"] { --fs: 22.5px; }
 body[data-vtheme="modern"] { --accent: #d9a55b; }
 body[data-vtheme="dayuan"] { --accent: #6d9fcc; }
 body[data-vtheme="hub"] { --accent: #c9a45c; }
+body[data-vtheme="muye"] { --accent: #d9825b; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
   :root:not([data-theme="dark"]) body[data-vtheme="hub"] { --accent: #8f6a2a; }
+  :root:not([data-theme="dark"]) body[data-vtheme="muye"] { --accent: #9a4a2a; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
 :root[data-theme="light"] body[data-vtheme="hub"] { --accent: #8f6a2a; }
+:root[data-theme="light"] body[data-vtheme="muye"] { --accent: #9a4a2a; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -96,6 +99,14 @@ body[data-vtheme="dayuan"] .banner-art {
   background:
     repeating-radial-gradient(circle at 50% 160%, transparent 0 14px, rgba(255, 255, 255, .09) 15px 16px, transparent 17px 30px),
     linear-gradient(180deg, #7fa8c9 0%, #c9d8dc 42%, #d9c8a0 43%, #c7b186 60%, #2f5f8f 61%, #1f4466 100%);
+}
+/* 牧野：青銅與黃土，骨版上的裂紋 */
+body[data-vtheme="muye"] .banner-art {
+  background:
+    linear-gradient(115deg, transparent 0 46%, rgba(40, 20, 10, .35) 46.5% 47%, transparent 47.5%),
+    linear-gradient(62deg, transparent 0 58%, rgba(40, 20, 10, .3) 58.4% 58.8%, transparent 59.2%),
+    repeating-linear-gradient(90deg, rgba(60, 90, 70, .12) 0 2px, transparent 2px 22px),
+    linear-gradient(180deg, #c9b58f 0%, #b89868 45%, #8a6a44 70%, #4f6b5a 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:
@@ -374,6 +385,7 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .mg-progress { font-family: var(--sans); font-size: 12px; color: var(--muted); }
 .mg-word { font-family: Georgia, "Times New Roman", serif; font-size: 44px; font-style: italic; letter-spacing: .05em; }
 .mg-word.small { font-size: 28px; font-style: normal; }
+.mg-glyph { display: block; width: 112px; height: 112px; margin: 4px auto 0; fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .mg-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
 .mg-opt { min-height: 56px; font-size: 18px; font-family: var(--serif); }
 .mg-opt.right { background: var(--good); color: #fff; }
@@ -407,8 +419,9 @@ body:not([data-mode="hub"]) #hub { display: none; }
 #banner.has-img .banner-img { opacity: 1; }
 #banner.has-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55)); pointer-events: none; }
 #banner .banner-text { z-index: 1; }
-.line.cg { margin: .4em -4px 1.1em; }
-.cg-img { display: block; width: 100%; height: auto; max-height: 60vh; object-fit: contain; border-radius: 10px; background: var(--panel); cursor: zoom-in; aspect-ratio: 3 / 2; }
+.line.cg { position: relative; margin: .4em -4px 1.1em; }
+.cg-img { display: block; width: 100%; height: auto; max-height: 60vh; object-fit: contain; border-radius: 10px; background: var(--panel); aspect-ratio: 3 / 2; }
+.cg-zoom { position: absolute; right: 8px; top: 8px; min-height: 36px; padding: 4px 12px; border: 0; border-radius: 18px; background: rgba(0,0,0,.55); color: #f3ecdc; font-family: var(--sans); font-size: 13px; }
 .line.cg figcaption { font-family: var(--sans); font-size: .72em; color: var(--muted); text-align: center; margin-top: .4em; }
 .line .who .avatar { width: 2.2em; height: 2.2em; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: .5em; border: 1px solid var(--line); background: var(--panel); }
 .fc-img { float: right; width: 44px; height: 44px; border-radius: 10px; object-fit: cover; margin: 0 0 4px 6px; }
