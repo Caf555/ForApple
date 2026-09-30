@@ -238,6 +238,7 @@ def main():
             note = '' if alpha is None else ('（透明背景）' if alpha else '（注意：輸出沒有透明通道）')
             log(f'{tag}：完成{note}')
             done += 1
+            review_page(cfg, list_path)   # 每完成一張就更新審圖頁，不必等整批跑完
         except Exception as e:
             failed += 1
             log(f'{tag}：失敗——{e}')
