@@ -209,6 +209,18 @@ export class Translate {
     const it = d.items[this.i];
     this.body.innerHTML = '';
     this.body.appendChild(el('div', { class: 'mg-progress' }, `${this.i + 1} / ${d.items.length}　答對 ${this.correct}`));
+    // 甲骨文等 Unicode 還沒有的字：用筆畫（SVG 路徑）畫出來
+    if (it.glyph) {
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('class', 'mg-glyph'); svg.setAttribute('aria-hidden', 'true');
+      for (const d of it.glyph) {
+        const p = document.createElementNS(ns, 'path');
+        p.setAttribute('d', d);
+        svg.appendChild(p);
+      }
+      this.body.appendChild(svg);
+    }
     this.body.appendChild(el('div', { class: this.d.question ? 'mg-q' : 'mg-word' }, it.w));
     const opts = el('div', { class: 'mg-opts' });
     it.opts.forEach(o => {

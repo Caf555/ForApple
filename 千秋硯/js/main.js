@@ -9,8 +9,8 @@ import { Debate, Translate } from './debate.js';
 import { Runner } from './runner.js';
 import { Hub } from './hub.js';
 
-export const VERSION = '試玩版 v0.4';
-const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/夜話.txt'];
+export const VERSION = '試玩版 v0.5';
+const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/卷二_牧野.txt', 'content/夜話.txt'];
 
 const $ = id => document.getElementById(id);
 

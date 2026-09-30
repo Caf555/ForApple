@@ -165,7 +165,7 @@ def update_manifest():
 def review_page(cfg, list_path):
     """產生審圖頁：在瀏覽器打開 審圖.html，逐張檢查"""
     rows = []
-    for it in cfg['items']:
+    for it in reversed(cfg['items']):  # 新加的排在最前面
         files = web_files(it['kind'], it['name'])
         src = '../../img/' + files[-1].relative_to(IMG).as_posix() if files[-1].exists() else ''
         img = f'<img src="{urllib.parse.quote(src)}" loading="lazy">' if src else '<div class="none">尚未產生</div>'
@@ -182,7 +182,7 @@ figure.char img,figure.enemy img{{aspect-ratio:1}}figcaption{{padding:8px;font-s
 
 def main():
     ap = argparse.ArgumentParser(description='《千秋硯》批次生圖')
-    ap.add_argument('--list', default=str(HERE / '清單_卷一.json'))
+    ap.add_argument('--list', help='只用這一份清單（預設：資料夾裡所有「清單_*.json」）')
     ap.add_argument('--server', default='http://127.0.0.1:8188')
     ap.add_argument('--only', choices=['bg', 'cg', 'char', 'enemy'])
     ap.add_argument('--names', help='只產生這些名稱（逗號分隔）')
@@ -192,8 +192,26 @@ def main():
     ap.add_argument('--rebuild', action='store_true', help='只用已有的原圖重新產生網頁檔案')
     args = ap.parse_args()
 
-    list_path = Path(args.list)
-    cfg = json.loads(list_path.read_text(encoding='utf-8'))
+    # 畫風、節點、尺寸以卷一清單為準；其他清單只提供 items（也可以覆寫自己的 style）
+    if args.list:
+        list_path = Path(args.list)
+        cfg = json.loads((HERE / '清單_卷一.json').read_text(encoding='utf-8'))
+        own = json.loads(list_path.read_text(encoding='utf-8'))
+        cfg['style'].update(own.get('style', {}))
+        cfg['items'] = own['items']
+    else:
+        list_path = HERE / '清單_卷一.json'
+        cfg = json.loads(list_path.read_text(encoding='utf-8'))
+        for extra in sorted(HERE.glob('清單_*.json')):
+            if extra.name == list_path.name:
+                continue
+            more = json.loads(extra.read_text(encoding='utf-8'))
+            cfg['style'].update(more.get('style', {}))
+            cfg['items'] += more['items']
+        list_path = HERE / '清單_全部.json'
+    dup = {it['name'] for it in cfg['items'] if [x['name'] for x in cfg['items']].count(it['name']) > 1}
+    if dup:
+        sys.exit(f'清單裡有重複的名稱：{"、".join(sorted(dup))}')
     templates = {k: json.loads((HERE / 'workflows' / f'{k}.json').read_text(encoding='utf-8')) for k in ('t2i', 'edit')}
     names = set(args.names.split(',')) if args.names else None
     items = [it for it in cfg['items'] if (not args.only or it['kind'] == args.only) and (not names or it['name'] in names)]

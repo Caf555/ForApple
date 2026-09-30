@@ -196,6 +196,16 @@ export class Battle {
 
   // ───────── AI ─────────
   foeAI(u) {
+    // 被「灼骨問卜」看穿的行動：照卜兆行事
+    if (u.planned) {
+      const p = u.planned; u.planned = null;
+      if (p.target && !p.target.alive) p.target = pick(this.allies.filter(a => a.alive));
+      return p;
+    }
+    return this.rollFoeAct(u);
+  }
+
+  rollFoeAct(u) {
     const list = u.def.skills;
     const total = list.reduce((s, [, w]) => s + w, 0);
     let r = Math.random() * total, name = '攻擊';
@@ -487,6 +497,15 @@ export class Battle {
           t.status[sk.status] = STATUSES[sk.status].turns + 1;
           this.log(`${t.name} 陷入「${sk.status}」！`);
           this.float(t, sk.status, 'debuff');
+        }
+        if (sk.omen && t.alive && t.side === 'foe') {
+          t.planned = this.rollFoeAct(t);
+          const psk = t.planned.type === 'skill' ? SKILLS[t.planned.skill] : null;
+          const what = psk ? `「${t.planned.skill}」` : '普通攻擊';
+          const aimed = !psk || psk.target === 'enemy';
+          this.log(`卜兆顯現：${t.name} 下一次會用${what}${aimed && t.planned.target ? `，目標是 ${t.planned.target.name}` : ''}。`);
+          this.float(t, '卜', 'debuff');
+          await this.pause(1.2);
         }
         if (hits > 1) await this.pause(0.3);
       }

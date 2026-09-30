@@ -1,0 +1,128 @@
+{
+  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "南港陳列館",
+      "seed": 6101,
+      "prompt": "A quiet modern museum gallery in Taipei, Taiwan, softly lit glass display cases holding yellowish-brown ancient oracle bones and green bronze ritual vessels, polished stone floor, a wooden bench in the middle, calm afternoon light, no visitors in the foreground."
+    },
+    {
+      "kind": "bg",
+      "name": "洹水岸邊",
+      "seed": 6102,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, a wide muddy yellow river bending slowly, tall reeds on the bank, on the far side a flat loess plain with rows of houses on rammed-earth platforms with thatched roofs, several thin columns of dark smoke from bronze foundries rising into a hazy sky."
+    },
+    {
+      "kind": "bg",
+      "name": "大邑商",
+      "seed": 6103,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, the royal capital: long timber halls with thatched hip roofs standing on high rammed-earth platforms, flat packed-earth roads, craftsmen carrying timber and pottery, no city wall, orderly and vast, warm ochre tones."
+    },
+    {
+      "kind": "bg",
+      "name": "貞人之家",
+      "seed": 6104,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, the courtyard of a royal diviner's house, rows of cleaned ox shoulder blades and turtle plastrons drying on straw mats in the sun, a low wooden table under the eaves with small bronze drills and knives, calm and orderly."
+    },
+    {
+      "kind": "bg",
+      "name": "卜室",
+      "seed": 6105,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, a windowless divination chamber lit only by a fire burning in a bronze basin at the center, walls glowing orange, an ox shoulder blade laid on a mat before the fire, deep shadows, solemn and tense."
+    },
+    {
+      "kind": "bg",
+      "name": "羌人圈",
+      "seed": 6106,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, at a distance, a large open enclosure fenced with wooden stakes and ropes on the western edge of the city, many figures sitting quietly inside, some carrying baskets of earth toward a platform being built, somber dusk light, no violence, melancholic."
+    },
+    {
+      "kind": "bg",
+      "name": "甲骨窖穴",
+      "seed": 6107,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, a deep rectangular storage pit dug into packed earth at night, smooth earthen walls, layers of stacked inscribed oracle bones and turtle shells, a torch casting flickering light, faint eerie grey glow among the bones."
+    },
+    {
+      "kind": "bg",
+      "name": "商邑市集",
+      "seed": 6108,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, an open marketplace south of the temple, people trading painted pottery, millet, salt and turtle shells, strings of cowrie shells hanging at a stall, busy but gentle."
+    },
+    {
+      "kind": "char",
+      "name": "妌_14",
+      "seed": 6201,
+      "transparent": true,
+      "prompt": "A 14-year-old girl of the late Shang dynasty, black hair gathered in a simple bun held by a carved bone hairpin, plain undyed hemp tunic with a crossed collar and a cloth belt, bright curious eyes and a slightly stubborn mouth, a thin bronze carving knife tucked in her belt."
+    },
+    {
+      "kind": "char",
+      "name": "十七",
+      "seed": 6202,
+      "transparent": true,
+      "prompt": "A 15-year-old boy from the western highlands, captive in the Shang capital, messy long black hair loosely tied, sun-darkened skin with a smudge of dirt, a worn sheepskin vest over a rough hemp shirt, a wide open grin showing one small pointed canine tooth, cheerful and warm despite hardship."
+    },
+    {
+      "kind": "char",
+      "name": "箙",
+      "seed": 6203,
+      "transparent": true,
+      "prompt": "A gentle middle-aged royal diviner of the late Shang dynasty, calm lined face with deep crow's feet from years of close work, hair bound on top with a bronze pin, plain white hemp robe, patient steady eyes."
+    },
+    {
+      "kind": "enemy",
+      "name": "裂兆",
+      "seed": 6301,
+      "transparent": true,
+      "prompt": "Floating burning cracks in the air shaped like the oracle crack sign, glowing orange edges, sparks and flakes of bone ash, like a heartbeat made of fire."
+    },
+    {
+      "kind": "enemy",
+      "name": "骨蠹",
+      "seed": 6302,
+      "transparent": true,
+      "prompt": "A large pale grub-like insect made of bone fragments, chewing on an inscribed oracle bone, segmented body with faint carved marks being eaten away, dusty earth tones."
+    },
+    {
+      "kind": "enemy",
+      "name": "洹水瘴",
+      "seed": 6303,
+      "transparent": true,
+      "prompt": "A heavy drifting mist rising from a muddy river, yellow-grey fog with reeds inside it, faint shapes of flooded houses within, cold and damp."
+    },
+    {
+      "kind": "enemy",
+      "name": "銅鏽兵",
+      "seed": 6304,
+      "transparent": true,
+      "prompt": "The ghost of an ancient Shang palace guard holding a bronze dagger-axe covered in green patina, body half transparent, stiff and loyal, empty eyes."
+    },
+    {
+      "kind": "enemy",
+      "name": "無字骨",
+      "seed": 6305,
+      "transparent": true,
+      "prompt": "A tall thin creature assembled from many blank ox shoulder blades whose inscriptions have been wiped clean, pale grey glow, reaching out with long bony hands, eerie and sorrowful."
+    },
+    {
+      "kind": "enemy",
+      "name": "兆魘",
+      "seed": 6306,
+      "transparent": true,
+      "prompt": "A roaring fire in a bronze basin with many faint faces crowded inside the flames, old men, women and children all staring and waiting, dread rather than malice, dark red and ink black."
+    },
+    {
+      "kind": "cg",
+      "name": "讀兆",
+      "seed": 6401,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, inside a dark divination chamber lit by fire, a middle-aged diviner kneels before an ox shoulder blade that has just cracked, a teenage girl kneeling behind him holding a glowing stick, both staring at a single horizontal crack line, an old messenger in white hemp standing in the shadows."
+    },
+    {
+      "kind": "cg",
+      "name": "路口",
+      "seed": 6402,
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, dawn at the western edge of the city, a teenage boy carrying a bamboo basket on his shoulder walks back toward a fenced enclosure, he turns his head and smiles, in the foreground a young man stands still at the crossroads, long shadows, quiet heartbreak."
+    }
+  ]
+}
