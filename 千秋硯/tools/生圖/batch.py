@@ -96,7 +96,8 @@ class Comfy:
 def build(item, cfg, templates, comfy, dry):
     kind = item['kind']
     style = cfg['style']
-    style_text = style['char'] if kind in ('char', 'enemy') else style['bg']
+    # 各類別可以有自己的風格；沒有的話，頭像類沿用 char、大圖沿用 bg
+    style_text = style.get(kind) or (style['char'] if kind in ('char', 'enemy') else style['bg'])
     prompt = f"{style_text} {item['prompt']}"
     if item.get('transparent'):
         prompt += ' Transparent background with alpha channel.'
