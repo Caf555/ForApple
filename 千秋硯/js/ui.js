@@ -92,7 +92,11 @@ export class UI {
     if (!this.hasImg('cg', name)) return Promise.resolve();
     const fig = el('figure', { class: 'line cg' });
     const img = this.pictureEl('cg', name, 'cg-img', 'min(688px, calc(100vw - 32px))');
-    img.addEventListener('click', e => { e.stopPropagation(); this.viewImage('cg', name); });
+    // 等待點擊繼續時，點圖就是「繼續」；讀過之後再點，才是全螢幕檢視
+    img.addEventListener('click', e => {
+      if (this.waiting && fig === this.story.lastElementChild) return;
+      e.stopPropagation(); this.viewImage('cg', name);
+    });
     fig.appendChild(img);
     if (caption) fig.appendChild(el('figcaption', {}, this.fmt(caption)));
     this.story.appendChild(fig);
