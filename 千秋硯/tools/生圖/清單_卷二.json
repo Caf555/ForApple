@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一、回二）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
+  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
   "items": [
     {
       "kind": "bg",
@@ -189,6 +189,98 @@
       "name": "名字",
       "seed": 6404,
       "prompt": "Late Shang dynasty China around 1050 BC, night, a teenage boy leans against a wooden stake fence, whispering through the gap to a young man outside who writes a single character in a small notebook by moonlight, a sleeping baby in the boy's arms, tender and sad."
+    },
+    {
+      "kind": "bg",
+      "name": "周原",
+      "seed": 6111,
+      "prompt": "A vast windswept yellow loess plateau cut by deep gullies, fields of millet rippling like a yellow blanket, a long mountain range (Mount Qi) across the horizon, big sky, sheep on a distant slope, ancient China around 1048 BC."
+    },
+    {
+      "kind": "bg",
+      "name": "岐邑",
+      "seed": 6112,
+      "prompt": "Early Zhou people around 1048 BC on the loess plateau of the Wei River valley, a modest settlement of houses on low rammed-earth platforms, simple thatched roofs, busy people in plain clothes, chariots training on an open field outside raising yellow dust. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
+    },
+    {
+      "kind": "bg",
+      "name": "史官之室",
+      "seed": 6113,
+      "prompt": "Early Zhou people around 1048 BC on the loess plateau of the Wei River valley, a quiet scribe's room lit by a small oil lamp, bundles of bamboo slips stacked by the wall, a low table with a writing brush, an ink stone and several small turtle shells, warm intimate light. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
+    },
+    {
+      "kind": "bg",
+      "name": "姜人牧場",
+      "seed": 6114,
+      "prompt": "A grassy slope at the foot of a mountain in western China around 1048 BC, flocks of white sheep scattered over it, a few low houses built of stone and earth, a weathered old man sitting in the sun, peaceful pastoral."
+    },
+    {
+      "kind": "char",
+      "name": "姜禾",
+      "seed": 6205,
+      "prompt": "An 18-year-old herder girl of the Jiang clan in ancient western China, sun-browned face, bright direct eyes, long black hair braided with a woolen cord, a short sheepskin coat over plain clothes, a horn bow and a quiver on her back, confident half smile.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "史鳶",
+      "seed": 6206,
+      "prompt": "A young scribe of the early Zhou dynasty around 20 years old, earnest thoughtful face, hair bound in a simple topknot with a wooden pin, plain undyed robe, holding a bundle of bamboo slips and a writing brush.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "伯磬",
+      "seed": 6207,
+      "prompt": "A young court musician who fled the Shang capital, gentle tired eyes, hair loosely tied, simple robe dusty from travel, holding a small wooden mallet, a set of thin stone chimes hanging on a wooden frame beside him.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "塬風",
+      "seed": 6312,
+      "prompt": "A swirling column of yellow loess dust and wind shaped like a running figure, sand grains streaming eastward, earthy ochre tones.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "狼影",
+      "seed": 6313,
+      "prompt": "A lean grey wolf made of ink shadow and dust, low to the ground, glowing green eyes, fur dissolving into smoke at the edges.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "殘車魂",
+      "seed": 6314,
+      "prompt": "A ghostly overturned ancient Chinese bronze-age war chariot, its spoked wheel still spinning, broken shafts and fluttering tattered banner, bronze fittings with green rust, no horses.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無名塚",
+      "seed": 6315,
+      "prompt": "A small unmarked burial mound of yellow earth come alive, faint pale outlines of two young figures inside like fading ink, a few blank bones scattered, sorrowful rather than scary.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "失土之魂",
+      "seed": 6316,
+      "prompt": "A towering figure made entirely of drifting loess earth and dust under moonlight, inside it many faint silhouettes of people wearing different clothes reaching out in different directions, longing for home, melancholic and vast.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "周原甲骨",
+      "seed": 6405,
+      "prompt": "Early Zhou people around 1048 BC on the loess plateau of the Wei River valley, close-up of a young woman and a young scribe bending over a tiny turtle shell under an oil lamp, the shell covered with extremely small carved marks like ant footprints, she squints in amazement, bamboo slips around. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
+    },
+    {
+      "kind": "cg",
+      "name": "磬聲",
+      "seed": 6406,
+      "prompt": "Dawn on the loess plateau, a young musician kneels before a wooden frame of hanging stone chimes striking one with a mallet, a herder girl with a bow on her back hums beside him, a young man and a translucent ink-haired young woman listen, golden light over gullies, ancient China around 1048 BC."
     }
   ]
 }

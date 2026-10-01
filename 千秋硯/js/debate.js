@@ -116,12 +116,14 @@ export class Debate {
 
   async play(mine, text) {
     this.ctx.audio.sfx('tap');
+    // 出牌後卡片區先清空，但保留原本的高度，畫面才不會上下跳
+    this.hand.style.minHeight = this.hand.offsetHeight + 'px';
     this.hand.innerHTML = '';
     const theirs = this.foeNext;
     const me = this.ctx.g.player.call;
     this.line(me, text, 'me');
     await sleep(500);
-    this.line(this.d.foe, pick(this.d.lines.foe[theirs] || ['……']), 'foe');
+    this.line(this.d.foe, pick(this.d.lines.foe[theirs] || ['……']), 'opp');
     await sleep(400);
 
     if (mine === '共感') {
