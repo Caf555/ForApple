@@ -123,7 +123,7 @@ export class Debate {
     const me = this.ctx.g.player.call;
     this.line(me, text, 'me');
     await sleep(500);
-    this.line(this.d.foe, pick(this.d.lines.foe[theirs] || ['……']), 'foe');
+    this.line(this.d.foe, pick(this.d.lines.foe[theirs] || ['……']), 'opp');
     await sleep(400);
 
     if (mine === '共感') {
