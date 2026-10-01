@@ -436,6 +436,62 @@
       "seed": 7061,
       "transparent": true,
       "prompt": "A small thin ancient bronze carving knife about finger-length, the handle polished smooth by years of use with a green patina in the grooves, the blade worn very thin."
+    },
+    {
+      "kind": "item",
+      "name": "戈頭",
+      "seed": 7062,
+      "transparent": true,
+      "prompt": "A broken ancient bronze dagger-axe head: a short flat blade with a curled, blunted edge and a tang, green patina and rust, no shaft."
+    },
+    {
+      "kind": "item",
+      "name": "斷索",
+      "seed": 7063,
+      "transparent": true,
+      "prompt": "A short length of rough brown hemp rope cut cleanly at one end, a tight knot at the other end, fibers frayed."
+    },
+    {
+      "kind": "item",
+      "name": "鼓皮",
+      "seed": 7064,
+      "transparent": true,
+      "prompt": "A torn piece of stretched animal hide from a war drum, pale tan with faded red painted bands, a few wooden pegs still stuck through the edge."
+    },
+    {
+      "kind": "item",
+      "name": "斷杵",
+      "seed": 7065,
+      "transparent": true,
+      "prompt": "A short broken wooden pestle, a round wooden pole about forearm length, darkened and swollen from soaking in water, splintered at one end."
+    },
+    {
+      "kind": "item",
+      "name": "解縛結",
+      "seed": 7066,
+      "transparent": true,
+      "prompt": "A neat decorative knot tied from rough brown hemp rope, the cut ends tucked in, worn like a charm on a thin cord."
+    },
+    {
+      "kind": "item",
+      "name": "朱書契刀",
+      "seed": 7067,
+      "transparent": true,
+      "prompt": "A small thin ancient bronze carving knife about finger-length, the handle wrapped with a cord dyed vermilion red, the thin blade edge with a faint red glow."
+    },
+    {
+      "kind": "item",
+      "name": "甲子卜骨",
+      "seed": 7068,
+      "transparent": true,
+      "prompt": "A small pale fragment of ox bone the size of a palm, on its back a row of neat oval drilled hollows with scorch marks, a single thin crack line running straight and level across it."
+    },
+    {
+      "kind": "item",
+      "name": "妌的碎骨",
+      "seed": 7069,
+      "transparent": true,
+      "prompt": "A tiny pale bone chip no bigger than a coin, with one small simple carved line figure of a person standing sideways and bending forward, polished smooth by handling."
     }
   ]
 }
