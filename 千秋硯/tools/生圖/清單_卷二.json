@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
+  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
   "items": [
     {
       "kind": "bg",
@@ -347,6 +347,104 @@
       "name": "夜渡",
       "seed": 6407,
       "prompt": "The Yellow River near Mengjin ferry in ancient China around 1047 BC: an extremely wide, fast, opaque ochre-yellow river carrying silt, low muddy banks. Night on a small crowded wooden boat in the middle of the river: a thin teenage boy in a worn sheepskin vest leans over the side, seasick, yet laughing weakly, a young man beside him steadies his shoulder, a translucent young woman with long ink-black hair that dissolves like ink in water looks at the boy with deep recognition, other people huddled, dim moonless darkness with only a faint red glow from a distant fire. Boats are simple ancient wooden plank boats and dugout canoes, low and narrow, rowed with long wooden oars, no sails, no cabins, no dragon heads."
+    },
+    {
+      "kind": "bg",
+      "name": "牧野之夜",
+      "seed": 6118,
+      "prompt": "Late Shang dynasty China around 1046 BC, a vast flat open plain of yellow earth and dry grass. Night before a great battle, seen from a low earthen mound: at the far west end of the plain clusters of small campfires, at the east end countless campfires in long straight rows stretching to the horizon, the row of fires nearest to the viewer noticeably dimmer, tiny silhouettes of people sitting on the ground beside them; fine pale grey flakes like ash or snow drifting in the dark air; deep blue darkness, only small dim orange firelight, quiet and ominous."
+    },
+    {
+      "kind": "bg",
+      "name": "卜帳",
+      "seed": 6119,
+      "prompt": "Late Shang dynasty China around 1046 BC, inside a large tent of plain undyed hemp cloth and wooden poles at night, a low reed mat on the earthen floor, a bronze fire basin with glowing charcoal giving dim warm orange light, a flat pale ox shoulder blade lying on the mat beside a small wooden box of bone tools, deep shadows at the edges of the tent, still and tense. The ox shoulder blade is a flat, pale, smooth, roughly triangular plate of bone about the length of a forearm, cleaned of all flesh, with no horns, no skull, no fur."
+    },
+    {
+      "kind": "bg",
+      "name": "前徒營",
+      "seed": 6120,
+      "prompt": "Late Shang dynasty China around 1046 BC, a vast flat open plain of yellow earth and dry grass. Night, a long line of small dim campfires on bare earth; beside them many people in ragged hemp and sheepskin sit on the ground with heads bowed, their wrists linked one to the next by a single long rough hemp rope that runs along the whole line into the darkness; sharpened wooden sticks and stones lie beside them; seen from a slight distance, no faces in detail, no violence, sorrowful and quiet, muted ochre and deep blue."
+    },
+    {
+      "kind": "bg",
+      "name": "牧野",
+      "seed": 6121,
+      "prompt": "Late Shang dynasty China around 1046 BC, a vast flat open plain of yellow earth and dry grass. Early dawn on the morning of a battle, the sky pale grey-blue with the first thin line of light on the eastern horizon, a light mist over the plain, low dust in the air, two great armies drawn up far apart facing each other across the open ground, seen from a distance as dark masses with many tall shafts of dagger-axes against the sky. Armies of the Bronze Age: soldiers on foot carrying dagger-axes, which are a short flat bronze blade fixed crosswise near the top of a long wooden shaft, and rectangular shields of wood and leather; light two-horse chariots with large spoked wooden wheels and a small open box; no cavalry, no iron, no steel armor, no swords, no banners with writing. "
+    },
+    {
+      "kind": "bg",
+      "name": "西山",
+      "seed": 6122,
+      "prompt": "A high mountain summit in the far west highlands of ancient China, autumn, thin patches of snow on bare rock and tough dry grass, strong wind blowing streamers of cloud across the ridge, endless layers of blue mountain ranges below, clear cold light, vast and lonely and free."
+    },
+    {
+      "kind": "char",
+      "name": "妌_19",
+      "seed": 6209,
+      "transparent": true,
+      "prompt": "A 19-year-old young woman of the late Shang dynasty, thin face with a sharp chin, black hair gathered high in a bun held by a carved bone hairpin, plain undyed hemp robe with a crossed collar and a cloth belt, a small thin bronze carving knife hanging at her belt, bright stubborn eyes, calm and determined."
+    },
+    {
+      "kind": "char",
+      "name": "妌_老",
+      "seed": 6210,
+      "transparent": true,
+      "prompt": "A very old woman of the early Zhou dynasty around 80 years old, white hair gathered in a simple bun held by a bone hairpin, slightly bent back, deeply wrinkled kind face with bright sharp eyes, plain undyed hemp robe, a small bronze carving knife with a handle polished smooth hanging at her belt."
+    },
+    {
+      "kind": "enemy",
+      "name": "戈影",
+      "seed": 6322,
+      "transparent": true,
+      "prompt": "A shadowy figure formed from many bronze dagger-axes standing upright together, each a short flat green-patinated bronze blade fixed crosswise near the top of a long dark wooden shaft, their shadows merged into one tall bristling silhouette with blades like a bird's beaks, faint dust around it."
+    },
+    {
+      "kind": "enemy",
+      "name": "縛索",
+      "seed": 6323,
+      "transparent": true,
+      "prompt": "A long rough hemp rope rising from the ground like a serpent, coiled in loops, frayed knots along it, the loops open like empty grasping hands, dull brown and grey, menacing."
+    },
+    {
+      "kind": "enemy",
+      "name": "戰鼓魂",
+      "seed": 6324,
+      "transparent": true,
+      "prompt": "A large ancient war drum of stretched hide on a round wooden body, painted with faded red and black bands, floating by itself, two wooden drumsticks hovering beside it, visible rings of dust and shockwaves pulsing outward from its cracked drumhead."
+    },
+    {
+      "kind": "enemy",
+      "name": "鉞影",
+      "seed": 6325,
+      "transparent": true,
+      "prompt": "A huge ancient bronze ceremonial broad axe (yue) floating upright by itself, a wide flat trapezoid blade with a gently curved cutting edge, cast in its center an openwork human face with a wide open mouth, dark green patina and rust, mounted on a short heavy wooden haft, cold and authoritative."
+    },
+    {
+      "kind": "enemy",
+      "name": "漂杵",
+      "seed": 6326,
+      "transparent": true,
+      "prompt": "A slow river of thick dark reddish-brown ink flowing in the air in a coiling band, many plain wooden pestles (long round wooden poles used for pounding grain) floating along it, faint pale shapes of people dissolving into the current, ink-wash style, sorrowful rather than gory."
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・牧野之相",
+      "seed": 6327,
+      "transparent": true,
+      "prompt": "An imposing faceless figure in a long black scholar-official robe and a wide-brimmed black hat tilted askew, robe and hat covered in yellow dust, the face a smooth blank surface like white paper, holding a large white brush whose tip is worn down to a stump, grey flakes like ash swirling around, weary, menacing and elegant, ink wash style."
+    },
+    {
+      "kind": "cg",
+      "name": "倒戈",
+      "seed": 6408,
+      "prompt": "Late Shang dynasty China around 1046 BC, a vast flat open plain of yellow earth and dry grass. Dawn on the battlefield: in the foreground a long front line of ragged men in hemp and sheepskin, some still with cut rope around their wrists, have all turned around at once to face away from the viewer's enemy, raising wooden sticks and stones toward the ranks of soldiers behind them; dust rising, the light of the rising sun behind, a moment of collective decision, powerful and solemn, no blood. Armies of the Bronze Age: soldiers on foot carrying dagger-axes, which are a short flat bronze blade fixed crosswise near the top of a long wooden shaft, and rectangular shields of wood and leather; light two-horse chariots with large spoked wooden wheels and a small open box; no cavalry, no iron, no steel armor, no swords, no banners with writing. "
+    },
+    {
+      "kind": "cg",
+      "name": "喊山",
+      "seed": 6409,
+      "prompt": "A high mountain summit in the far west highlands of ancient China, autumn, thin snow on rock, a young man about 20 years old with messy long black hair loosely tied, sun-darkened skin, a worn sheepskin vest, standing on the summit with both hands cupped around his mouth, shouting into the wind toward endless blue mountain ranges, a wooden staff with a curved goat horn tied at its top lying at his feet, streamers of cloud flying past, joyful and free."
     }
   ]
 }
