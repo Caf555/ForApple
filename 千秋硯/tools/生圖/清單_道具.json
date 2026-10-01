@@ -85,7 +85,7 @@
       "name": "雙語筆",
       "seed": 7011,
       "transparent": true,
-      "prompt": "A slender writing brush with a metal dip-pen nib at the other end."
+      "prompt": "A single slender double-ended writing tool lying diagonally: at the upper end a traditional Chinese calligraphy brush tip, a soft pointed tuft of dark animal hair; at the lower end a fluffy white goose feather with visible feather vanes and barbs, its hollow quill shaft cut to a point, like a 17th-century feather quill pen; the brush and the feather are joined by a short bamboo shaft in the middle. The lower end is clearly a real bird feather. No metal, no steel nib, no fountain pen."
     },
     {
       "kind": "item",
@@ -204,7 +204,7 @@
       "name": "鐵片",
       "seed": 7028,
       "transparent": true,
-      "prompt": "A few rusted iron fragments from an old musket."
+      "prompt": "Three small loose pieces of rusted hand-forged iron lying in a little pile: a bent flat iron strip, a small curved S-shaped matchlock serpentine lever, and a short broken iron band with a rivet hole, rough and pitted with orange-brown rust. Only small loose scrap pieces: not a whole gun, no stock, no barrel, no wood."
     },
     {
       "kind": "item",
@@ -316,7 +316,7 @@
       "name": "貝串",
       "seed": 7044,
       "transparent": true,
-      "prompt": "A string of cowrie shells."
+      "prompt": "A Bronze Age strand of about ten small cowrie shells, each the size of a fingertip, threaded one after another on a thin twisted hemp cord, laid flat in a loose curve with the cord ends knotted, shells glossy ivory and pale tan, some showing the toothed slit on their underside. The shells are small and clearly separate, evenly spaced along the cord like beads."
     },
     {
       "kind": "item",
@@ -358,7 +358,7 @@
       "name": "藏書票",
       "seed": 7050,
       "transparent": true,
-      "prompt": "A small antique bookplate paper with a faded red seal impression, no readable text."
+      "prompt": "A single small flat rectangular slip of old handmade paper, slightly yellowed with soft frayed edges and a faint fold, lying flat, seen from slightly above; in its center one small square vermilion seal impression, faded and blurred so no characters can be read. Only one loose sheet of paper: not a book, no cover, no binding, no pages, no writing."
     },
     {
       "kind": "item",
@@ -379,7 +379,7 @@
       "name": "十七的骨哨",
       "seed": 7053,
       "transparent": true,
-      "prompt": "A small whistle carved from a sheep bone with three holes."
+      "prompt": "An ancient Bronze Age bone pipe: a short straight hollow tube cut from a sheep's leg bone, about a finger long, hand-polished smooth and ivory-white with natural bone texture and slightly uneven ends, three small round holes drilled in a row along its side, like a tiny primitive flute. Not a modern whistle: no metal, no mouthpiece, no round chamber, no ring."
     },
     {
       "kind": "item",
