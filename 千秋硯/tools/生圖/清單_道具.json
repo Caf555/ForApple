@@ -394,6 +394,48 @@
       "seed": 7055,
       "transparent": true,
       "prompt": "An ancient ox shoulder blade oracle bone with rows of drilled hollows and fine crack lines, faint carved marks."
+    },
+    {
+      "kind": "item",
+      "name": "河泥",
+      "seed": 7056,
+      "transparent": true,
+      "prompt": "A lump of sticky wet ochre-yellow river mud on a broad green leaf."
+    },
+    {
+      "kind": "item",
+      "name": "船板",
+      "seed": 7057,
+      "transparent": true,
+      "prompt": "A single weathered wooden plank from an ancient boat, waterlogged and dark, with old wooden peg holes, a little river weed clinging to it."
+    },
+    {
+      "kind": "item",
+      "name": "白魚鱗",
+      "seed": 7058,
+      "transparent": true,
+      "prompt": "One very large single fish scale, pearly white and translucent with a faint rainbow sheen, about palm-sized."
+    },
+    {
+      "kind": "item",
+      "name": "白鱗墜",
+      "seed": 7059,
+      "transparent": true,
+      "prompt": "A small pendant made of a polished pearly white fish scale set in a thin bronze rim, hung on a dark leather cord."
+    },
+    {
+      "kind": "item",
+      "name": "山羊角杖",
+      "seed": 7060,
+      "transparent": true,
+      "prompt": "A long smooth wooden shepherd's staff with a curved goat horn lashed to the top with leather thongs."
+    },
+    {
+      "kind": "item",
+      "name": "箙的契刀",
+      "seed": 7061,
+      "transparent": true,
+      "prompt": "A small thin ancient bronze carving knife about finger-length, the handle polished smooth by years of use with a green patina in the grooves, the blade worn very thin."
     }
   ]
 }
