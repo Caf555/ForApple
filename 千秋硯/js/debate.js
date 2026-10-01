@@ -116,6 +116,8 @@ export class Debate {
 
   async play(mine, text) {
     this.ctx.audio.sfx('tap');
+    // 出牌後卡片區先清空，但保留原本的高度，畫面才不會上下跳
+    this.hand.style.minHeight = this.hand.offsetHeight + 'px';
     this.hand.innerHTML = '';
     const theirs = this.foeNext;
     const me = this.ctx.g.player.call;
