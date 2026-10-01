@@ -153,6 +153,22 @@ export class UI {
     };
   }
 
+  // 手機的「返回」鍵：先關掉最上層的東西，真的沒東西可關才提示離開
+  handleBack() {
+    const v = $('viewer');
+    if (v.classList.contains('open')) { v.click(); return true; }
+    const sheets = [...document.querySelectorAll('#sheets .sheet.open')];
+    const top = sheets[sheets.length - 1];
+    if (top) { if (top._close) top._close(); return true; }
+    if ($('battle').classList.contains('open')) {
+      const back = $('battle').querySelector('.b-cmd .cmd.back');
+      if (back) back.click(); else this.toast('戰鬥中無法離開');
+      return true;
+    }
+    if ($('debate').classList.contains('open') || $('minigame').classList.contains('open')) { this.toast('請先完成眼前的事'); return true; }
+    return false;
+  }
+
   // 劇情中放大的圖關掉時，順便往下讀（避免一直點到同一張圖、卡住）
   continueStory() { if (this.waiting || this.typing) this.advance(); }
 
@@ -389,7 +405,12 @@ export class UI {
   // 面板
   sheet(title, build, opts = {}) {
     const s = el('div', { class: 'sheet' });
-    const close = () => { s.classList.remove('open'); setTimeout(() => s.remove(), 250); if (opts.onClose) opts.onClose(); };
+    let closed = false;
+    const close = () => { if (closed) return; closed = true; s.classList.remove('open'); if (s._dim) s._dim.remove(); setTimeout(() => s.remove(), 250); if (opts.onClose) opts.onClose(); };
+    s._close = opts.noClose ? null : close;
+    // dim：面板後面加一層暗幕，點暗處就關閉
+    const dim = opts.dim ? el('div', { class: 'sheet-dim', onclick: close }) : null;
+    if (dim) { $('sheets').appendChild(dim); s._dim = dim; }
     const body = el('div', { class: 'sheet-body' });
     s.appendChild(el('div', { class: 'sheet-head' },
       el('h2', {}, title),

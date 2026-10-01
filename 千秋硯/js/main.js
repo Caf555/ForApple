@@ -178,7 +178,22 @@ async function boot() {
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
+  guardBack();
   window.__qqy = ctx; // 方便除錯
+}
+
+// 攔住手機的「返回」鍵，避免一按就跳出遊戲
+function guardBack() {
+  let lastPress = 0;
+  history.pushState({ qqy: 1 }, '');
+  window.addEventListener('popstate', () => {
+    if (ctx.ui.handleBack()) { history.pushState({ qqy: 1 }, ''); return; }
+    const now = Date.now();
+    if (now - lastPress < 2000) { history.back(); return; }
+    lastPress = now;
+    ctx.ui.toast('再按一次返回鍵離開遊戲');
+    history.pushState({ qqy: 1 }, '');
+  });
 }
 
 boot();

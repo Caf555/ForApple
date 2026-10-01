@@ -253,6 +253,7 @@ export class Battle {
   }
 
   done(act) {
+    if (this.sub) this.sub.close();
     const r = this.resolveAction;
     this.resolveAction = null;
     this.cmdBox.innerHTML = '';
@@ -289,23 +290,34 @@ export class Battle {
 
   back(u) { return el('button', { class: 'cmd back', onclick: () => { this.clearTargeting(); this.showMain(u); } }, '← 返回'); }
 
+  // 術法、合擊、道具改用可捲動的面板，右上角 ✕ 或點暗處就能取消
+  subMenu(title, rows) {
+    if (this.sub) this.sub.close();
+    const api = this.sub = this.ctx.ui.sheet(title, body => {
+      const list = el('div', { class: 'cmd-list in-sheet' });
+      for (const [label, cost, desc, fn, disabled] of rows) {
+        list.appendChild(el('button', { class: 'cmd-row', disabled, onclick: () => {
+          this.ctx.audio.sfx('tap');
+          api.close();
+          fn();
+        } }, el('b', {}, label), el('span', { class: 'cost' }, cost), el('small', {}, desc)));
+      }
+      if (!rows.length) list.appendChild(el('div', { class: 'cmd-note' }, '沒有可以使用的道具。'));
+      body.appendChild(list);
+      body.appendChild(el('button', { class: 'cmd back', onclick: () => api.close() }, '✕ 取消'));
+    }, { dim: true, onClose: () => { if (this.sub === api) this.sub = null; } });
+  }
+
   showSkills(u) {
-    const box = this.cmdBox; box.innerHTML = '';
-    box.appendChild(el('div', { class: 'cmd-who' }, `${u.name}・術法（墨 ${u.mp}）`));
-    const list = el('div', { class: 'cmd-list' });
-    for (const s of memberSkills(u.ref)) {
+    this.subMenu(`${u.name}・術法（墨 ${u.mp}）`, memberSkills(u.ref).map(s => {
       const sk = SKILLS[s];
-      const ok = sk.cost <= u.mp;
-      list.appendChild(el('button', { class: 'cmd-row', disabled: !ok, onclick: () => {
-        this.ctx.audio.sfx('tap');
-        const act = t => this.done({ type: 'skill', skill: s, target: t });
+      const act = t => this.done({ type: 'skill', skill: s, target: t });
+      return [s + (sk.element ? `〔${sk.element}〕` : ''), `墨 ${sk.cost}`, sk.desc, () => {
         if (sk.target === 'enemy') this.pickTarget(u, 'foe', act);
         else if (sk.target === 'ally') this.pickTarget(u, 'ally', act);
         else act(null);
-      } }, el('b', {}, s + (sk.element ? `〔${sk.element}〕` : '')), el('span', { class: 'cost' }, `墨 ${sk.cost}`), el('small', {}, sk.desc)));
-    }
-    box.appendChild(list);
-    box.appendChild(this.back(u));
+      }, sk.cost > u.mp];
+    }));
   }
 
   availableCombos(u) {
@@ -322,33 +334,20 @@ export class Battle {
   }
 
   showCombos(u, combos) {
-    const box = this.cmdBox; box.innerHTML = '';
-    box.appendChild(el('div', { class: 'cmd-who' }, '合擊'));
-    const list = el('div', { class: 'cmd-list' });
-    for (const [name, c] of combos) {
-      list.appendChild(el('button', { class: 'cmd-row', onclick: () => {
-        const act = t => this.done({ type: 'combo', combo: name, target: t });
+    this.subMenu('合擊', combos.map(([name, c]) => {
+      const act = t => this.done({ type: 'combo', combo: name, target: t });
+      return [name, `各耗墨 ${c.cost}`, `${c.members.map(n => displayName(this.g, n)).join('＋')}：${c.desc}`, () => {
         if (c.target === 'enemy') this.pickTarget(u, 'foe', act); else act(null);
-      } }, el('b', {}, name), el('span', { class: 'cost' }, `各耗墨 ${c.cost}`), el('small', {}, `${c.members.map(n => displayName(this.g, n)).join('＋')}：${c.desc}`)));
-    }
-    box.appendChild(list);
-    box.appendChild(this.back(u));
+      }];
+    }));
   }
 
   showItems(u) {
-    const box = this.cmdBox; box.innerHTML = '';
-    box.appendChild(el('div', { class: 'cmd-who' }, '道具'));
-    const list = el('div', { class: 'cmd-list' });
-    const items = Object.entries(this.g.items).filter(([n]) => ITEMS[n] && ITEMS[n].type === 'use');
-    if (!items.length) list.appendChild(el('div', { class: 'cmd-note' }, '沒有可以使用的道具。'));
-    for (const [n, c] of items) {
+    const items = Object.entries(this.g.items).filter(([n, c]) => c > 0 && ITEMS[n] && ITEMS[n].type === 'use');
+    this.subMenu('道具', items.map(([n, c]) => {
       const it = ITEMS[n];
-      list.appendChild(el('button', { class: 'cmd-row', onclick: () => {
-        this.pickTarget(u, 'ally', t => this.done({ type: 'item', item: n, target: t }), it.revive ? a => !a.alive : a => a.alive, true);
-      } }, el('b', {}, n), el('span', { class: 'cost' }, '×' + c), el('small', {}, it.desc)));
-    }
-    box.appendChild(list);
-    box.appendChild(this.back(u));
+      return [n, '×' + c, it.desc, () => this.pickTarget(u, 'ally', t => this.done({ type: 'item', item: n, target: t }), it.revive ? a => !a.alive : a => a.alive, true)];
+    }));
   }
 
   pickTarget(u, side, cb, filter = x => x.alive, allowDead = false) {

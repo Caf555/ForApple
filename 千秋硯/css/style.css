@@ -208,6 +208,7 @@ body:not([data-mode="hub"]) #hub { display: none; }
   font-family: var(--sans); font-size: 15px; line-height: 1.6;
 }
 #sheets .sheet.open { transform: none; }
+.sheet-dim { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, .35); animation: fadein .2s ease; }
 #sheets .sheet::before { content: ""; position: fixed; inset: -100vh 0 100% 0; }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 8px 6px 18px; border-bottom: 1px solid var(--line); flex: none; }
 .sheet-head h2 { margin: 0; font-family: var(--serif); font-size: 1.15em; letter-spacing: .15em; }
@@ -345,6 +346,8 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .cmd-row small { grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
 .cmd-row .cost { color: var(--mp); font-size: 12px; }
 .cmd-note { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.cmd-list.in-sheet { max-height: none; overflow: visible; }
+.sheet .cmd.back { position: sticky; bottom: 0; background: var(--panel2); box-shadow: 0 -8px 14px var(--panel); }
 
 /* 論辯 */
 #debate { z-index: 41; flex-direction: column; font-family: var(--sans); font-size: 14px; line-height: 1.55; max-width: 720px; margin: 0 auto; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
