@@ -1,11 +1,12 @@
 // 介面元件：文字框、選項、面板、提示
+import { CHARACTERS, CODEX } from './data.js';
 export function el(tag, attrs = {}, ...kids) {
   const e = document.createElement(tag);
   for (const k in attrs) {
     const v = attrs[k];
     if (v == null || v === false) continue;
     if (k === 'class') e.className = v;
-    else if (k === 'style' && typeof v === 'object') Object.assign(e.style, v);
+    else if (k === 'style' && typeof v === 'object') { for (const sk in v) { if (sk.startsWith('--')) e.style.setProperty(sk, v[sk]); else e.style[sk] = v[sk]; } }
     else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
     else if (k === 'html') e.innerHTML = v;
     else e.setAttribute(k, v === true ? '' : v);
@@ -28,6 +29,10 @@ export class UI {
     this.waiting = null;
     this.typing = null;
     this.story.addEventListener('click', () => this.advance());
+    this.portrait = $('portrait');
+    this.ambientEl = $('ambient');
+    // 半身像跟著劇情區的大小走（出現選項時劇情區會變矮）
+    if (window.ResizeObserver) new ResizeObserver(() => this.placePortrait()).observe(this.story);
     $('advance-hint').addEventListener('click', () => this.advance());
     document.addEventListener('keydown', e => {
       if (e.key === ' ' || e.key === 'Enter') {
@@ -62,6 +67,24 @@ export class UI {
     return w ? `${base}-${w}.webp` : `${base}.webp`;
   }
 
+  // 角色要用哪一張頭像：劇本指定的年紀 → 同名的圖 → 第一張「名字_年紀」的圖
+  charKey(who) {
+    const set = this.ctx.g && this.ctx.g.portraits;
+    if (set && set[who] && this.hasImg('char', set[who])) return set[who];
+    if (this.hasImg('char', who)) return who;
+    const a = this.ctx.assets && this.ctx.assets.char;
+    if (a) for (const k of a) if (k.startsWith(who + '_')) return k;
+    return who;
+  }
+
+  // 角色資料（給頭像放大時顯示）
+  charInfo(who, key) {
+    const c = CHARACTERS[who];
+    const shown = who === '知墨' && this.ctx.g ? this.ctx.g.player.name : who;
+    const cx = CODEX[who] || CODEX[key];
+    return { title: shown, sub: c ? c.title : '', text: c ? c.desc : (cx ? cx.text : '') };
+  }
+
   // 大圖（背景、插圖）提供 800 與 1600 兩種寬度，手機只下載需要的那一張
   pictureEl(kind, name, cls, sizes) {
     return el('img', {
@@ -84,17 +107,16 @@ export class UI {
     img.onload = () => banner.classList.add('has-img');
     img.onerror = () => img.remove();
     art.appendChild(img);
-    banner.onclick = () => this.viewImage('bg', name);
+    banner.onclick = () => this.viewImage('bg', name, { title: $('banner-place').textContent, sub: $('banner-year').textContent });
   }
 
-  // 劇情插圖：放在文字流裡，點一下可以全螢幕檢視
+  // 劇情插圖：放在文字流裡。點一下放大；再點一下關閉，並繼續劇情
   showCG(name, caption) {
     if (!this.hasImg('cg', name)) return Promise.resolve();
     const fig = el('figure', { class: 'line cg' });
     const img = this.pictureEl('cg', name, 'cg-img', 'min(688px, calc(100vw - 32px))');
-    // 點圖本身＝繼續（和點文字一樣）；右下角的「放大」按鈕才是全螢幕檢視
-    const zoom = el('button', { class: 'cg-zoom', 'aria-label': '放大檢視', onclick: e => { e.stopPropagation(); this.viewImage('cg', name); } }, '⤢ 放大');
-    fig.append(img, zoom);
+    img.addEventListener('click', e => { e.stopPropagation(); this.viewImage('cg', name, caption ? { title: this.fmt(caption) } : null, () => this.continueStory()); });
+    fig.append(img);
     if (caption) fig.appendChild(el('figcaption', {}, this.fmt(caption)));
     this.story.appendChild(fig);
     img.onload = () => this.scrollDown();
@@ -105,21 +127,104 @@ export class UI {
     });
   }
 
-  viewImage(kind, name) {
+  // 放大檢視：點一下關閉。info = { title, sub, text, lines }；onClose：關閉後要做的事
+  viewImage(kind, name, info, onClose) {
     const v = $('viewer');
     v.innerHTML = '';
-    const img = el('img', { src: this.imgSrc(kind, name, 1600), alt: '' });
-    img.onerror = () => { img.src = this.imgSrc(kind, name, 800); };
-    v.append(img, el('div', { class: 'viewer-tip' }, '輕觸關閉'));
-    v.classList.add('open');
-    v.onclick = () => v.classList.remove('open');
+    v.dataset.kind = kind;
+    const big = kind === 'bg' || kind === 'cg';
+    const img = el('img', { src: big ? this.imgSrc(kind, name, 1600) : this.imgSrc(kind, name), alt: '' });
+    if (big) img.onerror = () => { img.src = this.imgSrc(kind, name, 800); };
+    v.appendChild(img);
+    if (info && (info.title || info.text)) {
+      v.appendChild(el('div', { class: 'viewer-info' },
+        info.title ? el('b', {}, info.title) : null,
+        info.sub ? el('span', {}, info.sub) : null,
+        info.text ? el('p', {}, info.text) : null,
+        ...(info.lines || []).map(l => el('p', { class: 'vi-line' }, l))));
+    }
+    v.appendChild(el('div', { class: 'viewer-tip' }, '輕觸關閉'));
+    requestAnimationFrame(() => v.classList.add('open'));
+    v.onclick = e => {
+      e.stopPropagation();
+      v.classList.remove('open');
+      v.onclick = null;
+      if (onClose) setTimeout(onClose, 50);
+    };
   }
+
+  // 劇情中放大的圖關掉時，順便往下讀（避免一直點到同一張圖、卡住）
+  continueStory() { if (this.waiting || this.typing) this.advance(); }
 
   setTheme(theme) {
-    document.body.dataset.vtheme = theme || 'modern';
+    const t = theme || 'modern';
+    if (this.curTheme && this.curTheme !== t && t !== 'hub' && document.body.dataset.mode === 'story') this.ink();
+    this.curTheme = t;
+    document.body.dataset.vtheme = t;
+    this.setAmbient(t);
   }
 
-  clearStory() { this.story.innerHTML = ''; }
+  // ───────── 墨染轉場 ─────────
+  ink() {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return Promise.resolve();
+    const o = $('ink');
+    o.classList.remove('go'); void o.offsetWidth; o.classList.add('go');
+    return new Promise(r => setTimeout(r, 650));
+  }
+
+  // ───────── 氛圍粒子 ─────────
+  setAmbient(theme) {
+    const box = this.ambientEl;
+    if (!box) return;
+    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', hub: 'ink', modern: 'glow' }[theme] || '') : '';
+    if (box.dataset.kind === kind) return;
+    box.dataset.kind = kind;
+    box.innerHTML = '';
+    if (!kind || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    const n = kind === 'ember' ? 16 : 12;
+    for (let i = 0; i < n; i++) {
+      box.appendChild(el('i', { style: {
+        left: (Math.random() * 100).toFixed(1) + '%',
+        animationDelay: (-Math.random() * 14).toFixed(1) + 's',
+        animationDuration: (9 + Math.random() * 9).toFixed(1) + 's',
+        '--dx': ((Math.random() - 0.5) * 80).toFixed(0) + 'px',
+        '--sz': (2 + Math.random() * (kind === 'ink' ? 5 : 3)).toFixed(1) + 'px',
+      } }));
+    }
+  }
+
+  // ───────── 對話半身像 ─────────
+  showPortrait(who) {
+    const p = this.portrait;
+    if (!p) return;
+    if (!this.settings.portrait || !who) { p.classList.add('dim'); if (!this.settings.portrait) p.classList.remove('on'); return; }
+    const key = this.charKey(who);
+    if (!this.hasImg('char', key)) { p.classList.remove('on'); return; }
+    p.classList.remove('dim');
+    if (p.dataset.key === key && p.classList.contains('on')) return;
+    p.dataset.key = key;
+    p.classList.remove('on');
+    const img = new Image();
+    img.onload = () => { if (p.dataset.key !== key) return; p.style.backgroundImage = `url("${img.src}")`; this.placePortrait(); p.classList.add('on'); };
+    img.src = this.imgSrc('char', key);
+  }
+
+  hidePortrait() { if (this.portrait) { this.portrait.classList.remove('on'); delete this.portrait.dataset.key; } }
+
+  placePortrait() {
+    const p = this.portrait;
+    if (!p) return;
+    const r = this.story.getBoundingClientRect();
+    const app = $('app').getBoundingClientRect();
+    p.style.top = (r.top - app.top) + 'px';
+    p.style.height = r.height + 'px';
+  }
+
+  vibrate(pattern) {
+    if (this.settings.vibrate && navigator.vibrate) { try { navigator.vibrate(pattern); } catch (e) { /* 不支援就算了 */ } }
+  }
+
+  clearStory() { this.story.innerHTML = ''; this.hidePortrait(); }
 
   // 文字替換：{名} → 玩家稱呼
   fmt(text) {
@@ -138,9 +243,10 @@ export class UI {
     let name = null;
     if (who) {
       const shown = who === '知墨' ? this.ctx.g.player.call : who;
-      const key = (this.ctx.g && this.ctx.g.portraits && this.ctx.g.portraits[who]) || who;
+      const key = this.charKey(who);
       name = el('div', { class: 'who', 'data-who': who },
-        this.hasImg('char', key) ? el('img', { class: 'avatar', src: this.imgSrc('char', key), alt: '', decoding: 'async', onerror: e => e.target.remove() }) : null,
+        this.hasImg('char', key) ? el('img', { class: 'avatar', src: this.imgSrc('char', key), alt: '', decoding: 'async', onerror: e => e.target.remove(),
+          onclick: e => { e.stopPropagation(); this.viewImage('char', key, this.charInfo(who, key), () => this.continueStory()); } }) : null,
         shown);
       wrap.appendChild(name);
     }
@@ -157,6 +263,7 @@ export class UI {
     const { wrap, body } = this.makeLine(line);
     this.story.appendChild(wrap);
     this.scrollDown();
+    this.showPortrait(line.who);
     this.ctx.audio.speak(text, line.who);
     const ms = this.skipPage ? 0 : (SPEEDS[this.settings.speed] ?? 18);
     return new Promise(resolve => {
@@ -270,6 +377,7 @@ export class UI {
     c.appendChild(el('div', { class: 'card-title' }, title));
     if (sub) c.appendChild(el('div', { class: 'card-sub' }, sub));
     c.appendChild(el('div', { class: 'card-tap' }, '輕觸繼續'));
+    this.ink();
     c.classList.add('open');
     this.ctx.audio.sfx('card');
     return new Promise(resolve => {

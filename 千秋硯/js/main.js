@@ -9,7 +9,7 @@ import { Debate, Translate } from './debate.js';
 import { Runner } from './runner.js';
 import { Hub } from './hub.js';
 
-export const VERSION = '試玩版 v0.5';
+export const VERSION = '試玩版 v0.6';
 const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/卷二_牧野.txt', 'content/夜話.txt'];
 
 const $ = id => document.getElementById(id);
@@ -149,7 +149,7 @@ async function loadContent() {
 
 // 圖片清單（可有可無）：img/manifest.json 形如 { "bg": ["新港社", ...], "cg": [...], "char": [...], "enemy": [...] }
 async function loadAssets() {
-  ctx.assets = { bg: new Set(), cg: new Set(), char: new Set(), enemy: new Set() };
+  ctx.assets = { bg: new Set(), cg: new Set(), char: new Set(), enemy: new Set(), item: new Set() };
   try {
     const res = await fetch('img/manifest.json', { cache: 'no-cache' });
     if (!res.ok) return;

@@ -223,46 +223,121 @@ export class Hub {
   }
 
   // ───────── 道具 ─────────
+  // 道具圖示：有生成的圖就用圖，沒有就用「一個字＋墨圈」
+  itemIcon(n, cls = 'it-icon') {
+    const ui = this.ui;
+    const it = ITEMS[n] || {};
+    if (ui.hasImg('item', n)) return el('img', { class: cls, src: ui.imgSrc('item', n), alt: '', loading: 'lazy' });
+    return el('span', { class: cls + ' glyph t-' + (it.type || 'key') }, Array.from(n)[0]);
+  }
+
   items() {
     const g = this.g;
-    const tabs = [['use', '消耗'], ['weapon', '武器'], ['charm', '飾品'], ['material', '素材'], ['key', '重要']];
+    const tabs = [['use', '消耗'], ['equip', '裝備'], ['material', '素材'], ['key', '重要']];
+    const inTab = (t, it) => t === 'equip' ? (it.type === 'weapon' || it.type === 'charm') : it.type === t;
     let tab = 'use';
     this.ui.sheet('道具', (body, self) => {
       body.innerHTML = '';
       body.appendChild(el('div', { class: 'hub-stat' }, `銀：${g.money}`));
       const bar = el('div', { class: 'tabs' });
-      tabs.forEach(([k, l]) => bar.appendChild(el('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => { tab = k; self.rebuild(); } }, l)));
-      body.appendChild(bar);
-      const list = Object.entries(g.items).filter(([n]) => ITEMS[n] && ITEMS[n].type === tab);
-      if (!list.length) body.appendChild(el('p', { class: 'muted' }, '（空）'));
-      list.forEach(([n, c]) => {
-        const it = ITEMS[n];
-        body.appendChild(el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, `${n} ×${c}`), el('small', {}, it.desc)),
-          tab === 'use' && !it.revive ? el('button', { class: 'btn', onclick: () => this.useItem(n, self) }, '使用') : null));
+      tabs.forEach(([k, l]) => {
+        const c = Object.keys(g.items).filter(n => ITEMS[n] && inTab(k, ITEMS[n])).length;
+        bar.appendChild(el('button', { class: 'tab' + (tab === k ? ' on' : ''), onclick: () => { tab = k; self.rebuild(); } }, l, c ? el('small', {}, ' ' + c) : null));
       });
+      body.appendChild(bar);
+      const list = Object.entries(g.items).filter(([n]) => ITEMS[n] && inTab(tab, ITEMS[n]));
+      if (tab === 'equip') {
+        // 身上裝備中的也列出來
+        for (const p of g.party) for (const slot of ['weapon', 'charm']) { const w = g.members[p][slot]; if (w && ITEMS[w]) list.push([w, 0, p]); }
+      }
+      if (!list.length) body.appendChild(el('p', { class: 'muted' }, '（空）'));
+      const grid = el('div', { class: 'it-grid' });
+      list.forEach(([n, c, wearer]) => {
+        grid.appendChild(el('button', { class: 'it-card' + (wearer ? ' worn' : ''), onclick: () => this.itemDetail(n, self) },
+          this.itemIcon(n),
+          el('b', {}, n),
+          el('small', {}, wearer ? `${displayName(g, wearer)} 裝備中` : `×${c}`)));
+      });
+      body.appendChild(grid);
     });
   }
 
-  useItem(n, parent) {
+  itemDetail(n, parent) {
     const g = this.g;
     const it = ITEMS[n];
-    const api = this.ui.sheet(`使用 ${n}`, body => {
-      g.party.forEach(p => {
-        const m = g.members[p]; const st = memberStats(g, m);
-        body.appendChild(el('button', { class: 'btn wide', onclick: () => {
-          if (it.heal) m.hp = Math.min(st.hp, m.hp + it.heal);
-          if (it.mp) m.mp = Math.min(st.mp, m.mp + it.mp);
-          addItem(g, n, -1);
-          this.ctx.audio.sfx('heal');
-          api.close(); parent.rebuild();
-        } }, `${displayName(g, p)}　體 ${m.hp}/${st.hp}　墨 ${m.mp}/${st.mp}`));
-      });
+    const TYPE = { use: '消耗品', weapon: '武器', charm: '飾品', material: '素材', key: '重要物品' };
+    const api = this.ui.sheet(n, (body, self) => {
+      body.innerHTML = '';
+      const icon = this.itemIcon(n, 'it-big');
+      if (this.ui.hasImg('item', n)) icon.addEventListener('click', () => this.ui.viewImage('item', n, { title: n, sub: TYPE[it.type], text: it.desc }));
+      body.appendChild(el('div', { class: 'it-head' }, icon,
+        el('div', {}, el('div', { class: 'muted small' }, TYPE[it.type] + (g.items[n] ? `・持有 ${g.items[n]}` : '')),
+          it.element ? el('span', { class: 'elem e-' + it.element }, it.element) : null,
+          it.stats ? el('div', { class: 'it-stats' }, Object.entries(it.stats).map(([k, v]) => `${STAT_NAMES[k]} +${v}`).join('　')) : null)));
+      body.appendChild(el('p', { class: 'dialog-text' }, it.desc));
+      if (it.type === 'use' && g.items[n]) {
+        if (it.revive) body.appendChild(el('p', { class: 'muted' }, '只能在戰鬥中使用。'));
+        else g.party.forEach(p => {
+          const m = g.members[p]; const st = memberStats(g, m);
+          body.appendChild(el('button', { class: 'btn wide', onclick: () => {
+            if (it.heal) m.hp = Math.min(st.hp, m.hp + it.heal);
+            if (it.mp) m.mp = Math.min(st.mp, m.mp + it.mp);
+            addItem(g, n, -1);
+            this.ctx.audio.sfx('heal');
+            if (!g.items[n]) api.close(); else self.rebuild();
+            parent.rebuild();
+          } }, `給 ${displayName(g, p)}　體 ${m.hp}/${st.hp}　墨 ${m.mp}/${st.mp}`));
+        });
+      }
+      if ((it.type === 'weapon' || it.type === 'charm') && g.items[n]) {
+        body.appendChild(el('h3', {}, '裝備給'));
+        const who = g.party.filter(p => !CHARACTERS[p].spirit && (!it.who || it.who.includes(p)));
+        if (!who.length) body.appendChild(el('p', { class: 'muted' }, '隊伍裡沒有人能裝備它。'));
+        who.forEach(p => {
+          const m = g.members[p];
+          const before = memberStats(g, m);
+          const old = m[it.type];
+          m[it.type] = n; const after = memberStats(g, m); m[it.type] = old;
+          const diff = ['atk', 'def', 'mag', 'res', 'spd', 'luk'].filter(k => after[k] !== before[k])
+            .map(k => el('span', { class: after[k] > before[k] ? 'up' : 'down' }, `${STAT_NAMES[k]} ${before[k]}→${after[k]}`));
+          body.appendChild(el('button', { class: 'btn wide eq-btn', onclick: () => {
+            if (old) addItem(g, old, 1);
+            addItem(g, n, -1); m[it.type] = n;
+            this.ctx.audio.sfx('item');
+            api.close(); parent.rebuild();
+          } }, el('b', {}, displayName(g, p)), el('small', {}, `目前：${old || '（無）'}`), el('div', { class: 'eq-diff' }, diff.length ? diff : '數值不變')));
+        });
+      }
     });
   }
 
-  // ───────── 史卷 ─────────
+  useItem(n, parent) { this.itemDetail(n, parent); }
+
+  // ───────── 史卷（藏書閣） ─────────
+  // 條目的圖：人物用頭像、妖物用敵人圖、地點用場景圖、器物用道具圖
+  codexImg(e) {
+    const ui = this.ui;
+    const ALIAS = {
+      楊范登堡: ['char', '楊'], 陳阿順: ['char', '阿順'], 貞人箙: ['char', '箙'],
+      熱蘭遮城: ['bg', '熱蘭遮城內'], 大員: ['bg', '大員沙洲'], 赤崁: ['bg', '赤崁街市'], 鹿耳門: ['bg', '鹿耳門星夜'], 神農街: ['bg', '神農街夜'],
+      洹水: ['bg', '洹水岸邊'], 歷史文物陳列館: ['bg', '南港陳列館'], 殷墟發掘: ['bg', '南港陳列館'], 烏特勒支堡: ['bg', '圍城大員'],
+      赫克托號: ['cg', '海翁'], 郭懷一事件: ['bg', '甘蔗田大火'], 甘蔗與糖: ['bg', '赤崁甘蔗田'], 唐人移民: ['bg', '臺江岸邊'],
+      無面書記: ['char', '無面書記'], 刺竹: ['bg', '刺竹林'], 甲骨文: ['item', '卜骨'], 西拉雅語的復振: ['item', '新港文書'],
+    };
+    if (e.enemy) return ui.hasImg('enemy', e.enemy) ? ['enemy', e.enemy] : null;
+    const tries = [];
+    if (ALIAS[e.id]) tries.push(ALIAS[e.id][0] === 'char' ? ['char', ui.charKey(ALIAS[e.id][1])] : ALIAS[e.id]);
+    tries.push(['char', ui.charKey(e.id)], ['bg', e.id], ['item', e.id], ['cg', e.id]);
+    return tries.find(([k, n]) => ui.hasImg(k, n)) || null;
+  }
+
+  static COLLECT = [
+    [0.25, '還魂墨', 2], [0.5, '藏書票', 1], [0.75, '丹墨', 3], [1, '千秋書籤', 1],
+  ];
+
   codex() {
     const g = this.g;
+    const ui = this.ui;
     let cat = '人物誌';
     const all = () => {
       const list = Object.entries(CODEX).map(([id, c]) => ({ id, ...c }));
@@ -273,22 +348,48 @@ export class Hub {
       body.innerHTML = '';
       const entries = all();
       const got = entries.filter(e => g.codex[e.id]).length;
-      body.appendChild(el('div', { class: 'hub-stat' }, `已收錄 ${got} / ${entries.length}`));
+      const ratio = got / entries.length;
+      body.appendChild(el('div', { class: 'cx-progress' },
+        el('div', { class: 'hub-stat' }, `已收錄 ${got} / ${entries.length}（${Math.floor(ratio * 100)}%）`),
+        ui.bar(got, entries.length, 'exp')));
+      // 收藏獎勵
+      const rw = el('div', { class: 'cx-rewards' });
+      Hub.COLLECT.forEach(([r, item, n], i) => {
+        const key = '收藏獎.' + i;
+        const ok = ratio >= r;
+        rw.appendChild(el('button', { class: 'chip' + (g.flags[key] ? ' on' : ''), disabled: !ok || g.flags[key], onclick: () => {
+          g.flags[key] = 1; addItem(g, item, n); this.ctx.audio.sfx('item');
+          ui.toast(`收藏獎勵：${item}${n > 1 ? ' ×' + n : ''}`); self.rebuild();
+        } }, `${Math.round(r * 100)}%　${g.flags[key] ? '已領取' : item + (n > 1 ? '×' + n : '')}`));
+      });
+      body.appendChild(rw);
       const bar = el('div', { class: 'tabs' });
-      CATS.forEach(c => bar.appendChild(el('button', { class: 'tab' + (cat === c ? ' on' : ''), onclick: () => { cat = c; self.rebuild(); } }, c)));
+      CATS.forEach(c => {
+        const list = entries.filter(e => e.cat === c);
+        bar.appendChild(el('button', { class: 'tab' + (cat === c ? ' on' : ''), onclick: () => { cat = c; self.rebuild(); } }, c, el('small', {}, ` ${list.filter(e => g.codex[e.id]).length}/${list.length}`)));
+      });
       body.appendChild(bar);
+      const grid = el('div', { class: 'cx-grid' });
       entries.filter(e => e.cat === cat).forEach(e => {
         const has = g.codex[e.id];
-        const item = el('details', { class: 'codex' + (has ? '' : ' locked') },
-          el('summary', {}, has ? codexTitle(e.id) : '？？？', has ? el('span', { class: 'fact f-' + e.fact }, e.fact) : null),
-          has ? el('p', {}, e.text) : null);
-        if (has && e.enemy) {
-          const d = ENEMIES[e.enemy];
-          item.appendChild(el('p', { class: 'muted' }, `屬性 ${d.element}・${d.rank}・體 ${d.hp}`));
-        }
-        body.appendChild(item);
+        const pic = has ? this.codexImg(e) : null;
+        const title = has ? codexTitle(e.id) : '？？？';
+        const card = el('button', { class: 'cx-card' + (has ? '' : ' locked') + (pic ? ' k-' + pic[0] : ''), disabled: !has },
+          pic ? el('img', { src: pic[0] === 'bg' || pic[0] === 'cg' ? ui.imgSrc(pic[0], pic[1], 800) : ui.imgSrc(pic[0], pic[1]), alt: '', loading: 'lazy' })
+            : el('span', { class: 'cx-blank' }, has ? Array.from(title)[0] : '？'),
+          el('b', {}, title),
+          has ? el('span', { class: 'fact f-' + e.fact }, e.fact) : null);
+        if (has) card.onclick = () => {
+          const lines = [];
+          if (e.enemy) { const d = ENEMIES[e.enemy]; lines.push(`${d.element}屬性・${d.rank}・體 ${d.hp}`); }
+          const info = { title, sub: `${e.cat}・${e.fact}`, text: e.text, lines };
+          if (pic) ui.viewImage(pic[0], pic[1], info);
+          else ui.alert(title, [info.sub, e.text, ...lines]);
+        };
+        grid.appendChild(card);
       });
-      body.appendChild(el('p', { class: 'muted small' }, '「史實」：有文獻依據；「虛構」：本作創作；「史實改編」：以史實為基礎加以想像。'));
+      body.appendChild(grid);
+      body.appendChild(el('p', { class: 'muted small' }, '「史實」：有文獻依據；「虛構」：本作創作；「史實改編」：以史實為基礎加以想像。點卡片可以放大閱讀。'));
     });
   }
 
@@ -389,14 +490,18 @@ export class Hub {
       opt('朗讀劇情', 'tts', [false, true], ['關', '開']);
       opt('難度', 'difficulty', ['閱讀', '普通', '困難'], ['閱讀', '普通', '困難']);
       opt('戰鬥速度', 'battleSpeed', [1, 2, 3], ['1×', '2×', '4×']);
+      opt('對話半身像', 'portrait', [true, false], ['開', '關'], v => { if (!v) this.ui.hidePortrait(); });
+      opt('氛圍效果', 'ambient', [true, false], ['開', '關'], () => this.ui.setAmbient(this.ui.curTheme));
+      opt('震動', 'vibrate', [true, false], ['開', '關'], v => { if (v) this.ui.vibrate(30); });
       body.appendChild(el('p', { class: 'muted small' }, '閱讀方式——逐句點擊：每句都要點一下。整頁：一次跑完一頁（遇到選項或最多約六句），點一下再跑下一頁；打字中點一下可以立刻顯示整頁。自動播放：依字數停留後自動往下，打開選單時會暫停。'));
+      body.appendChild(el('p', { class: 'muted small' }, '對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
       body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥。難度不影響任何結局條件，隨時可以切換。朗讀使用手機內建的語音，效果依裝置而定。'));
     });
   }
 
   about() {
     this.ui.alert('關於《千秋硯》', [
-      '試玩版 v0.4：序卷〈府城〉、卷一〈大員〉全五回。',
+      '試玩版 v0.5：序卷〈府城〉、卷一〈大員〉全五回、卷二〈牧野〉回一。',
       '致敬《軒轅劍》與《仙劍奇俠傳》系列的文字角色扮演遊戲。',
       '本作以臺灣為立足點書寫世界史。史卷條目會標明「史實」與「虛構」；仍在延續的信仰不會被寫成法術。',
       '音樂與音效皆由程式即時合成。',
