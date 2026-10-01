@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
+  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一、回二）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
   "items": [
     {
       "kind": "bg",
@@ -17,13 +17,13 @@
       "kind": "bg",
       "name": "大邑商",
       "seed": 6103,
-      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, the royal capital: long timber halls with thatched hip roofs standing on high rammed-earth platforms, flat packed-earth roads, craftsmen carrying timber and pottery, no city wall, orderly and vast, warm ochre tones."
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, the royal capital: long timber halls with thatched hip roofs standing on high rammed-earth platforms, flat packed-earth roads, craftsmen carrying timber and pottery, no city wall, orderly and vast, warm ochre tones. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
     },
     {
       "kind": "bg",
       "name": "貞人之家",
       "seed": 6104,
-      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, the courtyard of a royal diviner's house, rows of cleaned ox shoulder blades and turtle plastrons drying on straw mats in the sun, a low wooden table under the eaves with small bronze drills and knives, calm and orderly."
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, the courtyard of a royal diviner's house, rows of cleaned ox shoulder blades and turtle plastrons drying on straw mats in the sun, a low wooden table under the eaves with small bronze drills and knives, calm and orderly. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
     },
     {
       "kind": "bg",
@@ -47,7 +47,7 @@
       "kind": "bg",
       "name": "商邑市集",
       "seed": 6108,
-      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, an open marketplace south of the temple, people trading painted pottery, millet, salt and turtle shells, strings of cowrie shells hanging at a stall, busy but gentle."
+      "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, an open marketplace south of the temple, people trading painted pottery, millet, salt and turtle shells, strings of cowrie shells hanging at a stall, busy but gentle. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
     },
     {
       "kind": "char",
@@ -123,6 +123,72 @@
       "name": "路口",
       "seed": 6402,
       "prompt": "Late Shang dynasty China around 1050 BC, Yellow River plain, dawn at the western edge of the city, a teenage boy carrying a bamboo basket on his shoulder walks back toward a fenced enclosure, he turns his head and smiles, in the foreground a young man stands still at the crossroads, long shadows, quiet heartbreak."
+    },
+    {
+      "kind": "bg",
+      "name": "夯土台",
+      "seed": 6109,
+      "prompt": "Late Shang dynasty China around 1050 BC, a large rammed-earth platform under construction behind a temple, rows of laborers lifting heavy wooden tampers between wooden boards filled with yellow earth, dust in the air, overseers standing aside, harsh midday light, no violence. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
+    },
+    {
+      "kind": "bg",
+      "name": "宗廟",
+      "seed": 6110,
+      "prompt": "Late Shang dynasty China around 1050 BC, a grand ancestral temple hall with a thatched hip roof on a high rammed-earth platform, a swept open square in front, bronze ritual vessels glinting near the steps, a column of smoke rising behind, solemn and imposing. Strictly Bronze Age: only steep thatched straw roofs on timber posts, no ceramic roof tiles, no upturned curved eaves, no pagodas, no city walls, no later imperial architecture."
+    },
+    {
+      "kind": "char",
+      "name": "阿桑婆",
+      "seed": 6204,
+      "prompt": "An elderly hunched woman from the western highlands, deep wrinkles, gray hair loosely tied, calm knowing eyes, a worn sheepskin wrap over plain hemp clothes, holding a sleeping baby wrapped in cloth.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "夯土傀",
+      "seed": 6307,
+      "prompt": "A hulking golem made of layered rammed yellow earth with wooden tamper poles stuck in its back, dust falling from its body, heavy and tired, endlessly pounding.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "陶範魅",
+      "seed": 6308,
+      "prompt": "A floating cracked ceramic casting mold for bronze, molten orange bronze glowing and dripping from its seams, earthy reds and blacks.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鴞影",
+      "seed": 6309,
+      "prompt": "A ghostly owl spirit shaped like an ancient Shang bronze owl vessel, green patina feathers, huge round glowing eyes, wings half spread, eerie and watchful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "祭火",
+      "seed": 6310,
+      "prompt": "A towering bonfire that has burned for three days, flames shaped like a solemn tall figure, ash and sparks swirling, deep red and black, ominous rather than evil.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "饕餮之影",
+      "seed": 6311,
+      "prompt": "An enormous floating taotie mask from Shang bronzes come alive: huge staring eyes, curling horns, a vast open mouth with no body, green patina and dark bronze, devouring hunger, symmetrical.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "大祭之日",
+      "seed": 6403,
+      "prompt": "Late Shang dynasty China around 1050 BC, seen from the back of a crowd, a young man and a translucent ink-haired young woman stand at the edge of a temple square holding hands, the temple far away, drums, smoke rising behind the temple into a clear blue sky, the crowd ordinary and festive, no violence shown, quiet grief."
+    },
+    {
+      "kind": "cg",
+      "name": "名字",
+      "seed": 6404,
+      "prompt": "Late Shang dynasty China around 1050 BC, night, a teenage boy leans against a wooden stake fence, whispering through the gap to a young man outside who writes a single character in a small notebook by moonlight, a sleeping baby in the boy's arms, tender and sad."
     }
   ]
 }

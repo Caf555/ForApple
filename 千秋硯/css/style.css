@@ -311,8 +311,8 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .fc-status { font-size: 11px; color: var(--bad); min-height: 1em; }
 .foe-card.dead { opacity: .25; }
 .foe-card.sealed { opacity: .35; border-style: dashed; }
-.targetable { outline: 2px solid var(--accent); outline-offset: 2px; cursor: pointer; animation: pulse 1s infinite; }
-@keyframes pulse { 50% { outline-color: transparent; } }
+.targetable { outline: 2px solid var(--accent); outline-offset: 2px; cursor: pointer; animation: tblink 1s infinite; }
+@keyframes tblink { 50% { outline-color: transparent; } }
 .shake { animation: shake .3s; }
 @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .float { position: absolute; left: 50%; top: 30%; transform: translateX(-50%); font-weight: 700; font-size: 18px; pointer-events: none; animation: floatup 1.1s ease forwards; text-shadow: 0 1px 4px rgba(0,0,0,.6); white-space: nowrap; }
@@ -361,7 +361,7 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .crowd-track i.on { background: var(--accent); }
 .d-accord { font-size: 12px; color: #8fb3d9; }
 .d-round { font-size: 12px; color: var(--muted); }
-.d-log { flex: 1; overflow-y: auto; padding: 8px 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: calc(var(--fs) * .88); }
+.d-log { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: calc(var(--fs) * .88); }
 .d-line { margin: .3em 0; }
 .d-line b { font-family: var(--sans); font-size: .8em; color: var(--accent); }
 .d-line.foe b { color: #d9a27a; }
@@ -486,9 +486,13 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .foe .fc-status { position: absolute; top: 2%; left: 50%; transform: translateX(-50%); font-size: 11px; color: #ffb3a6; text-shadow: 0 1px 3px #000; white-space: nowrap; }
 .foe.rank-首領 .foe-tag { background: rgba(120, 30, 20, .7); }
 .foe.rank-首領 .fc-bar { width: 9em; }
-.foe.targetable { cursor: crosshair; }
-.foe.targetable .foe-img, .foe.targetable .foe-blob { filter: drop-shadow(0 0 10px rgba(255, 215, 120, .95)); animation: pulse 1s ease-in-out infinite; }
-@keyframes pulse { 50% { transform: scale(1.04); } }
+/* 選目標：不加框、不移動，只讓妖物的輪廓泛起金光，頭上浮一個小記號 */
+.foe.targetable { outline: none; animation: none; cursor: pointer; }
+.foe.targetable .foe-img, .foe.targetable .foe-blob { animation: foeglow 1.4s ease-in-out infinite; }
+@keyframes foeglow { 0%, 100% { filter: drop-shadow(0 0 4px rgba(255, 215, 120, .55)) drop-shadow(0 6px 10px rgba(0, 0, 0, .5)); }
+  50% { filter: drop-shadow(0 0 14px rgba(255, 215, 120, 1)) drop-shadow(0 6px 10px rgba(0, 0, 0, .5)); } }
+.foe.targetable::before { content: "▼"; position: absolute; left: 0; right: 0; top: -2%; text-align: center; font-size: 14px; color: #ffd98a; text-shadow: 0 0 6px rgba(255, 200, 100, .9), 0 1px 2px #000; animation: tmark 1s ease-in-out infinite; pointer-events: none; z-index: 2; }
+@keyframes tmark { 50% { transform: translateY(5px); } }
 .foe.shake .foe-img, .foe.shake .foe-blob { animation: hit .32s; }
 @keyframes hit { 20% { transform: translateX(-5%) rotate(-2deg); filter: brightness(1.8) drop-shadow(0 0 6px #fff); } 60% { transform: translateX(4%); } }
 .foe.dead { pointer-events: none; }
