@@ -263,6 +263,9 @@ export const DEFAULT_SETTINGS = {
   difficulty: '普通',
   tts: false,
   battleSpeed: 1,
+  portrait: true,   // 對話時淡淡浮現說話者的半身像
+  ambient: true,    // 各卷的氛圍粒子（塵、火星……）
+  vibrate: true,    // 暴擊、封靈時手機輕震（Android）
 };
 
 export function loadSettings() {

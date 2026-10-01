@@ -33,7 +33,7 @@ IMG = GAME / 'img'
 RAW = HERE / '原圖'                  # 保存 ComfyUI 輸出的原始 PNG（供圖生圖參考與重新裁切）
 MANIFEST = IMG / 'manifest.json'
 WEB_WIDTHS = {'bg': (1600, 800), 'cg': (1600, 800)}
-SQUARE = {'char': 512, 'enemy': 512}
+SQUARE = {'char': 512, 'enemy': 512, 'item': 256}
 
 
 def log(msg):
@@ -97,7 +97,7 @@ def build(item, cfg, templates, comfy, dry):
     kind = item['kind']
     style = cfg['style']
     # 各類別可以有自己的風格；沒有的話，頭像類沿用 char、大圖沿用 bg
-    style_text = style.get(kind) or (style['char'] if kind in ('char', 'enemy') else style['bg'])
+    style_text = style.get(kind) or (style['char'] if kind in ('char', 'enemy', 'item') else style['bg'])
     prompt = f"{style_text} {item['prompt']}"
     if item.get('transparent'):
         prompt += ' Transparent background with alpha channel.'
@@ -149,7 +149,7 @@ def export(kind, name, raw_path):
 
 
 def update_manifest():
-    man = {k: [] for k in ('bg', 'cg', 'char', 'enemy')}
+    man = {k: [] for k in ('bg', 'cg', 'char', 'enemy', 'item')}
     for kind in man:
         for f in sorted((IMG / kind).glob('*.webp')) if (IMG / kind).exists() else []:
             stem = f.stem
@@ -174,7 +174,7 @@ def review_page(cfg, list_path):
 <title>審圖：{list_path.stem}</title>
 <style>body{{font-family:sans-serif;background:#222;color:#eee;margin:16px}}main{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}}
 figure{{margin:0;background:#333;border-radius:8px;overflow:hidden}}img{{width:100%;display:block;background:repeating-conic-gradient(#555 0 25%,#444 0 50%) 0 0/20px 20px}}
-figure.char img,figure.enemy img{{aspect-ratio:1}}figcaption{{padding:8px;font-size:13px}}small{{color:#aaa}}.none{{padding:40px;text-align:center;color:#888}}</style>
+figure.char img,figure.enemy img,figure.item img{{aspect-ratio:1}}figcaption{{padding:8px;font-size:13px}}small{{color:#aaa}}.none{{padding:40px;text-align:center;color:#888}}</style>
 <h1>審圖：{list_path.stem}</h1><p>棋盤格底紋代表透明背景。不滿意的圖，記下名稱，用 --names 名稱 --force --seed-offset 1 重畫。</p>
 <main>{"".join(rows)}</main>'''
     (HERE / '審圖.html').write_text(html, encoding='utf-8')
@@ -184,7 +184,7 @@ def main():
     ap = argparse.ArgumentParser(description='《千秋硯》批次生圖')
     ap.add_argument('--list', help='只用這一份清單（預設：資料夾裡所有「清單_*.json」）')
     ap.add_argument('--server', default='http://127.0.0.1:8188')
-    ap.add_argument('--only', choices=['bg', 'cg', 'char', 'enemy'])
+    ap.add_argument('--only', choices=['bg', 'cg', 'char', 'enemy', 'item'])
     ap.add_argument('--names', help='只產生這些名稱（逗號分隔）')
     ap.add_argument('--force', action='store_true', help='已經有的圖也重畫')
     ap.add_argument('--seed-offset', type=int, default=0, help='種子加上這個數字，用來重畫出不同的版本')
@@ -198,6 +198,7 @@ def main():
         cfg = json.loads((HERE / '清單_卷一.json').read_text(encoding='utf-8'))
         own = json.loads(list_path.read_text(encoding='utf-8'))
         cfg['style'].update(own.get('style', {}))
+        cfg['sizes'].update(own.get('sizes', {}))
         cfg['items'] = own['items']
     else:
         list_path = HERE / '清單_卷一.json'
@@ -207,6 +208,7 @@ def main():
                 continue
             more = json.loads(extra.read_text(encoding='utf-8'))
             cfg['style'].update(more.get('style', {}))
+            cfg['sizes'].update(more.get('sizes', {}))
             cfg['items'] += more['items']
         list_path = HERE / '清單_全部.json'
     dup = {it['name'] for it in cfg['items'] if [x['name'] for x in cfg['items']].count(it['name']) > 1}

@@ -1,5 +1,5 @@
 // 戰鬥引擎：回合制、五行、合擊、陣法、封靈
-import { ENEMIES, ENCOUNTERS, POOLS, SKILLS, COMBOS, FORMATIONS, STATUSES, ITEMS, CHARACTERS, elementMult, enemyCodexId } from './data.js';
+import { ENEMIES, ENCOUNTERS, POOLS, SKILLS, COMBOS, FORMATIONS, STATUSES, ITEMS, CHARACTERS, OVERCOME, elementMult, enemyCodexId } from './data.js';
 import { memberStats, weaponElement, memberSkills, gainExp, bondLevel, displayName, addItem, addCodex } from './state.js';
 import { el } from './ui.js';
 
@@ -357,7 +357,7 @@ export class Battle {
     if (!valid.length) { this.ctx.ui.toast('沒有可以選擇的目標'); return; }
     if (valid.length === 1 && side === 'foe') { cb(valid[0]); return; }
     this.cmdBox.innerHTML = '';
-    this.cmdBox.appendChild(el('div', { class: 'cmd-who' }, side === 'foe' ? '選擇目標（點敵人卡片）' : '選擇對象（點隊伍列）'));
+    this.cmdBox.appendChild(el('div', { class: 'cmd-who' }, side === 'foe' ? '選擇目標（點敵人）' : '選擇對象（點隊伍中的角色）'));
     this.cmdBox.appendChild(this.back(u));
     this.targeting = true;
     for (const t of valid) {
@@ -370,6 +370,7 @@ export class Battle {
   clearTargeting() {
     this.targeting = false;
     for (const id in this.nodes) { this.nodes[id].classList.remove('targetable'); this.nodes[id].onclick = null; }
+    for (const f of this.foes || []) if (this.nodes[f.id]) this.nodes[f.id].onclick = () => this.showFoeInfo(f);
   }
 
   // ───────── 執行 ─────────
@@ -529,7 +530,7 @@ export class Battle {
     const mult = elementMult(element, t.el);
     dmg *= mult * rnd(0.9, 1.1);
     const crit = forceCrit || Math.random() < 0.05 + (this.stat(u, 'luk') || 0) / 2000;
-    if (crit) dmg *= 1.5;
+    if (crit) { dmg *= 1.5; if (t.side === 'foe') this.ctx.ui.vibrate(35); }
     if (t.defending) dmg *= 0.5;
     dmg = Math.max(1, Math.round(dmg));
     this.damage(t, dmg);
@@ -548,7 +549,7 @@ export class Battle {
     t.hp = Math.max(0, t.hp - n);
     if (t.hp <= 0) { t.alive = false; t.status = {}; t.buffs = []; }
     const node = this.nodes && this.nodes[t.id];
-    if (node) { node.classList.remove('shake'); void node.offsetWidth; node.classList.add('shake'); }
+    if (node) { node.classList.remove('shake'); void node.offsetWidth; node.classList.add('shake'); clearTimeout(node.shakeT); node.shakeT = setTimeout(() => node.classList.remove('shake'), 380); }
   }
 
   heal(t, n) {
@@ -573,6 +574,7 @@ export class Battle {
     if (Math.random() < chance) {
       t.alive = false; t.hp = 0; t.sealed = true;
       this.ctx.audio.sfx('seal');
+      this.ctx.ui.vibrate([40, 50, 70]);
       this.float(t, '封', 'seal');
       if (g.spirits.length < 30) { g.spirits.push(t.key); this.log(`${t.name} 化為一縷墨煙，被吸進了硯池！`); }
       else this.log(`${t.name} 被封印了，但硯池已滿，靈消散了。`);
@@ -637,8 +639,35 @@ export class Battle {
   }
 
   // ───────── 畫面 ─────────
+  // 敵人站位：依數量排列（x、y 是中心點的百分比，s 是寬度占戰場的百分比；第一格是後排正中，留給最強的敵人）
+  static SLOTS = {
+    1: [[50, 54, 60]],
+    2: [[29, 55, 44], [71, 55, 44]],
+    3: [[50, 40, 36], [21, 62, 38], [79, 62, 38]],
+    4: [[31, 38, 30], [69, 38, 30], [17, 66, 33], [83, 66, 33]],
+  };
+
+  weakness(e) {
+    if (e === '陰') return '陽';
+    if (e === '陽') return '陰';
+    return Object.keys(OVERCOME).find(k => OVERCOME[k] === e) || '無';
+  }
+
+  foeInfo(f) {
+    const d = f.def;
+    return { title: f.name, sub: `${d.rank}・${d.element}屬性・弱點：${this.weakness(d.element)}`,
+      text: d.desc, lines: [`體 ${f.hp} / ${f.maxhp}` + (Object.keys(f.status).length ? '　狀態：' + Object.keys(f.status).join('、') : '')] };
+  }
+
+  showFoeInfo(f) {
+    const ui = this.ctx.ui;
+    if (ui.hasImg('enemy', f.key)) ui.viewImage('enemy', f.key, this.foeInfo(f));
+    else { const i = this.foeInfo(f); ui.alert(i.title, [i.sub, i.text, ...i.lines]); }
+  }
+
   render() {
     const r = this.root;
+    const ui = this.ctx.ui;
     r.innerHTML = '';
     this.nodes = {};
     const top = el('div', { class: 'b-top' },
@@ -647,29 +676,50 @@ export class Battle {
       el('div', { class: 'b-toggles' },
         this.autoBtn = el('button', { class: 'chip' + (this.auto ? ' on' : ''), onclick: () => { this.auto = !this.auto; this.autoPref = this.auto; this.autoBtn.classList.toggle('on', this.auto); if (this.auto && this.resolveAction) { const u = this.allies.find(a => a.hl); if (u) this.done(this.allyAI(u)); } } }, '自動'),
         this.speedBtn = el('button', { class: 'chip', onclick: () => { const s = this.ctx.settings; s.battleSpeed = s.battleSpeed % 3 + 1; this.ctx.saveSettings(); this.speedBtn.textContent = ['1×', '2×', '4×'][s.battleSpeed - 1]; } }, ['1×', '2×', '4×'][this.ctx.settings.battleSpeed - 1])));
-    const foes = el('div', { class: 'b-foes n' + this.foes.length });
-    for (const f of this.foes) {
-      const n = el('div', { class: 'foe-card rank-' + f.def.rank },
-        this.ctx.ui.hasImg('enemy', f.key) ? el('img', { class: 'fc-img', src: this.ctx.ui.imgSrc('enemy', f.key), alt: '', decoding: 'async', onerror: e => e.target.remove() }) : null,
-        el('div', { class: 'fc-name' }, f.name),
-        el('div', { class: 'fc-meta' }, el('span', { class: 'elem e-' + f.el }, f.el), el('span', { class: 'rank' }, f.def.rank)),
-        el('div', { class: 'fc-bar' }),
+
+    // 戰場：以目前場景的背景圖為底
+    const stage = el('div', { class: 'b-stage' + (this.enc.boss ? ' boss' : '') });
+    const bg = this.g.loc && this.g.loc.bg;
+    if (ui.hasImg('bg', bg)) stage.style.setProperty('--stage-img', `url("${new URL(ui.imgSrc('bg', bg, 800), location.href).href}")`);
+    const rankW = { 首領: 3, 精英: 2, 一般: 1 };
+    const order = this.foes.map((f, i) => i).sort((a, b) => (rankW[this.foes[b].def.rank] - rankW[this.foes[a].def.rank]) || a - b);
+    const slots = Battle.SLOTS[Math.min(4, this.foes.length)] || Battle.SLOTS[4];
+    // 三隻的時候，把最強的放在後排中間；其餘照原本順序左右排開
+    const place = {};
+    order.forEach((fi, k) => { place[fi] = slots[k] || slots[slots.length - 1]; });
+    this.foes.forEach((f, i) => {
+      let [x, y, w] = place[i];
+      if (f.def.rank === '首領') w = Math.min(this.foes.length === 1 ? 74 : 48, w * 1.3);
+      else if (f.def.rank === '精英') w *= 1.12;
+      const hasArt = ui.hasImg('enemy', f.key);
+      const n = el('div', { class: 'foe rank-' + f.def.rank + (hasArt ? '' : ' no-art'), style: { left: x + '%', top: y + '%', '--w': w, zIndex: String(Math.round(y)) } },
+        hasArt ? el('img', { class: 'foe-img', src: ui.imgSrc('enemy', f.key), alt: '', decoding: 'async', onerror: e => { e.target.remove(); n.classList.add('no-art'); } })
+          : null,
+        el('div', { class: 'foe-blob' }, f.el),
+        el('div', { class: 'foe-tag' },
+          el('span', { class: 'elem e-' + f.el }, f.el),
+          el('div', { class: 'foe-tagr' }, el('div', { class: 'fc-name' }, f.name), el('div', { class: 'fc-bar' }))),
         el('div', { class: 'fc-status' }));
+      n.onclick = () => this.showFoeInfo(f);
       this.nodes[f.id] = n;
-      foes.appendChild(n);
-    }
-    this.logEl = el('div', { class: 'b-log' });
-    const party = el('div', { class: 'b-party' });
+      stage.appendChild(n);
+    });
+    this.logEl = el('div', { class: 'b-log', onclick: () => this.logEl.classList.toggle('full') });
+    stage.appendChild(this.logEl);
+
+    const party = el('div', { class: 'b-party n' + this.allies.length });
     for (const a of this.allies) {
+      const key = ui.charKey(a.key);
       const n = el('div', { class: 'ally-row' },
-        el('div', { class: 'ar-name' }, a.name, el('small', {}, ' Lv' + a.ref.lv)),
-        el('div', { class: 'ar-bars' }, el('div', { class: 'ar-hp' }), el('div', { class: 'ar-mp' })),
-        el('div', { class: 'ar-status' }));
+        ui.hasImg('char', key) ? el('img', { class: 'ar-av', src: ui.imgSrc('char', key), alt: '' }) : el('span', { class: 'ar-av txt' }, a.name.slice(0, 1)),
+        el('div', { class: 'ar-main' },
+          el('div', { class: 'ar-name' }, a.name, el('small', {}, ' Lv' + a.ref.lv), el('span', { class: 'ar-status' })),
+          el('div', { class: 'ar-hp' }), el('div', { class: 'ar-mp' })));
       this.nodes[a.id] = n;
       party.appendChild(n);
     }
     this.cmdBox = el('div', { class: 'b-cmd' });
-    r.append(top, foes, this.logEl, party, this.cmdBox);
+    r.append(top, stage, party, this.cmdBox);
     this.renderAll();
   }
 
@@ -679,8 +729,10 @@ export class Battle {
     const ui = this.ctx.ui;
     for (const f of this.foes) {
       const n = this.nodes[f.id];
-      n.classList.toggle('dead', !f.alive);
-      n.classList.toggle('sealed', !!f.sealed);
+      if (!f.alive && !n.classList.contains('dead')) {
+        n.classList.add('dead');
+        if (f.sealed) n.classList.add('sealed');
+      }
       const bar = n.querySelector('.fc-bar'); bar.innerHTML = ''; bar.appendChild(ui.bar(f.hp, f.maxhp, 'hp'));
       n.querySelector('.fc-status').textContent = Object.keys(f.status).join(' ') + (f.buffs.length ? ' ' + f.buffs.map(b => (b.mult > 1 ? '↑' : '↓')).join('') : '');
     }
@@ -688,9 +740,9 @@ export class Battle {
       const n = this.nodes[a.id];
       n.classList.toggle('dead', !a.alive);
       const hp = n.querySelector('.ar-hp'); hp.innerHTML = '';
-      hp.append(ui.bar(a.hp, a.maxhp, 'hp'), el('span', {}, `體 ${a.hp}/${a.maxhp}`));
+      hp.append(ui.bar(a.hp, a.maxhp, 'hp'), el('span', {}, `${a.hp}/${a.maxhp}`));
       const mp = n.querySelector('.ar-mp'); mp.innerHTML = '';
-      mp.append(ui.bar(a.mp, a.maxmp, 'mp'), el('span', {}, `墨 ${a.mp}/${a.maxmp}`));
+      mp.append(ui.bar(a.mp, a.maxmp, 'mp'), el('span', {}, `${a.mp}/${a.maxmp}`));
       n.querySelector('.ar-status').textContent = Object.keys(a.status).join(' ') + (a.defending ? ' 防禦' : '');
     }
   }

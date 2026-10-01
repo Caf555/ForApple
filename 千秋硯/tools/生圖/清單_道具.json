@@ -1,0 +1,399 @@
+{
+  "說明": "《千秋硯》道具圖示（卷一、卷二）與藏書閣器物誌用圖。一張圖一件物品，透明背景，256×256。",
+  "sizes": {
+    "item": [
+      1024,
+      1024
+    ]
+  },
+  "style": {
+    "item": "Still-life illustration of a single object in traditional Chinese ink wash with light watercolor tints, clean confident brushwork, soft washes, muted earthy palette with small accents of color, the object centered and filling about two thirds of the frame, seen from a slight three-quarter angle, single object only, isolated on a fully transparent background, no background, no shadow box, no frame, no text."
+  },
+  "items": [
+    {
+      "kind": "item",
+      "name": "草藥",
+      "seed": 7001,
+      "transparent": true,
+      "prompt": "A small bundle of crushed fresh green herbs on a broad leaf."
+    },
+    {
+      "kind": "item",
+      "name": "麻糬",
+      "seed": 7002,
+      "transparent": true,
+      "prompt": "Three round white millet rice cakes on a small woven tray."
+    },
+    {
+      "kind": "item",
+      "name": "墨丸",
+      "seed": 7003,
+      "transparent": true,
+      "prompt": "A few small round pellets of black pine-soot ink in a tiny dish."
+    },
+    {
+      "kind": "item",
+      "name": "薑湯",
+      "seed": 7004,
+      "transparent": true,
+      "prompt": "A rustic clay bowl of steaming golden ginger soup with ginger slices."
+    },
+    {
+      "kind": "item",
+      "name": "黑糖",
+      "seed": 7005,
+      "transparent": true,
+      "prompt": "A few rough chunks of dark brown cane sugar."
+    },
+    {
+      "kind": "item",
+      "name": "補字符",
+      "seed": 7006,
+      "transparent": true,
+      "prompt": "A small folded paper talisman glowing faintly with pale blue ink light, no readable writing."
+    },
+    {
+      "kind": "item",
+      "name": "驅瘴湯",
+      "seed": 7007,
+      "transparent": true,
+      "prompt": "A lidded clay medicine pot with green-tinged steam swirling out."
+    },
+    {
+      "kind": "item",
+      "name": "還魂墨",
+      "seed": 7008,
+      "transparent": true,
+      "prompt": "A small ink stick with a soft warm golden glow rising from it like a breath."
+    },
+    {
+      "kind": "item",
+      "name": "裁紙刀",
+      "seed": 7009,
+      "transparent": true,
+      "prompt": "A modern bone-handled paper cutting knife used by book restorers."
+    },
+    {
+      "kind": "item",
+      "name": "竹骨扇",
+      "seed": 7010,
+      "transparent": true,
+      "prompt": "A half-open folding fan with thorny bamboo ribs and plain paper."
+    },
+    {
+      "kind": "item",
+      "name": "雙語筆",
+      "seed": 7011,
+      "transparent": true,
+      "prompt": "A slender writing brush with a metal dip-pen nib at the other end."
+    },
+    {
+      "kind": "item",
+      "name": "墨絲",
+      "seed": 7012,
+      "transparent": true,
+      "prompt": "A coil of flowing black ink threads floating in the air like silk."
+    },
+    {
+      "kind": "item",
+      "name": "竹彈弓",
+      "seed": 7013,
+      "transparent": true,
+      "prompt": "A handmade bamboo slingshot with a leather pouch."
+    },
+    {
+      "kind": "item",
+      "name": "扁擔",
+      "seed": 7014,
+      "transparent": true,
+      "prompt": "A polished wooden carrying pole with rope loops at both ends."
+    },
+    {
+      "kind": "item",
+      "name": "鐵胎弓",
+      "seed": 7015,
+      "transparent": true,
+      "prompt": "A short recurve bow reinforced with iron plates."
+    },
+    {
+      "kind": "item",
+      "name": "藤牌刀",
+      "seed": 7016,
+      "transparent": true,
+      "prompt": "A round woven rattan shield with a short single-edged sword."
+    },
+    {
+      "kind": "item",
+      "name": "鹿耳門之刃",
+      "seed": 7017,
+      "transparent": true,
+      "prompt": "A short blade with wavy tide patterns on the steel, faint blue sheen."
+    },
+    {
+      "kind": "item",
+      "name": "短火繩槍",
+      "seed": 7018,
+      "transparent": true,
+      "prompt": "A short 17th-century matchlock musket with a coiled slow match."
+    },
+    {
+      "kind": "item",
+      "name": "鹿皮護腕",
+      "seed": 7019,
+      "transparent": true,
+      "prompt": "A soft spotted deerskin wrist guard tied with leather cords."
+    },
+    {
+      "kind": "item",
+      "name": "貝殼項鍊",
+      "seed": 7020,
+      "transparent": true,
+      "prompt": "A simple necklace of small white sea shells on a cord."
+    },
+    {
+      "kind": "item",
+      "name": "田埂護符",
+      "seed": 7021,
+      "transparent": true,
+      "prompt": "A small charm woven from straw and bamboo strips."
+    },
+    {
+      "kind": "item",
+      "name": "潮聲耳墜",
+      "seed": 7022,
+      "transparent": true,
+      "prompt": "A pair of earrings made of tiny spiral sea shells and blue glass beads."
+    },
+    {
+      "kind": "item",
+      "name": "舊紙",
+      "seed": 7023,
+      "transparent": true,
+      "prompt": "A few sheets of yellowed old paper with torn edges."
+    },
+    {
+      "kind": "item",
+      "name": "薑",
+      "seed": 7024,
+      "transparent": true,
+      "prompt": "A knobby piece of old ginger root."
+    },
+    {
+      "kind": "item",
+      "name": "竹片",
+      "seed": 7025,
+      "transparent": true,
+      "prompt": "A small stack of split bamboo strips."
+    },
+    {
+      "kind": "item",
+      "name": "貝殼",
+      "seed": 7026,
+      "transparent": true,
+      "prompt": "A few sea shells from a sandy shore."
+    },
+    {
+      "kind": "item",
+      "name": "甘蔗",
+      "seed": 7027,
+      "transparent": true,
+      "prompt": "Two stalks of sugarcane cut into sections."
+    },
+    {
+      "kind": "item",
+      "name": "鐵片",
+      "seed": 7028,
+      "transparent": true,
+      "prompt": "A few rusted iron fragments from an old musket."
+    },
+    {
+      "kind": "item",
+      "name": "新港文書殘片",
+      "seed": 7029,
+      "transparent": true,
+      "prompt": "A scorched fragment of old paper with faint illegible faded handwriting."
+    },
+    {
+      "kind": "item",
+      "name": "鹿角",
+      "seed": 7030,
+      "transparent": true,
+      "prompt": "A shed antler of a sika deer."
+    },
+    {
+      "kind": "item",
+      "name": "新港文書",
+      "seed": 7031,
+      "transparent": true,
+      "prompt": "An old folded land contract on yellowed paper with faint illegible handwriting in two columns and a small worm-eaten hole at the bottom, no readable characters."
+    },
+    {
+      "kind": "item",
+      "name": "祖父的手冊",
+      "seed": 7032,
+      "transparent": true,
+      "prompt": "A worn leather-bound notebook with a cloth ribbon bookmark."
+    },
+    {
+      "kind": "item",
+      "name": "楊的字典",
+      "seed": 7033,
+      "transparent": true,
+      "prompt": "A thick handwritten manuscript book with scorched corners, tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "石頭的家書",
+      "seed": 7034,
+      "transparent": true,
+      "prompt": "A folded letter on rough paper tied with a thin cord."
+    },
+    {
+      "kind": "item",
+      "name": "牽星板",
+      "seed": 7035,
+      "transparent": true,
+      "prompt": "A set of square wooden navigation plates of different sizes strung on a cord."
+    },
+    {
+      "kind": "item",
+      "name": "公司通行令",
+      "seed": 7036,
+      "transparent": true,
+      "prompt": "A small wooden pass token carved with an abstract monogram emblem, no letters."
+    },
+    {
+      "kind": "item",
+      "name": "人頭稅單",
+      "seed": 7037,
+      "transparent": true,
+      "prompt": "A small rumpled paper receipt with a red seal stamp shape, no readable writing."
+    },
+    {
+      "kind": "item",
+      "name": "楊的單字表",
+      "seed": 7038,
+      "transparent": true,
+      "prompt": "A single handwritten word list sheet, edges frayed, illegible writing."
+    },
+    {
+      "kind": "item",
+      "name": "黍餅",
+      "seed": 7039,
+      "transparent": true,
+      "prompt": "A few round steamed millet cakes."
+    },
+    {
+      "kind": "item",
+      "name": "丹墨",
+      "seed": 7040,
+      "transparent": true,
+      "prompt": "A vermilion red ink stick and a small dish of red ink."
+    },
+    {
+      "kind": "item",
+      "name": "契刀",
+      "seed": 7041,
+      "transparent": true,
+      "prompt": "A small thin bronze carving knife with a green patina handle."
+    },
+    {
+      "kind": "item",
+      "name": "牧杖",
+      "seed": 7042,
+      "transparent": true,
+      "prompt": "A smooth worn wooden shepherd's staff."
+    },
+    {
+      "kind": "item",
+      "name": "卜骨之筆",
+      "seed": 7043,
+      "transparent": true,
+      "prompt": "A writing brush whose handle is a polished piece of bone, the tip touched with vermilion."
+    },
+    {
+      "kind": "item",
+      "name": "貝串",
+      "seed": 7044,
+      "transparent": true,
+      "prompt": "A string of cowrie shells."
+    },
+    {
+      "kind": "item",
+      "name": "龜甲護符",
+      "seed": 7045,
+      "transparent": true,
+      "prompt": "A small rounded piece of turtle plastron with drilled hollows on its back, hung on a cord."
+    },
+    {
+      "kind": "item",
+      "name": "牛骨",
+      "seed": 7046,
+      "transparent": true,
+      "prompt": "A cleaned flat piece of ox shoulder blade."
+    },
+    {
+      "kind": "item",
+      "name": "龜甲",
+      "seed": 7047,
+      "transparent": true,
+      "prompt": "A turtle plastron, the flat underside of a turtle shell."
+    },
+    {
+      "kind": "item",
+      "name": "青銅碎片",
+      "seed": 7048,
+      "transparent": true,
+      "prompt": "A few fragments of ancient bronze with green patina."
+    },
+    {
+      "kind": "item",
+      "name": "朱砂",
+      "seed": 7049,
+      "transparent": true,
+      "prompt": "A small mound of bright vermilion cinnabar powder beside a red mineral crystal."
+    },
+    {
+      "kind": "item",
+      "name": "藏書票",
+      "seed": 7050,
+      "transparent": true,
+      "prompt": "A small antique bookplate paper with a faded red seal impression, no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "千秋書籤",
+      "seed": 7051,
+      "transparent": true,
+      "prompt": "An elegant old bookmark of silk-mounted paper with a tassel."
+    },
+    {
+      "kind": "item",
+      "name": "臨摹的卜辭",
+      "seed": 7052,
+      "transparent": true,
+      "prompt": "A modern notebook open to a page with a few hand-copied ancient pictographs in black ink, simple strokes."
+    },
+    {
+      "kind": "item",
+      "name": "十七的骨哨",
+      "seed": 7053,
+      "transparent": true,
+      "prompt": "A small whistle carved from a sheep bone with three holes."
+    },
+    {
+      "kind": "item",
+      "name": "千秋硯",
+      "seed": 7054,
+      "transparent": true,
+      "prompt": "A palm-sized purple stone inkstone with a hair-thin crack across its well, black ink inside swirling like a tide."
+    },
+    {
+      "kind": "item",
+      "name": "卜骨",
+      "seed": 7055,
+      "transparent": true,
+      "prompt": "An ancient ox shoulder blade oracle bone with rows of drilled hollows and fine crack lines, faint carved marks."
+    }
+  ]
+}
