@@ -361,7 +361,7 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .crowd-track i.on { background: var(--accent); }
 .d-accord { font-size: 12px; color: #8fb3d9; }
 .d-round { font-size: 12px; color: var(--muted); }
-.d-log { flex: 1; overflow-y: auto; padding: 8px 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: calc(var(--fs) * .88); }
+.d-log { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: calc(var(--fs) * .88); }
 .d-line { margin: .3em 0; }
 .d-line b { font-family: var(--sans); font-size: .8em; color: var(--accent); }
 .d-line.foe b { color: #d9a27a; }
