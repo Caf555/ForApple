@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
+  "說明": "《千秋硯》卷二〈牧野〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：人牲只畫等待與記憶，不畫過程；羌人圈只畫遠景與勞動，不畫暴力。",
   "items": [
     {
       "kind": "bg",
@@ -281,6 +281,72 @@
       "name": "磬聲",
       "seed": 6406,
       "prompt": "Dawn on the loess plateau, ancient China around 1048 BC, a young musician kneels before a wooden frame of hanging stone chimes, striking one stone with a slim wooden mallet; a herder girl with a bow on her back hums beside him; a young man and a translucent ink-haired young woman listen; golden light over gullies. The stone chimes (qing) are three flat slabs of grey stone of different sizes, each shaped like an upside-down shallow V, a carpenter's square opened to a wide angle: the top edge bends at one corner into two straight slopes like a low roof, the bottom edge is gently curved, the hanging hole is at the top corner of the bend, each hung by a cord from a single plain wooden crossbar. Sharp angular silhouettes, not rounded, not bell-shaped, no bronze. The musician's mallet is a slim wooden stick with a small round knob at its end, like a drumstick, not a hammer."
+    },
+    {
+      "kind": "bg",
+      "name": "孟津",
+      "seed": 6115,
+      "prompt": "The Yellow River near Mengjin ferry in ancient China around 1047 BC: an extremely wide, fast, opaque ochre-yellow river carrying silt, low muddy banks. On the south bank, a sprawling military camp of many small tents made of hides and woven mats, dozens of different banners on tall poles flapping in the wind, crowds of people in varied clothing, a larger decorated wooden boat moored at the ferry landing, open-air campfires with smoke rising from the ground. Boats are simple ancient wooden plank boats and dugout canoes, low and narrow, rowed with long wooden oars, no sails, no cabins, no dragon heads."
+    },
+    {
+      "kind": "bg",
+      "name": "羌人營地",
+      "seed": 6116,
+      "prompt": "A camp of western highland herders on a riverbank in ancient China around 1047 BC: low round tents of grey-brown felted sheep wool, wooden staffs planted in front with curved goat horns tied at the top, a campfire burning on the ground, people with braided hair wearing sheepskin, distant snowy mountains on the western horizon, dusk light."
+    },
+    {
+      "kind": "bg",
+      "name": "夜渡黃河",
+      "seed": 6117,
+      "prompt": "The Yellow River near Mengjin ferry in ancient China around 1047 BC: an extremely wide, fast, opaque ochre-yellow river carrying silt, low muddy banks. Moonless night on the river: three small wooden boats with dark silhouettes of people crouching and rowing, black water with faint ochre gleam, the far bank invisible except for a tiny dim red glow of a distant campfire, almost everything in deep darkness, tense and silent. Boats are simple ancient wooden plank boats and dugout canoes, low and narrow, rowed with long wooden oars, no sails, no cabins, no dragon heads."
+    },
+    {
+      "kind": "char",
+      "name": "嶺",
+      "seed": 6208,
+      "prompt": "A tall middle-aged man from the western highlands, deeply sun-darkened rugged face with deep wrinkles at the eyes, long black hair in several thick braids, a heavy sheepskin coat with the wool turned inward, a leather pouch at his belt, stern but kind eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "濁浪",
+      "seed": 6317,
+      "prompt": "A rearing wave of thick ochre-yellow river water full of silt, curling like a grasping hand, brown foam at its crest, heavy and cold.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "渡口泥鬼",
+      "seed": 6318,
+      "prompt": "A slumped humanoid figure of wet river mud from a ferry landing, many footprints pressed into its body, broken oars sticking out of its back, dripping brown mud.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉舟魂",
+      "seed": 6319,
+      "prompt": "The ghost of a capsized ancient wooden plank boat rising from the water, upside down, waterlogged dark planks, trailing ropes and reeds like limbs, pale glow inside the hull.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "白魚兆",
+      "seed": 6320,
+      "prompt": "A huge glowing white fish leaping and floating in the air, scales shining blinding white with rainbow sheen, wide open mouth, surrounded by faint swirling crowds of tiny cheering silhouettes, both beautiful and ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "濁河之怒",
+      "seed": 6321,
+      "prompt": "An enormous towering wall of muddy ochre-yellow river water taller than boats, churning with silt and debris, shaped like a vast angry face without features, dark sky, terrifying force of nature, not a god, no human figure, no dragon.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "夜渡",
+      "seed": 6407,
+      "prompt": "The Yellow River near Mengjin ferry in ancient China around 1047 BC: an extremely wide, fast, opaque ochre-yellow river carrying silt, low muddy banks. Night on a small crowded wooden boat in the middle of the river: a thin teenage boy in a worn sheepskin vest leans over the side, seasick, yet laughing weakly, a young man beside him steadies his shoulder, a translucent young woman with long ink-black hair that dissolves like ink in water looks at the boy with deep recognition, other people huddled, dim moonless darkness with only a faint red glow from a distant fire. Boats are simple ancient wooden plank boats and dugout canoes, low and narrow, rowed with long wooden oars, no sails, no cabins, no dragon heads."
     }
   ]
 }
