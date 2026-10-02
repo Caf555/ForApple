@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～四）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
+  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～五）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
   "items": [
     {
       "kind": "bg",
@@ -366,6 +366,86 @@
       "name": "台階上的菲莉",
       "seed": 9408,
       "prompt": "Ancient Athens in 399 BC: at dusk, a young woman of about 22 with short dark hair and clay-stained hands stands on the steps of a colonnade, speaking boldly to a crowd of older men gathered below; some men jeer, some listen silently; an official pushes through the crowd toward her. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "陪審法庭",
+      "seed": 9112,
+      "prompt": "Ancient Athens in 399 BC: an open-air law court enclosure in the Agora: rows of plain wooden benches packed with hundreds of ordinary older citizens as jurors, a low wooden railing separating them from a crowd of standing spectators, a speaker's platform, a large painted clay water clock on a stand dripping water, morning light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "監獄",
+      "seed": 9113,
+      "prompt": "Ancient Athens in 399 BC: inside a simple ancient prison: thick rough stone walls, a narrow shaft of light from a high window, a plain wooden bed, an iron chain lying on the floor, a doorway to a small courtyard, quiet and somber yet calm. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "char",
+      "name": "克里托",
+      "seed": 9213,
+      "prompt": "A wealthy elderly Athenian man about 70 years old, white beard, fine wool cloak, red-rimmed anxious eyes, hands clasped, a loyal old friend's grief on his face, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "贊西佩",
+      "seed": 9214,
+      "prompt": "An Athenian woman about 40 years old, dark hair under a simple mantle, holding a small baby, a strong expressive face streaked with tears, plain wool clothing, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "毒堇",
+      "seed": 9325,
+      "prompt": "A tall creeping hemlock plant creature with clusters of tiny white umbrella-shaped flowers and purple-spotted stems, dripping pale poison, cold mist creeping from its roots.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐐銬",
+      "seed": 9326,
+      "prompt": "A heavy rusted iron shackle chain coiling in the air like a serpent, open cuffs snapping, a faint cold glint.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "三十天",
+      "seed": 9327,
+      "prompt": "A ghostly ancient Greek sailing ship with a garlanded stern drifting on a calm grey sea, its sails made of mist, thirty faint pale moons arranged in a ring around it, patient and melancholy.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "後悔",
+      "seed": 9328,
+      "prompt": "A hunched grey shadow figure clutching its head with both hands, many faint echoing outlines trailing behind it, pebbles falling from its fingers, sorrowful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "判決",
+      "seed": 9329,
+      "prompt": "A towering cold figure built from hundreds of piled small black and white pebbles, its blank surface showing hundreds of faint faces, pebbles cascading from it, solemn and implacable.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・雅典之相",
+      "seed": 9330,
+      "prompt": "A tall faceless scribe in a dark ancient Greek himation and a wide-brimmed traveler's hat, a smooth featureless face with a thin crack across it, holding a single small white pebble between two fingers, grey ash swirling around him, calm and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "兩個罐子",
+      "seed": 9409,
+      "prompt": "Ancient Athens in 399 BC: inside a crowded law court, a broad-shouldered young man of about 30 with a short beard stands before two large clay voting urns, holding a small pebble in his closed hand, looking up toward the crowd of spectators beyond the wooden railing; tense, quiet moment. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "cg",
+      "name": "毒堇之杯",
+      "seed": 9410,
+      "prompt": "Ancient Athens in 399 BC: in a prison room at dusk, a barefoot old man with a white beard sits calmly on a wooden bed holding a simple clay cup, surrounded by grieving friends, one elderly friend covering his face; soft warm light from a high window; dignified and serene, no gore. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
     }
   ]
 }
