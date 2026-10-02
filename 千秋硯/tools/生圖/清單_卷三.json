@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
+  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
   "items": [
     {
       "kind": "bg",
@@ -269,6 +269,72 @@
       "name": "唱給山谷",
       "seed": 8406,
       "prompt": "Ancient Egypt around 1340 BC, dawn in a barren desert valley of small simple grave mounds: a young shaven-headed priest in white linen stands alone among the graves with his back to the rising sun, singing with his hands slightly raised, his shadow stretching long over the sand; a young stonemason kneels by one grave with a small limestone flake standing at its head; golden light, solemn and tender; no bones visible."
+    },
+    {
+      "kind": "bg",
+      "name": "疫城",
+      "seed": 8113,
+      "prompt": "Ancient Egypt around 1336 BC, the city of Akhetaten (Amarna): a quiet street at night during an epidemic: whitewashed mud-brick houses with doors ajar, dim oil lamps glowing in a few windows, bundles of dried herbs hanging at doorways, small clay bowls of water placed on doorsteps, empty street, deep blue night, an uneasy hush. Architecture as in archaeological reconstructions of Amarna: flat-roofed buildings of sun-dried mud brick plastered and whitewashed. No pyramids, no sphinx, no domes."
+    },
+    {
+      "kind": "bg",
+      "name": "空城",
+      "seed": 8114,
+      "prompt": "Ancient Egypt around 1332 BC, the city of Akhetaten being abandoned: long empty streets of whitewashed mud-brick houses with every door left open, a cold hearth with ashes, a broken pot and a child's small sandal on a doorstep, drifts of desert sand blowing into the lanes, the great roofless temple silent in the distance, pale cliffs behind, late afternoon light, desolate and still. Architecture as in archaeological reconstructions of Amarna: flat-roofed buildings of sun-dried mud brick plastered and whitewashed. No pyramids, no sphinx, no domes."
+    },
+    {
+      "kind": "enemy",
+      "name": "熱病",
+      "seed": 8319,
+      "transparent": true,
+      "prompt": "A cluster of glowing red-hot embers drifting like a feverish cloud, hot shimmering air around it, a faint impression of a sweating sleeper's face within the glow."
+    },
+    {
+      "kind": "enemy",
+      "name": "空屋",
+      "seed": 8320,
+      "transparent": true,
+      "prompt": "A small abandoned whitewashed mud-brick house come alive, its open doorway like a dark mouth, cold ashes spilling from its hearth, sand piling against its walls, lonely and heavy."
+    },
+    {
+      "kind": "enemy",
+      "name": "封泥印",
+      "seed": 8321,
+      "transparent": true,
+      "prompt": "A large lump of dried clay sealing with a stamped seal impression, attached to a knotted cord, hovering like a heavy fist, cracked and dusty, bronze-tinted."
+    },
+    {
+      "kind": "enemy",
+      "name": "遺物",
+      "seed": 8322,
+      "transparent": true,
+      "prompt": "A tangle of left-behind household things floating together: an old reed mat, a chipped clay bowl, a child's tiny sandal, a frayed rope, forming a sad little creature."
+    },
+    {
+      "kind": "enemy",
+      "name": "疫風",
+      "seed": 8323,
+      "transparent": true,
+      "prompt": "A pale grey translucent wind spirit swirling through the air, cold and thin like breath on a winter night, extinguished lamp smoke trailing from it, faint embers of fever circling it, eerie and sorrowful."
+    },
+    {
+      "kind": "enemy",
+      "name": "空城之主",
+      "seed": 8324,
+      "transparent": true,
+      "prompt": "A colossal figure made of an entire abandoned whitewashed mud-brick city, with many open doorways, walls and streets forming its body, desert sand pouring from it, reaching out with huge arms of sand toward departing boats, no face, more lonely than angry."
+    },
+    {
+      "kind": "cg",
+      "name": "埋信",
+      "seed": 8407,
+      "prompt": "Ancient Egypt around 1332 BC, inside a dim mud-brick records office: a thin young scribe kneels beside a shallow pit dug in the earthen floor, gently placing palm-sized clay tablets covered in tiny wedge marks into it one by one, as if tucking someone in; a young man with a small shovel and a translucent young woman with long ink-black hair watch; empty shelves behind; one shaft of light; tender and solemn; no readable writing."
+    },
+    {
+      "kind": "cg",
+      "name": "離城",
+      "seed": 8408,
+      "prompt": "Ancient Egypt around 1332 BC, the last large wooden boat with a tall linen sail leaving the riverbank of the abandoned white city of Akhetaten, people on the deck looking back silently at the city, a young woman on board holding a white plaster face mask of an old man, a broad-shouldered man with a grin leaning seasick over the side, the white city a long pale line beneath cliffs, sand blowing over the quay, melancholy golden light."
     }
   ]
 }

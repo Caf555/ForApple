@@ -716,6 +716,48 @@
       "seed": 7101,
       "transparent": true,
       "prompt": "A small torn piece of papyrus with a single line of black ink cursive writing, slightly smudged, unreadable."
+    },
+    {
+      "kind": "item",
+      "name": "柳樹皮",
+      "seed": 7102,
+      "transparent": true,
+      "prompt": "A few curled strips of willow bark, brownish-grey, with a small clay cup of dark herbal brew."
+    },
+    {
+      "kind": "item",
+      "name": "碎陶",
+      "seed": 7103,
+      "transparent": true,
+      "prompt": "A few broken shards of a reddish-brown clay pot."
+    },
+    {
+      "kind": "item",
+      "name": "封泥",
+      "seed": 7104,
+      "transparent": true,
+      "prompt": "A small lump of dried grey clay with a stamped oval seal impression, attached to a short knotted string."
+    },
+    {
+      "kind": "item",
+      "name": "退燒符",
+      "seed": 7105,
+      "transparent": true,
+      "prompt": "A small amulet of willow bark strips bound with linen thread."
+    },
+    {
+      "kind": "item",
+      "name": "空城鑰",
+      "seed": 7106,
+      "transparent": true,
+      "prompt": "A simple ancient wooden key with a few pegs, worn smooth, on a leather cord."
+    },
+    {
+      "kind": "item",
+      "name": "最後一封信",
+      "seed": 7107,
+      "transparent": true,
+      "prompt": "A palm-sized tan clay tablet with tiny wedge-shaped impressions, wrapped half in linen cloth; no readable writing."
     }
   ]
 }
