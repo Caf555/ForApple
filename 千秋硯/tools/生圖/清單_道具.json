@@ -400,7 +400,7 @@
       "name": "河泥",
       "seed": 7056,
       "transparent": true,
-      "prompt": "A lump of sticky wet ochre-yellow river mud on a broad green leaf."
+      "prompt": "A handful of wet, dull brownish-ochre Yellow River silt mud slapped on a broad green leaf: a messy, shapeless, glistening heap with a rough wet surface, sloppy edges oozing and sliding off the leaf, a few strands of reed and grit mixed in, muddy smears on the leaf. Dull earthy colours of real wet silt, not bright yellow, not shiny like syrup, not a cake, not food."
     },
     {
       "kind": "item",
@@ -414,7 +414,7 @@
       "name": "白魚鱗",
       "seed": 7058,
       "transparent": true,
-      "prompt": "One very large single fish scale, pearly white and translucent with a faint rainbow sheen, about palm-sized."
+      "prompt": "One single loose fish scale lying alone, no fish: a thin, flat, roughly rounded translucent plate about the size of a palm, pearly white with fine concentric growth rings and a faint rainbow sheen, one edge slightly frayed. Only the scale, not a whole fish, no head, no fins, no tail."
     },
     {
       "kind": "item",
@@ -435,21 +435,21 @@
       "name": "箙的契刀",
       "seed": 7061,
       "transparent": true,
-      "prompt": "A small thin ancient bronze carving knife about finger-length, the handle polished smooth by years of use with a green patina in the grooves, the blade worn very thin."
+      "prompt": "A small, thin ancient carving knife about finger-length for engraving oracle bones: a short narrow blade with a slanted chisel-like tip and a slim flat handle cast in one piece with it, the handle worn glossy by a lifetime of use. Made entirely of cast bronze, dull olive-green and brown with patina, as in Shang dynasty archaeology; no steel, no shiny silver metal, no modern knife shape."
     },
     {
       "kind": "item",
       "name": "戈頭",
       "seed": 7062,
       "transparent": true,
-      "prompt": "A broken ancient bronze dagger-axe head: a short flat blade with a curled, blunted edge and a tang, green patina and rust, no shaft."
+      "prompt": "A broken ancient Chinese bronze dagger-axe head (ge), seen flat from the side: a long, narrow, slightly curved pointed blade jutting out horizontally like a short sword blade, with a straight rectangular tang behind it and a short down-turned extension below the joint with small slots for lashing; the tip snapped off and the cutting edge bent and dulled. Made entirely of cast bronze, dull olive-green and brown with patina, as in Shang dynasty archaeology; no steel, no shiny silver metal, no modern knife shape. No shaft."
     },
     {
       "kind": "item",
       "name": "斷索",
       "seed": 7063,
       "transparent": true,
-      "prompt": "A short length of rough brown hemp rope cut cleanly at one end, a tight knot at the other end, fibers frayed."
+      "prompt": "A short straight piece of rough brown hemp rope lying in a loose S-curve, NOT a loop or ring: one end is cut off sharply with splayed, freshly severed fibers, the other end is tied in a single tight knot; worn and frayed."
     },
     {
       "kind": "item",
@@ -477,7 +477,7 @@
       "name": "朱書契刀",
       "seed": 7067,
       "transparent": true,
-      "prompt": "A small thin ancient bronze carving knife about finger-length, the handle wrapped with a cord dyed vermilion red, the thin blade edge with a faint red glow."
+      "prompt": "A small, thin ancient carving knife about finger-length for engraving oracle bones: a short narrow blade with a slanted chisel-like tip, its slim handle tightly wrapped with a band of hemp cord dyed cinnabar red. Made entirely of cast bronze, dull olive-green and brown with patina, as in Shang dynasty archaeology; no steel, no shiny silver metal, no modern knife shape. The blade is clean, with no red on the blade."
     },
     {
       "kind": "item",
@@ -491,7 +491,7 @@
       "name": "妌的碎骨",
       "seed": 7069,
       "transparent": true,
-      "prompt": "A tiny pale bone chip no bigger than a coin, with one small simple carved line figure of a person standing sideways and bending forward, polished smooth by handling."
+      "prompt": "A tiny pale bone chip no bigger than a coin, polished smooth by handling, with one simple incised oracle-bone pictograph on it: just two thin carved strokes forming a person seen from the side, bowing forward with arms hanging, like an upside-down check mark — a very abstract stick sign, not a drawing of a child, no face, no clothes, no other marks."
     }
   ]
 }
