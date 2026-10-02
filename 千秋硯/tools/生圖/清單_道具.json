@@ -820,7 +820,7 @@
       "name": "畫筆",
       "seed": 7116,
       "transparent": true,
-      "prompt": "A very fine ancient brush with a thin wooden handle and a tiny tip of black paint."
+      "prompt": "One single fine ancient greek vase-painter's brush lying alone diagonally: a slim plain wooden stick handle with a small tuft of animal hair bound to the tip with thread; nothing else in the picture, no bag, no case, no cloth, a tiny tip of black paint on the hairs."
     },
     {
       "kind": "item",
@@ -834,7 +834,7 @@
       "name": "羊毛斗篷",
       "seed": 7118,
       "transparent": true,
-      "prompt": "A folded short cloak of coarse undyed wool with a simple bronze pin."
+      "prompt": "A neatly folded short cloak of coarse undyed wool lying flat, a simple round bronze pin (fibula) stuck through one corner. No buttons, no toggles, no collar, no sleeves, not a modern coat."
     },
     {
       "kind": "item",
@@ -869,7 +869,7 @@
       "name": "名字陶片",
       "seed": 7123,
       "transparent": true,
-      "prompt": "A small reddish-brown pottery sherd with a few neatly scratched letters, worn as a pendant on a cord; letters indistinct."
+      "prompt": "A small reddish-brown pottery sherd worn as a pendant on a cord, a few neatly scratched Greek capital letters, worn, faint and blurred so they cannot be read; no Latin alphabet words, no Chinese characters."
     },
     {
       "kind": "item",
@@ -890,14 +890,14 @@
       "name": "亞里斯提德的陶片",
       "seed": 7126,
       "transparent": true,
-      "prompt": "A reddish-brown pottery sherd with a line of crude scratched Greek capital letters, letters indistinct."
+      "prompt": "A single flat broken piece of a reddish-brown pottery vessel, an irregular curved shard about the size of a palm with sharp broken edges on all sides, lying flat; on it a line of crude scratched Greek capital letters, worn, faint and blurred so they cannot be read; no Latin alphabet words, no Chinese characters. Only a fragment: not a whole jar, not a pot."
     },
     {
       "kind": "item",
       "name": "陶片的描本",
       "seed": 7127,
       "transparent": true,
-      "prompt": "A modern notebook open to a page with a careful ink tracing of crude ancient Greek capital letters copied from a sherd; letters indistinct."
+      "prompt": "A small modern notebook lying open, on the page a careful pencil outline of an irregular pottery shard drawn from life, with a few faint scratchy marks inside the outline, blurred and unreadable, and a few lines of tiny illegible notes beside it. Nothing readable: no Latin words, no Chinese characters."
     },
     {
       "kind": "item",
@@ -939,21 +939,21 @@
       "name": "黑釉筆",
       "seed": 7133,
       "transparent": true,
-      "prompt": "A fine ancient painter's brush with its tip coated in glossy black glaze."
+      "prompt": "One single fine ancient Greek vase-painter's brush lying alone diagonally: a slim plain wooden stick handle, and at ONE end a small pointed tuft of animal hair bound with thread; that same hair tuft is dipped in thick glossy black glaze, so the hairs are wet, shiny and black; the other end of the handle is plain bare wood with nothing on it. Nothing else in the picture."
     },
     {
       "kind": "item",
       "name": "窯門的鑰匙",
       "seed": 7134,
       "transparent": true,
-      "prompt": "A large simple ancient bronze key on a leather cord, a little clay dust on it."
+      "prompt": "An ancient Greek temple-style bronze key shaped like a long thin letter L or a shepherd's crook: a straight slender bronze rod about a forearm long, its far end bent sharply at a right angle into a short flat arm with two little square prongs; at the other end a small loop tied to a leather cord; dull green-brown patina and a little clay dust. It looks like a bent bronze rod, not like a modern or medieval key: no round bow with a hole, no flat toothed bit, no shank-and-bit shape."
     },
     {
       "kind": "item",
       "name": "名單的蠟屑",
       "seed": 7135,
       "transparent": true,
-      "prompt": "A tiny pinch of pale wax shavings in an open palm-sized cloth."
+      "prompt": "A tiny pinch of pale yellowish beeswax shavings and thin curls lying in a small heap on an open scrap of plain undyed cloth. No hands, no fingers, no box, no people."
     },
     {
       "kind": "item",
