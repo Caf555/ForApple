@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
+  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
   "items": [
     {
       "kind": "bg",
@@ -189,6 +189,86 @@
       "name": "暈船",
       "seed": 8404,
       "prompt": "Ancient Egypt around 1343 BC, on a wooden Nile boat under a tall linen sail: a lean 19-year-old Egyptian youth with short hair leans over the side seasick yet laughing weakly, a young woman in a linen dress with a reed pen behind her ear laughs at him while holding a limestone flake, a young man pats his back, a translucent young woman with long ink-black hair watches the youth with quiet recognition; green riverbanks and desert beyond, bright and warm."
+    },
+    {
+      "kind": "bg",
+      "name": "檔案室阿瑪納",
+      "seed": 8111,
+      "prompt": "Ancient Egypt around 1340 BC, inside a small cool dim mud-brick records office near the palace at Amarna: wooden shelves stacked with many palm-sized square tan clay tablets covered in tiny wedge-shaped impressions, a few papyrus rolls, a low stool and a reed mat, a narrow window letting in one shaft of light, dust in the air, quiet and patient; no readable writing."
+    },
+    {
+      "kind": "bg",
+      "name": "南墓地",
+      "seed": 8112,
+      "prompt": "Ancient Egypt around 1340 BC, a barren desert wadi in a cleft of pale cliffs south of Amarna: many small low mounds of sand and gravel marking simple graves, a few wooden sticks and plain stones beside them, no monuments, no carvings, no temple; late golden light and long shadows, vast silence, sorrowful but dignified, no bones visible."
+    },
+    {
+      "kind": "char",
+      "name": "奈赫特",
+      "seed": 8204,
+      "transparent": true,
+      "prompt": "A thin young Egyptian scribe of the Amarna period about 22 years old, large thoughtful eyes, short-cropped hair, a plain white linen kilt and shawl, a smudge of clay on his chin, holding a small square clay tablet covered in tiny wedge marks and a triangular reed stylus, quiet and gentle."
+    },
+    {
+      "kind": "char",
+      "name": "瑟奈布",
+      "seed": 8205,
+      "transparent": true,
+      "prompt": "A young Egyptian priest of the Aten about 25 years old, shaved head, clean white pleated linen robe, sincere bright face looking upward toward the sun with arms slightly raised as if singing, gentle and earnest."
+    },
+    {
+      "kind": "enemy",
+      "name": "沉睡泥板",
+      "seed": 8313,
+      "transparent": true,
+      "prompt": "A small creature made of stacked dusty palm-sized clay tablets covered in tiny wedge marks, rising on stubby clay legs and arms, cracks and dust, lonely and forgotten."
+    },
+    {
+      "kind": "enemy",
+      "name": "求援之聲",
+      "seed": 8314,
+      "transparent": true,
+      "prompt": "A fluttering ghostly shape made of many faint pleading hands and drifting clay tablet fragments, in the middle a small trapped bird outline caught in a net of thin lines, grey and pale blue, sorrowful."
+    },
+    {
+      "kind": "enemy",
+      "name": "正午之光",
+      "seed": 8315,
+      "transparent": true,
+      "prompt": "A floating radiant disk of blinding white light with long straight rays radiating in all directions, too bright to look at, shimmering heat around it, beautiful yet painful, no face."
+    },
+    {
+      "kind": "enemy",
+      "name": "渴",
+      "seed": 8316,
+      "transparent": true,
+      "prompt": "A thin wavering figure made of dry cracked earth and empty clay water jars, reaching out with a parched hand, dust trailing from it, weary and pitiful."
+    },
+    {
+      "kind": "enemy",
+      "name": "頌歌之焰",
+      "seed": 8317,
+      "transparent": true,
+      "prompt": "A towering column of brilliant white and gold fire rising from a stone offering table, shaped like a singing open mouth made of flames, ribbons of sound waves curling around it, beautiful and overwhelming."
+    },
+    {
+      "kind": "enemy",
+      "name": "南墓的沉默",
+      "seed": 8318,
+      "transparent": true,
+      "prompt": "A huge silent figure made entirely of desert sand rising from a valley of small grave mounds, no face and no clear shape, heavy and still like a dune given a vague human outline, a few plain stones and wooden sticks caught in it, moonlit, sorrowful, no bones."
+    },
+    {
+      "kind": "cg",
+      "name": "真正的樣子",
+      "seed": 8405,
+      "prompt": "Ancient Egypt around 1340 BC, at night in a sculptor's workshop lit by a small clay oil lamp: a young Egyptian woman painter with a reed pen paints on a large plastered board a row of realistic tired workers bending under stone blocks, one in the middle a young man grinning with a small pointed canine tooth; beside her lies an earlier sketch of smiling idealized workers; a thin young scribe and a young man watch; warm dim light, determined mood; no readable writing."
+    },
+    {
+      "kind": "cg",
+      "name": "唱給山谷",
+      "seed": 8406,
+      "prompt": "Ancient Egypt around 1340 BC, dawn in a barren desert valley of small simple grave mounds: a young shaven-headed priest in white linen stands alone among the graves with his back to the rising sun, singing with his hands slightly raised, his shadow stretching long over the sand; a young stonemason kneels by one grave with a small limestone flake standing at its head; golden light, solemn and tender; no bones visible."
     }
   ]
 }
