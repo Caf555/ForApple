@@ -758,6 +758,41 @@
       "seed": 7107,
       "transparent": true,
       "prompt": "A palm-sized tan clay tablet with tiny wedge-shaped impressions, wrapped half in linen cloth; no readable writing."
+    },
+    {
+      "kind": "item",
+      "name": "石磚碎片",
+      "seed": 7108,
+      "transparent": true,
+      "prompt": "A broken piece of a small sandstone block with a painted relief fragment of a tiny hand at the end of a sun ray."
+    },
+    {
+      "kind": "item",
+      "name": "光之手",
+      "seed": 7109,
+      "transparent": true,
+      "prompt": "A small pendant carved from sandstone showing a single sun ray ending in a tiny open hand, on a linen cord."
+    },
+    {
+      "kind": "item",
+      "name": "背面之磚",
+      "seed": 7110,
+      "transparent": true,
+      "prompt": "A small rectangular sandstone block seen from its plain rough back side, a hint of paint at one edge."
+    },
+    {
+      "kind": "item",
+      "name": "摩斯的鑿子",
+      "seed": 7111,
+      "transparent": true,
+      "prompt": "An old well-worn copper chisel, edge sharp, shaft polished by decades of handling, a tiny scratched mark near the end, wrapped grip of frayed linen."
+    },
+    {
+      "kind": "item",
+      "name": "梅芮的最後一幅畫",
+      "seed": 7112,
+      "transparent": true,
+      "prompt": "A small white limestone flake covered with delicate black ink line drawings of many tiny human figures; no writing."
     }
   ]
 }

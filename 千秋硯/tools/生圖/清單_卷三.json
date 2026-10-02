@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
+  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
   "items": [
     {
       "kind": "bg",
@@ -335,6 +335,80 @@
       "name": "離城",
       "seed": 8408,
       "prompt": "Ancient Egypt around 1332 BC, the last large wooden boat with a tall linen sail leaving the riverbank of the abandoned white city of Akhetaten, people on the deck looking back silently at the city, a young woman on board holding a white plaster face mask of an old man, a broad-shouldered man with a grin leaning seasick over the side, the white city a long pale line beneath cliffs, sand blowing over the quay, melancholy golden light."
+    },
+    {
+      "kind": "bg",
+      "name": "拆毀的神廟",
+      "seed": 8115,
+      "prompt": "Ancient Egypt around 1315 BC, the great roofless Aten temple of Amarna being demolished: half-torn-down whitewashed walls, huge piles of small rectangular stone blocks with painted reliefs of sun rays ending in tiny hands, royal figures and workers, workers with wooden levers and ropes carrying blocks toward boats on the river, dust in the air, sand drifting in, harsh afternoon light, melancholy. No pyramids, no sphinx."
+    },
+    {
+      "kind": "char",
+      "name": "摩斯_47",
+      "seed": 8206,
+      "transparent": true,
+      "prompt": "A 47-year-old Egyptian stonemason, grey-white short hair, slightly stooped, weathered sun-darkened face with deep lines, thick scarred forearms and swollen knuckles, a plain linen kilt, a copper chisel at his belt, grinning warmly with one small pointed canine tooth still there beside a missing tooth."
+    },
+    {
+      "kind": "char",
+      "name": "梅芮_45",
+      "seed": 8207,
+      "transparent": true,
+      "prompt": "A 45-year-old Egyptian woman painter, white hair tied back with a faded linen headscarf, thin face with sharp bright eyes and a stubborn mouth, a simple linen dress, a row of reed pens at her waist, faint paint stains on her fingers."
+    },
+    {
+      "kind": "enemy",
+      "name": "碎磚",
+      "seed": 8325,
+      "transparent": true,
+      "prompt": "A crumbling pile of small rectangular sandstone blocks collapsing forward like a falling wall, bits of painted reliefs on the blocks, dust pouring from the cracks."
+    },
+    {
+      "kind": "enemy",
+      "name": "斷碑",
+      "seed": 8326,
+      "transparent": true,
+      "prompt": "A broken limestone stela snapped in two, the fresh break bright white, faint worn carved pictures on its old surface, rising upright and looming."
+    },
+    {
+      "kind": "enemy",
+      "name": "餘燼",
+      "seed": 8327,
+      "transparent": true,
+      "prompt": "Smoldering embers and ash glowing in the cracks of a broken stone offering table, a thin flame flickering, golden-red sparks drifting upward."
+    },
+    {
+      "kind": "enemy",
+      "name": "塵影",
+      "seed": 8328,
+      "transparent": true,
+      "prompt": "A drifting ghostly shape made of settling grey dust in an abandoned city, softly covering faint outlines of carved oval name frames, quiet and smothering."
+    },
+    {
+      "kind": "enemy",
+      "name": "填牆",
+      "seed": 8329,
+      "transparent": true,
+      "prompt": "A towering walking wall made of hundreds of small rectangular stone blocks stacked together, every block forcefully turning its painted face outward: sun rays ending in tiny hands, royal faces, bent workers, cattle; dust and ropes hanging, powerful and pleading."
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・阿瑪納之相",
+      "seed": 8330,
+      "transparent": true,
+      "prompt": "An imposing faceless figure in a long black coat and a wide-brimmed black hat covered in desert dust, the face a smooth blank surface like white paper, holding out a copper chisel instead of a brush as if offering it, grey sand swirling around with fragments of chiseled stone and scraped papyrus, weary, menacing and elegant, ink wash style."
+    },
+    {
+      "kind": "cg",
+      "name": "老石匠",
+      "seed": 8409,
+      "prompt": "Ancient Egypt around 1315 BC, at a pale desert cliff: an old grey-haired stonemason stands on a wooden scaffold before a large carved stela whose top shows a sun disk with rays ending in tiny hands, his copper chisel raised but frozen in front of a carved oval royal name frame, looking back over his shoulder; below, an overseer with a staff, a young priest, a white-haired woman painter and a young man look up; behind a rock, a faceless figure in a black coat and wide hat holds a chisel; tense late light; no readable writing."
+    },
+    {
+      "kind": "cg",
+      "name": "最後一幅畫",
+      "seed": 8410,
+      "prompt": "Ancient Egypt around 1315 BC, golden dusk at the foot of a desert cliff: a white-haired woman painter places a small white limestone flake into a young man's hands; on the flake, fine black ink line drawings of many small figures: an old worker bent under a stone, a scribe holding a clay tablet, a grinning young stonemason on a scaffold, a girl with paint on her cheeks, a man holding a pen and a floating long-haired figure with no clear face; an old stonemason sits nearby smiling; a translucent young woman with long ink-black hair looks at the flake with tears in her eyes; tender."
     }
   ]
 }
