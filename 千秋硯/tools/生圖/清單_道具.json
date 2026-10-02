@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》道具圖示（卷一、卷二）與藏書閣器物誌用圖。一張圖一件物品，透明背景，256×256。",
+  "說明": "《千秋硯》道具圖示（卷一～卷三）與藏書閣器物誌用圖。一張圖一件物品，透明背景，256×256。",
   "sizes": {
     "item": [
       1024,
@@ -492,6 +492,174 @@
       "seed": 7069,
       "transparent": true,
       "prompt": "A tiny pale bone chip no bigger than a coin, polished smooth by handling, with one simple incised oracle-bone pictograph on it: just two thin carved strokes forming a person seen from the side, bowing forward with arms hanging, like an upside-down check mark — a very abstract stick sign, not a drawing of a child, no face, no clothes, no other marks."
+    },
+    {
+      "kind": "item",
+      "name": "麵包",
+      "seed": 7070,
+      "transparent": true,
+      "prompt": "A round flat loaf of coarse ancient Egyptian bread, hard dark crust with cracks, sprinkled with a little grit."
+    },
+    {
+      "kind": "item",
+      "name": "椰棗",
+      "seed": 7071,
+      "transparent": true,
+      "prompt": "A small handful of dried brown dates, glossy and wrinkled, lying on a scrap of linen."
+    },
+    {
+      "kind": "item",
+      "name": "蜂蜜",
+      "seed": 7072,
+      "transparent": true,
+      "prompt": "A small rounded clay pot of golden honey with a drip running down its side, sealed with a scrap of linen tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "銅鑿",
+      "seed": 7073,
+      "transparent": true,
+      "prompt": "An ancient copper chisel about forearm length, the edge ground sharp, green verdigris along the shaft, a tiny scratched mark near the end."
+    },
+    {
+      "kind": "item",
+      "name": "蘆葦筆",
+      "seed": 7074,
+      "transparent": true,
+      "prompt": "A thin reed pen with one end chewed soft into a brush, a little black ink on the tip."
+    },
+    {
+      "kind": "item",
+      "name": "亞麻頭巾",
+      "seed": 7075,
+      "transparent": true,
+      "prompt": "A folded plain white linen headscarf, softly creased."
+    },
+    {
+      "kind": "item",
+      "name": "石灰岩片",
+      "seed": 7076,
+      "transparent": true,
+      "prompt": "A flat chip of white limestone the size of a palm, rough edges, a few faint black ink strokes on it."
+    },
+    {
+      "kind": "item",
+      "name": "赭石",
+      "seed": 7077,
+      "transparent": true,
+      "prompt": "A lump of red ochre mineral and a small pile of finely ground red powder beside it."
+    },
+    {
+      "kind": "item",
+      "name": "孔雀石",
+      "seed": 7078,
+      "transparent": true,
+      "prompt": "A chunk of green malachite with concentric bands of light and dark green, partly polished."
+    },
+    {
+      "kind": "item",
+      "name": "銅屑",
+      "seed": 7079,
+      "transparent": true,
+      "prompt": "A small pile of copper filings and shavings with bits of green verdigris."
+    },
+    {
+      "kind": "item",
+      "name": "紙莎草",
+      "seed": 7080,
+      "transparent": true,
+      "prompt": "A small sheet of blank papyrus made of thin strips of pith laid crosswise, pale yellow-brown, edges slightly ragged."
+    },
+    {
+      "kind": "item",
+      "name": "影子護符",
+      "seed": 7081,
+      "transparent": true,
+      "prompt": "A small square of dark brown linen folded into an amulet and tied with a thin cord, looking cool and shaded."
+    },
+    {
+      "kind": "item",
+      "name": "王名框戒",
+      "seed": 7082,
+      "transparent": true,
+      "prompt": "A small gold ring whose flat bezel is an empty oval cartouche frame with a little bar at its base, nothing written inside."
+    },
+    {
+      "kind": "item",
+      "name": "赭紅筆",
+      "seed": 7083,
+      "transparent": true,
+      "prompt": "A reed pen whose brush tip is soaked deep red with ochre, faint warm glow around the tip."
+    },
+    {
+      "kind": "item",
+      "name": "圖特摩斯的鑿子",
+      "seed": 7084,
+      "transparent": true,
+      "prompt": "A fine slender copper sculptor's chisel with a polished wooden handle, the edge very sharp, beautifully made."
+    },
+    {
+      "kind": "item",
+      "name": "梅芮的石片",
+      "seed": 7085,
+      "transparent": true,
+      "prompt": "A flat chip of white limestone covered with small clumsy black ink drawings of little symbols in rows, and in one corner a tiny sketch of a cat."
+    },
+    {
+      "kind": "item",
+      "name": "名冊的臨摹",
+      "seed": 7086,
+      "transparent": true,
+      "prompt": "A small modern notebook lying open, the page covered in careful black ink handwriting copied in lines, one small blank smudged patch on one line; no readable letters."
+    },
+    {
+      "kind": "item",
+      "name": "無花果",
+      "seed": 7087,
+      "transparent": true,
+      "prompt": "Two ripe purple figs, one split open showing red seeds."
+    },
+    {
+      "kind": "item",
+      "name": "砂岩片",
+      "seed": 7088,
+      "transparent": true,
+      "prompt": "A broken chip of tan sandstone with traces of old red and blue paint and a rough chisel scar."
+    },
+    {
+      "kind": "item",
+      "name": "蓮花",
+      "seed": 7089,
+      "transparent": true,
+      "prompt": "A single blue lotus flower with pointed petals on a short green stem, half open."
+    },
+    {
+      "kind": "item",
+      "name": "香料",
+      "seed": 7090,
+      "transparent": true,
+      "prompt": "A few lumps of golden translucent tree resin incense in a small clay dish, a thin wisp of smoke."
+    },
+    {
+      "kind": "item",
+      "name": "蓮花護符",
+      "seed": 7091,
+      "transparent": true,
+      "prompt": "A dried blue lotus flower pressed inside a small square of linen, tied with thread as an amulet."
+    },
+    {
+      "kind": "item",
+      "name": "迴響石",
+      "seed": 7092,
+      "transparent": true,
+      "prompt": "A small smooth piece of tan sandstone with faint concentric ripple marks like sound waves."
+    },
+    {
+      "kind": "item",
+      "name": "帕瑟的名單",
+      "seed": 7093,
+      "transparent": true,
+      "prompt": "A modern notebook open to pages densely filled with neat handwritten lines in black ink, viewed from an angle so nothing is readable."
     }
   ]
 }

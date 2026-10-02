@@ -244,6 +244,13 @@ export class Runner {
         await ui.showCG(name, cap.join(' '));
         return;
       }
+      case '稱呼': {
+        // 劇情中暫時改變角色顯示的名字（例如改名之前）：@稱呼 角色 名字／@稱呼 角色 預設
+        const [who, shown] = arg.split(/\s+/);
+        g.names = g.names || {};
+        if (!shown || shown === '預設') delete g.names[who]; else g.names[who] = shown;
+        return;
+      }
       case '立繪': {
         const [who, key] = arg.split(/\s+/);
         g.portraits = g.portraits || {};

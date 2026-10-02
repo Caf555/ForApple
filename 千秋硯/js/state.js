@@ -102,7 +102,8 @@ export function gainExp(g, m, amount) {
 }
 
 export function displayName(g, name) {
-  return name === '知墨' ? g.player.call : name;
+  if (name === '知墨') return g.player.call;
+  return (g.names && g.names[name]) || name;
 }
 
 // ───────── 條件判斷 ─────────
