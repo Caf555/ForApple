@@ -1017,6 +1017,55 @@
       "seed": 7144,
       "transparent": true,
       "prompt": "A small red ancient Greek vase covered in rows of tiny indistinct black painted marks."
+    },
+    {
+      "kind": "item",
+      "name": "大麥粥",
+      "seed": 7145,
+      "transparent": true,
+      "prompt": "A simple clay bowl of steaming barley porridge with a drizzle of olive oil."
+    },
+    {
+      "kind": "item",
+      "name": "卵石",
+      "seed": 7146,
+      "transparent": true,
+      "prompt": "A small handful of smooth white and dark river pebbles."
+    },
+    {
+      "kind": "item",
+      "name": "水鐘碎片",
+      "seed": 7147,
+      "transparent": true,
+      "prompt": "A broken fragment of a red clay water jar with a small hole near its base."
+    },
+    {
+      "kind": "item",
+      "name": "兩造之石",
+      "seed": 7148,
+      "transparent": true,
+      "prompt": "Two small pebbles fused together, one white and one black."
+    },
+    {
+      "kind": "item",
+      "name": "多一點時間",
+      "seed": 7149,
+      "transparent": true,
+      "prompt": "A small clay water-clock spout plug of beeswax, glowing faintly."
+    },
+    {
+      "kind": "item",
+      "name": "一顆白卵石",
+      "seed": 7150,
+      "transparent": true,
+      "prompt": "A single plain small white pebble, softly glowing."
+    },
+    {
+      "kind": "item",
+      "name": "起訴書的抄本",
+      "seed": 7151,
+      "transparent": true,
+      "prompt": "A modern notebook page with a careful copy of ancient Greek capital letters in ink; letters indistinct."
     }
   ]
 }

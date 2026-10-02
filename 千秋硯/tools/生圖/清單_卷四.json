@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～三）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
+  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～四）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
   "items": [
     {
       "kind": "bg",
@@ -279,6 +279,93 @@
       "name": "名字的陶瓶",
       "seed": 9406,
       "prompt": "Ancient Athens in 403 BC, the year democracy was restored: a large red-figure style amphora standing in the doorway of a potter's workshop facing the street, its whole surface covered in rows of tiny indistinct black painted marks instead of pictures, a young woman with clay on her dress standing beside it, a passerby woman gently touching the vase with her fingertips; morning light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "國王柱廊",
+      "seed": 9110,
+      "prompt": "Ancient Athens in 399 BC: the small Royal Stoa (Stoa Basileios) at the northwest corner of the Agora, a modest colonnade of simple Doric columns with a tiled roof, a whitewashed wooden notice board hanging on a column with indistinct marks, a crowd of ordinary men gathered in front reading and talking, stone steps, bright spring morning. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "皮革坊",
+      "seed": 9111,
+      "prompt": "Ancient Athens in 399 BC: interior of a tannery workshop: large clay vats of soaking hides, raw animal skins stretched on wooden frames and hanging from beams, workers scraping hides with curved knives, a dim smoky atmosphere with shafts of light from a doorway. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "char",
+      "name": "安尼圖斯",
+      "seed": 9210,
+      "prompt": "A serious Athenian man about 50 years old, short greying beard, sleeves of a plain work tunic rolled up, strong forearms stained from tanning leather, tired honest eyes with deep worry, dignified, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "美勒托斯",
+      "seed": 9211,
+      "prompt": "A young Athenian man about 25 years old with lank straight hair, a thin scraggly beard and a slightly hooked nose, chin raised proudly, holding a small scroll, a neat cloak, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "游敘弗倫",
+      "seed": 9212,
+      "prompt": "A self-assured middle-aged Athenian man about 45 years old, well-dressed in a fine cloak, trimmed beard, an earnest overconfident expression, one hand raised as if explaining the will of the gods, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "笑聲",
+      "seed": 9319,
+      "prompt": "Floating puffs of pale cloud shaped like laughing comic theater masks of ancient Greece, swirling together, their open mouths roaring with laughter, light and mocking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "傳言",
+      "seed": 9320,
+      "prompt": "A swarm of grey whispering mouths floating in smoke, leaning toward each other as if passing secrets, tendrils of murmur connecting them, sly and unsettling.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "水鐘",
+      "seed": 9321,
+      "prompt": "An ancient Greek clay water clock (klepsydra), a large painted jar with a small spout near the bottom from which water streams out endlessly, come alive with a stern expression made of the cracks in its glaze.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "投票石",
+      "seed": 9322,
+      "prompt": "A heavy whirling mass of countless small white and black pebbles forming a looming boulder-like creature, pebbles pouring and clattering, inexorable.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "起訴書",
+      "seed": 9323,
+      "prompt": "A large whitewashed wooden board hanging from a column, its rows of indistinct painted marks crawling off the board like insects, a cold metallic glint, ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "眾口",
+      "seed": 9324,
+      "prompt": "A gigantic faceless cloud-like figure made of thousands of open human mouths, some laughing, some whispering, some yawning, hovering over a city square at dusk, overwhelming yet made of ordinary people's voices.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "籃子裡的演員",
+      "seed": 9407,
+      "prompt": "Ancient Athens in 399 BC: street performers in the Agora: an actor wearing a comic mask with a snub nose and bulging eyes sits in a large wicker basket hanging from a rope, gesturing at the sky; a crowd laughs; at the back of the crowd a short stout barefoot old man with a white beard also laughs heartily. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "cg",
+      "name": "台階上的菲莉",
+      "seed": 9408,
+      "prompt": "Ancient Athens in 399 BC: at dusk, a young woman of about 22 with short dark hair and clay-stained hands stands on the steps of a colonnade, speaking boldly to a crowd of older men gathered below; some men jeer, some listen silently; an official pushes through the crowd toward her. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
     }
   ]
 }
