@@ -1017,6 +1017,111 @@
       "seed": 7144,
       "transparent": true,
       "prompt": "A small red ancient Greek vase covered in rows of tiny indistinct black painted marks."
+    },
+    {
+      "kind": "item",
+      "name": "大麥粥",
+      "seed": 7145,
+      "transparent": true,
+      "prompt": "A simple clay bowl of steaming barley porridge with a drizzle of olive oil."
+    },
+    {
+      "kind": "item",
+      "name": "卵石",
+      "seed": 7146,
+      "transparent": true,
+      "prompt": "A small handful of smooth white and dark river pebbles."
+    },
+    {
+      "kind": "item",
+      "name": "水鐘碎片",
+      "seed": 7147,
+      "transparent": true,
+      "prompt": "A broken fragment of a red clay water jar with a small hole near its base."
+    },
+    {
+      "kind": "item",
+      "name": "兩造之石",
+      "seed": 7148,
+      "transparent": true,
+      "prompt": "Two small pebbles fused together, one white and one black."
+    },
+    {
+      "kind": "item",
+      "name": "多一點時間",
+      "seed": 7149,
+      "transparent": true,
+      "prompt": "A small clay water-clock spout plug of beeswax, glowing faintly."
+    },
+    {
+      "kind": "item",
+      "name": "一顆白卵石",
+      "seed": 7150,
+      "transparent": true,
+      "prompt": "A single plain small white pebble, softly glowing."
+    },
+    {
+      "kind": "item",
+      "name": "起訴書的抄本",
+      "seed": 7151,
+      "transparent": true,
+      "prompt": "A modern notebook page with a careful copy of ancient Greek capital letters in ink; letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "無花果蜜餅",
+      "seed": 7152,
+      "transparent": true,
+      "prompt": "A small round honey cake made with mashed figs on a clay plate."
+    },
+    {
+      "kind": "item",
+      "name": "毒堇葉",
+      "seed": 7153,
+      "transparent": true,
+      "prompt": "A few feathery hemlock leaves with a tiny cluster of white flowers."
+    },
+    {
+      "kind": "item",
+      "name": "鐵環",
+      "seed": 7154,
+      "transparent": true,
+      "prompt": "A single broken rusty iron ring from a chain."
+    },
+    {
+      "kind": "item",
+      "name": "陶片筆",
+      "seed": 7155,
+      "transparent": true,
+      "prompt": "A writing stylus whose shaft is a sharpened reddish pottery sherd bound with cord."
+    },
+    {
+      "kind": "item",
+      "name": "打開的鐐銬",
+      "seed": 7156,
+      "transparent": true,
+      "prompt": "An opened iron shackle with its chain hanging loose."
+    },
+    {
+      "kind": "item",
+      "name": "公雞的羽毛",
+      "seed": 7157,
+      "transparent": true,
+      "prompt": "A single glossy rooster tail feather, bronze-green and dark."
+    },
+    {
+      "kind": "item",
+      "name": "尼科的票",
+      "seed": 7158,
+      "transparent": true,
+      "prompt": "Two small pebbles, one white and one dark, resting together in an open palm."
+    },
+    {
+      "kind": "item",
+      "name": "柏拉圖的筆記",
+      "seed": 7159,
+      "transparent": true,
+      "prompt": "A small stack of ancient wooden wax writing tablets bound with cord, covered in indistinct scratched marks."
     }
   ]
 }
