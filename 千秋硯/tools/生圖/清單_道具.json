@@ -526,7 +526,7 @@
       "name": "蘆葦筆",
       "seed": 7074,
       "transparent": true,
-      "prompt": "A thin reed pen with one end chewed soft into a brush, a little black ink on the tip."
+      "prompt": "A reed pen of ancient Egypt: a thin, straight, hollow natural reed stalk about the length of a hand and a half, pale yellow-green with small joints, one end cut at a slant and chewed into soft frayed fibres like a tiny stiff brush. It is all one plain plant stem: no animal-hair brush tip, no metal ferrule, no ring, no handle, not a Chinese brush. Lying alone diagonally, a little black ink on the frayed tip."
     },
     {
       "kind": "item",
@@ -568,7 +568,7 @@
       "name": "紙莎草",
       "seed": 7080,
       "transparent": true,
-      "prompt": "A small sheet of blank papyrus made of thin strips of pith laid crosswise, pale yellow-brown, edges slightly ragged."
+      "prompt": "A single thin flat sheet of ancient Egyptian papyrus, lying flat, slightly curled at one corner: pale cream-yellow and slightly translucent, its surface showing a fine woven grid of thin pith strips, one layer running across and one layer running down, pressed smooth together; the edges slightly ragged. One thin sheet only, like paper, not a stack, not wood, not planks, not slats, blank with no writing."
     },
     {
       "kind": "item",
@@ -582,14 +582,14 @@
       "name": "王名框戒",
       "seed": 7082,
       "transparent": true,
-      "prompt": "A small gold ring whose flat bezel is an empty oval cartouche frame with a little bar at its base, nothing written inside."
+      "prompt": "A small ancient Egyptian gold finger ring seen at an angle: a thin round gold band for a finger, with a flat oval bezel on top shaped like a royal cartouche — a raised oval border with a short straight bar at its base — and the inside of the oval left smooth and empty. Clearly a ring to wear on a finger, small, not a picture frame, not a mirror, no writing."
     },
     {
       "kind": "item",
       "name": "赭紅筆",
       "seed": 7083,
       "transparent": true,
-      "prompt": "A reed pen whose brush tip is soaked deep red with ochre, faint warm glow around the tip."
+      "prompt": "A reed pen of ancient Egypt: a thin, straight, hollow natural reed stalk about the length of a hand and a half, pale yellow-green with small joints, one end cut at a slant and chewed into soft frayed fibres like a tiny stiff brush. It is all one plain plant stem: no animal-hair brush tip, no metal ferrule, no ring, no handle, not a Chinese brush. The frayed tip is soaked deep red with ochre pigment and glows faintly warm."
     },
     {
       "kind": "item",
@@ -603,14 +603,14 @@
       "name": "梅芮的石片",
       "seed": 7085,
       "transparent": true,
-      "prompt": "A flat chip of white limestone covered with small clumsy black ink drawings of little symbols in rows, and in one corner a tiny sketch of a cat."
+      "prompt": "A flat chip of white limestone the size of a palm, rough edges, covered with a child's clumsy practice of Egyptian hieroglyphs in black ink: little wobbly pictures of an owl, a reed leaf, a wavy water line, an eye, a seated man, a loaf, drawn crookedly in rows; in one corner a tiny doodle of a sitting cat. Only Egyptian picture-signs: absolutely no Chinese characters, no Asian script, no Latin letters."
     },
     {
       "kind": "item",
       "name": "名冊的臨摹",
       "seed": 7086,
       "transparent": true,
-      "prompt": "A small modern notebook lying open, the page covered in careful black ink handwriting copied in lines, one small blank smudged patch on one line; no readable letters."
+      "prompt": "A small modern notebook lying open, seen from a low side angle so the pages are strongly foreshortened, the pages filled with long horizontal rows of tiny continuous wavy pen scribbles, like thin looping squiggly lines, too small and blurred to be any script at all; on one line a small smudged blank patch. No separate characters, no Chinese characters, no letters, nothing readable."
     },
     {
       "kind": "item",

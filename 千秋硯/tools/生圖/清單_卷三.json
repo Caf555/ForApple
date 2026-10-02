@@ -11,7 +11,7 @@
       "kind": "bg",
       "name": "邊界石碑",
       "seed": 8102,
-      "prompt": "Ancient Egypt around 1346 BC, at the foot of a pale yellow limestone desert cliff under harsh sunlight: a large flat rectangular panel being carved into the cliff face, at its top a relief of a round sun disk sending down many long straight rays that end in tiny open hands, below it rows of small worn carved pictures too faint to read; wooden scaffolds lashed with rope against the cliff, workers with copper chisels and stone mallets, fine white stone dust drifting in the air, sand at the bottom."
+      "prompt": "Ancient Egypt around 1346 BC, at the foot of a pale yellow limestone desert cliff under harsh sunlight: a large flat rectangular panel being carved into the cliff face, at its top a relief of a round sun disk sending down many long straight rays that end in tiny open hands, below it rows of small worn carved pictures too faint to read; wooden scaffolds lashed with rope against the cliff, fine white stone dust drifting in the air, sand at the bottom. Workers with copper chisels and wooden mallets: Egyptian workmen of the New Kingdom: short-cropped black hair or shaved heads, clean-shaven, bare-chested, wearing short plain white linen kilts wrapped at the waist; no long hair, no headbands, no feathers, no beads. Any carved signs are Egyptian hieroglyph pictures (small birds, eyes, reeds, water lines, human figures) worn and blurred; absolutely no Chinese characters, no Asian script, no Latin letters."
     },
     {
       "kind": "bg",
@@ -23,7 +23,7 @@
       "kind": "bg",
       "name": "雕刻作坊",
       "seed": 8104,
-      "prompt": "Ancient Egypt around 1346 BC, a sculptor's workshop courtyard in Amarna with whitewashed mud-brick walls and a reed-mat awning casting soft shade: wooden shelves holding many white plaster face casts of men and women with closed eyes, blocks of limestone, copper chisels and stone polishers on a low bench, small stone palettes with red, green and black pigments; on a table at the back a painted limestone bust of a woman with a long graceful neck wearing a tall flat-topped blue crown, one eye inlaid and the other eye left blank; quiet and dusty, warm light."
+      "prompt": "Ancient Egypt around 1346 BC, a sculptor's workshop courtyard in Amarna with whitewashed mud-brick walls and a reed-mat awning casting soft shade: wooden shelves holding many white plaster face casts of men and women with closed eyes, blocks of limestone; on a low bench, simple ancient tools only: slim copper chisels with no handles, rounded wooden mallets shaped like clubs, smooth stone polishers, and a few small open clay bowls and sea shells holding lumps of red ochre, green malachite and black soot pigment; on a table at the back a painted limestone bust of a woman with a long graceful neck wearing a tall flat-topped blue crown, one eye inlaid and the other eye left blank; quiet and dusty, warm light. No modern hammers, no pliers, no steel tools, no artist's paint palette."
     },
     {
       "kind": "bg",
@@ -109,7 +109,7 @@
       "kind": "bg",
       "name": "尼羅河船",
       "seed": 8107,
-      "prompt": "Ancient Egypt around 1343 BC, on the deck of a long wooden Nile cargo boat sailing south under a single tall rectangular linen sail filled by the north wind, steering oars at the stern, coils of rope and copper tools and baskets on deck; the wide calm brown-green Nile, narrow bright green strips of fields and palm trees on both banks and pale desert beyond, clear sky. No dragon heads, no modern boats."
+      "prompt": "Ancient Egypt around 1343 BC, a long wooden Nile cargo boat of the New Kingdom sailing south on the wide calm brown-green Nile: a shallow, slender hull whose bow and stern both sweep up in long smooth plain curves ending in simple rounded wooden tips, like the boats painted in Egyptian tombs; one tall mast with a single wide rectangular linen sail stretched between two horizontal yards, filled by the north wind; two large steering oars at the stern; coils of rope, baskets and clay jars on deck; narrow bright green strips of fields and palm trees on both banks and pale desert beyond, clear sky. The ends of the boat are plain smooth curves: no carved animal heads, no dragon head, no figurehead, no Viking or Chinese style."
     },
     {
       "kind": "bg",
@@ -134,7 +134,7 @@
       "name": "帕瑟",
       "seed": 8203,
       "transparent": true,
-      "prompt": "A very old Egyptian priest of Amun, thin and frail, shaved head, deeply lined face, eyes closed as if reciting from memory, a long plain white linen robe yellowed with age, a simple linen sash, bony hands folded, dignified and bitter."
+      "prompt": "A very old Egyptian priest of Amun of the New Kingdom, thin and frail, completely shaved head, deeply lined face, eyes closed as if reciting from memory, bony hands folded; he wears ancient Egyptian priestly linen: a long, finely pleated, semi-transparent white linen kilt-robe tied high at the waist, with a pleated linen shawl draped over the shoulders and knotted at the chest, yellowed with age; no crossed collar, no kimono, no wrap robe with lapels, not East Asian monk clothing; dignified and bitter."
     },
     {
       "kind": "enemy",
@@ -182,13 +182,13 @@
       "kind": "cg",
       "name": "鑿名",
       "seed": 8403,
-      "prompt": "Ancient Egypt around 1343 BC, Thebes (Luxor) on the east bank of the Nile: a 19-year-old Egyptian stonemason with short-cropped hair and a white linen kilt stands on a wooden scaffold before a carved temple wall, a copper chisel raised in his hand but frozen, staring at a carved oval royal name frame (cartouche) on the wall; below, a young woman painter with a reed pen and a young man look up at him; other walls around show fresh white chisel scars; harsh light, tense and solemn; no readable writing."
+      "prompt": "Ancient Egypt around 1343 BC, Thebes (Luxor) on the east bank of the Nile: a 19-year-old Egyptian stonemason with short-cropped black hair and a white linen kilt stands on a wooden scaffold before a carved sandstone temple wall, a copper chisel raised in his hand but frozen, staring at a carved oval royal name frame (cartouche) on the wall whose inside is worn and blurred; below, a young woman painter with a reed pen and a young man look up at him; the wall around shows large carved figures of people in profile and fresh white chisel scars; harsh light, tense and solemn. Any carved signs are Egyptian hieroglyph pictures (small birds, eyes, reeds, water lines, human figures) worn and blurred; absolutely no Chinese characters, no Asian script, no Latin letters."
     },
     {
       "kind": "cg",
       "name": "暈船",
       "seed": 8404,
-      "prompt": "Ancient Egypt around 1343 BC, on a wooden Nile boat under a tall linen sail: a lean 19-year-old Egyptian youth with short hair leans over the side seasick yet laughing weakly, a young woman in a linen dress with a reed pen behind her ear laughs at him while holding a limestone flake, a young man pats his back, a translucent young woman with long ink-black hair watches the youth with quiet recognition; green riverbanks and desert beyond, bright and warm."
+      "prompt": "Ancient Egypt around 1343 BC, on a wooden Nile boat under a tall linen sail, exactly four figures, two male and two female. On the left, a lean 19-year-old Egyptian youth with short-cropped black hair leans far over the side of the boat, gripping the rail, seasick with a queasy face, yet laughing weakly; a young man in plain clothes pats the youth's back. In the centre, clearly a GIRL: a 15-year-old Egyptian girl with a soft feminine face, short black hair under a plain white linen headscarf, a long white linen dress, a smear of red ochre on one cheek and green malachite on the other, a reed pen tucked behind her ear, laughing at the youth while holding a flat white limestone flake. On the right, standing a little apart, a ghostly young woman who is clearly not of this world: her whole body semi-transparent and faded like a wash of pale blue-grey ink, the sail and river visible through her, her long ink-black hair dissolving into wisps of ink at the ends, watching the youth with quiet recognition. Green riverbanks and desert beyond, bright and warm."
     }
   ]
 }
