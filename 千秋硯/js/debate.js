@@ -67,7 +67,7 @@ export class Debate {
     r.appendChild(this.tellEl);
     this.hand = el('div', { class: 'd-hand' });
     r.appendChild(this.hand);
-    r.appendChild(el('div', { class: 'd-legend' }, '立論 剋 讓步 剋 引證 剋 反詰 剋 立論', el('br'), '「共感」不分勝負，累積三次可達成和解。'));
+    r.appendChild(el('div', { class: 'd-legend' }, '立論 剋 讓步 剋 引證 剋 反詰 剋 立論', el('br'), '「共感」不分勝負，累積三次可達成和解。回合用完時，人心 +2 以上或信念比對方剩得多，就算贏得人心。'));
     r.classList.add('open');
     if (!this.g.flags['教學.論辯']) {
       this.g.flags['教學.論辯'] = 1;
@@ -75,7 +75,8 @@ export class Debate {
         '不是所有衝突都要靠打鬥解決。論辯中，雙方每回合各出一張「論點卡」。',
         '卡片互相剋制：立論 剋 讓步、讓步 剋 引證、引證 剋 反詰、反詰 剋 立論。',
         '留意對手的神情提示，它透露了對方下一張卡的傾向（但不一定準）。',
-        '把對方的「信念」降到零就能說服他；或是在回合結束時贏得旁人的「人心」。',
+        '把對方的「信念」降到零就能說服他。回合用完時，如果旁人的「人心」在 +2 以上，或你剩下的信念比對方多，就算贏得人心。',
+        '輸掉一回合不代表輸掉整場論辯。看準對方的神情，下一回合再扳回來。',
         '收集越多史卷條目，「引證」卡就越多。',
       ]);
     }
@@ -101,7 +102,11 @@ export class Debate {
 
   nextRound() {
     this.round++;
-    if (this.round > this.d.rounds) return this.finish(this.crowd >= 3 ? '人心' : '敗');
+    if (this.round > this.d.rounds) {
+      // 回合用完：人心 +2 以上，或你剩下的信念比例比對方高，都算贏得人心
+      const ahead = this.foeBelief / this.d.foeBelief < this.myBelief / this.d.myBelief;
+      return this.finish(this.crowd >= 2 || ahead ? '人心' : '敗');
+    }
     this.renderMeters();
     this.foeNext = this.foeCard();
     const tell = Math.random() < 0.7 ? this.foeNext : pick(Object.keys(BEATS));
@@ -158,10 +163,10 @@ export class Debate {
     const s = mine ? 1 : -1;
     this.ctx.audio.sfx(mine ? 'hit' : 'fail');
     if (card === '立論' || card === '反詰') {
-      if (mine) this.foeBelief -= 4; else this.myBelief -= 4;
+      if (mine) this.foeBelief -= 8; else this.myBelief -= 8;
       this.line('', mine ? '你的話正中要害！' : '對方的話讓你一時語塞。', 'sys ' + (mine ? 'good' : 'bad'));
     } else if (card === '引證') {
-      if (mine) this.foeBelief -= 3; else this.myBelief -= 3;
+      if (mine) this.foeBelief -= 6; else this.myBelief -= 6;
       this.crowd = Math.max(-5, Math.min(5, this.crowd + s));
       this.line('', mine ? '旁聽的人們點了點頭。' : '旁聽的人們看向對方。', 'sys ' + (mine ? 'good' : 'bad'));
     } else if (card === '讓步') {

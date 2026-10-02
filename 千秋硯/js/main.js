@@ -120,7 +120,7 @@ function showTitle() {
       el('button', { class: 'btn' + (auto ? '' : ' primary'), onclick: newJourney }, '新的旅程'),
       el('button', { class: 'btn', onclick: () => { ctx.g = ctx.g || newGame(); ctx.hub.saveMenu(); } }, '讀取存檔'),
       el('button', { class: 'btn', onclick: () => ctx.hub.settings() }, '設定')),
-    el('p', { class: 't-ver' }, VERSION + '・序卷＋卷一〈大員〉＋卷二〈牧野〉＋卷三〈阿瑪納〉回一～回二'));
+    el('p', { class: 't-ver' }, VERSION + '・序卷＋卷一〈大員〉＋卷二〈牧野〉＋卷三〈阿瑪納〉回一～回三'));
   t.classList.add('open');
 }
 
