@@ -241,7 +241,7 @@ export class UI {
     if (this.settings.vibrate && navigator.vibrate) { try { navigator.vibrate(pattern); } catch (e) { /* 不支援就算了 */ } }
   }
 
-  clearStory() { this.story.innerHTML = ''; this.hidePortrait(); }
+  clearStory() { this.story.innerHTML = ''; this.pageStart = null; this.hidePortrait(); }
 
   // 文字替換：{名} → 玩家稱呼
   fmt(text) {
@@ -279,6 +279,18 @@ export class UI {
     const text = this.fmt(line.text);
     const { wrap, body } = this.makeLine(line);
     this.story.appendChild(wrap);
+    // 整頁模式：這一行放進來會讓這一頁超出畫面（第一行會被捲到上面去），就先在這裡換頁
+    if (this.pageStart && this.settings.readMode !== 'line' && this.settings.readMode !== 'auto') {
+      body.textContent = text;
+      const over = wrap.offsetTop + wrap.offsetHeight - this.pageStart.offsetTop > this.story.clientHeight - 24;
+      body.textContent = '';
+      if (over) {
+        wrap.style.display = 'none';
+        this.pageBreak = true;
+        return this.waitTap().then(() => { wrap.remove(); return this.say(line, opts); });
+      }
+    }
+    if (!this.pageStart) this.pageStart = wrap;
     this.scrollDown();
     this.showPortrait(line.who);
     this.ctx.audio.speak(text, line.who);
@@ -295,6 +307,7 @@ export class UI {
           $('advance-hint').classList.remove('show');
           this.waiting = null;
           this.skipPage = false;
+          this.pageStart = null;
           resolve();
         };
         if (opts.auto) this.scheduleAuto(text);
@@ -311,6 +324,21 @@ export class UI {
         this.typing.timer = setTimeout(tick, ms);
       };
       this.typing = { finish, timer: setTimeout(tick, ms) };
+    });
+  }
+
+  // 整頁模式換頁：顯示「點一下繼續」，等玩家點擊後開始新的一頁
+  waitTap() {
+    this.scrollDown();
+    return new Promise(resolve => {
+      $('advance-hint').classList.add('show');
+      this.waiting = () => {
+        $('advance-hint').classList.remove('show');
+        this.waiting = null;
+        this.skipPage = false;
+        this.pageStart = null;
+        resolve();
+      };
     });
   }
 
@@ -339,6 +367,7 @@ export class UI {
   cancelWait() {
     clearTimeout(this.autoTimer);
     this.skipPage = false;
+    this.pageStart = null;
     if (this.typing) { clearTimeout(this.typing.timer); this.typing = null; }
     this.waiting = null;
     $('advance-hint').classList.remove('show');
@@ -346,12 +375,17 @@ export class UI {
   }
 
   scrollDown() {
-    requestAnimationFrame(() => { this.story.scrollTop = this.story.scrollHeight; });
+    requestAnimationFrame(() => {
+      // 整頁模式：最多捲到這一頁的第一行，不讓它被捲出畫面
+      const cap = this.pageStart && this.pageStart.isConnected ? Math.max(0, this.pageStart.offsetTop - 12) : Infinity;
+      this.story.scrollTop = Math.min(this.story.scrollHeight, cap);
+    });
   }
 
   // 選項：[{label, enabled, lock}] → Promise<index>
   showChoices(list) {
     this.choices.innerHTML = '';
+    this.pageStart = null;
     return new Promise(resolve => {
       list.forEach((c, i) => {
         const b = el('button', { class: 'choice' + (c.enabled ? '' : ' locked') + (c.seen ? ' seen' : ''), disabled: !c.enabled },

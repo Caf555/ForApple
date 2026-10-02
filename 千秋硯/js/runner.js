@@ -53,9 +53,11 @@ export class Runner {
               this.pageChars = (this.pageChars || 0) + Array.from(c.text).length;
               wait = !this.nextIsText(scene, pc + 1) || this.pageLines >= 6 || this.pageChars >= 200;
             }
+            ui.pageBreak = false;
             await ui.say({ who: c.who, text: c.text }, { wait, auto: mode === 'auto' });
             if (!alive()) return;
             if (wait) { this.pageLines = 0; this.pageChars = 0; }
+            else if (ui.pageBreak) { this.pageLines = 1; this.pageChars = Array.from(c.text).length; }
             pc++;
             break;
           }
