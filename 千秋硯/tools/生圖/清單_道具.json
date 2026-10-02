@@ -611,6 +611,55 @@
       "seed": 7086,
       "transparent": true,
       "prompt": "A small modern notebook lying open, the page covered in careful black ink handwriting copied in lines, one small blank smudged patch on one line; no readable letters."
+    },
+    {
+      "kind": "item",
+      "name": "無花果",
+      "seed": 7087,
+      "transparent": true,
+      "prompt": "Two ripe purple figs, one split open showing red seeds."
+    },
+    {
+      "kind": "item",
+      "name": "砂岩片",
+      "seed": 7088,
+      "transparent": true,
+      "prompt": "A broken chip of tan sandstone with traces of old red and blue paint and a rough chisel scar."
+    },
+    {
+      "kind": "item",
+      "name": "蓮花",
+      "seed": 7089,
+      "transparent": true,
+      "prompt": "A single blue lotus flower with pointed petals on a short green stem, half open."
+    },
+    {
+      "kind": "item",
+      "name": "香料",
+      "seed": 7090,
+      "transparent": true,
+      "prompt": "A few lumps of golden translucent tree resin incense in a small clay dish, a thin wisp of smoke."
+    },
+    {
+      "kind": "item",
+      "name": "蓮花護符",
+      "seed": 7091,
+      "transparent": true,
+      "prompt": "A dried blue lotus flower pressed inside a small square of linen, tied with thread as an amulet."
+    },
+    {
+      "kind": "item",
+      "name": "迴響石",
+      "seed": 7092,
+      "transparent": true,
+      "prompt": "A small smooth piece of tan sandstone with faint concentric ripple marks like sound waves."
+    },
+    {
+      "kind": "item",
+      "name": "帕瑟的名單",
+      "seed": 7093,
+      "transparent": true,
+      "prompt": "A modern notebook open to pages densely filled with neat handwritten lines in black ink, viewed from an angle so nothing is readable."
     }
   ]
 }

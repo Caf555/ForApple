@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
+  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
   "items": [
     {
       "kind": "bg",
@@ -104,6 +104,91 @@
       "name": "影子",
       "seed": 8402,
       "prompt": "Ancient Egypt around 1346 BC, a white limestone quarry under the noon sun: a 15-year-old girl in a white linen dress has tied her linen headscarf between two wooden wedges to make a tiny patch of shade, an exhausted old worker rests against the rock inside that small shadow drinking from a water skin, a 16-year-old boy stonemason kneels beside him, a young man and a translucent young woman with long ink-black hair stand nearby; harsh white light all around the one small shadow, tender."
+    },
+    {
+      "kind": "bg",
+      "name": "尼羅河船",
+      "seed": 8107,
+      "prompt": "Ancient Egypt around 1343 BC, on the deck of a long wooden Nile cargo boat sailing south under a single tall rectangular linen sail filled by the north wind, steering oars at the stern, coils of rope and copper tools and baskets on deck; the wide calm brown-green Nile, narrow bright green strips of fields and palm trees on both banks and pale desert beyond, clear sky. No dragon heads, no modern boats."
+    },
+    {
+      "kind": "bg",
+      "name": "底比斯",
+      "seed": 8108,
+      "prompt": "Ancient Egypt around 1343 BC, Thebes (Luxor) on the east bank of the Nile: the riverfront before the vast temple complex of Karnak: massive sloping stone gateway towers (pylons) carved with reliefs, tall wooden flagpoles, a pair of slender granite obelisks whose pointed tips gleam with gold, a sacred lake with green stagnant water and a few untended lotus leaves; the temple forecourt eerily empty, no priests, no crowds; date palms, the Nile in the foreground, hot afternoon light. No pyramids, no sphinx."
+    },
+    {
+      "kind": "bg",
+      "name": "卡納克神廟",
+      "seed": 8109,
+      "prompt": "Ancient Egypt around 1343 BC, Thebes (Luxor) on the east bank of the Nile: inside a courtyard of the temple of Amun at Karnak: sandstone walls and thick columns covered with carved and painted reliefs of a king making offerings, many spots on the walls freshly hacked out leaving rough pale white chiseled scars, wooden scaffolds against the walls, copper chisels and stone dust on the ground, weeds growing between paving stones, harsh sunlight and deep shadows."
+    },
+    {
+      "kind": "bg",
+      "name": "卡納克內殿",
+      "seed": 8110,
+      "prompt": "Ancient Egypt around 1343 BC, deep inside the temple of Karnak at night: a narrow dark stone sanctuary with heavy columns, faint moonlight from a slit in the roof, at the far end a small empty stone shrine niche where a statue once stood, a faint outline left on its floor and a few dried flower petals, profound silence and emptiness."
+    },
+    {
+      "kind": "char",
+      "name": "帕瑟",
+      "seed": 8203,
+      "transparent": true,
+      "prompt": "A very old Egyptian priest of Amun, thin and frail, shaved head, deeply lined face, eyes closed as if reciting from memory, a long plain white linen robe yellowed with age, a simple linen sash, bony hands folded, dignified and bitter."
+    },
+    {
+      "kind": "enemy",
+      "name": "鑿痕",
+      "seed": 8307,
+      "transparent": true,
+      "prompt": "A crawling creature made of rough pale chisel scars and chips of sandstone broken off a temple wall, bits of old red and blue paint still on some chips, shaped like a line of erased writing come alive."
+    },
+    {
+      "kind": "enemy",
+      "name": "柱影",
+      "seed": 8308,
+      "transparent": true,
+      "prompt": "A tall dark shadow shaped like the space between two massive carved temple columns, with faint whispering figures of kneeling worshippers inside it, dim and melancholy."
+    },
+    {
+      "kind": "enemy",
+      "name": "河霧魅",
+      "seed": 8309,
+      "transparent": true,
+      "prompt": "A drifting figure of cold white morning river mist rising from tall papyrus reeds, its shape like a small boat with a sail dissolving into fog."
+    },
+    {
+      "kind": "enemy",
+      "name": "蓮影",
+      "seed": 8310,
+      "transparent": true,
+      "prompt": "A tangle of blue lotus flowers and long green stems rising from stagnant green pond water, the stems reaching out like grasping vines, petals half closed, beautiful and eerie."
+    },
+    {
+      "kind": "enemy",
+      "name": "卡納克的回音",
+      "seed": 8311,
+      "transparent": true,
+      "prompt": "A swirling translucent column of many faint singing faces of men, women, elders and children overlapping, made of pale sandstone dust and echoing sound waves, rising inside an empty temple, sorrowful and haunting."
+    },
+    {
+      "kind": "enemy",
+      "name": "空龕",
+      "seed": 8312,
+      "transparent": true,
+      "prompt": "A small empty stone shrine niche from which pours a heavy dark void, a hollow emptiness with a faint outline where a statue once stood, dried flower petals and wisps of old incense smoke drawn into it, profound and sad, not a god, no figure inside."
+    },
+    {
+      "kind": "cg",
+      "name": "鑿名",
+      "seed": 8403,
+      "prompt": "Ancient Egypt around 1343 BC, Thebes (Luxor) on the east bank of the Nile: a 19-year-old Egyptian stonemason with short-cropped hair and a white linen kilt stands on a wooden scaffold before a carved temple wall, a copper chisel raised in his hand but frozen, staring at a carved oval royal name frame (cartouche) on the wall; below, a young woman painter with a reed pen and a young man look up at him; other walls around show fresh white chisel scars; harsh light, tense and solemn; no readable writing."
+    },
+    {
+      "kind": "cg",
+      "name": "暈船",
+      "seed": 8404,
+      "prompt": "Ancient Egypt around 1343 BC, on a wooden Nile boat under a tall linen sail: a lean 19-year-old Egyptian youth with short hair leans over the side seasick yet laughing weakly, a young woman in a linen dress with a reed pen behind her ear laughs at him while holding a limestone flake, a young man pats his back, a translucent young woman with long ink-black hair watches the youth with quiet recognition; green riverbanks and desert beyond, bright and warm."
     }
   ]
 }
