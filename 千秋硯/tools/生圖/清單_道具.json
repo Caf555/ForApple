@@ -729,14 +729,14 @@
       "name": "碎陶",
       "seed": 7103,
       "transparent": true,
-      "prompt": "A few broken shards of a reddish-brown clay pot."
+      "prompt": "Four or five loose broken shards of a reddish-brown clay pot lying scattered flat, each a separate curved fragment with sharp broken edges, one piece with part of the rim. Only broken pieces: not a whole pot, not a cracked jar."
     },
     {
       "kind": "item",
       "name": "封泥",
       "seed": 7104,
       "transparent": true,
-      "prompt": "A small lump of dried grey clay with a stamped oval seal impression, attached to a short knotted string."
+      "prompt": "A small flattened lump of dried grey Nile clay attached to a short knotted string, with one oval seal impression pressed into it showing a tiny scarab beetle shape, worn and blurred. No Chinese characters, no letters, no readable writing."
     },
     {
       "kind": "item",
@@ -750,7 +750,7 @@
       "name": "空城鑰",
       "seed": 7106,
       "transparent": true,
-      "prompt": "A simple ancient wooden key with a few pegs, worn smooth, on a leather cord."
+      "prompt": "An ancient Egyptian wooden key: a straight flat wooden bar about a hand long, worn smooth and dark from use, with three short wooden pegs sticking up at right angles near one end like little teeth, and a hole at the other end with a leather cord through it. All wood: not a metal key, no ring bow, no medieval key shape."
     },
     {
       "kind": "item",
@@ -764,7 +764,7 @@
       "name": "石磚碎片",
       "seed": 7108,
       "transparent": true,
-      "prompt": "A broken piece of a small sandstone block with a painted relief fragment of a tiny hand at the end of a sun ray."
+      "prompt": "A broken piece of a small sandstone block (talatat) with a fragment of painted Amarna relief on its face: a thin straight carved sun ray ending in a tiny simple open human hand, the hand bare and painted reddish-ochre, with no sleeve, no clothing, no wrist cuff; faded yellow paint on the ray; rough broken edges."
     },
     {
       "kind": "item",
@@ -785,7 +785,7 @@
       "name": "摩斯的鑿子",
       "seed": 7111,
       "transparent": true,
-      "prompt": "An old well-worn copper chisel, edge sharp, shaft polished by decades of handling, a tiny scratched mark near the end, wrapped grip of frayed linen."
+      "prompt": "An old ancient Egyptian copper chisel: one solid straight bar of copper about a forearm long, square in section, the striking end mushroomed and flattened from decades of mallet blows, the cutting edge ground sharp, the whole surface dull reddish-brown with patches of green verdigris, the middle polished smooth by handling and wrapped with a band of frayed linen, a tiny scratched mark near the end. No wooden handle, no steel blade, not a modern carpenter's chisel."
     },
     {
       "kind": "item",

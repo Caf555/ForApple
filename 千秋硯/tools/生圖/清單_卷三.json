@@ -49,7 +49,7 @@
       "name": "梅芮",
       "seed": 8202,
       "transparent": true,
-      "prompt": "A 15-year-old Egyptian girl of the Amarna period, short black hair under a plain linen headscarf, a simple white linen dress, a smear of red ochre on one cheek and green malachite on the other, a reed pen tucked behind her ear, sharp clever eyes and a stubborn little smile."
+      "prompt": "A 15-year-old Egyptian girl of the Amarna period, head and shoulders only, both arms relaxed down at her sides and out of the frame so no hands are visible, short black hair under a plain linen headscarf, a simple white linen dress, a smear of red ochre on one cheek and green malachite on the other, a few small specks of red and green paint on her collar, sharp clever eyes and a stubborn little smile. Nothing held, no pen, no brush, no tools, no objects near her face or ears."
     },
     {
       "kind": "enemy",
@@ -207,7 +207,7 @@
       "name": "奈赫特",
       "seed": 8204,
       "transparent": true,
-      "prompt": "A thin young Egyptian scribe of the Amarna period about 22 years old, large thoughtful eyes, short-cropped hair, a plain white linen kilt and shawl, a smudge of clay on his chin, holding a small square clay tablet covered in rows of tiny triangular wedge-shaped dents pressed into the clay, like little nail-head and arrow-head marks of cuneiform, too small to read; no letters, no Latin alphabet, no Chinese characters, and a slim triangular reed stylus, quiet and gentle."
+      "prompt": "A thin young Egyptian scribe of the Amarna period about 22 years old, large thoughtful eyes, short-cropped hair, a plain white linen kilt and shawl, a smudge of clay on his chin. His left hand firmly holds a small square clay tablet resting flat on his palm, his fingers curled around its edge so it is clearly gripped and supported, not floating; the tablet is covered in rows of tiny triangular wedge-shaped dents like cuneiform, too small to read, no letters, no Latin alphabet, no Chinese characters. His right hand holds a slim triangular reed stylus pressing into the tablet. Quiet and gentle."
     },
     {
       "kind": "char",
@@ -328,13 +328,13 @@
       "kind": "cg",
       "name": "埋信",
       "seed": 8407,
-      "prompt": "Ancient Egypt around 1332 BC, inside a dim mud-brick records office: a thin young scribe kneels beside a shallow pit dug in the earthen floor, gently placing palm-sized clay tablets covered in tiny wedge marks into it one by one, as if tucking someone in; a young man with a small shovel and a translucent young woman with long ink-black hair watch; empty shelves behind; one shaft of light; tender and solemn; no readable writing."
+      "prompt": "Ancient Egypt around 1332 BC, inside a dim mud-brick records office: a thin young scribe kneels beside a shallow pit dug in the earthen floor, gently placing palm-sized clay tablets covered in rows of tiny triangular wedge-shaped dents like cuneiform, too small to read; no letters, no Latin alphabet, no Chinese characters into it one by one, as if tucking someone in; a young man holding a simple wooden digging stick and a small woven basket of earth, and a translucent young woman with long ink-black hair watch; empty shelves behind; one shaft of light; tender and solemn. No metal shovel, no spade."
     },
     {
       "kind": "cg",
       "name": "離城",
       "seed": 8408,
-      "prompt": "Ancient Egypt around 1332 BC, the last large wooden boat with a tall linen sail leaving the riverbank of the abandoned white city of Akhetaten, people on the deck looking back silently at the city, a young woman on board holding a white plaster face mask of an old man, a broad-shouldered man with a grin leaning seasick over the side, the white city a long pale line beneath cliffs, sand blowing over the quay, melancholy golden light."
+      "prompt": "Ancient Egypt around 1332 BC, the last large wooden Nile boat with a tall linen sail leaving the riverbank, people on the deck looking back silently; a young woman on board holding a white plaster face mask of an old man; a broad-shouldered man with a grin leaning seasick over the side; behind them, the abandoned city of Akhetaten spread low and flat along the wide plain by the river: long rows of low, flat-roofed, whitewashed mud-brick houses and walled courtyards, with the bare desert cliffs standing far behind the city, not under it; the houses are on the flat ground, not on a hill or cliff top; sand blowing over the empty quay, melancholy golden light. Not a Mediterranean or Greek island town."
     },
     {
       "kind": "bg",
@@ -354,7 +354,7 @@
       "name": "梅芮_45",
       "seed": 8207,
       "transparent": true,
-      "prompt": "A 45-year-old Egyptian woman painter, white hair tied back with a faded linen headscarf, thin face with sharp bright eyes and a stubborn mouth, a simple linen dress, a row of reed pens at her waist, faint paint stains on her fingers."
+      "prompt": "A 45-year-old Egyptian woman painter, white hair tied back with a faded linen headscarf, thin face with sharp bright eyes and a stubborn mouth, a simple linen dress, a bundle of plain natural reed pens tucked in her belt, each just a thin hollow reed stalk with a frayed chewed tip; no paintbrushes, no metal ferrules, no hair bristles, faint red ochre and green paint stains on her fingers."
     },
     {
       "kind": "enemy",
@@ -408,7 +408,7 @@
       "kind": "cg",
       "name": "最後一幅畫",
       "seed": 8410,
-      "prompt": "Ancient Egypt around 1315 BC, golden dusk at the foot of a desert cliff: a white-haired woman painter places a small white limestone flake into a young man's hands; on the flake, fine black ink line drawings of many small figures: an old worker bent under a stone, a scribe holding a clay tablet, a grinning young stonemason on a scaffold, a girl with paint on her cheeks, a man holding a pen and a floating long-haired figure with no clear face; an old stonemason sits nearby smiling; a translucent young woman with long ink-black hair looks at the flake with tears in her eyes; tender."
+      "prompt": "Ancient Egypt around 1315 BC, golden dusk at the foot of a desert cliff, exactly four people and nobody else. (1) A white-haired elderly WOMAN painter, clearly female with a thin feminine face, no beard, a faded linen headscarf and a long linen dress, holds out a small white limestone flake and places it into the hands of (2) a young man in plain clothes. (3) An old Egyptian stonemason with short grey hair sits on a rock nearby, smiling. (4) A ghostly young woman stands a little apart: her whole body semi-transparent and faded like a wash of pale blue-grey ink, the cliff visible through her, long ink-black hair dissolving into wisps of ink, tears in her eyes as she looks at the flake. On the limestone flake only, tiny black ink line drawings: an old worker bent under a stone, a scribe with a clay tablet, a grinning stonemason on a scaffold, a girl with paint on her cheeks, a man holding a pen and a floating long-haired figure with no clear face — these little figures exist only as drawings on the flake, not as people in the scene. Tender."
     }
   ]
 }
