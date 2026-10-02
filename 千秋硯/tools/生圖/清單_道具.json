@@ -660,6 +660,62 @@
       "seed": 7093,
       "transparent": true,
       "prompt": "A modern notebook open to pages densely filled with neat handwritten lines in black ink, viewed from an angle so nothing is readable."
+    },
+    {
+      "kind": "item",
+      "name": "石榴",
+      "seed": 7094,
+      "transparent": true,
+      "prompt": "A ripe red pomegranate split open showing glistening ruby-red seeds."
+    },
+    {
+      "kind": "item",
+      "name": "尖筆",
+      "seed": 7095,
+      "transparent": true,
+      "prompt": "A thin reed stylus cut to a triangular tip, a little dried clay on the end."
+    },
+    {
+      "kind": "item",
+      "name": "泥板",
+      "seed": 7096,
+      "transparent": true,
+      "prompt": "A blank palm-sized square tablet of smooth tan clay, slightly pillow-shaped."
+    },
+    {
+      "kind": "item",
+      "name": "亞麻線",
+      "seed": 7097,
+      "transparent": true,
+      "prompt": "A small skein of fine natural linen thread."
+    },
+    {
+      "kind": "item",
+      "name": "回音泥板",
+      "seed": 7098,
+      "transparent": true,
+      "prompt": "A tiny tan clay tablet with a single short row of small wedge-shaped impressions, worn as a pendant on a cord."
+    },
+    {
+      "kind": "item",
+      "name": "頌歌之環",
+      "seed": 7099,
+      "transparent": true,
+      "prompt": "A braided linen thread bracelet with a small piece of golden resin incense threaded in the middle."
+    },
+    {
+      "kind": "item",
+      "name": "楔形尖筆",
+      "seed": 7100,
+      "transparent": true,
+      "prompt": "An elegant reed stylus with a sharp triangular tip, its shaft wrapped with fine thread."
+    },
+    {
+      "kind": "item",
+      "name": "里布哈達的信",
+      "seed": 7101,
+      "transparent": true,
+      "prompt": "A small torn piece of papyrus with a single line of black ink cursive writing, slightly smudged, unreadable."
     }
   ]
 }
