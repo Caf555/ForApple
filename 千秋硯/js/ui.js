@@ -1,5 +1,6 @@
 // 介面元件：文字框、選項、面板、提示
 import { CHARACTERS, CODEX } from './data.js';
+import { displayName } from './state.js';
 export function el(tag, attrs = {}, ...kids) {
   const e = document.createElement(tag);
   for (const k in attrs) {
@@ -192,7 +193,7 @@ export class UI {
   setAmbient(theme) {
     const box = this.ambientEl;
     if (!box) return;
-    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', hub: 'ink', modern: 'glow' }[theme] || '') : '';
+    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', hub: 'ink', modern: 'glow' }[theme] || '') : '';
     if (box.dataset.kind === kind) return;
     box.dataset.kind = kind;
     box.innerHTML = '';
@@ -258,7 +259,7 @@ export class UI {
     const wrap = el('div', { class: 'line' + (who ? ' say' : ' narr') + (kind ? ' ' + kind : '') });
     let name = null;
     if (who) {
-      const shown = who === '知墨' ? this.ctx.g.player.call : who;
+      const shown = displayName(this.ctx.g, who);
       const key = this.charKey(who);
       name = el('div', { class: 'who', 'data-who': who },
         this.hasImg('char', key) ? el('img', { class: 'avatar', src: this.imgSrc('char', key), alt: '', decoding: 'async', onerror: e => e.target.remove(),

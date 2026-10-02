@@ -42,16 +42,19 @@ body[data-vtheme="modern"] { --accent: #d9a55b; }
 body[data-vtheme="dayuan"] { --accent: #6d9fcc; }
 body[data-vtheme="hub"] { --accent: #c9a45c; }
 body[data-vtheme="muye"] { --accent: #d9825b; }
+body[data-vtheme="amarna"] { --accent: #d9b04a; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
   :root:not([data-theme="dark"]) body[data-vtheme="hub"] { --accent: #8f6a2a; }
   :root:not([data-theme="dark"]) body[data-vtheme="muye"] { --accent: #9a4a2a; }
+  :root:not([data-theme="dark"]) body[data-vtheme="amarna"] { --accent: #86600f; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
 :root[data-theme="light"] body[data-vtheme="hub"] { --accent: #8f6a2a; }
 :root[data-theme="light"] body[data-vtheme="muye"] { --accent: #9a4a2a; }
+:root[data-theme="light"] body[data-vtheme="amarna"] { --accent: #86600f; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -107,6 +110,13 @@ body[data-vtheme="muye"] .banner-art {
     linear-gradient(62deg, transparent 0 58%, rgba(40, 20, 10, .3) 58.4% 58.8%, transparent 59.2%),
     repeating-linear-gradient(90deg, rgba(60, 90, 70, .12) 0 2px, transparent 2px 22px),
     linear-gradient(180deg, #c9b58f 0%, #b89868 45%, #8a6a44 70%, #4f6b5a 100%);
+}
+/* 阿瑪納：太陽圓盤放出光線，底下是沙與尼羅河 */
+body[data-vtheme="amarna"] .banner-art {
+  background:
+    radial-gradient(circle at 50% 18%, #f6d36b 0 7%, rgba(246, 211, 107, 0) 7.5%),
+    repeating-conic-gradient(from 0deg at 50% 18%, rgba(246, 211, 107, .22) 0 3deg, transparent 3deg 14deg),
+    linear-gradient(180deg, #e9d6a4 0%, #dcc08a 52%, #c9a36a 70%, #3f7f86 71%, #2f6a72 80%, #b8955e 81%, #8f7148 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:
@@ -457,6 +467,7 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 #ambient[data-kind="ember"] i { background: #ff9a4a; box-shadow: 0 0 8px 2px rgba(255, 120, 40, .55); }
 #ambient[data-kind="ember"] i:nth-child(3n) { background: rgba(160, 150, 140, .5); box-shadow: none; }
 #ambient[data-kind="ink"] i { background: rgba(30, 26, 22, .35); filter: blur(1.5px); animation-name: driftdown; top: -12px; bottom: auto; }
+#ambient[data-kind="sand"] i { background: rgba(236, 200, 120, .6); box-shadow: 0 0 5px rgba(246, 211, 107, .45); }
 #ambient[data-kind="glow"] i { background: rgba(255, 190, 110, .45); box-shadow: 0 0 10px rgba(255, 170, 80, .5); }
 @keyframes drift { 0% { transform: translate(0, 0); opacity: 0; } 12% { opacity: .9; } 85% { opacity: .7; } 100% { transform: translate(var(--dx), -105vh); opacity: 0; } }
 @keyframes driftdown { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: .8; } 100% { transform: translate(var(--dx), 105vh); opacity: 0; } }

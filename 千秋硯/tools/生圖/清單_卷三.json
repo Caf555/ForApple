@@ -1,0 +1,109 @@
+{
+  "說明": "《千秋硯》卷三〈阿瑪納〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：阿頓與阿蒙都不醜化，妖物是人心所化、不是神本身；建築依阿瑪納的考古復原（白色泥磚、平屋頂），不要金字塔與獅身人面像。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "阿肯塔頓",
+      "seed": 8101,
+      "prompt": "Ancient Egypt around 1346 BC, the new city of Akhetaten (Amarna) on the east bank of the Nile in Middle Egypt: a city being built in the desert under a blazing white midday sun: rows of new whitewashed mud-brick walls rising from the sand, workers carrying small stone blocks on their shoulders, wooden scaffolds and ropes, a wide shining river to the west lined with a narrow strip of brilliant green fields and palm trees, a long line of pale yellow cliffs to the east, a huge open-air temple of many courtyards without roofs in the distance. Architecture as in archaeological reconstructions of Amarna: flat-roofed buildings of sun-dried mud brick plastered and whitewashed, simple rectangular shapes, wooden doors, palm-trunk beams; people wear plain white linen kilts and simple linen dresses, men with short-cropped hair, bare feet or reed sandals. No pyramids, no sphinx, no camels, no domes, no arches, no minarets."
+    },
+    {
+      "kind": "bg",
+      "name": "邊界石碑",
+      "seed": 8102,
+      "prompt": "Ancient Egypt around 1346 BC, at the foot of a pale yellow limestone desert cliff under harsh sunlight: a large flat rectangular panel being carved into the cliff face, at its top a relief of a round sun disk sending down many long straight rays that end in tiny open hands, below it rows of small worn carved pictures too faint to read; wooden scaffolds lashed with rope against the cliff, workers with copper chisels and stone mallets, fine white stone dust drifting in the air, sand at the bottom."
+    },
+    {
+      "kind": "bg",
+      "name": "工人村",
+      "seed": 8103,
+      "prompt": "Ancient Egypt around 1346 BC, the new city of Akhetaten (Amarna) on the east bank of the Nile in Middle Egypt: a small walled workers' village in the desert at golden late afternoon: identical narrow mud-brick houses in straight tidy rows along narrow lanes, flat roofs with drying laundry, firewood, clay pots and a girl grinding red pigment on a stone slab, a low mud-brick enclosure wall around the village, sand all around, cliffs behind. Architecture as in archaeological reconstructions of Amarna: flat-roofed buildings of sun-dried mud brick plastered and whitewashed, simple rectangular shapes, wooden doors, palm-trunk beams; people wear plain white linen kilts and simple linen dresses, men with short-cropped hair, bare feet or reed sandals. No pyramids, no sphinx, no camels, no domes, no arches, no minarets."
+    },
+    {
+      "kind": "bg",
+      "name": "雕刻作坊",
+      "seed": 8104,
+      "prompt": "Ancient Egypt around 1346 BC, a sculptor's workshop courtyard in Amarna with whitewashed mud-brick walls and a reed-mat awning casting soft shade: wooden shelves holding many white plaster face casts of men and women with closed eyes, blocks of limestone, copper chisels and stone polishers on a low bench, small stone palettes with red, green and black pigments; on a table at the back a painted limestone bust of a woman with a long graceful neck wearing a tall flat-topped blue crown, one eye inlaid and the other eye left blank; quiet and dusty, warm light."
+    },
+    {
+      "kind": "bg",
+      "name": "阿頓大神廟",
+      "seed": 8105,
+      "prompt": "Ancient Egypt around 1346 BC, the new city of Akhetaten (Amarna) on the east bank of the Nile in Middle Egypt: inside the Great Temple of the Aten: a vast open-air courtyard with no roof, flooded with intense white sunlight, hundreds of small square offering tables of whitewashed mud brick and stone arranged in long straight rows, each piled with bread, fruit, flowers and lotus blossoms, tall gateway towers (pylons) with tall wooden flagpoles and red pennants, people in white linen, almost no shadows anywhere. Architecture as in archaeological reconstructions of Amarna: flat-roofed buildings of sun-dried mud brick plastered and whitewashed, simple rectangular shapes, wooden doors, palm-trunk beams; people wear plain white linen kilts and simple linen dresses, men with short-cropped hair, bare feet or reed sandals. No pyramids, no sphinx, no camels, no domes, no arches, no minarets."
+    },
+    {
+      "kind": "bg",
+      "name": "採石場",
+      "seed": 8106,
+      "prompt": "Ancient Egypt around 1346 BC, a limestone quarry cut into a pale desert cliff under a merciless noon sun: stepped white rock faces with long straight grooves cut by chisels, wooden wedges hammered into the cracks, workers cutting and carrying identical small rectangular stone blocks each the length of a forearm, stacks of these small blocks, blinding white light reflecting from every surface, no shade anywhere, heat haze."
+    },
+    {
+      "kind": "char",
+      "name": "摩斯",
+      "seed": 8201,
+      "transparent": true,
+      "prompt": "A 16-year-old Egyptian boy stonemason of the Amarna period, lean and sun-darkened, short-cropped black hair, a plain white linen kilt, white stone dust on his arms and shoulders with small scratches, a copper chisel tucked into his belt, a wide open grin showing one small pointed canine tooth, cheerful and warm."
+    },
+    {
+      "kind": "char",
+      "name": "梅芮",
+      "seed": 8202,
+      "transparent": true,
+      "prompt": "A 15-year-old Egyptian girl of the Amarna period, short black hair under a plain linen headscarf, a simple white linen dress, a smear of red ochre on one cheek and green malachite on the other, a reed pen tucked behind her ear, sharp clever eyes and a stubborn little smile."
+    },
+    {
+      "kind": "enemy",
+      "name": "沙魅",
+      "seed": 8301,
+      "transparent": true,
+      "prompt": "A twisting column of golden desert sand as tall as a person, spinning like a small whirlwind, a vague shape of grasping arms forming in the sand, grains glittering in harsh sunlight."
+    },
+    {
+      "kind": "enemy",
+      "name": "熱浪",
+      "seed": 8302,
+      "transparent": true,
+      "prompt": "A shimmering, wavering shape of heat haze rising from white ground, like a mirage of water given a vague human outline, pale orange and white, distorting the air around it."
+    },
+    {
+      "kind": "enemy",
+      "name": "銅鑿靈",
+      "seed": 8303,
+      "transparent": true,
+      "prompt": "A cluster of worn ancient copper chisels with blunted edges and green verdigris, floating together and pointing outward like a bristling creature, flakes of white limestone dust around them."
+    },
+    {
+      "kind": "enemy",
+      "name": "刮痕",
+      "seed": 8304,
+      "transparent": true,
+      "prompt": "A small creature formed from thin pale fibers of papyrus scraped off a sheet, frayed and hairy, drifting like a wisp of smoke, with faint smudges of black ink on it, sad and fragile."
+    },
+    {
+      "kind": "enemy",
+      "name": "半名",
+      "seed": 8305,
+      "transparent": true,
+      "prompt": "A ghostly figure made of grey smoke and frayed papyrus fibers, its face only half there, the other half missing as if scraped away with a knife, several more half-faces drifting around it, eerie and sorrowful."
+    },
+    {
+      "kind": "enemy",
+      "name": "無影",
+      "seed": 8306,
+      "transparent": true,
+      "prompt": "A towering figure of blinding white and pale gold light without any shadow, its outline made of layered heat shimmer and glare, faint shapes of many exhausted workers dissolving within it, oppressive and overwhelming, not a god, not a sun disk."
+    },
+    {
+      "kind": "cg",
+      "name": "改名",
+      "seed": 8401,
+      "prompt": "Ancient Egypt around 1346 BC, the new city of Akhetaten (Amarna) on the east bank of the Nile in Middle Egypt: evening in the workers' village square, a plump scribe sits at a low table with a papyrus roll unrolled on his knees, scraping a line of writing off the papyrus with a small knife; a foreman with a staff stands beside him; a crowd of workers watches in silence; in front, a 16-year-old boy stonemason with a copper chisel in his hand, his smile frozen on his face; long shadows, sorrowful. Architecture as in archaeological reconstructions of Amarna: flat-roofed buildings of sun-dried mud brick plastered and whitewashed, simple rectangular shapes, wooden doors, palm-trunk beams; people wear plain white linen kilts and simple linen dresses, men with short-cropped hair, bare feet or reed sandals. No pyramids, no sphinx, no camels, no domes, no arches, no minarets."
+    },
+    {
+      "kind": "cg",
+      "name": "影子",
+      "seed": 8402,
+      "prompt": "Ancient Egypt around 1346 BC, a white limestone quarry under the noon sun: a 15-year-old girl in a white linen dress has tied her linen headscarf between two wooden wedges to make a tiny patch of shade, an exhausted old worker rests against the rock inside that small shadow drinking from a water skin, a 16-year-old boy stonemason kneels beside him, a young man and a translucent young woman with long ink-black hair stand nearby; harsh white light all around the one small shadow, tender."
+    }
+  ]
+}

@@ -169,6 +169,20 @@ export class Audio {
         }, () => 520);
         break;
       }
+      case '阿瑪納': {
+        // 豎琴般的分解和弦，加上叉鈴（sistrum）細細的沙沙聲
+        pad([110, 164.8], 0.02);
+        const harp = [220, 246.9, 277.2, 329.6, 370, 440, 493.9];
+        let beat = 0;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 2 === 0) this.note(harp[(beat / 2) % harp.length], t, 2.4, 'triangle', 0.03, bus);
+          if (beat % 8 === 4) { this.noise(t, 0.09, 5000, 0.05, bus); this.noise(t + 0.12, 0.07, 5000, 0.035, bus); }
+          if (beat % 16 === 0) this.note(110, t, 3, 'sine', 0.05, bus);
+          beat++;
+        }, () => 430);
+        break;
+      }
       default:
         pad([130.8, 196], 0.02);
     }

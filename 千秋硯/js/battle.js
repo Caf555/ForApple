@@ -211,6 +211,8 @@ export class Battle {
     let r = Math.random() * total, name = '攻擊';
     for (const [n, w] of list) { r -= w; if (r <= 0) { name = n; break; } }
     if (name === '回聲' && u.hp > u.maxhp * 0.6) name = '攻擊';
+    // 被「書名定形」寫下名字：不能回復、也不能強化自己
+    if (u.status.定名 && SKILLS[name] && (SKILLS[name].type === 'heal' || SKILLS[name].type === 'buff')) name = '攻擊';
     const alive = this.allies.filter(a => a.alive);
     const target = pick(alive);
     if (name === '攻擊') return { type: 'attack', target };
