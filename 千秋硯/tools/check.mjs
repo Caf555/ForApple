@@ -33,7 +33,11 @@ import { readdirSync } from 'node:fs';
 const imgNames = new Set();
 try {
   for (const f of readdirSync(join(root, 'tools/生圖')).filter(f => f.startsWith('清單') && f.endsWith('.json'))) {
-    for (const it of JSON.parse(readFileSync(join(root, 'tools/生圖', f), 'utf8')).items) imgNames.add(it.name);
+    for (const it of JSON.parse(readFileSync(join(root, 'tools/生圖', f), 'utf8')).items) {
+      // 插圖、道具、背景等所有圖的名稱都不能重複（不同種類也不行），否則生圖與圖檔清單會互相覆蓋
+      if (imgNames.has(it.name)) errors.push(`生圖清單 ${f}：圖名「${it.name}」重複了（插圖和道具也不能同名）`);
+      imgNames.add(it.name);
+    }
   }
 } catch (e) { /* 沒有生圖清單 */ }
 const allCodex = new Set([...Object.keys(D.CODEX), ...Object.keys(D.ENEMIES).map(D.enemyCodexId)]);
