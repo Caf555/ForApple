@@ -961,6 +961,62 @@
       "seed": 7136,
       "transparent": true,
       "prompt": "A small ancient wooden wax writing tablet with hurried indistinct scratched marks, slightly cracked frame."
+    },
+    {
+      "kind": "item",
+      "name": "蜂蜜芝麻餅",
+      "seed": 7137,
+      "transparent": true,
+      "prompt": "A few small round ancient Greek honey and sesame cakes on a clay plate."
+    },
+    {
+      "kind": "item",
+      "name": "誓石碎片",
+      "seed": 7138,
+      "transparent": true,
+      "prompt": "A small chip of grey marble with a few indistinct carved marks."
+    },
+    {
+      "kind": "item",
+      "name": "河石",
+      "seed": 7139,
+      "transparent": true,
+      "prompt": "A smooth round grey river pebble, slightly wet."
+    },
+    {
+      "kind": "item",
+      "name": "誓約護符",
+      "seed": 7140,
+      "transparent": true,
+      "prompt": "A small grey stone amulet on a cord with indistinct carved marks, solemn."
+    },
+    {
+      "kind": "item",
+      "name": "記得的石頭",
+      "seed": 7141,
+      "transparent": true,
+      "prompt": "A smooth river stone with a faint glowing outline of its original shape."
+    },
+    {
+      "kind": "item",
+      "name": "橄欖枝",
+      "seed": 7142,
+      "transparent": true,
+      "prompt": "An olive branch with silver-green leaves, tied with a tuft of white wool, a symbol of supplication."
+    },
+    {
+      "kind": "item",
+      "name": "和解的誓詞",
+      "seed": 7143,
+      "transparent": true,
+      "prompt": "A small marble fragment carved with indistinct lines of an oath, with an olive leaf beside it."
+    },
+    {
+      "kind": "item",
+      "name": "菲莉的陶瓶",
+      "seed": 7144,
+      "transparent": true,
+      "prompt": "A small red ancient Greek vase covered in rows of tiny indistinct black painted marks."
     }
   ]
 }

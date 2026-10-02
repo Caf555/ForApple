@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～二）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
+  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～三）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
   "items": [
     {
       "kind": "bg",
@@ -186,6 +186,99 @@
       "name": "回家的路",
       "seed": 9404,
       "prompt": "Ancient Athens in 404 BC under the rule of the Thirty Tyrants: morning in the Agora: four men walking away toward the harbor road on one side, while on the other side a short stout barefoot old man in a shabby cloak walks calmly alone in the opposite direction into a narrow lane, seen from behind; long shadows, quiet courage. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "穆尼基亞山丘",
+      "seed": 9107,
+      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: the steep rocky hill of Munichia above the harbor of Piraeus at dawn, a crowd of poorly equipped men with wicker shields, wooden boards and piles of stones gathered on the slope, below them a road leading up from the city along which a long column of hoplites with round bronze shields and spears approaches; the sea and harbor behind, tense morning light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "衛城山門",
+      "seed": 9108,
+      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: the monumental columned gateway (Propylaea) at the top of the steep path to the Acropolis, white marble Doric columns, the Parthenon visible beyond; a long procession of ordinary citizens with spears and olive branches climbing the steps under a clear autumn sky, other people standing on both sides watching, some weeping."
+    },
+    {
+      "kind": "bg",
+      "name": "埃里達諾斯河",
+      "seed": 9109,
+      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: a small stream flowing through the Kerameikos cemetery outside the city walls at night in heavy rain, its water muddy and rising over its stone-lined banks, simple grave stelae and funerary markers leaning in the floodwater, potters' kilns faintly visible in the distance, dark and melancholy."
+    },
+    {
+      "kind": "char",
+      "name": "特拉西布洛斯",
+      "seed": 9207,
+      "prompt": "A weathered Athenian general about 45 years old, short dark beard with grey streaks, a plain bronze Corinthian helmet pushed back on his head, simple linen corselet and a worn red cloak, a frank determined face of a man who leads from the front, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "阿基努斯",
+      "seed": 9208,
+      "prompt": "A composed Athenian statesman about 50 years old, neatly trimmed beard, plain undyed wool himation, a calm measured expression with tired cautious eyes, holding nothing, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "梅內克勒斯",
+      "seed": 9209,
+      "prompt": "A thin middle-aged Greek potter about 45 years old, expressionless guarded face, short beard, a clean work tunic with clay on his forearms, standing stiffly, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "重裝之影",
+      "seed": 9313,
+      "prompt": "Tall dark shadows of a row of ancient Greek hoplites with overlapping round shields and long spears, marching uphill, their bodies made of smoke, faint reluctant faces inside the helmets.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "舊恨",
+      "seed": 9314,
+      "prompt": "A slow-burning ember creature shaped like a hunched figure behind a closed wooden door, glowing cracks of orange fire, smoke curling from it, brooding and resentful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "封口",
+      "seed": 9315,
+      "prompt": "A pale ghostly hand floating in the air, long thin fingers reaching to cover a mouth, wisps of mist trailing from it, quiet and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "濁流",
+      "seed": 9316,
+      "prompt": "A surging creature of muddy brown floodwater rising from a small stream, debris and broken grave markers swirling inside it, faint shapes sinking within.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "誓言之石",
+      "seed": 9317,
+      "prompt": "A massive grey stone stele floating heavily, carved surface with rows of indistinct marks, many pale hands reaching out of the carvings, cracks of light, solemn and oppressive.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "遺忘之河",
+      "seed": 9318,
+      "prompt": "A huge gentle faceless figure made entirely of calm flowing river water rising from a stream at night, its body carrying drifting fragments of grave stones and pottery, soft glow, sorrowful and soothing rather than evil.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "我們一起祭祀過",
+      "seed": 9405,
+      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: after the battle at Munichia, two groups of Athenians on either side of a dusty road carrying their dead on stretchers; between them a man with a mighty voice in a white robe stands with arms open, calling out to the other side; some men on the far side lowering their heads; dramatic, grieving and hopeful. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "cg",
+      "name": "名字的陶瓶",
+      "seed": 9406,
+      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: a large red-figure style amphora standing in the doorway of a potter's workshop facing the street, its whole surface covered in rows of tiny indistinct black painted marks instead of pictures, a young woman with clay on her dress standing beside it, a passerby woman gently touching the vase with her fingertips; morning light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
     }
   ]
 }
