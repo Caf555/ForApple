@@ -193,7 +193,7 @@ export class UI {
   setAmbient(theme) {
     const box = this.ambientEl;
     if (!box) return;
-    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', hub: 'ink', modern: 'glow' }[theme] || '') : '';
+    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', hub: 'ink', modern: 'glow' }[theme] || '') : '';
     if (box.dataset.kind === kind) return;
     box.dataset.kind = kind;
     box.innerHTML = '';
