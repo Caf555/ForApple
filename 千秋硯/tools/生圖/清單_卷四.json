@@ -1,0 +1,191 @@
+{
+  "說明": "《千秋硯》卷四〈雅典〉生圖清單（回一～二）。畫風、節點、尺寸沿用卷一清單。注意：雅典建築依考古復原（白色大理石神廟只在衛城，民宅是泥磚與夯土），衣著是羊毛或亞麻的披衣與短袍，不要羅馬式的盔甲與拱門。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "比雷埃夫斯港",
+      "seed": 9101,
+      "prompt": "Ancient Athens in 404 BC at the end of the Peloponnesian War: the great harbor of Piraeus, many long narrow wooden warships (triremes) with three banks of oar ports pulled up onto slipways under shed roofs, their paint peeling, almost no people working; thin hungry people sitting along the quay staring at the sea; out at sea a blockading fleet with foreign sails; two long fortification walls run inland toward a distant hill crowned with a white temple. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "長牆",
+      "seed": 9102,
+      "prompt": "Ancient Athens in 404 BC at the end of the Peloponnesian War: a wide dusty road running between two very long parallel fortification walls of stone base and mud-brick upper courses, stretching into the distance toward the city and a hill crowned with a white temple; crude tents and shelters of refugees from the countryside crowded along the road; pale spring light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "陶器區",
+      "seed": 9103,
+      "prompt": "Ancient Athens in 404 BC at the end of the Peloponnesian War: the potters' quarter (Kerameikos) outside the city gate: low workshops with smoking domed kilns, rows of finished red-figure and black-figure vases and unfired grey clay pots drying in the sun on wooden shelves, potter's wheels, piles of broken sherds, a girl sitting in a doorway painting a vase with a fine brush. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "市集廣場",
+      "seed": 9104,
+      "prompt": "Ancient Athens in 404 BC at the end of the Peloponnesian War: the Agora, a large open square surrounded by long colonnaded stoas with painted walls and simple Doric columns, a few half-empty market stalls, people sitting and talking in the shade of the colonnades, a small temple on a low hill at one side, plane trees, warm afternoon light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "char",
+      "name": "尼科",
+      "seed": 9201,
+      "prompt": "A 25-year-old Athenian rower, very thin from hunger but broad-shouldered, sun-darkened skin, short messy dark hair and a short beard, thick calluses on his hands, a worn short wool tunic, a broken oar over his shoulder, a wide open grin showing one small pointed canine tooth, warm despite hardship.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "菲莉",
+      "seed": 9202,
+      "prompt": "A 17-year-old Greek girl of a potter's family in ancient Athens, dark hair tied back, a simple linen chiton smeared with clay, holding a very fine brush and a small unfired vase, sharp curious eyes and a stubborn mouth.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "蘇格拉底",
+      "seed": 9203,
+      "prompt": "An elderly Athenian man around 66 years old, short and stout, a snub nose, bulging wide-set eyes, a bald head with a full grey beard, barefoot, wearing a single shabby old wool cloak, a merry, probing, kindly expression as if about to ask a question.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉槳",
+      "seed": 9301,
+      "prompt": "A tangle of broken wooden oars rising from dark sea water, seaweed and barnacles on them, ghostly hands faintly gripping their handles, dripping and cold.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "空倉",
+      "seed": 9302,
+      "prompt": "An empty storage room of clay storage jars (pithoi) and empty grain sacks come alive as a hollow gaunt figure, dust instead of grain pouring from it, desolate.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "陶片魅",
+      "seed": 9303,
+      "prompt": "A swirling cluster of reddish-brown broken pottery sherds, each scratched with crude Greek letters, forming a hovering creature like a flock, menacing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "笛聲魅",
+      "seed": 9304,
+      "prompt": "A floating pair of ancient Greek double reed pipes (aulos) trailing bright cheerful ribbons of sound waves, beneath which faint grieving faces dissolve; eerie contrast of joy and sorrow.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "羊河之殤",
+      "seed": 9305,
+      "prompt": "A dark ghostly fleet of long narrow ancient warships rising from black water, made of shadow and sea foam, many faint faces of rowers along the oar ports, silent and mournful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "傾牆",
+      "seed": 9306,
+      "prompt": "A colossal collapsing fortification wall of stone and mud brick rising up like a giant leaning over to fall, cracks spreading, dust pouring, ribbons of flute music swirling around it, the sound of a whole city sighing.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "笛聲",
+      "seed": 9401,
+      "prompt": "Ancient Athens in 404 BC at the end of the Peloponnesian War: Spartan soldiers with long hair and red cloaks and their allies pulling down a section of the long fortification wall with ropes and levers while girls play double reed pipes (aulos) cheerfully; stones crashing down in dust; thin silent Athenians in plain cloaks watching from the roadside, a young man with a broken oar and a girl with clay on her dress among them; ironic festive yet heartbreaking. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "cg",
+      "name": "亞里斯提德的陶片",
+      "seed": 9402,
+      "prompt": "Ancient Athens 404 BC, inside a potter's workshop lit by a small clay oil lamp: a 17-year-old girl holds out a small open wooden box containing a reddish-brown pottery sherd with crude scratched letters, showing it to a young man in a draped cloak and a thin broad-shouldered young rower; shelves of vases behind; warm and quiet; letters indistinct."
+    },
+    {
+      "kind": "bg",
+      "name": "議事廳",
+      "seed": 9105,
+      "prompt": "Ancient Athens in 404 BC under the rule of the Thirty Tyrants: interior of the Bouleuterion council house, rows of plain wooden and stone benches rising in tiers, councillors in cloaks crowded tensely, a small stone altar in the middle of the floor, young men with short swords standing at the doors, dim light from high windows, an atmosphere of fear. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "bg",
+      "name": "陶器區之夜",
+      "seed": 9106,
+      "prompt": "Ancient Athens in 404 BC under the rule of the Thirty Tyrants: the potters' quarter at night: inside a potter's workshop lit by a single small clay oil lamp, a cold domed kiln of blackened bricks against the wall, a potter's wheel, shelves of unfired pots in shadow, a narrow back door slightly open to the dark alley, torchlight far away down the lane. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "char",
+      "name": "克里提亞斯",
+      "seed": 9204,
+      "prompt": "An aristocratic Athenian man about 55 years old, elegant well-groomed hair and beard, a fine dyed wool cloak neatly draped, cold intelligent eyes, a thin confident half-smile, poised and dangerous, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "柏拉圖",
+      "seed": 9205,
+      "prompt": "A quiet broad-shouldered Athenian young man about 23 years old, short dark hair and a short young beard, a plain wool cloak, holding a small wooden wax writing tablet and a stylus, thoughtful serious eyes, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "狄翁",
+      "seed": 9206,
+      "prompt": "A big burly Greek potter about 50 years old, thick dark beard, huge clay-covered hands, a short work tunic smeared with clay, a loud warm laughing face with worry in the eyes, ancient Greek style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鞭影",
+      "seed": 9307,
+      "prompt": "Many long dark leather whip shadows writhing up from torchlit ground like snakes, cracking through the air, faint shapes of hands gripping them, menacing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "告密",
+      "seed": 9308,
+      "prompt": "A thin grey shadow figure peeking from behind a stone column, its hand cupped to whisper, a long curling wisp of smoke-like whisper trailing from its mouth, sly and creepy.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "衛城矛影",
+      "seed": 9309,
+      "prompt": "A row of tall dark shadows of long bronze-tipped spears and round shields cast down from a rocky citadel hill, forming a looming wall of spear points, cold and threatening.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "空坊",
+      "seed": 9310,
+      "prompt": "An abandoned potter's workshop come alive as a hollow hunched creature, a sealed door across its chest with a cord and clay seal, cold kiln for a belly, broken pots tumbling from it, desolate.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "名單",
+      "seed": 9311,
+      "prompt": "A floating whitewashed wooden board covered in rows of tiny indistinct scratched marks, one line struck through with black ink that spreads like rot across the board, shadowy hands reaching out from it, ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "僭主之影",
+      "seed": 9312,
+      "prompt": "A very tall thin shadowy figure in an elegant draped cloak with neatly combed hair, its face a blurred stack of many overlapping frightened human faces, smoke pouring from behind many closed wooden doors to form its body, oppressive and sorrowful.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "敬美麗的克里提亞斯",
+      "seed": 9403,
+      "prompt": "Ancient Athens in 404 BC under the rule of the Thirty Tyrants: a dim prison cell, a middle-aged Athenian man in a plain cloak calmly flicking the last drops from a shallow drinking cup onto the floor with a wry smile, as if playing a drinking game, a jailer looking away in the doorway; dignified, ironic and tragic. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    },
+    {
+      "kind": "cg",
+      "name": "回家的路",
+      "seed": 9404,
+      "prompt": "Ancient Athens in 404 BC under the rule of the Thirty Tyrants: morning in the Agora: four men walking away toward the harbor road on one side, while on the other side a short stout barefoot old man in a shabby cloak walks calmly alone in the opposite direction into a narrow lane, seen from behind; long shadows, quiet courage. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+    }
+  ]
+}

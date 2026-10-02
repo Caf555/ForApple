@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》道具圖示（卷一～卷三）與藏書閣器物誌用圖。一張圖一件物品，透明背景，256×256。",
+  "說明": "《千秋硯》道具圖示（卷一～卷四）與藏書閣器物誌用圖。一張圖一件物品，透明背景，256×256。",
   "sizes": {
     "item": [
       1024,
@@ -793,6 +793,174 @@
       "seed": 7112,
       "transparent": true,
       "prompt": "A small white limestone flake covered with delicate black ink line drawings of many tiny human figures; no writing."
+    },
+    {
+      "kind": "item",
+      "name": "大麥餅",
+      "seed": 7113,
+      "transparent": true,
+      "prompt": "A round flat hard barley cake with a cracked crust."
+    },
+    {
+      "kind": "item",
+      "name": "橄欖",
+      "seed": 7114,
+      "transparent": true,
+      "prompt": "A small clay dish of glossy dark green and black brined olives."
+    },
+    {
+      "kind": "item",
+      "name": "無花果乾",
+      "seed": 7115,
+      "transparent": true,
+      "prompt": "A few dried brown figs threaded on a string."
+    },
+    {
+      "kind": "item",
+      "name": "畫筆",
+      "seed": 7116,
+      "transparent": true,
+      "prompt": "A very fine ancient brush with a thin wooden handle and a tiny tip of black paint."
+    },
+    {
+      "kind": "item",
+      "name": "船槳",
+      "seed": 7117,
+      "transparent": true,
+      "prompt": "A broken wooden oar from an ancient warship, the blade cracked, the handle worn smooth."
+    },
+    {
+      "kind": "item",
+      "name": "羊毛斗篷",
+      "seed": 7118,
+      "transparent": true,
+      "prompt": "A folded short cloak of coarse undyed wool with a simple bronze pin."
+    },
+    {
+      "kind": "item",
+      "name": "陶片",
+      "seed": 7119,
+      "transparent": true,
+      "prompt": "A plain broken reddish-brown pottery sherd."
+    },
+    {
+      "kind": "item",
+      "name": "船槳碎片",
+      "seed": 7120,
+      "transparent": true,
+      "prompt": "A splintered piece of sea-soaked wood from an oar, with a little seaweed."
+    },
+    {
+      "kind": "item",
+      "name": "大麥",
+      "seed": 7121,
+      "transparent": true,
+      "prompt": "A small cloth bag of barley grains spilling out."
+    },
+    {
+      "kind": "item",
+      "name": "蘆葦",
+      "seed": 7122,
+      "transparent": true,
+      "prompt": "A few cut reed stems tied together."
+    },
+    {
+      "kind": "item",
+      "name": "名字陶片",
+      "seed": 7123,
+      "transparent": true,
+      "prompt": "A small reddish-brown pottery sherd with a few neatly scratched letters, worn as a pendant on a cord; letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "長牆之石",
+      "seed": 7124,
+      "transparent": true,
+      "prompt": "A small rough grey stone fragment broken from an ancient wall, with a bit of mortar."
+    },
+    {
+      "kind": "item",
+      "name": "三列槳",
+      "seed": 7125,
+      "transparent": true,
+      "prompt": "A new wooden oar with three carved lines on its handle."
+    },
+    {
+      "kind": "item",
+      "name": "亞里斯提德的陶片",
+      "seed": 7126,
+      "transparent": true,
+      "prompt": "A reddish-brown pottery sherd with a line of crude scratched Greek capital letters, letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "陶片的描本",
+      "seed": 7127,
+      "transparent": true,
+      "prompt": "A modern notebook open to a page with a careful ink tracing of crude ancient Greek capital letters copied from a sherd; letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "摻水的酒",
+      "seed": 7128,
+      "transparent": true,
+      "prompt": "A simple ancient Greek clay wine jug with a little water-mixed red wine in a shallow cup beside it."
+    },
+    {
+      "kind": "item",
+      "name": "斷鞭",
+      "seed": 7129,
+      "transparent": true,
+      "prompt": "A broken short leather whip, its lash torn off."
+    },
+    {
+      "kind": "item",
+      "name": "蠟板",
+      "seed": 7130,
+      "transparent": true,
+      "prompt": "A small ancient wooden writing tablet with a dark wax surface and a bronze stylus; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "打結的鞭子",
+      "seed": 7131,
+      "transparent": true,
+      "prompt": "A leather whip tied into a tight knot so it can no longer be swung."
+    },
+    {
+      "kind": "item",
+      "name": "抹平的蠟板",
+      "seed": 7132,
+      "transparent": true,
+      "prompt": "A small ancient wooden writing tablet with perfectly smooth blank wax surface, glowing faintly."
+    },
+    {
+      "kind": "item",
+      "name": "黑釉筆",
+      "seed": 7133,
+      "transparent": true,
+      "prompt": "A fine ancient painter's brush with its tip coated in glossy black glaze."
+    },
+    {
+      "kind": "item",
+      "name": "窯門的鑰匙",
+      "seed": 7134,
+      "transparent": true,
+      "prompt": "A large simple ancient bronze key on a leather cord, a little clay dust on it."
+    },
+    {
+      "kind": "item",
+      "name": "名單的蠟屑",
+      "seed": 7135,
+      "transparent": true,
+      "prompt": "A tiny pinch of pale wax shavings in an open palm-sized cloth."
+    },
+    {
+      "kind": "item",
+      "name": "柏拉圖的蠟板",
+      "seed": 7136,
+      "transparent": true,
+      "prompt": "A small ancient wooden wax writing tablet with hurried indistinct scratched marks, slightly cracked frame."
     }
   ]
 }

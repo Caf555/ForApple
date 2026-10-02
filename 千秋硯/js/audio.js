@@ -183,6 +183,19 @@ export class Audio {
         }, () => 430);
         break;
       }
+      case '雅典': {
+        // 雙管笛（aulos）般的長音旋律，配上七弦琴的撥奏
+        pad([146.8, 220], 0.018);
+        const dorian = [293.7, 329.6, 349.2, 392, 440, 493.9, 523.3, 587.3];
+        let beat = 0, idx = 3;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 3 === 0) { idx = Math.max(0, Math.min(dorian.length - 1, idx + [-1, 1, -2, 2, 0][Math.floor(Math.random() * 5)])); this.note(dorian[idx], t, 1.3, 'sawtooth', 0.012, bus); this.note(dorian[idx] * 1.005, t, 1.3, 'square', 0.006, bus); }
+          if (beat % 4 === 2) pluck(146.8, 0.03, 1.8);
+          beat++;
+        }, () => 400);
+        break;
+      }
       default:
         pad([130.8, 196], 0.02);
     }
