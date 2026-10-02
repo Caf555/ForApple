@@ -694,7 +694,7 @@
       "name": "回音泥板",
       "seed": 7098,
       "transparent": true,
-      "prompt": "A tiny tan clay tablet with a single short row of small wedge-shaped impressions, worn as a pendant on a cord."
+      "prompt": "A tiny tan clay tablet the size of a thumb, worn as a pendant on a linen cord, with just one small group of three or four triangular wedge-shaped dents pressed into its surface like cuneiform marks; no letters, no Latin alphabet, no Chinese characters, nothing readable."
     },
     {
       "kind": "item",
@@ -708,14 +708,14 @@
       "name": "楔形尖筆",
       "seed": 7100,
       "transparent": true,
-      "prompt": "An elegant reed stylus with a sharp triangular tip, its shaft wrapped with fine thread."
+      "prompt": "An elegant stylus for writing cuneiform, made entirely from one straight piece of pale natural reed, its end cut and trimmed into a crisp triangular wedge-shaped tip, the shaft wrapped near the grip with a band of fine linen thread. All plant material: no metal tip, no steel point, no bamboo joints."
     },
     {
       "kind": "item",
       "name": "里布哈達的信",
       "seed": 7101,
       "transparent": true,
-      "prompt": "A small torn piece of papyrus with a single line of black ink cursive writing, slightly smudged, unreadable."
+      "prompt": "A small ancient papyrus letter rolled up into a short cylinder, pale cream papyrus with a fine grid of crossing pith fibres, tied around the middle with a thin linen string and sealed with a small lump of dark clay; one end slightly unrolled, showing only a few faint brownish ink smudges, blurred and broken, nothing that looks like characters or letters. No Chinese characters, no Japanese, no Latin letters."
     }
   ]
 }

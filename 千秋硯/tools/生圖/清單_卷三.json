@@ -194,7 +194,7 @@
       "kind": "bg",
       "name": "檔案室阿瑪納",
       "seed": 8111,
-      "prompt": "Ancient Egypt around 1340 BC, inside a small cool dim mud-brick records office near the palace at Amarna: wooden shelves stacked with many palm-sized square tan clay tablets covered in tiny wedge-shaped impressions, a few papyrus rolls, a low stool and a reed mat, a narrow window letting in one shaft of light, dust in the air, quiet and patient; no readable writing."
+      "prompt": "Ancient Egypt around 1340 BC, inside a small cool dim mud-brick records office near the palace at Amarna: rough plastered mud-brick walls, wooden shelves stacked with many palm-sized square tan clay tablets, each covered in rows of tiny triangular wedge-shaped dents pressed into the clay, like little nail-head and arrow-head marks of cuneiform, too small to read; no letters, no Latin alphabet, no Chinese characters; a few papyrus rolls, a low stool and a reed mat; light comes only through a small high square opening in the mud-brick wall near the ceiling, a plain hole with no glass, no window frame, no panes, no shutters, letting in one shaft of light; dust in the air, quiet and patient."
     },
     {
       "kind": "bg",
@@ -207,7 +207,7 @@
       "name": "奈赫特",
       "seed": 8204,
       "transparent": true,
-      "prompt": "A thin young Egyptian scribe of the Amarna period about 22 years old, large thoughtful eyes, short-cropped hair, a plain white linen kilt and shawl, a smudge of clay on his chin, holding a small square clay tablet covered in tiny wedge marks and a triangular reed stylus, quiet and gentle."
+      "prompt": "A thin young Egyptian scribe of the Amarna period about 22 years old, large thoughtful eyes, short-cropped hair, a plain white linen kilt and shawl, a smudge of clay on his chin, holding a small square clay tablet covered in rows of tiny triangular wedge-shaped dents pressed into the clay, like little nail-head and arrow-head marks of cuneiform, too small to read; no letters, no Latin alphabet, no Chinese characters, and a slim triangular reed stylus, quiet and gentle."
     },
     {
       "kind": "char",
@@ -262,7 +262,7 @@
       "kind": "cg",
       "name": "真正的樣子",
       "seed": 8405,
-      "prompt": "Ancient Egypt around 1340 BC, at night in a sculptor's workshop lit by a small clay oil lamp: a young Egyptian woman painter with a reed pen paints on a large plastered board a row of realistic tired workers bending under stone blocks, one in the middle a young man grinning with a small pointed canine tooth; beside her lies an earlier sketch of smiling idealized workers; a thin young scribe and a young man watch; warm dim light, determined mood; no readable writing."
+      "prompt": "Ancient Egypt around 1340 BC, at night in a sculptor's workshop lit by a small clay oil lamp: a young Egyptian woman painter kneels on the floor with a reed pen, painting on a large flat plastered wooden board that lies propped low against a mud-brick wall (no easel, no canvas); the painting on the board shows a row of realistic tired workers bending under stone blocks, one in the middle a young man grinning with a small pointed canine tooth — these workers exist only as a painted picture on the board; beside her on the floor lies an earlier sketch on a limestone flake of smiling idealized workers; behind her stand exactly two onlookers, both MEN: a thin young male Egyptian scribe with short-cropped hair, a narrow male face and a plain white linen kilt and shawl, and beside him a young man in plain clothes; the painter is the only woman in the picture; warm dim light, determined mood; no readable writing."
     },
     {
       "kind": "cg",
