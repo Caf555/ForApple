@@ -1759,6 +1759,62 @@
       "seed": 7250,
       "transparent": true,
       "prompt": "A sheet of handmade paper with an ink plan of a perfectly round city with two rings of walls and four gates; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "杏仁甜餅",
+      "seed": 7251,
+      "transparent": true,
+      "prompt": "Small almond pastries in thin dough glistening with syrup on a plate."
+    },
+    {
+      "kind": "item",
+      "name": "玫瑰水",
+      "seed": 7252,
+      "transparent": true,
+      "prompt": "A small glass flask of rose water with a rose petal beside it."
+    },
+    {
+      "kind": "item",
+      "name": "羊皮碎",
+      "seed": 7253,
+      "transparent": true,
+      "prompt": "A thin translucent scrap of scraped parchment with faint ghost lines."
+    },
+    {
+      "kind": "item",
+      "name": "紅墨",
+      "seed": 7254,
+      "transparent": true,
+      "prompt": "A small ceramic inkpot of red ink with a reed pen."
+    },
+    {
+      "kind": "item",
+      "name": "再生紙",
+      "seed": 7255,
+      "transparent": true,
+      "prompt": "A sheet of recycled handmade paper with faint traces of old writing in its fibers; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "紙中字",
+      "seed": 7256,
+      "transparent": true,
+      "prompt": "A small sheet of paper held to light showing a faint thicker shape inside the paper; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "羊皮名冊",
+      "seed": 7257,
+      "transparent": true,
+      "prompt": "An old rolled parchment register partly open with columns of indistinct flowing script and one small ink character beside a line; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "小竹簾",
+      "seed": 7258,
+      "transparent": true,
+      "prompt": "A tiny bamboo paper-making mould, palm-sized, with a few drops of white pulp."
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。 回三的場景在撒馬爾罕（今天的烏茲別克）：綠洲、水渠、果園、葡萄架與黃土城牆。 回四的場景是 762 年巴格達圓城的工地（還沒有城牆，只有木樁、灰線、泥磚與工人）；哈里發只畫遠景的小人影。",
+  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。 回三的場景在撒馬爾罕（今天的烏茲別克）：綠洲、水渠、果園、葡萄架與黃土城牆。 回四的場景是 762 年巴格達圓城的工地（還沒有城牆，只有木樁、灰線、泥磚與工人）；哈里發只畫遠景的小人影。 回五是 795 年的巴格達：城已經很大，有船橋、市集與書商的店；紙坊靠著運河，院子裡有一棵楮樹。",
   "items": [
     {
       "kind": "bg",
@@ -80,6 +80,18 @@
       "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: late afternoon at the southeastern edge of the site, where the Basra Gate will be: only two wooden stakes and a scorched line on the ground, a dusty road leading southeast along the river toward the sea, palms and boats. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
     },
     {
+      "kind": "bg",
+      "name": "巴格達",
+      "seed": 11114,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: a great bustling city along the wide Tigris, a pontoon bridge of boats lashed together crowded with people, the round walls of the old city in the distance, markets, gardens and mosques with low domes, a street of paper sellers with stacks of paper hanging at shop fronts. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "巴格達的紙坊",
+      "seed": 11115,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: a large papermaking workshop beside a canal: a dozen big vats, many stone mortars and wooden pestles, workers lifting bamboo moulds, sheets of paper drying on long whitewashed walls glowing in the sun, a big old paper-mulberry tree in the corner of the courtyard. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    },
+    {
       "kind": "char",
       "name": "宋楮",
       "seed": 11201,
@@ -119,6 +131,27 @@
       "name": "老韓",
       "seed": 11206,
       "prompt": "A Tang dynasty Chinese weaver in his fifties held as a captive in Central Asia, grey stubble, stubborn proud face, a ragged round-collared robe, many colored threads wound around his fingers, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "哈桑",
+      "seed": 11207,
+      "prompt": "A young translator of Abbasid Baghdad in his early twenties, half Arab and half Sogdian features, a neat white turban and a long robe with ink stains on the cuffs, holding a reed pen and a wax tablet under his arm, eager bright eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "宋楮_62",
+      "seed": 11208,
+      "prompt": "A 62-year-old Tang Chinese papermaker living in Baghdad, white hair tied up, slightly stooped broad shoulders, very calloused hands, a simple robe in the local style with an apron, a warm wrinkled grin showing one small pointed canine tooth, holding a bamboo paper mould.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "康阿娜_63",
+      "seed": 11209,
+      "prompt": "A 63-year-old Sogdian woman living in Baghdad, white braids pinned up on her head, a lively wrinkled face with sharp kind eyes, a long striped dress, a string of small bronze bells on her wrist, a basket on her arm.",
       "transparent": true
     },
     {
@@ -290,6 +323,48 @@
       "transparent": true
     },
     {
+      "kind": "enemy",
+      "name": "刮去",
+      "seed": 11325,
+      "prompt": "A sharp scraping knife fused with a sheet of parchment scraped many times, faint ghostly lines of erased text peeling off it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "墨色的河",
+      "seed": 11326,
+      "prompt": "A river blackened with ink rising as a dark flowing creature, sodden book pages swirling in it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "錯字",
+      "seed": 11327,
+      "prompt": "A swarm of miswritten glyph-like ink marks twisting into a mocking creature; marks are indistinct, no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "譯不出的字",
+      "seed": 11328,
+      "prompt": "A tangled vine-like creature made of three different styles of flowing script strokes knotted together, leaves falling off as it moves; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "打成漿",
+      "seed": 11329,
+      "prompt": "A big wooden vat of churning white paper pulp with half-dissolved letters, rags and pages sinking into it, the pulp rising like a hungry wave.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・巴格達之相",
+      "seed": 11330,
+      "prompt": "A tall faceless scribe in a dark long robe of Abbasid style and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a tiny bamboo paper mould dripping white pulp, a blank white sheet pinned to a sunlit wall behind him, calm and eerie.",
+      "transparent": true
+    },
+    {
       "kind": "cg",
       "name": "西市的獻俘",
       "seed": 11401,
@@ -336,6 +411,18 @@
       "name": "巴斯拉門的告別",
       "seed": 11408,
       "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: golden dusk at a crossroads marked by two wooden stakes: a thin weathered Tang Chinese traveler in his thirties with a heavily patched cloth bag full of papers walks away southeast along the river road; behind him a broad-shouldered Tang craftsman and a Sogdian woman with braids pinned up wave goodbye. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "竹簾上的手指",
+      "seed": 11409,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: close-up at dawn in a papermaking workshop: an old Tang Chinese papermaker with white hair holds a bamboo mould covered with a fresh wet sheet of white pulp; his weathered fingertip, dripping thick pulp, hovers just above the wet sheet, about to write; soft golden light; an old Sogdian woman's hand with a bronze bell bracelet rests on his shoulder. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "抱著紙的譯者",
+      "seed": 11410,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: a young Arab-Sogdian translator in his twenties hugs a thick stack of fine white paper to his chest like a precious child, smiling, in the doorway of a paper workshop; behind him an old Tang Chinese papermaker and an old Sogdian woman watch fondly; afternoon light. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
     }
   ]
 }
