@@ -1,0 +1,105 @@
+{
+  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "佛羅倫斯街頭",
+      "seed": 12101,
+      "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: a narrow stone-paved street in central Florence opening toward the huge red-brick cathedral dome and its marble facade striped white, green and pink, crowds running and shouting, church bells, grey November sky. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "畫坊",
+      "seed": 12102,
+      "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: inside a modest painter's workshop (bottega): a large unfinished altarpiece of a Madonna and angels on a gold background on an easel, wooden panels leaning on walls, a stone slab for grinding pigments with small heaps of red and blue powder, egg shells, brushes in jars, candlelight and wood shavings. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "大教堂",
+      "seed": 12103,
+      "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: interior of Florence cathedral packed with a silent crowd, men on one side and women on the other, children in front, candles, a distant pulpit with a thin friar in white and black seen very small far away, shafts of pale light. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "敲下紅球的少年",
+      "seed": 12401,
+      "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: a 15-year-old boy in a patched tunic on a tall wooden ladder against a palace doorway hammers a carved wooden shield with red balls (the Medici arms) off the wall; one red ball falls and rolls on the paving stones; crowds below shouting; the boy grins showing one small pointed canine tooth. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "燭光下的小畫",
+      "seed": 12402,
+      "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: night in a painter's workshop lit by a single candle: a 17-year-old girl with her hair tied in a kerchief, paint on her hands, paints with a very fine brush on a tiny wooden panel showing an angel with a boy's face standing in a street drawn in perfect one-point perspective; a grinning 15-year-old boy leans in to look. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "char",
+      "name": "琪亞拉",
+      "seed": 12201,
+      "prompt": "A 17-year-old Florentine girl apprentice in a painter's workshop in 1494, hair tied up in a plain kerchief, a simple wool gown with sleeves rolled up, an apron smeared with pigments, a fine brush in hand, sharp determined brown eyes, early Italian Renaissance style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "盧卡",
+      "seed": 12202,
+      "prompt": "A 15-year-old poor Florentine boy in 1494, curly dark hair, a patched wool tunic and hose, holding a wooden staff with a small red-painted cross, bright earnest eyes, a wide grin showing one small pointed canine tooth, early Italian Renaissance style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "巴爾多",
+      "seed": 12203,
+      "prompt": "A Florentine painter in his fifties in 1494, grey beard, a worn long gown flecked with gold leaf dust, ink-stained hands, a reserved tired face that hides kindness, early Italian Renaissance style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "陳修女",
+      "seed": 12204,
+      "prompt": "An elderly Taiwanese Catholic nun in her seventies in 2026, a grey habit and white veil, using a black umbrella as a walking stick, gentle smiling eyes that crinkle shut, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "石塵",
+      "seed": 12301,
+      "prompt": "A hulking figure of swirling white marble dust and chips from a sculptor's yard, heavy and choking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "亞諾河",
+      "seed": 12302,
+      "prompt": "A surge of green-brown river water rising in the shape of a figure carrying tiny shop roofs from a bridge on its shoulders.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "佛羅林",
+      "seed": 12303,
+      "prompt": "A giant gold coin creature stamped with a lily on one face, rolling and clinking, smaller coins orbiting it; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "燭影",
+      "seed": 12304,
+      "prompt": "A long distorted shadow cast by church candles stepping off a wall, flickering flames for eyes, wax dripping.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "被拆下的紋章",
+      "seed": 12305,
+      "prompt": "A tumbling mass of red wooden balls torn from a carved golden shield, rolling together into a large menacing heraldic creature.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "懸在城上的劍",
+      "seed": 12306,
+      "prompt": "A colossal ghostly sword hanging point-down in a grey sky above a red-brick dome, formed from the fear of a crowd, trembling, ominous, with faint shadowy hands reaching up from below.",
+      "transparent": true
+    }
+  ]
+}

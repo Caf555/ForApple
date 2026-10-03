@@ -220,11 +220,20 @@ export class Translate {
     if (it.glyph) {
       const ns = 'http://www.w3.org/2000/svg';
       const svg = document.createElementNS(ns, 'svg');
-      svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('class', 'mg-glyph'); svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('viewBox', it.view || '0 0 100 100'); svg.setAttribute('class', it.view ? 'mg-glyph mg-wide' : 'mg-glyph'); svg.setAttribute('aria-hidden', 'true');
       for (const d of it.glyph) {
         const p = document.createElementNS(ns, 'path');
         p.setAttribute('d', d);
         svg.appendChild(p);
+      }
+      // 透視：在圖上標出幾個候選點（甲、乙、丙、丁）
+      for (const [x, y, t] of it.marks || []) {
+        const c = document.createElementNS(ns, 'circle');
+        c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 2.6); c.setAttribute('class', 'mg-mark');
+        svg.appendChild(c);
+        const tx = document.createElementNS(ns, 'text');
+        tx.setAttribute('x', x + 4); tx.setAttribute('y', y - 3); tx.textContent = t;
+        svg.appendChild(tx);
       }
       this.body.appendChild(svg);
     }
