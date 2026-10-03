@@ -1,0 +1,98 @@
+{
+  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "西市",
+      "seed": 11101,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: the bustling West Market: a wide stone-paved street lined with timber shops with tiled roofs and cloth banners, spice sacks, silk bolts, horses and camels, crowds of Han Chinese and Central Asian merchants, plum trees in blossom with petals drifting, dusty golden light. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "紙坊",
+      "seed": 11102,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: the courtyard of a small papermaking workshop near the West Market: a large stone mortar with a wooden pestle, a big wooden vat of white pulp, bamboo paper moulds leaning against the wall, many sheets of fresh paper drying on walls and boards in winter sun. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "長安城門",
+      "seed": 11103,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: outside the great western gate of Chang'an at dawn: a massive rammed-earth city wall with a multi-storey timber gate tower, a long caravan of camels, horses, soldiers and craftsmen with bundles setting out west on a dusty road, banners in the wind. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "char",
+      "name": "宋楮",
+      "seed": 11201,
+      "prompt": "An 18-year-old Tang dynasty paper workshop apprentice, broad shoulders, calloused hands, a plain hemp tunic with sleeves rolled up, a cloth headband, holding a wooden pestle, a wide cheerful grin showing one small pointed canine tooth, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "康阿娜",
+      "seed": 11202,
+      "prompt": "A 19-year-old Sogdian young woman living in Tang dynasty Chang'an, many thin braids, a fitted jacket with round collar and a long striped skirt, a string of small bronze bells on her wrist, lively sharp eyes, Central Asian features, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "張師父",
+      "seed": 11203,
+      "prompt": "An old Tang dynasty papermaking master about 65 years old, thin white beard, swollen knuckles, a plain grey robe with an apron, a stern face that hides kindness, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "紙蠹",
+      "seed": 11301,
+      "prompt": "A swarm of silvery bookworms crawling out of a stack of old scrolls and forming a large writhing creature, eaten holes in the paper glowing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "墨漬",
+      "seed": 11302,
+      "prompt": "A large spreading black ink blot rising from a page into a dripping amorphous figure, blurred characters dissolving inside it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "長安塵",
+      "seed": 11303,
+      "prompt": "A swirling column of yellow loess dust shaped like a hulking figure, grit and dry leaves spinning inside, heavy and choking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "落花",
+      "seed": 11304,
+      "prompt": "A drifting cloud of plum and peony petals forming a graceful but eerie floating figure, beautiful and distracting.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "募兵告示",
+      "seed": 11305,
+      "prompt": "A huge paper recruitment notice torn from a wall, flapping like a great bird, its indistinct brush marks stretching into long black roads that reach out to grab people.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "背約",
+      "seed": 11306,
+      "prompt": "A tall shadowy figure formed from a torn treaty document, one hand extended as if offering a handshake while the other hand draws a sword behind its back, dust swirling, ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "西市的獻俘",
+      "seed": 11401,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: a military parade on the wide street of the West Market: mounted soldiers escort carts carrying bound captives, at the front a captive foreign king in torn rich clothes seen from a distance; crowds cheering on one side, while Sogdian merchants in tall caps stand silent in shop doorways on the other side; a young woman with braids bites her lip. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "竹簾上的紙",
+      "seed": 11402,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: close view in a papermaking workshop: a young apprentice lifts a bamboo paper mould level out of a vat of white pulp, water streaming through the screen, leaving a thin even white sheet; a visitor watches closely; warm winter sunlight. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    }
+  ]
+}

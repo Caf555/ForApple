@@ -196,6 +196,21 @@ export class Audio {
         }, () => 400);
         break;
       }
+      case '長安': {
+        // 宮調五聲音階，像琵琶一樣的撥奏，配上一點點笛聲
+        pad([130.8, 196], 0.016);
+        const gong = [261.6, 293.7, 329.6, 392, 440, 523.3, 587.3, 659.3];
+        let beat = 0, idx = 3;
+        loop(() => {
+          const t = this.ac.currentTime;
+          idx = Math.max(0, Math.min(gong.length - 1, idx + [-1, 1, -1, 1, 2, -2, 0][Math.floor(Math.random() * 7)]));
+          pluck(gong[idx], 0.03, 1.1);
+          if (beat % 3 === 1 && Math.random() < 0.6) pluck(gong[idx], 0.018, 0.6);
+          if (beat % 8 === 0) this.note(gong[Math.min(gong.length - 1, idx + 2)], t, 1.8, 'sine', 0.012, bus);
+          beat++;
+        }, () => 340);
+        break;
+      }
       case '舊府城': {
         // 慢慢的、有一點走音的舊歌：四七拔き的五聲音階，像收音機裡飄出來的
         pad([110, 164.8], 0.014);

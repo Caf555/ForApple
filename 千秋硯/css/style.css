@@ -46,6 +46,7 @@ body[data-vtheme="amarna"] { --accent: #d9b04a; }
 body[data-vtheme="athens"] { --accent: #b9c46a; }
 body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
 body[data-vtheme="fifties"] { --accent: #c4ab84; }
+body[data-vtheme="tang"] { --accent: #e0925a; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -55,6 +56,7 @@ body[data-vtheme="fifties"] { --accent: #c4ab84; }
   :root:not([data-theme="dark"]) body[data-vtheme="athens"] { --accent: #56631c; }
   :root:not([data-theme="dark"]) body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
   :root:not([data-theme="dark"]) body[data-vtheme="fifties"] { --accent: #6e5634; }
+  :root:not([data-theme="dark"]) body[data-vtheme="tang"] { --accent: #9a3f1e; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -64,6 +66,7 @@ body[data-vtheme="fifties"] { --accent: #c4ab84; }
 :root[data-theme="light"] body[data-vtheme="athens"] { --accent: #56631c; }
 :root[data-theme="light"] body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
 :root[data-theme="light"] body[data-vtheme="fifties"] { --accent: #6e5634; }
+:root[data-theme="light"] body[data-vtheme="tang"] { --accent: #9a3f1e; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -146,6 +149,12 @@ body[data-vtheme="fifties"] .banner-art {
     radial-gradient(ellipse at 50% 40%, rgba(0, 0, 0, 0) 40%, rgba(40, 30, 20, .55) 100%),
     linear-gradient(180deg, #d9cdb4 0%, #c8b896 45%, #6f6150 46%, #8a7a62 60%, #b9a989 61%, #9c8c6e 100%);
   filter: saturate(.7);
+}
+/* 長安：朱紅的城牆、金色的屋脊與暮春的天空 */
+body[data-vtheme="tang"] .banner-art {
+  background:
+    repeating-linear-gradient(90deg, rgba(60, 30, 15, .35) 0 2px, transparent 2px 26px) 0 64% / 100% 14% no-repeat,
+    linear-gradient(180deg, #e8d6b8 0%, #f0c9a0 34%, #d9a441 35%, #c88a2e 40%, #a8452a 41%, #8f3622 66%, #c2a37a 67%, #a88a62 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:
@@ -497,6 +506,7 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 #ambient[data-kind="ember"] i:nth-child(3n) { background: rgba(160, 150, 140, .5); box-shadow: none; }
 #ambient[data-kind="ink"] i { background: rgba(30, 26, 22, .35); filter: blur(1.5px); animation-name: driftdown; top: -12px; bottom: auto; }
 #ambient[data-kind="sand"] i { background: rgba(236, 200, 120, .6); box-shadow: 0 0 5px rgba(246, 211, 107, .45); }
+#ambient[data-kind="petal"] i { width: 7px; height: 5px; border-radius: 60% 40% 60% 40%; background: rgba(236, 150, 170, .6); box-shadow: none; animation-name: driftdown; top: -12px; bottom: auto; }
 #ambient[data-kind="rain"] i { width: 1px; height: 16px; border-radius: 0; background: rgba(170, 200, 210, .55); box-shadow: none; animation-name: driftdown; top: -20px; bottom: auto; }
 #ambient[data-kind="leaf"] i { background: rgba(170, 185, 110, .6); border-radius: 50% 0; box-shadow: 0 0 4px rgba(170, 185, 110, .4); }
 #ambient[data-kind="glow"] i { background: rgba(255, 190, 110, .45); box-shadow: 0 0 10px rgba(255, 170, 80, .5); }
