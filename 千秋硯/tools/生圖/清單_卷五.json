@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
+  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～二）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
   "items": [
     {
       "kind": "bg",
@@ -93,6 +93,105 @@
       "name": "棕櫚葉名冊",
       "seed": 3402,
       "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: inside a dim army tent, a long strip of palm leaf densely scratched with tiny indistinct marks lies across the knees of a man holding an iron stylus, while a thin boy with messy hair leans close, watching intently; a woman guard with a bow stands in the doorway; warm lamp light. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "恆河平原的路",
+      "seed": 3104,
+      "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: a long dusty road crossing a flat, hot, pale grey-white plain under a hazy sky, a very long line of exhausted people walking north, escorted by a few spearmen, a single huge banyan tree beside the road, heat shimmer; seen from a distance, sorrowful. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "墾地",
+      "seed": 3105,
+      "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: a wide stretch of wild scrubland with thorny bushes and tall grass being cleared beside a very broad river (the Ganges), rows of rough new thatched huts, a few oxen, small plots of freshly turned pale soil, a little red cloth tied to a dry stick at the corner of one field; hot afternoon light. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "華氏城",
+      "seed": 3106,
+      "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: the Mauryan capital Pataliputra seen from outside: a very long tall wooden palisade wall with many wooden watchtowers, a wide deep moat in front, a large timber gateway with crowds, elephants and carts passing, two- and three-storey wooden houses visible beyond, a distant palace roof with a single lamp lit at dusk. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "山林的村子",
+      "seed": 3107,
+      "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: a small village in a dense green hill forest of eastern India: houses of bamboo and large leaves raised on wooden stilts around a clearing, tall trees with sunlight filtering through, a stream nearby, simple wooden tools and baskets, peaceful and self-sufficient; respectful depiction, no stereotypes. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "char",
+      "name": "巴德拉",
+      "seed": 3204,
+      "prompt": "A neat middle-aged Mauryan official about 45 years old, clean white cotton garments and a simple turban, a short trimmed beard, holding a bundle of palm-leaf records, an orderly, reasonable face with a hint of buried sadness, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "瑪蘭",
+      "seed": 3205,
+      "prompt": "A very old woman elder of a forest village in ancient eastern India, deeply wrinkled dignified face, large wooden ear ornaments, a simple wrapped cloth, sitting upright with calm piercing eyes; respectful, no stereotypes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "長路",
+      "seed": 3307,
+      "prompt": "A long ghostly road rising from the dust like a serpent, covered in countless faint footprints, tired shadowy figures sinking into it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "熱風",
+      "seed": 3308,
+      "prompt": "A swirling column of hot dusty wind, shimmering with heat haze, glowing orange at its core, dry leaves and grit spinning inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "恆河洪",
+      "seed": 3309,
+      "prompt": "A surging mass of brown monsoon floodwater rising from a great river, drowning young green rice shoots, foam and debris swirling.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "林影",
+      "seed": 3310,
+      "prompt": "A tall shadow formed from dense forest foliage and hanging vines, many pairs of faint glowing eyes watching from within, silent and wary.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "枷鎖",
+      "seed": 3311,
+      "prompt": "A long heavy iron chain rising and coiling in the air, linking many empty wrist shackles in a row, rattling, cold grey metal.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "荒地",
+      "seed": 3312,
+      "prompt": "A vast flat silent creature made of wild scrubland, tall grass and pale turned earth rising like a low wave, featureless, calm and indifferent.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "仍有力量",
+      "seed": 3313,
+      "prompt": "A very tall gentle-looking shadow formed from many upright spears, one hand outstretched as if resting on a shoulder, the hand heavy as iron, calm and menacing.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "夜裡唸名字",
+      "seed": 3403,
+      "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: night under a huge banyan tree by a road, exhausted captives resting on the ground; a thin teenage boy sits beside an old man lying at the tree roots, reading names aloud from a palm-leaf strip by moonlight, a man beside him holding the leaf; quiet and grieving. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "cg",
+      "name": "王的使者",
+      "seed": 3404,
+      "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: at the edge of a forest village of stilt houses, a neatly dressed Mauryan envoy reads aloud from a palm-leaf scroll, a row of spearmen behind him and a woman guard with a bow; facing him, an old woman elder stands unmoving in front of the villagers; tense and dignified. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
     }
   ]
 }

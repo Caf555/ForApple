@@ -1227,6 +1227,69 @@
       "seed": 7174,
       "transparent": true,
       "prompt": "A tiny blackened bronze anklet bell, smaller than a fingernail."
+    },
+    {
+      "kind": "item",
+      "name": "粗米粥",
+      "seed": 7175,
+      "transparent": true,
+      "prompt": "A large clay bowl of thick soft rice porridge."
+    },
+    {
+      "kind": "item",
+      "name": "野蜂蜜",
+      "seed": 7176,
+      "transparent": true,
+      "prompt": "A piece of wild honeycomb wrapped in a large green leaf."
+    },
+    {
+      "kind": "item",
+      "name": "稻種",
+      "seed": 7177,
+      "transparent": true,
+      "prompt": "A small handful of rice seeds in a cotton cloth."
+    },
+    {
+      "kind": "item",
+      "name": "樹脂",
+      "seed": 7178,
+      "transparent": true,
+      "prompt": "A lump of golden fragrant tree resin."
+    },
+    {
+      "kind": "item",
+      "name": "一把稻種",
+      "seed": 7179,
+      "transparent": true,
+      "prompt": "A small bundle of rice seeds tied in white cotton cloth with a red thread."
+    },
+    {
+      "kind": "item",
+      "name": "巡行之弓",
+      "seed": 7180,
+      "transparent": true,
+      "prompt": "A bamboo longbow wound with both red and white thread at the grip."
+    },
+    {
+      "kind": "item",
+      "name": "林中哨",
+      "seed": 7181,
+      "transparent": true,
+      "prompt": "A small whistle carved from bamboo on a cord."
+    },
+    {
+      "kind": "item",
+      "name": "刻滿名字的棕櫚葉",
+      "seed": 7182,
+      "transparent": true,
+      "prompt": "A long strip of dried palm leaf densely scratched with tiny indistinct marks."
+    },
+    {
+      "kind": "item",
+      "name": "瓦蘇的第一枝鐵筆",
+      "seed": 7183,
+      "transparent": true,
+      "prompt": "A simple iron writing stylus with two small crude marks scratched on its shaft."
     }
   ]
 }
