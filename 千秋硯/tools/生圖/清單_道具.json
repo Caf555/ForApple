@@ -1416,6 +1416,41 @@
       "seed": 7201,
       "transparent": true,
       "prompt": "A clean, completely blank strip of dried palm leaf."
+    },
+    {
+      "kind": "item",
+      "name": "阿摩勒果",
+      "seed": 7202,
+      "transparent": true,
+      "prompt": "A few small round pale green amalaka (Indian gooseberry) fruits."
+    },
+    {
+      "kind": "item",
+      "name": "纏滿白線的弓",
+      "seed": 7203,
+      "transparent": true,
+      "prompt": "An old bamboo longbow entirely wound from end to end in white thread."
+    },
+    {
+      "kind": "item",
+      "name": "重新讀懂的字",
+      "seed": 7204,
+      "transparent": true,
+      "prompt": "A small chip of stone bearing a few indistinct carved script marks, softly glowing."
+    },
+    {
+      "kind": "item",
+      "name": "蓮蒂的鈴",
+      "seed": 7205,
+      "transparent": true,
+      "prompt": "A small bronze anklet bell on a thin cord."
+    },
+    {
+      "kind": "item",
+      "name": "另外半顆阿摩勒果",
+      "seed": 7206,
+      "transparent": true,
+      "prompt": "Half of a small pale green amalaka fruit, cut side up."
     }
   ]
 }

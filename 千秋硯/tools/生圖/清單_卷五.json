@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～四）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
+  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～五）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
   "items": [
     {
       "kind": "bg",
@@ -331,6 +331,99 @@
       "name": "河邊刻名字的石頭",
       "seed": 3408,
       "prompt": "Ancient eastern India (Kalinga) around 256 BC, at Dhauli near the Mauryan provincial town of Tosali: at dawn by a wide river, a young man stands beside a large round boulder densely carved with many small indistinct marks, reading aloud to a group of elderly villagers who cannot read; an old woman gently touches the carvings with her fingers; mist on the water. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "二十五年後的村子",
+      "seed": 3112,
+      "prompt": "Ancient India around 232 BC, at the end of the reign of the Mauryan emperor Ashoka: a rebuilt riverside fishing village in Kalinga, bamboo and mud houses with palm-leaf roofs, children playing in the shallow river, fishing nets drying, green rice fields and tall coconut palms, a bamboo pole by one doorway with a tiny bronze bell tied to it; peaceful morning after rain. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals. No later Mughal or medieval elements, no domes, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "雞園寺",
+      "seed": 3113,
+      "prompt": "Ancient India around 232 BC, at the end of the reign of the Mauryan emperor Ashoka: the quiet assembly hall of an early Buddhist monastery: a simple timber and brick hall with wooden pillars, monks in ochre robes seated in rows on mats, a large clay pot of soup on a hearth, soft light; respectful, serene, no statues of later style. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals. No later Mughal or medieval elements, no domes, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "老王的房間",
+      "seed": 3114,
+      "prompt": "Ancient India around 232 BC, at the end of the reign of the Mauryan emperor Ashoka: a dim, sparse chamber in a timber palace at night, a single small clay oil lamp burning in the corner, a low wooden bed and a small table holding half of a small green fruit, heavy closed doors; solemn and quiet, no people. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals. No later Mughal or medieval elements, no domes, no modern clothing."
+    },
+    {
+      "kind": "char",
+      "name": "瓦蘇_43",
+      "seed": 3207,
+      "prompt": "A broad-shouldered fisherman of ancient Kalinga about 43 years old, dark sun-browned skin, short hair streaked with grey, a short beard, a simple cotton loincloth and shoulder cloth, an old coconut-fiber sling tucked at his waist, warm weathered eyes, a smile showing one small pointed canine tooth, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "蘇達_51",
+      "seed": 3208,
+      "prompt": "An elderly woman official of the ancient Mauryan court about 51 years old, white hair tied back, plain white cotton garments and a white turban cloth, leaning on a bamboo staff, an old bamboo longbow completely wound in white thread on her back, kind tired eyes, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "蓮蒂",
+      "seed": 3209,
+      "prompt": "A lively 15-year-old girl of an ancient Kalinga fishing village, long black hair braided, a simple cotton garment, anklets with tiny bells, holding an old worn strip of palm leaf, bright curious eyes, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "老去",
+      "seed": 3326,
+      "prompt": "A slow-moving grey figure made of falling leaves and drifting dust, its shape bent with age, an hourglass of sand pouring inside its chest, gentle and inexorable.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "宮廷之爭",
+      "seed": 3327,
+      "prompt": "Several shadowy courtier silhouettes whispering behind tall timber pillars, their mouths trailing golden threads of murmurs that knot together, sly and cold.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "遺忘的字",
+      "seed": 3328,
+      "prompt": "A swarm of faded carved script marks peeling off a stone surface and drifting like moths, becoming meaningless patterns as they fly, melancholy.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "乾涸的井",
+      "seed": 3329,
+      "prompt": "An old dried-up stone well rising from cracked earth like a gaping creature, mud and weeds at its bottom, dry rope dangling, dusty and hollow.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "國庫",
+      "seed": 3330,
+      "prompt": "A massive treasure chest bound with heavy golden locks and chains, floating, its gleaming lock shaped like a scowling face, coins sealed inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・羯陵伽之相",
+      "seed": 3331,
+      "prompt": "A tall faceless scribe in a dark unstitched cotton robe and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a soft fine brush as if gently dusting a stone surface, grey ash drifting around him, calm and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "半顆阿摩勒果",
+      "seed": 3409,
+      "prompt": "Ancient India around 232 BC, at the end of the reign of the Mauryan emperor Ashoka: in a monastery hall, a kneeling palace servant offers a golden plate holding only half of a small green amalaka fruit; an elderly monk in ochre robes receives it gently while other monks watch in silence; soft light; humble and moving. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals. No later Mughal or medieval elements, no domes, no modern clothing."
+    },
+    {
+      "kind": "cg",
+      "name": "王與漁夫",
+      "seed": 3410,
+      "prompt": "Ancient India around 232 BC, at the end of the reign of the Mauryan emperor Ashoka: a dim chamber lit by one small oil lamp: seen from behind, a very old thin man in white sits with his back to the viewer, his face not visible; a broad-shouldered fisherman of about 43 stands beside him, holding half of a small green fruit; an elderly woman with a bow wound in white thread waits at the door; solemn and quiet. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals. No later Mughal or medieval elements, no domes, no modern clothing."
     }
   ]
 }
