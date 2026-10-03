@@ -47,6 +47,7 @@ body[data-vtheme="athens"] { --accent: #b9c46a; }
 body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
 body[data-vtheme="fifties"] { --accent: #c4ab84; }
 body[data-vtheme="tang"] { --accent: #e0925a; }
+body[data-vtheme="steppe"] { --accent: #c9a25e; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -57,6 +58,7 @@ body[data-vtheme="tang"] { --accent: #e0925a; }
   :root:not([data-theme="dark"]) body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
   :root:not([data-theme="dark"]) body[data-vtheme="fifties"] { --accent: #6e5634; }
   :root:not([data-theme="dark"]) body[data-vtheme="tang"] { --accent: #9a3f1e; }
+  :root:not([data-theme="dark"]) body[data-vtheme="steppe"] { --accent: #7a5a1c; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -67,6 +69,7 @@ body[data-vtheme="tang"] { --accent: #e0925a; }
 :root[data-theme="light"] body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
 :root[data-theme="light"] body[data-vtheme="fifties"] { --accent: #6e5634; }
 :root[data-theme="light"] body[data-vtheme="tang"] { --accent: #9a3f1e; }
+:root[data-theme="light"] body[data-vtheme="steppe"] { --accent: #7a5a1c; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -155,6 +158,11 @@ body[data-vtheme="tang"] .banner-art {
   background:
     repeating-linear-gradient(90deg, rgba(60, 30, 15, .35) 0 2px, transparent 2px 26px) 0 64% / 100% 14% no-repeat,
     linear-gradient(180deg, #e8d6b8 0%, #f0c9a0 34%, #d9a441 35%, #c88a2e 40%, #a8452a 41%, #8f3622 66%, #c2a37a 67%, #a88a62 100%);
+}
+body[data-vtheme="steppe"] .banner-art {
+  background:
+    radial-gradient(ellipse at 70% 46%, rgba(70, 90, 110, .45) 0 18%, transparent 40%),
+    linear-gradient(180deg, #d9cfb4 0%, #e6d2a2 38%, #8a8f7a 39%, #6f7a68 46%, #b89a62 47%, #a07e48 72%, #8a6a3a 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:

@@ -224,6 +224,20 @@ export class Audio {
         }, () => 520);
         break;
       }
+      case '西域': {
+        // 很空的草原：低低的持續音，偶爾一聲像胡笳的長音，和遠遠的駝鈴
+        pad([110, 164.8], 0.018);
+        const scale = [220, 246.9, 293.7, 329.6, 370, 440];
+        let beat = 0, idx = 2;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 6 === 0) { idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -2, 2, 0][Math.floor(Math.random() * 5)])); this.note(scale[idx], t, 2.6, 'sine', 0.016, bus); }
+          if (beat % 6 === 3 && Math.random() < 0.5) this.note(scale[Math.max(0, idx - 1)], t, 1.6, 'triangle', 0.009, bus);
+          if (beat % 12 === 7 || beat % 12 === 9) pluck(1318.5, 0.008, 0.25);
+          beat++;
+        }, () => 420);
+        break;
+      }
       case '羯陵伽': {
         // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
         pad([146.8, 220, 293.7], 0.016);

@@ -1612,6 +1612,55 @@
       "seed": 7229,
       "transparent": true,
       "prompt": "A sheet of handmade paper with pressed peony petals in the fibers."
+    },
+    {
+      "kind": "item",
+      "name": "肉乾",
+      "seed": 7230,
+      "transparent": true,
+      "prompt": "A few strips of dried mutton jerky tied with a cord."
+    },
+    {
+      "kind": "item",
+      "name": "馬奶",
+      "seed": 7231,
+      "transparent": true,
+      "prompt": "A leather flask of mare's milk with a wooden stopper."
+    },
+    {
+      "kind": "item",
+      "name": "馬鬃",
+      "seed": 7232,
+      "transparent": true,
+      "prompt": "A coarse bundle of horse mane hair tied at one end."
+    },
+    {
+      "kind": "item",
+      "name": "烽灰",
+      "seed": 7233,
+      "transparent": true,
+      "prompt": "A small heap of black beacon ash with a few charred twigs."
+    },
+    {
+      "kind": "item",
+      "name": "兩面旗",
+      "seed": 7234,
+      "transparent": true,
+      "prompt": "A small triangular banner on a short pole, its two sides painted differently, no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "渡河的繩",
+      "seed": 7235,
+      "transparent": true,
+      "prompt": "A coiled rope braided from horsehair, still a little wet."
+    },
+    {
+      "kind": "item",
+      "name": "杜環的一頁",
+      "seed": 7236,
+      "transparent": true,
+      "prompt": "A single page of handmade paper with water-blurred ink brush notes and a tiny sketched route map; marks indistinct."
     }
   ]
 }

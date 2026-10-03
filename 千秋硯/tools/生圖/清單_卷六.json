@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。",
+  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。",
   "items": [
     {
       "kind": "bg",
@@ -20,6 +20,30 @@
       "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: outside the great western gate of Chang'an at dawn: a massive rammed-earth city wall with a multi-storey timber gate tower, a long caravan of camels, horses, soldiers and craftsmen with bundles setting out west on a dusty road, banners in the wind. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
     },
     {
+      "kind": "bg",
+      "name": "怛羅斯的唐營",
+      "seed": 11104,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: a vast Tang army camp on dry yellow-green grassland beside a river: rows of tents, fluttering banners in strong wind, horses, a small stone-ringed pool where paper sheets dry on flat rocks. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "怛羅斯河",
+      "seed": 11105,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: a cold, fast grey river with tall reeds along the banks, a gravel shore, snowy mountains beyond, early dawn mist; on the far side, countless campfires dot the plain. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "夜裡的隘口",
+      "seed": 11106,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: night on a narrow mountain path with a rock wall on one side and a deep ravine on the other, crowded with fleeing people, cattle and horses, torchlight, chaos and dust. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "大食營地",
+      "seed": 11107,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: an Abbasid army camp with black tents and black banners on the grassland, morning light, rows of seated captives at one corner, soldiers carrying water buckets and baskets of flatbread. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
       "kind": "char",
       "name": "宋楮",
       "seed": 11201,
@@ -38,6 +62,13 @@
       "name": "張師父",
       "seed": 11203,
       "prompt": "An old Tang dynasty papermaking master about 65 years old, thin white beard, swollen knuckles, a plain grey robe with an apron, a stern face that hides kindness, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "杜環",
+      "seed": 11204,
+      "prompt": "A thin Tang dynasty man in his twenties, a round-collared robe dusty from travel, ink-stained fingers, a cloth bag stuffed with papers at his waist, holding a brush and a folded hand-drawn map, curious attentive eyes, Tang dynasty style.",
       "transparent": true
     },
     {
@@ -83,6 +114,48 @@
       "transparent": true
     },
     {
+      "kind": "enemy",
+      "name": "烽煙",
+      "seed": 11307,
+      "prompt": "A rising column of dark beacon smoke from an earthen watchtower, shaped like a towering figure, embers glowing inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "遠征",
+      "seed": 11308,
+      "prompt": "A gaunt marching figure made of dust and worn-out boots and broken spears, an endless road trailing behind it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鼓角",
+      "seed": 11309,
+      "prompt": "A floating war drum and long horns fused into a creature, its drumskin pulsing with dark shockwaves.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "河蘆",
+      "seed": 11310,
+      "prompt": "A line of tall river reeds forming ghostly human silhouettes in the wind at dusk.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "葛邏祿之變",
+      "seed": 11311,
+      "prompt": "A spectral horseman in fur garments wheeling his horse around, carrying a banner whose two sides show different designs, a dark wind swirling at the hooves; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "河",
+      "seed": 11312,
+      "prompt": "A towering wave of cold grey river water rising like a giant, carrying broken banners, shields, a shoe and drifting sheets of paper with blurred ink, stained dark by corruption.",
+      "transparent": true
+    },
+    {
       "kind": "cg",
       "name": "西市的獻俘",
       "seed": 11401,
@@ -93,6 +166,18 @@
       "name": "竹簾上的紙",
       "seed": 11402,
       "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: close view in a papermaking workshop: a young apprentice lifts a bamboo paper mould level out of a vat of white pulp, water streaming through the screen, leaving a thin even white sheet; a visitor watches closely; warm winter sunlight. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "葛邏祿倒戈",
+      "seed": 11403,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: on the fifth day of battle, a band of Karluk horsemen in fur garments on the flank of the Tang battle line suddenly wheel their horses around toward the Tang rear; the Tang formation breaks in confusion, dust and banners; seen from a distance, no gore. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "羊皮上的名冊",
+      "seed": 11404,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: in an Abbasid camp, a neatly bearded Khurasani scribe in a long robe sits at a small low table writing with a reed pen on a large sheet of parchment; beside him a young Sogdian woman with many thin braids interprets; a line of captives waits, a young broad-shouldered man in front looks at his calloused hands. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
     }
   ]
 }
