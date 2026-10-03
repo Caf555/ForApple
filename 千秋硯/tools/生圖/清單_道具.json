@@ -1122,6 +1122,111 @@
       "seed": 7159,
       "transparent": true,
       "prompt": "A small stack of ancient wooden wax writing tablets bound with cord, covered in indistinct scratched marks."
+    },
+    {
+      "kind": "item",
+      "name": "米糕",
+      "seed": 7160,
+      "transparent": true,
+      "prompt": "A few small round white steamed rice cakes on a banana leaf."
+    },
+    {
+      "kind": "item",
+      "name": "椰子水",
+      "seed": 7161,
+      "transparent": true,
+      "prompt": "A green coconut cut open at the top with a hollow reed straw."
+    },
+    {
+      "kind": "item",
+      "name": "薑黃膏",
+      "seed": 7162,
+      "transparent": true,
+      "prompt": "A small clay dish of bright yellow turmeric paste."
+    },
+    {
+      "kind": "item",
+      "name": "投石索",
+      "seed": 7163,
+      "transparent": true,
+      "prompt": "A simple sling woven from brown coconut fiber with a small leather pouch."
+    },
+    {
+      "kind": "item",
+      "name": "近衛之弓",
+      "seed": 7164,
+      "transparent": true,
+      "prompt": "A bamboo longbow wound with red thread at the grip."
+    },
+    {
+      "kind": "item",
+      "name": "棉披巾",
+      "seed": 7165,
+      "transparent": true,
+      "prompt": "A folded fine white cotton shawl, very thin and soft."
+    },
+    {
+      "kind": "item",
+      "name": "斷箭",
+      "seed": 7166,
+      "transparent": true,
+      "prompt": "A broken wooden arrow with an iron head, muddy."
+    },
+    {
+      "kind": "item",
+      "name": "紅土",
+      "seed": 7167,
+      "transparent": true,
+      "prompt": "A small lump of dried red laterite earth."
+    },
+    {
+      "kind": "item",
+      "name": "河貝",
+      "seed": 7168,
+      "transparent": true,
+      "prompt": "A few small river shells."
+    },
+    {
+      "kind": "item",
+      "name": "象鈴",
+      "seed": 7169,
+      "transparent": true,
+      "prompt": "A small bronze elephant bell on a rope."
+    },
+    {
+      "kind": "item",
+      "name": "不響的象鈴",
+      "seed": 7170,
+      "transparent": true,
+      "prompt": "A small bronze elephant bell stuffed with white cotton."
+    },
+    {
+      "kind": "item",
+      "name": "河貝串",
+      "seed": 7171,
+      "transparent": true,
+      "prompt": "A necklace strung with small river shells on a cotton cord."
+    },
+    {
+      "kind": "item",
+      "name": "石與弦",
+      "seed": 7172,
+      "transparent": true,
+      "prompt": "A sling whose cord has been replaced with a taut bowstring."
+    },
+    {
+      "kind": "item",
+      "name": "拓片的描本",
+      "seed": 7173,
+      "transparent": true,
+      "prompt": "A modern notebook page with careful ink tracings of unfamiliar ancient script; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "阿媽的腳鈴",
+      "seed": 7174,
+      "transparent": true,
+      "prompt": "A tiny blackened bronze anklet bell, smaller than a fingernail."
     }
   ]
 }

@@ -196,6 +196,20 @@ export class Audio {
         }, () => 400);
         break;
       }
+      case '羯陵伽': {
+        // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
+        pad([146.8, 220, 293.7], 0.016);
+        const scale = [293.7, 329.6, 370, 440, 493.9, 587.3, 659.3];
+        let beat = 0, idx = 2;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 4 === 0 || (beat % 4 === 3 && Math.random() < 0.5)) { idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -1, 2, 0, -2][Math.floor(Math.random() * 6)])); this.note(scale[idx], t, 0.9, 'triangle', 0.02, bus); }
+          if (beat % 8 === 0 || beat % 8 === 3 || beat % 8 === 6) pluck(73.4, 0.05, 0.5);
+          if (beat % 2 === 1) pluck(587.3, 0.012, 0.15);
+          beat++;
+        }, () => 260);
+        break;
+      }
       default:
         pad([130.8, 196], 0.02);
     }

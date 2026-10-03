@@ -26,8 +26,8 @@ for (const f of files) {
 const at = (s, c) => `${s.file} 第 ${c.line} 行`;
 const FX = ['旗標', '羈絆', '心印', '道具', '錢', '經驗', '史卷', '隊友', '封靈', '陣法', '技能', '補史', '回復'];
 const CMDS = ['地點', '年代', '卷', '主題', '音樂', '章節', '清畫面', '提示', '回復', '存檔點', '教學', '取名', '回書齋', '進度', '開放', '卷完', '商店', '論辯', '小遊戲', '書齋', '試玩結束', '背景', '插圖', '立繪', '稱呼'];
-const MUSIC = ['府城夜', '海潮', '書齋', '緊張', '哀歌', '戰鬥', '首領', '殷商', '阿瑪納', '雅典', '無', ''];
-const THEMES = ['modern', 'dayuan', 'muye', 'amarna', 'athens', 'hub'];
+const MUSIC = ['府城夜', '海潮', '書齋', '緊張', '哀歌', '戰鬥', '首領', '殷商', '阿瑪納', '雅典', '羯陵伽', '無', ''];
+const THEMES = ['modern', 'dayuan', 'muye', 'amarna', 'athens', 'kalinga', 'hub'];
 // 生圖清單裡的圖名（用來檢查 @背景、@插圖、@立繪 有沒有打錯字）
 import { readdirSync } from 'node:fs';
 const imgNames = new Set();

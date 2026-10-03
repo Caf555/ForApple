@@ -44,6 +44,7 @@ body[data-vtheme="hub"] { --accent: #c9a45c; }
 body[data-vtheme="muye"] { --accent: #d9825b; }
 body[data-vtheme="amarna"] { --accent: #d9b04a; }
 body[data-vtheme="athens"] { --accent: #b9c46a; }
+body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -51,6 +52,7 @@ body[data-vtheme="athens"] { --accent: #b9c46a; }
   :root:not([data-theme="dark"]) body[data-vtheme="muye"] { --accent: #9a4a2a; }
   :root:not([data-theme="dark"]) body[data-vtheme="amarna"] { --accent: #86600f; }
   :root:not([data-theme="dark"]) body[data-vtheme="athens"] { --accent: #56631c; }
+  :root:not([data-theme="dark"]) body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -58,6 +60,7 @@ body[data-vtheme="athens"] { --accent: #b9c46a; }
 :root[data-theme="light"] body[data-vtheme="muye"] { --accent: #9a4a2a; }
 :root[data-theme="light"] body[data-vtheme="amarna"] { --accent: #86600f; }
 :root[data-theme="light"] body[data-vtheme="athens"] { --accent: #56631c; }
+:root[data-theme="light"] body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -126,6 +129,12 @@ body[data-vtheme="athens"] .banner-art {
   background:
     repeating-linear-gradient(90deg, #1d1712 0 6px, transparent 6px 12px) 0 100% / 100% 4px no-repeat,
     linear-gradient(180deg, #9cc3d8 0%, #d8e3dc 40%, #b9c08a 41%, #8b9a5a 62%, #c8743d 63%, #b05e2c 100%);
+}
+/* 羯陵伽：季風的灰雲、綠色的稻田、紅土與道利山的黑色岩石 */
+body[data-vtheme="kalinga"] .banner-art {
+  background:
+    radial-gradient(ellipse at 78% 62%, #3a3632 0 14%, transparent 15%),
+    linear-gradient(180deg, #8d99a0 0%, #c4cbc6 38%, #6fa26a 39%, #4f8a52 58%, #b4593a 59%, #8f4a32 76%, #5b8c8c 77%, #3f6f72 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:
@@ -258,7 +267,7 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .codex.locked summary { color: var(--muted); font-weight: 400; }
 .codex p { margin: .4em 0; font-family: var(--serif); font-size: calc(var(--fs) * .9); line-height: 1.8; }
 .fact { font-family: var(--sans); font-size: 11px; font-weight: 400; padding: 0 7px; border-radius: 8px; border: 1px solid currentColor; }
-.f-史實 { color: var(--good); } .f-虛構 { color: #b890d0; } .f-史實改編 { color: var(--accent); }
+.f-史實 { color: var(--good); } .f-虛構 { color: #b890d0; } .f-傳說 { color: #d9a35b; } .f-史實改編 { color: var(--accent); }
 
 .member { border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 10px; background: var(--panel2); }
 .m-head { display: flex; align-items: center; gap: 8px; }
@@ -477,6 +486,7 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 #ambient[data-kind="ember"] i:nth-child(3n) { background: rgba(160, 150, 140, .5); box-shadow: none; }
 #ambient[data-kind="ink"] i { background: rgba(30, 26, 22, .35); filter: blur(1.5px); animation-name: driftdown; top: -12px; bottom: auto; }
 #ambient[data-kind="sand"] i { background: rgba(236, 200, 120, .6); box-shadow: 0 0 5px rgba(246, 211, 107, .45); }
+#ambient[data-kind="rain"] i { width: 1px; height: 16px; border-radius: 0; background: rgba(170, 200, 210, .55); box-shadow: none; animation-name: driftdown; top: -20px; bottom: auto; }
 #ambient[data-kind="leaf"] i { background: rgba(170, 185, 110, .6); border-radius: 50% 0; box-shadow: 0 0 4px rgba(170, 185, 110, .4); }
 #ambient[data-kind="glow"] i { background: rgba(255, 190, 110, .45); box-shadow: 0 0 10px rgba(255, 170, 80, .5); }
 @keyframes drift { 0% { transform: translate(0, 0); opacity: 0; } 12% { opacity: .9; } 85% { opacity: .7; } 100% { transform: translate(var(--dx), -105vh); opacity: 0; } }

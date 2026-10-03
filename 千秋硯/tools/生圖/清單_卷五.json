@@ -1,0 +1,98 @@
+{
+  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "達雅河",
+      "seed": 3101,
+      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: a wide muddy brown river winding between bright green rice paddies under heavy grey monsoon clouds, a low dark rocky hill in the distance, plumes of smoke rising from several burnt fields, reeds along the bank, no people in the foreground, sorrowful and quiet. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "焦土的村子",
+      "seed": 3102,
+      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: the burnt remains of a small riverside fishing village: blackened bamboo posts standing in ash, collapsed palm-leaf roofs, overturned clay pots and a broken fishing net, coconut palms scorched at the edges, wet grey light after rain; restrained, no bodies. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "道利山營地",
+      "seed": 3103,
+      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: a vast army camp of cloth tents at the foot of a low rocky hill with dark boulders, war elephants standing at the edge of the camp, banners on bamboo poles, cooking smoke, a large open area where many seated captives are gathered under guard, seen from a distance, monsoon sky. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "char",
+      "name": "瓦蘇",
+      "seed": 3201,
+      "prompt": "A thin 14-year-old boy from an ancient Indian fishing village, dark sun-browned skin, long messy black hair, a simple undyed cotton loincloth and a cloth tied over one shoulder, mud on his arms, holding a woven coconut-fiber sling, fierce grieving eyes, one small pointed canine tooth visible.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "蘇達",
+      "seed": 3202,
+      "prompt": "A 22-year-old woman royal guard of the ancient Mauryan court, black hair tied up, a padded cotton short armor jacket over a wrapped cotton garment, a bamboo longbow wound with red thread on her back, a quiver at her hip, a steady face with troubled eyes, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "查帕達",
+      "seed": 3203,
+      "prompt": "A young scribe about 25 years old from the northwest of ancient India (Gandhara), lighter skin, a high nose, short beard, a white cotton shawl, holding a long strip of palm leaf and an iron stylus, ink-stained fingers, curious and kind expression, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "箭雨之影",
+      "seed": 3301,
+      "prompt": "A dark cloud of countless arrows hanging in the air, never falling, forming a menacing swirling mass, with faint ghostly bowstrings trailing from it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "焦田",
+      "seed": 3302,
+      "prompt": "A creature of scorched black rice stalks and smoldering mud rising from a burnt paddy field, glowing embers inside, smoke trailing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "河霾",
+      "seed": 3303,
+      "prompt": "A drifting mass of faintly reddish river mist taking the shape of a hollow figure, reeds caught within it, cold and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "孤影",
+      "seed": 3304,
+      "prompt": "A small childlike shadow figure wandering among burnt bamboo posts, reaching out with one hand, searching, its form flickering like smoke; sad rather than frightening.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "戰象之影",
+      "seed": 3305,
+      "prompt": "A huge grey ghostly war elephant rising from a river, arrows stuck in its armored hide, trunk raised high trumpeting in pain, a silent bronze bell hanging from its ear, water streaming off it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "征服",
+      "seed": 3306,
+      "prompt": "A towering radiant golden figure made of raised spears, banners and drum beats, its open mouth shouting triumphantly, so bright it hides the dark weeping shapes behind it; glorious and terrible.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "河邊的王",
+      "seed": 3401,
+      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: seen from far behind and at a distance, a figure in white with a tall turban seated on a large white elephant at the edge of a wide river, looking out over burnt fields and the far bank; soldiers lined along the road raising weapons and cheering; grey monsoon light; the king's face is not visible. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "cg",
+      "name": "棕櫚葉名冊",
+      "seed": 3402,
+      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: inside a dim army tent, a long strip of palm leaf densely scratched with tiny indistinct marks lies across the knees of a man holding an iron stylus, while a thin boy with messy hair leans close, watching intently; a woman guard with a bow stands in the doorway; warm lamp light. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    }
+  ]
+}
