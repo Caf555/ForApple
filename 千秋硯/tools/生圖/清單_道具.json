@@ -1451,6 +1451,97 @@
       "seed": 7206,
       "transparent": true,
       "prompt": "Half of a small pale green amalaka fruit, cut side up."
+    },
+    {
+      "kind": "item",
+      "name": "碗粿",
+      "seed": 7207,
+      "transparent": true,
+      "prompt": "A bowl of Tainan-style savory rice pudding topped with minced pork and egg yolk."
+    },
+    {
+      "kind": "item",
+      "name": "虱目魚粥",
+      "seed": 7208,
+      "transparent": true,
+      "prompt": "A bowl of milkfish congee with a slice of fish belly."
+    },
+    {
+      "kind": "item",
+      "name": "仙草",
+      "seed": 7209,
+      "transparent": true,
+      "prompt": "A bowl of dark grass jelly."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆盒",
+      "seed": 7210,
+      "transparent": true,
+      "prompt": "An old wooden chalk box with white and red chalk sticks."
+    },
+    {
+      "kind": "item",
+      "name": "舊球棒",
+      "seed": 7211,
+      "transparent": true,
+      "prompt": "An old wooden baseball bat with cloth tape wrapped around the grip."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆",
+      "seed": 7212,
+      "transparent": true,
+      "prompt": "A single stub of white chalk."
+    },
+    {
+      "kind": "item",
+      "name": "舊報紙",
+      "seed": 7213,
+      "transparent": true,
+      "prompt": "A folded yellowed old newspaper with some pieces cut out; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "啟明的鋼筆",
+      "seed": 7214,
+      "transparent": true,
+      "prompt": "An old black fountain pen with two tiny indistinct engraved marks on the cap."
+    },
+    {
+      "kind": "item",
+      "name": "撕掉的稿紙",
+      "seed": 7215,
+      "transparent": true,
+      "prompt": "A sheet of grid writing paper torn in half; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "拉開的窗簾",
+      "seed": 7216,
+      "transparent": true,
+      "prompt": "A small piece of faded floral curtain fabric."
+    },
+    {
+      "kind": "item",
+      "name": "爸爸的檔案夾",
+      "seed": 7217,
+      "transparent": true,
+      "prompt": "A brown manila folder with two indistinct handwritten marks on the cover."
+    },
+    {
+      "kind": "item",
+      "name": "一九五一年的合照",
+      "seed": 7218,
+      "transparent": true,
+      "prompt": "A small old black-and-white photograph of a teacher with schoolchildren in front of a wooden classroom; faces tiny and indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "遺書的抄本",
+      "seed": 7219,
+      "transparent": true,
+      "prompt": "A notebook page with careful handwritten copying in ink; text indistinct."
     }
   ]
 }

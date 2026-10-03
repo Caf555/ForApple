@@ -196,6 +196,19 @@ export class Audio {
         }, () => 400);
         break;
       }
+      case '舊府城': {
+        // 慢慢的、有一點走音的舊歌：四七拔き的五聲音階，像收音機裡飄出來的
+        pad([110, 164.8], 0.014);
+        const yona = [220, 246.9, 277.2, 329.6, 370, 440, 493.9];
+        let beat = 0, idx = 3;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 2 === 0) { idx = Math.max(0, Math.min(yona.length - 1, idx + [-1, 1, -1, 0, 2, -2][Math.floor(Math.random() * 6)])); this.note(yona[idx] * (1 + (Math.random() - 0.5) * 0.006), t, 1.2, 'triangle', 0.016, bus); }
+          if (beat % 4 === 0) pluck(110, 0.025, 1.6);
+          beat++;
+        }, () => 520);
+        break;
+      }
       case '羯陵伽': {
         // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
         pad([146.8, 220, 293.7], 0.016);

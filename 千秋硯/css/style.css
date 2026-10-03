@@ -45,6 +45,7 @@ body[data-vtheme="muye"] { --accent: #d9825b; }
 body[data-vtheme="amarna"] { --accent: #d9b04a; }
 body[data-vtheme="athens"] { --accent: #b9c46a; }
 body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
+body[data-vtheme="fifties"] { --accent: #c4ab84; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -53,6 +54,7 @@ body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
   :root:not([data-theme="dark"]) body[data-vtheme="amarna"] { --accent: #86600f; }
   :root:not([data-theme="dark"]) body[data-vtheme="athens"] { --accent: #56631c; }
   :root:not([data-theme="dark"]) body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
+  :root:not([data-theme="dark"]) body[data-vtheme="fifties"] { --accent: #6e5634; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -61,6 +63,7 @@ body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
 :root[data-theme="light"] body[data-vtheme="amarna"] { --accent: #86600f; }
 :root[data-theme="light"] body[data-vtheme="athens"] { --accent: #56631c; }
 :root[data-theme="light"] body[data-vtheme="kalinga"] { --accent: #1f6e5e; }
+:root[data-theme="light"] body[data-vtheme="fifties"] { --accent: #6e5634; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -135,6 +138,14 @@ body[data-vtheme="kalinga"] .banner-art {
   background:
     radial-gradient(ellipse at 78% 62%, #3a3632 0 14%, transparent 15%),
     linear-gradient(180deg, #8d99a0 0%, #c4cbc6 38%, #6fa26a 39%, #4f8a52 58%, #b4593a 59%, #8f4a32 76%, #5b8c8c 77%, #3f6f72 100%);
+}
+/* 一九五二：褪色的老照片，木造校舍的屋簷，和牆上一條紅色的標語 */
+body[data-vtheme="fifties"] .banner-art {
+  background:
+    linear-gradient(180deg, transparent 0 62%, rgba(150, 40, 30, .55) 62% 66%, transparent 66%),
+    radial-gradient(ellipse at 50% 40%, rgba(0, 0, 0, 0) 40%, rgba(40, 30, 20, .55) 100%),
+    linear-gradient(180deg, #d9cdb4 0%, #c8b896 45%, #6f6150 46%, #8a7a62 60%, #b9a989 61%, #9c8c6e 100%);
+  filter: saturate(.7);
 }
 body[data-vtheme="hub"] .banner-art {
   background:
