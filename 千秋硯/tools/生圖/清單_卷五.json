@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～二）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
+  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～三）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
   "items": [
     {
       "kind": "bg",
@@ -192,6 +192,72 @@
       "name": "王的使者",
       "seed": 3404,
       "prompt": "Ancient India around 260 BC, in the Mauryan empire of Ashoka: at the edge of a forest village of stilt houses, a neatly dressed Mauryan envoy reads aloud from a palm-leaf scroll, a row of spearmen behind him and a woman guard with a bow; facing him, an old woman elder stands unmoving in front of the villagers; tense and dignified. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "書記房",
+      "seed": 3108,
+      "prompt": "Ancient India around 257 BC, in Pataliputra, capital of the Mauryan emperor Ashoka: a large timber scribes' hall: a dozen scribes sitting cross-legged on mats copying onto long strips of palm leaf and birch bark with iron styluses, bundles of palm-leaf manuscripts stacked high on wooden shelves, shafts of light from high windows, oil lamps. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; buildings are timber and brick with tiled or thatched roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "法的集會",
+      "seed": 3109,
+      "prompt": "Ancient India around 257 BC, in Pataliputra, capital of the Mauryan emperor Ashoka: a wide public square with a raised wooden platform for proclamations, a roofed timber viewing pavilion behind it, a huge diverse crowd gathered: officials, Buddhist monks in ochre robes, Brahmins in white, farmers and forest people; banners, young trees newly planted along the edges, a well with a clay cup. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; buildings are timber and brick with tiled or thatched roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "enemy",
+      "name": "屠刀",
+      "seed": 3314,
+      "prompt": "A floating cluster of large kitchen cleavers and knives, gleaming but idle, hovering restlessly as if not knowing what to cut, a faint ghostly peacock feather drifting among them.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "舊習",
+      "seed": 3315,
+      "prompt": "A massive squat stone-like figure sitting in the middle of a road, heavy and immovable, covered in moss and old dust, arms crossed, stubborn.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "冷眼",
+      "seed": 3316,
+      "prompt": "A drifting grey mist filled with many sidelong, narrowed eyes glancing mockingly, faint smirking mouths, cold.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "乾渴的路",
+      "seed": 3317,
+      "prompt": "A cracked sun-baked dirt road rising like a snake, heat haze shimmering, no shade anywhere, tiny withered saplings along it, glowing hot.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "宣讀之聲",
+      "seed": 3318,
+      "prompt": "A towering figure made of a long unrolled palm-leaf proclamation, rows of indistinct carved marks glowing gold, a huge open mouth of sound waves booming outward, every word equally loud.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "悔恨",
+      "seed": 3319,
+      "prompt": "A vast luminous weeping presence of soft white light seated in the dark, its form like a bowed figure in white with its face hidden in its hands, glowing tears falling; sincere sorrow, not evil, overwhelming.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "王的詔書",
+      "seed": 3405,
+      "prompt": "Ancient India around 257 BC, in Pataliputra, capital of the Mauryan emperor Ashoka: a herald standing on a raised wooden platform reads aloud from a long palm-leaf scroll to a vast silent crowd; in the front row a young man of 18 with short hair stands motionless, his lips moving along with the words; officials nod, some listeners weep. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; buildings are timber and brick with tiled or thatched roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "cg",
+      "name": "唸名字的瓦蘇",
+      "seed": 3406,
+      "prompt": "Ancient India around 257 BC, in Pataliputra, capital of the Mauryan emperor Ashoka: a young man of 18 stands alone on a wooden platform reading names from an old worn palm-leaf strip; officials below rush toward him but have stopped; far in the background, deep in a shaded pavilion, a small distant figure in white has raised one hand, his face not visible; dignified and tense. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; buildings are timber and brick with tiled or thatched roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
     }
   ]
 }

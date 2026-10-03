@@ -1290,6 +1290,69 @@
       "seed": 7183,
       "transparent": true,
       "prompt": "A simple iron writing stylus with two small crude marks scratched on its shaft."
+    },
+    {
+      "kind": "item",
+      "name": "芒果",
+      "seed": 7184,
+      "transparent": true,
+      "prompt": "A ripe yellow-orange mango."
+    },
+    {
+      "kind": "item",
+      "name": "酥油餅",
+      "seed": 7185,
+      "transparent": true,
+      "prompt": "A thick golden flatbread glistening with ghee on a leaf plate."
+    },
+    {
+      "kind": "item",
+      "name": "菩提葉",
+      "seed": 7186,
+      "transparent": true,
+      "prompt": "A single heart-shaped bodhi leaf with a long pointed tip."
+    },
+    {
+      "kind": "item",
+      "name": "藥草種子",
+      "seed": 7187,
+      "transparent": true,
+      "prompt": "A small cloth pouch spilling medicinal herb seeds."
+    },
+    {
+      "kind": "item",
+      "name": "一片葉子",
+      "seed": 7188,
+      "transparent": true,
+      "prompt": "A heart-shaped bodhi leaf pressed between strips of old palm leaf."
+    },
+    {
+      "kind": "item",
+      "name": "路邊的榕樹",
+      "seed": 7189,
+      "transparent": true,
+      "prompt": "A small piece of banyan aerial root tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "白色的頭巾",
+      "seed": 7190,
+      "transparent": true,
+      "prompt": "A neatly folded long white cotton turban cloth."
+    },
+    {
+      "kind": "item",
+      "name": "懺悔詔的抄本",
+      "seed": 7191,
+      "transparent": true,
+      "prompt": "A long palm-leaf strip densely copied with tiny indistinct script."
+    },
+    {
+      "kind": "item",
+      "name": "放歸的名單",
+      "seed": 7192,
+      "transparent": true,
+      "prompt": "A short palm-leaf strip with a list of tiny indistinct marks, tied with a white thread."
     }
   ]
 }
