@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。 回三的場景在撒馬爾罕（今天的烏茲別克）：綠洲、水渠、果園、葡萄架與黃土城牆。",
+  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。 回三的場景在撒馬爾罕（今天的烏茲別克）：綠洲、水渠、果園、葡萄架與黃土城牆。 回四的場景是 762 年巴格達圓城的工地（還沒有城牆，只有木樁、灰線、泥磚與工人）；哈里發只畫遠景的小人影。",
   "items": [
     {
       "kind": "bg",
@@ -60,6 +60,24 @@
       "name": "康家的院子",
       "seed": 11110,
       "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a quiet family courtyard of a Sogdian house with a large grapevine trellis heavy with green grapes, a carpet and low cushions, bowls of beans, golden peaches in a basket, warm evening light. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "圓城工地",
+      "seed": 11111,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: a vast flat plain beside the wide muddy river, wooden stakes and ropes marking out an enormous circle, tens of thousands of workers digging, carrying bricks and mixing mud, a reed-roofed shelter with a paper vat and sheets drying, blazing sun. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "底格里斯河的夜",
+      "seed": 11112,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: night on the bank of the Tigris among date palms, still dark water reflecting stars, thin mist rising over the river, a few distant fires of the workers' camp. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "往巴斯拉的路口",
+      "seed": 11113,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: late afternoon at the southeastern edge of the site, where the Basra Gate will be: only two wooden stakes and a scorched line on the ground, a dusty road leading southeast along the river toward the sea, palms and boats. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
     },
     {
       "kind": "char",
@@ -230,6 +248,48 @@
       "transparent": true
     },
     {
+      "kind": "enemy",
+      "name": "泥磚",
+      "seed": 11319,
+      "prompt": "A hulking golem built of sun-dried mud bricks, straw sticking out of the cracks.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "底格里斯",
+      "seed": 11320,
+      "prompt": "A broad surge of muddy river water rising in the shape of a giant with small boats tossed on its shoulders.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "油火",
+      "seed": 11321,
+      "prompt": "A creature of black crude oil seeping from cracked earth, burning with smoky orange flames.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "棕櫚影",
+      "seed": 11322,
+      "prompt": "Shadowy date palm silhouettes with fan-like fronds reaching out like hands under moonlight.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "圓城",
+      "seed": 11323,
+      "prompt": "Two concentric rings of fire-lined walls rising from the ground into a living fortress with four gate-mouths, closing in.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "歸路",
+      "seed": 11324,
+      "prompt": "A misty road lined with blooming plum trees leading to a faint vision of an old Chinese market street and a small workshop gate, the whole road coiling like a ghostly serpent, beautiful and unreal.",
+      "transparent": true
+    },
+    {
       "kind": "cg",
       "name": "西市的獻俘",
       "seed": 11401,
@@ -264,6 +324,18 @@
       "name": "撒馬爾罕的楮樹",
       "seed": 11406,
       "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: years later, a grown paper-mulberry tree shades a busy papermaking courtyard; a young Tang Chinese man in his late twenties holds a fresh sheet of paper up to the light, fibers visible; around him many apprentices of different peoples lift bamboo moulds from vats in the same motion. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "火畫的城",
+      "seed": 11407,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: night: the entire plan of a perfectly round city with double rings of walls, four gates and straight inner roads drawn on the ground in lines of burning naphtha-soaked cotton seeds, a giant glowing circle of fire seen from a low rise; crowds of workers watching in silence; on a distant height a small group of horsemen, tiny silhouettes. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "巴斯拉門的告別",
+      "seed": 11408,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: golden dusk at a crossroads marked by two wooden stakes: a thin weathered Tang Chinese traveler in his thirties with a heavily patched cloth bag full of papers walks away southeast along the river road; behind him a broad-shouldered Tang craftsman and a Sogdian woman with braids pinned up wave goodbye. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
     }
   ]
 }

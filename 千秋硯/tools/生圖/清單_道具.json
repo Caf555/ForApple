@@ -1710,6 +1710,55 @@
       "seed": 7243,
       "transparent": true,
       "prompt": "A sheet of fine paper-mulberry paper held to light, long fibers visible, a small mulberry leaf on it."
+    },
+    {
+      "kind": "item",
+      "name": "烤魚",
+      "seed": 7244,
+      "transparent": true,
+      "prompt": "A large river fish split open and grilled on wooden stakes, charred edges."
+    },
+    {
+      "kind": "item",
+      "name": "椰棗蜜",
+      "seed": 7245,
+      "transparent": true,
+      "prompt": "A small clay jar of thick dark date syrup with a drip on the rim."
+    },
+    {
+      "kind": "item",
+      "name": "泥磚屑",
+      "seed": 7246,
+      "transparent": true,
+      "prompt": "A broken piece of sun-dried mud brick with straw in it."
+    },
+    {
+      "kind": "item",
+      "name": "棉籽",
+      "seed": 7247,
+      "transparent": true,
+      "prompt": "A handful of oily dark cotton seeds with a few white fibers."
+    },
+    {
+      "kind": "item",
+      "name": "四門鑰",
+      "seed": 7248,
+      "transparent": true,
+      "prompt": "Four small bronze keys on a single ring, pointing in four directions."
+    },
+    {
+      "kind": "item",
+      "name": "歸心",
+      "seed": 7249,
+      "transparent": true,
+      "prompt": "A small clay ball painted with an arrow pointing one way."
+    },
+    {
+      "kind": "item",
+      "name": "圓城的設計圖",
+      "seed": 7250,
+      "transparent": true,
+      "prompt": "A sheet of handmade paper with an ink plan of a perfectly round city with two rings of walls and four gates; no readable text."
     }
   ]
 }
