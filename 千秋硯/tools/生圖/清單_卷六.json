@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。",
+  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。 回三的場景在撒馬爾罕（今天的烏茲別克）：綠洲、水渠、果園、葡萄架與黃土城牆。",
   "items": [
     {
       "kind": "bg",
@@ -44,6 +44,24 @@
       "prompt": "Talas River valley in Central Asia, summer of 751 AD: an Abbasid army camp with black tents and black banners on the grassland, morning light, rows of seated captives at one corner, soldiers carrying water buckets and baskets of flatbread. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
     },
     {
+      "kind": "bg",
+      "name": "撒馬爾罕",
+      "seed": 11108,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a walled city of yellow rammed earth on a low hill, surrounded by green orchards, vineyards, rows of poplars and clear irrigation canals, snowy mountains far away, caravans of camels at the gate, bright spring light. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "撒馬爾罕的紙坊",
+      "seed": 11109,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a small papermaking courtyard beside an irrigation canal: a stone mortar with a wooden pestle, a big wooden vat of pulp, bamboo moulds, sheets of paper drying on whitewashed mud-brick walls, a young paper-mulberry tree in the corner. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "康家的院子",
+      "seed": 11110,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a quiet family courtyard of a Sogdian house with a large grapevine trellis heavy with green grapes, a carpet and low cushions, bowls of beans, golden peaches in a basket, warm evening light. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
       "kind": "char",
       "name": "宋楮",
       "seed": 11201,
@@ -69,6 +87,20 @@
       "name": "杜環",
       "seed": 11204,
       "prompt": "A thin Tang dynasty man in his twenties, a round-collared robe dusty from travel, ink-stained fingers, a cloth bag stuffed with papers at his waist, holding a brush and a folded hand-drawn map, curious attentive eyes, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "法魯赫",
+      "seed": 11205,
+      "prompt": "A Khurasani Persian scribe of the early Abbasid era, about 30 years old, a neatly trimmed beard, a dark long robe and a black turban, a reed pen tucked behind the ear, holding a roll of parchment, calm thoughtful eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "老韓",
+      "seed": 11206,
+      "prompt": "A Tang dynasty Chinese weaver in his fifties held as a captive in Central Asia, grey stubble, stubborn proud face, a ragged round-collared robe, many colored threads wound around his fingers, Tang dynasty style.",
       "transparent": true
     },
     {
@@ -156,6 +188,48 @@
       "transparent": true
     },
     {
+      "kind": "enemy",
+      "name": "渠水",
+      "seed": 11313,
+      "prompt": "A living surge of clear irrigation canal water rising in a serpentine form, rippling with reflected poplar leaves.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "熱沙",
+      "seed": 11314,
+      "prompt": "A hulking figure of hot desert sand with shimmering heat haze, grit pouring from its arms.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "桑影",
+      "seed": 11315,
+      "prompt": "A shadowy mulberry tree spirit with silkworm threads trailing from its branches like grasping fingers.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鄉愁",
+      "seed": 11316,
+      "prompt": "A thin translucent figure standing on a city wall gazing east at dusk, its long shadow stretching and reaching out.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "祕方",
+      "seed": 11317,
+      "prompt": "A wooden chest bound with dozens of rusty locks and chains, whispering mouths in the cracks, floating menacingly.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "漁陽鼙鼓",
+      "seed": 11318,
+      "prompt": "A colossal shadow covered in hanging war drums, each drum beating with fiery shockwaves, burning palace silk and torn music scores swirling around it.",
+      "transparent": true
+    },
+    {
       "kind": "cg",
       "name": "西市的獻俘",
       "seed": 11401,
@@ -178,6 +252,18 @@
       "name": "羊皮上的名冊",
       "seed": 11404,
       "prompt": "Talas River valley in Central Asia, summer of 751 AD: in an Abbasid camp, a neatly bearded Khurasani scribe in a long robe sits at a small low table writing with a reed pen on a large sheet of parchment; beside him a young Sogdian woman with many thin braids interprets; a line of captives waits, a young broad-shouldered man in front looks at his calloused hands. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "種下楮樹",
+      "seed": 11405,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: night in a papermaking courtyard by a canal: a young Tang Chinese man kneels and plants a few seeds in a small hole in the earth, pouring canal water from a cup; a Sogdian young woman with many thin braids and bronze wrist bells crouches beside him watching; lamplight. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "撒馬爾罕的楮樹",
+      "seed": 11406,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: years later, a grown paper-mulberry tree shades a busy papermaking courtyard; a young Tang Chinese man in his late twenties holds a fresh sheet of paper up to the light, fibers visible; around him many apprentices of different peoples lift bamboo moulds from vats in the same motion. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
     }
   ]
 }

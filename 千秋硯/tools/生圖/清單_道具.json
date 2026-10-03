@@ -1661,6 +1661,55 @@
       "seed": 7236,
       "transparent": true,
       "prompt": "A single page of handmade paper with water-blurred ink brush notes and a tiny sketched route map; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "金桃",
+      "seed": 7237,
+      "transparent": true,
+      "prompt": "A golden peach with a leaf."
+    },
+    {
+      "kind": "item",
+      "name": "甜瓜",
+      "seed": 7238,
+      "transparent": true,
+      "prompt": "A sliced Central Asian melon, juicy pale flesh."
+    },
+    {
+      "kind": "item",
+      "name": "桑皮",
+      "seed": 7239,
+      "transparent": true,
+      "prompt": "Strips of mulberry bark tied in a bundle."
+    },
+    {
+      "kind": "item",
+      "name": "破麻布",
+      "seed": 7240,
+      "transparent": true,
+      "prompt": "Torn strips of old hemp cloth in a small pile."
+    },
+    {
+      "kind": "item",
+      "name": "公開的祕方",
+      "seed": 7241,
+      "transparent": true,
+      "prompt": "A sheet of handmade paper covered with step-by-step diagrams of papermaking, an opened padlock beside it; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "霓裳殘譜",
+      "seed": 7242,
+      "transparent": true,
+      "prompt": "Half of a torn sheet of an ancient Chinese music score with indistinct notation."
+    },
+    {
+      "kind": "item",
+      "name": "撒馬爾罕紙",
+      "seed": 7243,
+      "transparent": true,
+      "prompt": "A sheet of fine paper-mulberry paper held to light, long fibers visible, a small mulberry leaf on it."
     }
   ]
 }
