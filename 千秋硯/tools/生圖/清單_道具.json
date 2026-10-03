@@ -1353,6 +1353,69 @@
       "seed": 7192,
       "transparent": true,
       "prompt": "A short palm-leaf strip with a list of tiny indistinct marks, tied with a white thread."
+    },
+    {
+      "kind": "item",
+      "name": "棕櫚糖",
+      "seed": 7193,
+      "transparent": true,
+      "prompt": "A few dark brown lumps of palm jaggery on a leaf."
+    },
+    {
+      "kind": "item",
+      "name": "岩屑",
+      "seed": 7194,
+      "transparent": true,
+      "prompt": "A small pile of grey stone chips with chisel marks."
+    },
+    {
+      "kind": "item",
+      "name": "季風花",
+      "seed": 7195,
+      "transparent": true,
+      "prompt": "A few small white wildflowers with wet petals."
+    },
+    {
+      "kind": "item",
+      "name": "石中象",
+      "seed": 7196,
+      "transparent": true,
+      "prompt": "A small stone fragment with the faint carved front leg of an elephant."
+    },
+    {
+      "kind": "item",
+      "name": "拓包",
+      "seed": 7197,
+      "transparent": true,
+      "prompt": "A round cloth rubbing pad stuffed with cotton, its face darkened with ink."
+    },
+    {
+      "kind": "item",
+      "name": "村口的石",
+      "seed": 7198,
+      "transparent": true,
+      "prompt": "A smooth round grey river stone, sized for a sling."
+    },
+    {
+      "kind": "item",
+      "name": "道利的拓片",
+      "seed": 7199,
+      "transparent": true,
+      "prompt": "A sheet of paper with a white-on-black ink rubbing of a few lines of indistinct carved script."
+    },
+    {
+      "kind": "item",
+      "name": "刻名字的石頭",
+      "seed": 7200,
+      "transparent": true,
+      "prompt": "A notebook sketch of a large round riverside boulder densely carved with tiny indistinct marks."
+    },
+    {
+      "kind": "item",
+      "name": "一片空白的棕櫚葉",
+      "seed": 7201,
+      "transparent": true,
+      "prompt": "A clean, completely blank strip of dried palm leaf."
     }
   ]
 }

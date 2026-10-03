@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～三）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
+  "說明": "《千秋硯》卷五〈羯陵伽〉生圖清單（回一～四）。畫風、節點、尺寸沿用卷一清單。注意：孔雀王朝時代的衣著是不縫製的棉布（腰布與披肩），房子是竹子、泥巴與棕櫚葉；不要出現後世的蒙兀兒風格、圓頂、石造神廟或現代服裝。阿育王是真實歷史人物，只畫遠景或背影，不畫正臉。",
   "items": [
     {
       "kind": "bg",
@@ -258,6 +258,79 @@
       "name": "唸名字的瓦蘇",
       "seed": 3406,
       "prompt": "Ancient India around 257 BC, in Pataliputra, capital of the Mauryan emperor Ashoka: a young man of 18 stands alone on a wooden platform reading names from an old worn palm-leaf strip; officials below rush toward him but have stopped; far in the background, deep in a shaded pavilion, a small distant figure in white has raised one hand, his face not visible; dignified and tense. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; buildings are timber and brick with tiled or thatched roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "道利岩刻",
+      "seed": 3110,
+      "prompt": "Ancient eastern India (Kalinga) around 256 BC, at Dhauli near the Mauryan provincial town of Tosali: at the foot of a low rocky hill, a huge dark boulder whose smoothed, polished face is covered with neat rows of small indistinct carved marks, with one noticeably blank smooth area; on top of the boulder the front half of an elephant is sculpted as if emerging from the rock; bamboo scaffolding being taken down, green rice fields and a river beyond, monsoon clouds. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "bg",
+      "name": "重生的村子",
+      "seed": 3111,
+      "prompt": "Ancient eastern India (Kalinga) around 256 BC, at Dhauli near the Mauryan provincial town of Tosali: the overgrown site of a riverside fishing village five years after it burned: a few charred bamboo posts standing in tall grass and vines, but bright green rice paddies around it, a new bamboo pole planted by a former doorway with a tiny bronze bell tied to it, coconut palms regrown, soft rain. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "char",
+      "name": "維拉",
+      "seed": 3206,
+      "prompt": "A careful middle-aged Mauryan provincial official about 40 years old, fine white cotton garments and a neat turban, a quiet tired face, soft-spoken expression, holding a palm-leaf scroll close to his chest, ancient Indian style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鑿屑",
+      "seed": 3320,
+      "prompt": "A whirling storm of sharp grey stone chips and dust shaped like a crouching figure, chisel marks glinting on the fragments.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "季風雨",
+      "seed": 3321,
+      "prompt": "A towering column of heavy monsoon rain shaped like a calm faceless figure, curtains of water streaming down, small white flowers floating at its feet.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "舊傷",
+      "seed": 3322,
+      "prompt": "A dark jagged crack splitting open in red earth, glowing faintly from within like a reopening wound, wisps of shadow rising from it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "河邊的灰",
+      "seed": 3323,
+      "prompt": "A smoldering heap of wet grey ash rising into a hunched shape, still steaming in the rain, faint embers glowing inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "岩上之象",
+      "seed": 3324,
+      "prompt": "A massive stone elephant breaking free from a dark boulder, front legs stepping out of the rock, trunk raised trumpeting, stone dust falling like rain, carved and ancient.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "空白",
+      "seed": 3325,
+      "prompt": "A vast featureless sheet of polished smooth stone floating in the air, perfectly blank and softly gleaming, its surface faintly reflecting faces that fade away; silent, calm and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "所有的人都是我的孩子",
+      "seed": 3407,
+      "prompt": "Ancient eastern India (Kalinga) around 256 BC, at Dhauli near the Mauryan provincial town of Tosali: in front of the great inscribed boulder with the stone elephant on top, a soft-spoken official reads aloud from a palm-leaf scroll to a crowd of returning villagers, monks and merchants; a young man with stone dust on his face stares at a blank smooth patch in the inscription; morning light. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+    },
+    {
+      "kind": "cg",
+      "name": "河邊刻名字的石頭",
+      "seed": 3408,
+      "prompt": "Ancient eastern India (Kalinga) around 256 BC, at Dhauli near the Mauryan provincial town of Tosali: at dawn by a wide river, a young man stands beside a large round boulder densely carved with many small indistinct marks, reading aloud to a group of elderly villagers who cannot read; an old woman gently touches the carvings with her fingers; mist on the water. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
     }
   ]
 }
