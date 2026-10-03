@@ -196,6 +196,62 @@ export class Audio {
         }, () => 400);
         break;
       }
+      case '長安': {
+        // 宮調五聲音階，像琵琶一樣的撥奏，配上一點點笛聲
+        pad([130.8, 196], 0.016);
+        const gong = [261.6, 293.7, 329.6, 392, 440, 523.3, 587.3, 659.3];
+        let beat = 0, idx = 3;
+        loop(() => {
+          const t = this.ac.currentTime;
+          idx = Math.max(0, Math.min(gong.length - 1, idx + [-1, 1, -1, 1, 2, -2, 0][Math.floor(Math.random() * 7)]));
+          pluck(gong[idx], 0.03, 1.1);
+          if (beat % 3 === 1 && Math.random() < 0.6) pluck(gong[idx], 0.018, 0.6);
+          if (beat % 8 === 0) this.note(gong[Math.min(gong.length - 1, idx + 2)], t, 1.8, 'sine', 0.012, bus);
+          beat++;
+        }, () => 340);
+        break;
+      }
+      case '舊府城': {
+        // 慢慢的、有一點走音的舊歌：四七拔き的五聲音階，像收音機裡飄出來的
+        pad([110, 164.8], 0.014);
+        const yona = [220, 246.9, 277.2, 329.6, 370, 440, 493.9];
+        let beat = 0, idx = 3;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 2 === 0) { idx = Math.max(0, Math.min(yona.length - 1, idx + [-1, 1, -1, 0, 2, -2][Math.floor(Math.random() * 6)])); this.note(yona[idx] * (1 + (Math.random() - 0.5) * 0.006), t, 1.2, 'triangle', 0.016, bus); }
+          if (beat % 4 === 0) pluck(110, 0.025, 1.6);
+          beat++;
+        }, () => 520);
+        break;
+      }
+      case '西域': {
+        // 很空的草原：低低的持續音，偶爾一聲像胡笳的長音，和遠遠的駝鈴
+        pad([110, 164.8], 0.018);
+        const scale = [220, 246.9, 293.7, 329.6, 370, 440];
+        let beat = 0, idx = 2;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 6 === 0) { idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -2, 2, 0][Math.floor(Math.random() * 5)])); this.note(scale[idx], t, 2.6, 'sine', 0.016, bus); }
+          if (beat % 6 === 3 && Math.random() < 0.5) this.note(scale[Math.max(0, idx - 1)], t, 1.6, 'triangle', 0.009, bus);
+          if (beat % 12 === 7 || beat % 12 === 9) pluck(1318.5, 0.008, 0.25);
+          beat++;
+        }, () => 420);
+        break;
+      }
+      case '羯陵伽': {
+        // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
+        pad([146.8, 220, 293.7], 0.016);
+        const scale = [293.7, 329.6, 370, 440, 493.9, 587.3, 659.3];
+        let beat = 0, idx = 2;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 4 === 0 || (beat % 4 === 3 && Math.random() < 0.5)) { idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -1, 2, 0, -2][Math.floor(Math.random() * 6)])); this.note(scale[idx], t, 0.9, 'triangle', 0.02, bus); }
+          if (beat % 8 === 0 || beat % 8 === 3 || beat % 8 === 6) pluck(73.4, 0.05, 0.5);
+          if (beat % 2 === 1) pluck(587.3, 0.012, 0.15);
+          beat++;
+        }, () => 260);
+        break;
+      }
       default:
         pad([130.8, 196], 0.02);
     }

@@ -1,0 +1,123 @@
+{
+  "說明": "《千秋硯》中章〈書房〉生圖清單。畫風、節點、尺寸沿用卷一清單。注意：1950 年代的臺南，日治時期留下的木造校舍與紅磚街屋；衣著是白襯衫、素色洋裝；色調像褪色的老照片。不要出現可讀的文字。人物都是虛構的，不對應任何真實受難者；不畫刑求或處決。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "一九五二年的教室",
+      "seed": 10101,
+      "prompt": "Tainan, Taiwan, in 1952 under martial law: a Japanese-colonial-era wooden elementary school classroom, long wooden windows open to a flame tree in full red bloom, rows of small wooden desks, a blackboard with neat indistinct chalk marks, a paper notice with indistinct characters above the blackboard, afternoon light. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "北勢街",
+      "seed": 10102,
+      "prompt": "Tainan, Taiwan, in 1952 under martial law: a narrow old street of two-storey red-brick shophouses with wooden shutters in Tainan at dusk, shops already closing, a faded painted wall slogan in indistinct red marks, a lone bicycle, quiet and tense. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "沈家的客廳",
+      "seed": 10103,
+      "prompt": "Tainan, Taiwan, in 1952 under martial law: a small modest living room of a schoolteacher's home at night: a treadle sewing machine in the corner, a low table with a book wrapped in newspaper and tea cups, a bare light bulb, a bedroom door slightly open, warm but fragile atmosphere. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "沒有窗的房間",
+      "seed": 10104,
+      "prompt": "Tainan, Taiwan, in 1952 under martial law: a small bare windowless room with grey walls, a single bare light bulb hanging from the ceiling always on, one wooden table with a stack of blank writing paper and a pen, one empty wooden chair; oppressive, still, no people. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "看守所",
+      "seed": 10105,
+      "prompt": "Taipei, Taiwan, in 1953: a crowded old detention cell with straw mats on the floor, thin light through a high barred window, a small low wooden box used as a writing surface with a thin sheet of paper and a short pencil; quiet and sorrowful, no people visible. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "char",
+      "name": "沈啟明",
+      "seed": 10201,
+      "prompt": "A gentle, thin Taiwanese schoolteacher about 32 years old in 1952, round wire-rimmed glasses, neatly combed short hair, a white short-sleeved shirt and dark trousers, chalk dust on his fingers, a quiet kind smile, realistic 1950s style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "阿忠",
+      "seed": 10202,
+      "prompt": "A cheerful 22-year-old young Taiwanese teacher in 1952, short hair, a white undershirt, an old wooden baseball bat on his shoulder, a wide open grin showing one small pointed canine tooth, energetic, realistic 1950s style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "秀英",
+      "seed": 10203,
+      "prompt": "A Taiwanese woman about 28 years old in 1952, hair neatly pinned up, a simple floral cotton dress, a measuring tape around her neck, a warm but worried expression, realistic 1950s style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "監聽",
+      "seed": 10301,
+      "prompt": "Many pale human ears growing out of a cracked plaster wall like fungus, faint sound waves drawn into them, eerie and silent.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "標語",
+      "seed": 10302,
+      "prompt": "Large bold red brush strokes peeling off a white-washed wall and forming a looming figure, made of indistinct painted marks, heavy and stern.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "檢舉箱",
+      "seed": 10303,
+      "prompt": "A locked wooden box with a narrow slot on top, come alive, anonymous folded letters fluttering out of the slot like bats, cold and sinister.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "戒嚴之夜",
+      "seed": 10304,
+      "prompt": "A dark empty street at night shaped into a looming silent figure, all windows shut with drawn curtains, a single streetlamp glowing, heavy stillness.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "自白書",
+      "seed": 10305,
+      "prompt": "A whirling storm of handwritten sheets of paper, each stamped with a red thumbprint, forming a hunched figure, ink running like tears; oppressive.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "人人有責",
+      "seed": 10306,
+      "prompt": "A tall faceless figure formed from rows of drawn window curtains with many eyes peering from behind them, red painted strokes swirling around it, silent mutual surveillance.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "白頁",
+      "seed": 10307,
+      "prompt": "A single huge sheet of thin, perfectly blank white paper floating and slowly unfolding, faint pencil strokes falling off it like autumn leaves, silent and devastating.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "抓住手指的牧之",
+      "seed": 10401,
+      "prompt": "Tainan, Taiwan, in 1952 under martial law: in a modest living room at night, a two-year-old barefoot toddler in pajamas grips the finger of a kneeling young man with both tiny hands and laughs; behind them young teachers sit around a low table with a book wrapped in newspaper; a woman at a sewing machine watches; tender. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "敲門",
+      "seed": 10402,
+      "prompt": "Tainan, Taiwan, in 1952 under martial law: night, a small home: a two-year-old child sits up in bed in a dark bedroom, silently staring at the open front door beyond, where the outline of three men in plain clothes and a thin man in glasses walking away is just visible; a sewing machine stopped; restrained and heartbreaking, no violence. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "沒有寄出的信",
+      "seed": 10403,
+      "prompt": "Taipei, Taiwan, in 1953: close-up of a thin sheet of paper with faint indistinct pencil handwriting being placed by a guard's hand into a brown manila case folder with a red stamp mark, a grey metal filing cabinet behind; quiet and devastating. Muted, slightly faded colors like an old photograph. No readable text anywhere."
+    }
+  ]
+}

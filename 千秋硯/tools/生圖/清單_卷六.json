@@ -1,0 +1,428 @@
+{
+  "說明": "《千秋硯》卷六〈長安⇄巴格達〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：唐代的圓領袍與高腰長裙，粟特人戴高尖帽、留捲鬍；不要明清的服飾與建築。真實歷史人物（高仙芝、石國王）只畫遠景或背影。不要出現可讀的文字。 回二的場景在中亞的草原與河谷（今天哈薩克與吉爾吉斯交界），阿拔斯王朝的士兵穿黑衣、舉黑旗；禱告的場面只畫遠景，不畫任何聖像。 回三的場景在撒馬爾罕（今天的烏茲別克）：綠洲、水渠、果園、葡萄架與黃土城牆。 回四的場景是 762 年巴格達圓城的工地（還沒有城牆，只有木樁、灰線、泥磚與工人）；哈里發只畫遠景的小人影。 回五是 795 年的巴格達：城已經很大，有船橋、市集與書商的店；紙坊靠著運河，院子裡有一棵楮樹。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "西市",
+      "seed": 11101,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: the bustling West Market: a wide stone-paved street lined with timber shops with tiled roofs and cloth banners, spice sacks, silk bolts, horses and camels, crowds of Han Chinese and Central Asian merchants, plum trees in blossom with petals drifting, dusty golden light. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "紙坊",
+      "seed": 11102,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: the courtyard of a small papermaking workshop near the West Market: a large stone mortar with a wooden pestle, a big wooden vat of white pulp, bamboo paper moulds leaning against the wall, many sheets of fresh paper drying on walls and boards in winter sun. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "長安城門",
+      "seed": 11103,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: outside the great western gate of Chang'an at dawn: a massive rammed-earth city wall with a multi-storey timber gate tower, a long caravan of camels, horses, soldiers and craftsmen with bundles setting out west on a dusty road, banners in the wind. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "怛羅斯的唐營",
+      "seed": 11104,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: a vast Tang army camp on dry yellow-green grassland beside a river: rows of tents, fluttering banners in strong wind, horses, a small stone-ringed pool where paper sheets dry on flat rocks. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "怛羅斯河",
+      "seed": 11105,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: a cold, fast grey river with tall reeds along the banks, a gravel shore, snowy mountains beyond, early dawn mist; on the far side, countless campfires dot the plain. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "夜裡的隘口",
+      "seed": 11106,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: night on a narrow mountain path with a rock wall on one side and a deep ravine on the other, crowded with fleeing people, cattle and horses, torchlight, chaos and dust. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "大食營地",
+      "seed": 11107,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: an Abbasid army camp with black tents and black banners on the grassland, morning light, rows of seated captives at one corner, soldiers carrying water buckets and baskets of flatbread. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "撒馬爾罕",
+      "seed": 11108,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a walled city of yellow rammed earth on a low hill, surrounded by green orchards, vineyards, rows of poplars and clear irrigation canals, snowy mountains far away, caravans of camels at the gate, bright spring light. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "撒馬爾罕的紙坊",
+      "seed": 11109,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a small papermaking courtyard beside an irrigation canal: a stone mortar with a wooden pestle, a big wooden vat of pulp, bamboo moulds, sheets of paper drying on whitewashed mud-brick walls, a young paper-mulberry tree in the corner. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "康家的院子",
+      "seed": 11110,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: a quiet family courtyard of a Sogdian house with a large grapevine trellis heavy with green grapes, a carpet and low cushions, bowls of beans, golden peaches in a basket, warm evening light. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "圓城工地",
+      "seed": 11111,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: a vast flat plain beside the wide muddy river, wooden stakes and ropes marking out an enormous circle, tens of thousands of workers digging, carrying bricks and mixing mud, a reed-roofed shelter with a paper vat and sheets drying, blazing sun. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "底格里斯河的夜",
+      "seed": 11112,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: night on the bank of the Tigris among date palms, still dark water reflecting stars, thin mist rising over the river, a few distant fires of the workers' camp. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "往巴斯拉的路口",
+      "seed": 11113,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: late afternoon at the southeastern edge of the site, where the Basra Gate will be: only two wooden stakes and a scorched line on the ground, a dusty road leading southeast along the river toward the sea, palms and boats. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "巴格達",
+      "seed": 11114,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: a great bustling city along the wide Tigris, a pontoon bridge of boats lashed together crowded with people, the round walls of the old city in the distance, markets, gardens and mosques with low domes, a street of paper sellers with stacks of paper hanging at shop fronts. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "巴格達的紙坊",
+      "seed": 11115,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: a large papermaking workshop beside a canal: a dozen big vats, many stone mortars and wooden pestles, workers lifting bamboo moulds, sheets of paper drying on long whitewashed walls glowing in the sun, a big old paper-mulberry tree in the corner of the courtyard. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "char",
+      "name": "宋楮",
+      "seed": 11201,
+      "prompt": "An 18-year-old Tang dynasty paper workshop apprentice, broad shoulders, calloused hands, a plain hemp tunic with sleeves rolled up, a cloth headband, holding a wooden pestle, a wide cheerful grin showing one small pointed canine tooth, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "康阿娜",
+      "seed": 11202,
+      "prompt": "A 19-year-old Sogdian young woman living in Tang dynasty Chang'an, many thin braids, a fitted jacket with round collar and a long striped skirt, a string of small bronze bells on her wrist, lively sharp eyes, Central Asian features, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "張師父",
+      "seed": 11203,
+      "prompt": "An old Tang dynasty papermaking master about 65 years old, thin white beard, swollen knuckles, a plain grey robe with an apron, a stern face that hides kindness, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "杜環",
+      "seed": 11204,
+      "prompt": "A thin Tang dynasty man in his twenties, a round-collared robe dusty from travel, ink-stained fingers, a cloth bag stuffed with papers at his waist, holding a brush and a folded hand-drawn map, curious attentive eyes, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "法魯赫",
+      "seed": 11205,
+      "prompt": "A Khurasani Persian scribe of the early Abbasid era, about 30 years old, a neatly trimmed beard, a dark long robe and a black turban, a reed pen tucked behind the ear, holding a roll of parchment, calm thoughtful eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "老韓",
+      "seed": 11206,
+      "prompt": "A Tang dynasty Chinese weaver in his fifties held as a captive in Central Asia, grey stubble, stubborn proud face, a ragged round-collared robe, many colored threads wound around his fingers, Tang dynasty style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "哈桑",
+      "seed": 11207,
+      "prompt": "A young translator of Abbasid Baghdad in his early twenties, half Arab and half Sogdian features, a neat white turban and a long robe with ink stains on the cuffs, holding a reed pen and a wax tablet under his arm, eager bright eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "宋楮_62",
+      "seed": 11208,
+      "prompt": "A 62-year-old Tang Chinese papermaker living in Baghdad, white hair tied up, slightly stooped broad shoulders, very calloused hands, a simple robe in the local style with an apron, a warm wrinkled grin showing one small pointed canine tooth, holding a bamboo paper mould.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "康阿娜_63",
+      "seed": 11209,
+      "prompt": "A 63-year-old Sogdian woman living in Baghdad, white braids pinned up on her head, a lively wrinkled face with sharp kind eyes, a long striped dress, a string of small bronze bells on her wrist, a basket on her arm.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "紙蠹",
+      "seed": 11301,
+      "prompt": "A swarm of silvery bookworms crawling out of a stack of old scrolls and forming a large writhing creature, eaten holes in the paper glowing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "墨漬",
+      "seed": 11302,
+      "prompt": "A large spreading black ink blot rising from a page into a dripping amorphous figure, blurred characters dissolving inside it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "長安塵",
+      "seed": 11303,
+      "prompt": "A swirling column of yellow loess dust shaped like a hulking figure, grit and dry leaves spinning inside, heavy and choking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "落花",
+      "seed": 11304,
+      "prompt": "A drifting cloud of plum and peony petals forming a graceful but eerie floating figure, beautiful and distracting.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "募兵告示",
+      "seed": 11305,
+      "prompt": "A huge paper recruitment notice torn from a wall, flapping like a great bird, its indistinct brush marks stretching into long black roads that reach out to grab people.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "背約",
+      "seed": 11306,
+      "prompt": "A tall shadowy figure formed from a torn treaty document, one hand extended as if offering a handshake while the other hand draws a sword behind its back, dust swirling, ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "烽煙",
+      "seed": 11307,
+      "prompt": "A rising column of dark beacon smoke from an earthen watchtower, shaped like a towering figure, embers glowing inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "遠征",
+      "seed": 11308,
+      "prompt": "A gaunt marching figure made of dust and worn-out boots and broken spears, an endless road trailing behind it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鼓角",
+      "seed": 11309,
+      "prompt": "A floating war drum and long horns fused into a creature, its drumskin pulsing with dark shockwaves.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "河蘆",
+      "seed": 11310,
+      "prompt": "A line of tall river reeds forming ghostly human silhouettes in the wind at dusk.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "葛邏祿之變",
+      "seed": 11311,
+      "prompt": "A spectral horseman in fur garments wheeling his horse around, carrying a banner whose two sides show different designs, a dark wind swirling at the hooves; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "河",
+      "seed": 11312,
+      "prompt": "A towering wave of cold grey river water rising like a giant, carrying broken banners, shields, a shoe and drifting sheets of paper with blurred ink, stained dark by corruption.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "渠水",
+      "seed": 11313,
+      "prompt": "A living surge of clear irrigation canal water rising in a serpentine form, rippling with reflected poplar leaves.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "熱沙",
+      "seed": 11314,
+      "prompt": "A hulking figure of hot desert sand with shimmering heat haze, grit pouring from its arms.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "桑影",
+      "seed": 11315,
+      "prompt": "A shadowy mulberry tree spirit with silkworm threads trailing from its branches like grasping fingers.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鄉愁",
+      "seed": 11316,
+      "prompt": "A thin translucent figure standing on a city wall gazing east at dusk, its long shadow stretching and reaching out.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "祕方",
+      "seed": 11317,
+      "prompt": "A wooden chest bound with dozens of rusty locks and chains, whispering mouths in the cracks, floating menacingly.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "漁陽鼙鼓",
+      "seed": 11318,
+      "prompt": "A colossal shadow covered in hanging war drums, each drum beating with fiery shockwaves, burning palace silk and torn music scores swirling around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "泥磚",
+      "seed": 11319,
+      "prompt": "A hulking golem built of sun-dried mud bricks, straw sticking out of the cracks.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "底格里斯",
+      "seed": 11320,
+      "prompt": "A broad surge of muddy river water rising in the shape of a giant with small boats tossed on its shoulders.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "油火",
+      "seed": 11321,
+      "prompt": "A creature of black crude oil seeping from cracked earth, burning with smoky orange flames.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "棕櫚影",
+      "seed": 11322,
+      "prompt": "Shadowy date palm silhouettes with fan-like fronds reaching out like hands under moonlight.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "圓城",
+      "seed": 11323,
+      "prompt": "Two concentric rings of fire-lined walls rising from the ground into a living fortress with four gate-mouths, closing in.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "歸路",
+      "seed": 11324,
+      "prompt": "A misty road lined with blooming plum trees leading to a faint vision of an old Chinese market street and a small workshop gate, the whole road coiling like a ghostly serpent, beautiful and unreal.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "刮去",
+      "seed": 11325,
+      "prompt": "A sharp scraping knife fused with a sheet of parchment scraped many times, faint ghostly lines of erased text peeling off it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "墨色的河",
+      "seed": 11326,
+      "prompt": "A river blackened with ink rising as a dark flowing creature, sodden book pages swirling in it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "錯字",
+      "seed": 11327,
+      "prompt": "A swarm of miswritten glyph-like ink marks twisting into a mocking creature; marks are indistinct, no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "譯不出的字",
+      "seed": 11328,
+      "prompt": "A tangled vine-like creature made of three different styles of flowing script strokes knotted together, leaves falling off as it moves; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "打成漿",
+      "seed": 11329,
+      "prompt": "A big wooden vat of churning white paper pulp with half-dissolved letters, rags and pages sinking into it, the pulp rising like a hungry wave.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・巴格達之相",
+      "seed": 11330,
+      "prompt": "A tall faceless scribe in a dark long robe of Abbasid style and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a tiny bamboo paper mould dripping white pulp, a blank white sheet pinned to a sunlit wall behind him, calm and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "西市的獻俘",
+      "seed": 11401,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: a military parade on the wide street of the West Market: mounted soldiers escort carts carrying bound captives, at the front a captive foreign king in torn rich clothes seen from a distance; crowds cheering on one side, while Sogdian merchants in tall caps stand silent in shop doorways on the other side; a young woman with braids bites her lip. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "竹簾上的紙",
+      "seed": 11402,
+      "prompt": "Chang'an, capital of the Tang dynasty, around 751 AD, in early spring: close view in a papermaking workshop: a young apprentice lifts a bamboo paper mould level out of a vat of white pulp, water streaming through the screen, leaving a thin even white sheet; a visitor watches closely; warm winter sunlight. Tang dynasty clothing: round-collared robes, leather belts, soft black caps for men; high-waisted long skirts for women; Sogdian merchants with tall pointed caps and curly beards. Architecture: timber buildings with tiled roofs, rammed-earth walls. No later Ming or Qing elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "葛邏祿倒戈",
+      "seed": 11403,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: on the fifth day of battle, a band of Karluk horsemen in fur garments on the flank of the Tang battle line suddenly wheel their horses around toward the Tang rear; the Tang formation breaks in confusion, dust and banners; seen from a distance, no gore. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "羊皮上的名冊",
+      "seed": 11404,
+      "prompt": "Talas River valley in Central Asia, summer of 751 AD: in an Abbasid camp, a neatly bearded Khurasani scribe in a long robe sits at a small low table writing with a reed pen on a large sheet of parchment; beside him a young Sogdian woman with many thin braids interprets; a line of captives waits, a young broad-shouldered man in front looks at his calloused hands. Tang dynasty soldiers wear lamellar armor over round-collared robes; Abbasid Khurasani soldiers wear black garments and carry black banners. Wide dry grassland, snow-capped mountains on the horizon. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "種下楮樹",
+      "seed": 11405,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: night in a papermaking courtyard by a canal: a young Tang Chinese man kneels and plants a few seeds in a small hole in the earth, pouring canal water from a cup; a Sogdian young woman with many thin braids and bronze wrist bells crouches beside him watching; lamplight. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "撒馬爾罕的楮樹",
+      "seed": 11406,
+      "prompt": "Samarkand, a Sogdian oasis city in Central Asia, 750s AD: years later, a grown paper-mulberry tree shades a busy papermaking courtyard; a young Tang Chinese man in his late twenties holds a fresh sheet of paper up to the light, fibers visible; around him many apprentices of different peoples lift bamboo moulds from vats in the same motion. Sogdian townspeople in belted caftans and tall caps, Persian and Arab officials in long robes and turbans, Tang Chinese captives in worn round-collared robes. Rammed-earth and mud-brick architecture with flat roofs and wooden columns, irrigation canals, poplars, vineyards. No later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "火畫的城",
+      "seed": 11407,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: night: the entire plan of a perfectly round city with double rings of walls, four gates and straight inner roads drawn on the ground in lines of burning naphtha-soaked cotton seeds, a giant glowing circle of fire seen from a low rise; crowds of workers watching in silence; on a distant height a small group of horsemen, tiny silhouettes. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "巴斯拉門的告別",
+      "seed": 11408,
+      "prompt": "The construction site of the Round City of Baghdad on the west bank of the Tigris, summer of 762 AD: golden dusk at a crossroads marked by two wooden stakes: a thin weathered Tang Chinese traveler in his thirties with a heavily patched cloth bag full of papers walks away southeast along the river road; behind him a broad-shouldered Tang craftsman and a Sogdian woman with braids pinned up wave goodbye. Workers and craftsmen of many peoples in simple tunics and turbans, Abbasid officials in dark robes, a few Tang Chinese and Sogdian craftsmen. Flat land, date palms, mud bricks drying in the sun. No finished city walls yet, no domes, no minarets, no later elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "竹簾上的手指",
+      "seed": 11409,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: close-up at dawn in a papermaking workshop: an old Tang Chinese papermaker with white hair holds a bamboo mould covered with a fresh wet sheet of white pulp; his weathered fingertip, dripping thick pulp, hovers just above the wet sheet, about to write; soft golden light; an old Sogdian woman's hand with a bronze bell bracelet rests on his shoulder. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "抱著紙的譯者",
+      "seed": 11410,
+      "prompt": "Baghdad, capital of the Abbasid Caliphate, around 795 AD: a young Arab-Sogdian translator in his twenties hugs a thick stack of fine white paper to his chest like a precious child, smiling, in the doorway of a paper workshop; behind him an old Tang Chinese papermaker and an old Sogdian woman watch fondly; afternoon light. People of many peoples in Abbasid-era robes, turbans and veils; scribes writing with reed pens on paper on their knees. Mud-brick and fired-brick buildings with flat roofs, arcades, wooden balconies, date palms. No later Ottoman elements, no modern objects, no readable text."
+    }
+  ]
+}
