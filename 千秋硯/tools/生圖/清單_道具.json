@@ -2424,6 +2424,69 @@
       "seed": 7345,
       "transparent": true,
       "prompt": "A small rusty brass military button with a crown design, beside a tiny folded paper note."
+    },
+    {
+      "kind": "item",
+      "name": "煎餅大蔥",
+      "seed": 7346,
+      "transparent": true,
+      "prompt": "A thin folded grain pancake wrapped around a long green scallion."
+    },
+    {
+      "kind": "item",
+      "name": "小米粥",
+      "seed": 7347,
+      "transparent": true,
+      "prompt": "A bowl of golden millet porridge."
+    },
+    {
+      "kind": "item",
+      "name": "彈殼",
+      "seed": 7348,
+      "transparent": true,
+      "prompt": "An empty brass rifle cartridge case."
+    },
+    {
+      "kind": "item",
+      "name": "鐵絲",
+      "seed": 7349,
+      "transparent": true,
+      "prompt": "A short cut piece of barbed wire."
+    },
+    {
+      "kind": "item",
+      "name": "鋼筆",
+      "seed": 7350,
+      "transparent": true,
+      "prompt": "An old black fountain pen with a gold nib."
+    },
+    {
+      "kind": "item",
+      "name": "海軍刀",
+      "seed": 7351,
+      "transparent": true,
+      "prompt": "A short naval dagger with a letter F scratched on the handle."
+    },
+    {
+      "kind": "item",
+      "name": "沒有落下的炸彈",
+      "seed": 7352,
+      "transparent": true,
+      "prompt": "A small early aerial bomb, empty and harmless, with fins."
+    },
+    {
+      "kind": "item",
+      "name": "還回來的土",
+      "seed": 7353,
+      "transparent": true,
+      "prompt": "A small cloth pouch of yellow earth."
+    },
+    {
+      "kind": "item",
+      "name": "奧圖的地址",
+      "seed": 7354,
+      "transparent": true,
+      "prompt": "A small folded slip of paper with a handwritten address; text indistinct."
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。",
+  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。",
   "items": [
     {
       "kind": "bg",
@@ -32,6 +32,18 @@
       "prompt": "Leipzig, Germany, August 1914: a crowded railway platform: troop trains with soldiers leaning out of windows, flowers stuck in rifle barrels, chalk scrawls on carriages (indistinct), a brass band, women waving handkerchiefs, steam and smoke. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
     },
     {
+      "kind": "bg",
+      "name": "山東的村子",
+      "seed": 14106,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: a small rain-soaked village of rammed-earth walls and thatched roofs beside tall red sorghum fields, a muddy road with cart tracks, grey sky. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "青島外圍的陣地",
+      "seed": 14107,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: trenches and barbed wire on hills outside the city, in the distance German forts on ridges and the town of Tsingtao with red-tiled roofs, a church spire and a large white governor's residence by a deep blue bay. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
       "kind": "cg",
       "name": "插滿鮮花的火車",
       "seed": 14401,
@@ -42,6 +54,18 @@
       "name": "最後一封電報",
       "seed": 14402,
       "prompt": "Leipzig, Germany, August 1914: night in the telegraph office: an 18-year-old operator with messy blond hair sits before a brass telegraph key, his finger hovering above it, an old grey-bearded operator with round spectacles watching beside him; single lamp, rows of silent machines. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "汝何處人",
+      "seed": 14403,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: in the rain at a village gate, a Taiwanese interpreter in a dark Western suit, round glasses and an armband writes in a small notebook with a fountain pen, showing it to an old Chinese villager holding a mule's rope; the old man writes back; Japanese soldiers in the background; no readable text. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "兩架鐵鳥",
+      "seed": 14404,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: over the bay of Tsingtao, a Japanese seaplane with floats and a German monoplane with dove-shaped wings circle each other in the sky above a seaplane carrier ship and a crane; seen from the shore. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
     },
     {
       "kind": "char",
@@ -69,6 +93,20 @@
       "name": "林阿伯",
       "seed": 14204,
       "prompt": "A Taiwanese man in his seventies in Tainan in 2026, neat white short hair, a clean pressed short-sleeved shirt, holding an old biscuit tin, kind weathered face, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "林文彬",
+      "seed": 14205,
+      "prompt": "A 28-year-old Taiwanese man from Tainan in 1914, short neat hair, round wire glasses, a dark Western suit with a white armband, a small notebook and fountain pen in hand, thoughtful gentle face, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "奧圖",
+      "seed": 14206,
+      "prompt": "A 24-year-old German marine stationed in Tsingtao in 1914, blond hair like his younger brother's, a dark blue naval infantry uniform, a short naval dagger at his belt, steady kind eyes, early 20th century style.",
       "transparent": true
     },
     {
@@ -111,6 +149,48 @@
       "name": "八月的歡呼",
       "seed": 14306,
       "prompt": "A blazing giant formed from a cheering summer crowd, flowers, waving hats and flags, so loud it drowns everything, joyful and terrifying.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "秋雨",
+      "seed": 14307,
+      "prompt": "A heavy autumn rain over sorghum fields condensing into a dripping grey figure, mud splashing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "徵用",
+      "seed": 14308,
+      "prompt": "A creature built from requisitioned mule carts, harnesses and grain sacks, dragging things away.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐵絲網",
+      "seed": 14309,
+      "prompt": "A tangled mass of barbed wire coils on a hillside writhing into a thorny creature.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "探照燈",
+      "seed": 14310,
+      "prompt": "A large military searchlight with a blinding white beam forming a staring eye.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐵鳥",
+      "seed": 14311,
+      "prompt": "An early 1914 aircraft of wood and canvas with dark shadowy wings, bombs hanging beneath, circling menacingly.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "借來的土地",
+      "seed": 14312,
+      "prompt": "A giant figure formed from the yellow earth of a coastal peninsula, sorghum fields, a port and forts on its body, with tattered treaty papers pinned to it, weary and sorrowful; no readable text.",
       "transparent": true
     }
   ]
