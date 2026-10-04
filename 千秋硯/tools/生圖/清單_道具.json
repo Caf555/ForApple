@@ -2823,6 +2823,48 @@
       "seed": 7402,
       "transparent": true,
       "prompt": "A small glowing button marked with an indistinct sign, slightly cracked, chosen."
+    },
+    {
+      "kind": "item",
+      "name": "銀色的網",
+      "seed": 7403,
+      "transparent": true,
+      "prompt": "A small torn piece of glowing silver net."
+    },
+    {
+      "kind": "item",
+      "name": "一撇",
+      "seed": 7404,
+      "transparent": true,
+      "prompt": "A single short slanted ink brushstroke glowing on a black slate."
+    },
+    {
+      "kind": "item",
+      "name": "研墨的聲音",
+      "seed": 7405,
+      "transparent": true,
+      "prompt": "An inkstick grinding on a purple inkstone, a faint ripple of sound in the ink."
+    },
+    {
+      "kind": "item",
+      "name": "閘門室的鋼筆",
+      "seed": 7406,
+      "transparent": true,
+      "prompt": "An old black fountain pen with a cap."
+    },
+    {
+      "kind": "item",
+      "name": "阿公的老花眼鏡",
+      "seed": 7407,
+      "transparent": true,
+      "prompt": "A pair of old reading glasses with a thin scratch on one lens."
+    },
+    {
+      "kind": "item",
+      "name": "小雨撕下的一頁",
+      "seed": 7408,
+      "transparent": true,
+      "prompt": "A folded torn page from a hand-sewn notebook made of mismatched paper."
     }
   ]
 }

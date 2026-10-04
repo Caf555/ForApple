@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
+  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
   "items": [
     {
       "kind": "bg",
@@ -311,6 +311,66 @@
       "name": "兩個蘅",
       "seed": 15408,
       "prompt": "Two identical teenage girls facing each other in a hall of light pillars: one with long ink-black hair whose ends blur like ink wash, determined; the other with long pure white straight hair with crisp ends and empty eyes. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "閘門室",
+      "seed": 15111,
+      "prompt": "A tiny bare room in the core of a space city: only one desk and one chair, on the desk an old black slate tablet and a real fountain pen with an ink bottle, a very thick open door behind, dim and solemn. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "權限不足",
+      "seed": 15325,
+      "prompt": "A stern metallic guardian program shaped like a locked shield with a red slashed light, blocking the way.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "警報",
+      "seed": 15326,
+      "prompt": "A spinning red and white alarm light spirit with sound waves radiating outward.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "隔離牆",
+      "seed": 15327,
+      "prompt": "A thick grey wall rising from the floor, shaped into a heavy blocking creature.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "撫平臂",
+      "seed": 15328,
+      "prompt": "A very long smooth white robotic arm with a soft gentle hand reaching to pat a head, eerily kind.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "閘門",
+      "seed": 15329,
+      "prompt": "A massive square floating silver gate covered with layered glowing nets, a keyhole shape at its center.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・晴空之相",
+      "seed": 15330,
+      "prompt": "A tall scribe in a dark long robe and a wide-brimmed hat whose face is fully that of a kind elderly Taiwanese man in his seventies with reading glasses and a small mole at the corner of his mouth, eyes eerily calm like soft light, a pale glowing orb behind him; sorrowful rather than evil.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "黑色的石板",
+      "seed": 15409,
+      "prompt": "Close view of a tiny room: on a plain desk an old black slate tablet and a real fountain pen; a messy-haired engineer's trembling hand reaching for the pen; a young man, a short-haired girl and a translucent ink-haired girl watching. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "祖父的臉",
+      "seed": 15410,
+      "prompt": "At a narrow doorway a figure in a dark long robe and wide-brimmed hat, his face fully that of a gentle elderly Taiwanese grandfather with reading glasses, eyes calm and empty; a young man in white facing him, frozen, hands trembling. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
     }
   ]
 }

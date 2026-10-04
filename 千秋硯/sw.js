@@ -1,5 +1,5 @@
 // 離線快取：加入主畫面後，沒有網路也能玩
-const CACHE = 'qqy-v2.4.3';
+const CACHE = 'qqy-v2.5.0';
 const FILES = [
   './', './index.html', './css/style.css', './manifest.webmanifest', './icon.svg',
   './js/main.js', './js/script.js', './js/state.js', './js/data.js', './js/ui.js', './js/audio.js',
