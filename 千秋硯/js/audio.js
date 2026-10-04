@@ -238,6 +238,21 @@ export class Audio {
         }, () => 420);
         break;
       }
+      case '佛羅倫斯': {
+        // 魯特琴般的撥奏，配上教堂裡那種長長的和聲
+        pad([196, 293.7, 392], 0.014);
+        const scale = [293.7, 329.6, 349.2, 392, 440, 493.9, 523.3, 587.3];
+        let beat = 0, idx = 3;
+        loop(() => {
+          const t = this.ac.currentTime;
+          idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -1, 1, 2, -2, 0][Math.floor(Math.random() * 7)]));
+          pluck(scale[idx], 0.028, 1.2);
+          if (beat % 2 === 1) pluck(scale[Math.max(0, idx - 2)], 0.016, 0.8);
+          if (beat % 8 === 0) this.note(scale[0] / 2, t, 2.6, 'sine', 0.014, bus);
+          beat++;
+        }, () => 300);
+        break;
+      }
       case '羯陵伽': {
         // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
         pad([146.8, 220, 293.7], 0.016);

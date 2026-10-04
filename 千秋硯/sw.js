@@ -1,10 +1,10 @@
 // 離線快取：加入主畫面後，沒有網路也能玩
-const CACHE = 'qqy-v1.7.0';
+const CACHE = 'qqy-v1.9.0';
 const FILES = [
   './', './index.html', './css/style.css', './manifest.webmanifest', './icon.svg',
   './js/main.js', './js/script.js', './js/state.js', './js/data.js', './js/ui.js', './js/audio.js',
   './js/battle.js', './js/debate.js', './js/runner.js', './js/hub.js',
-  './content/序卷.txt', './content/卷一_大員.txt', './content/卷二_牧野.txt', './content/卷三_阿瑪納.txt', './content/卷四_雅典.txt', './content/卷五_羯陵伽.txt', './content/中章_書房.txt', './content/卷六_長安巴格達.txt', './content/夜話.txt',
+  './content/序卷.txt', './content/卷一_大員.txt', './content/卷二_牧野.txt', './content/卷三_阿瑪納.txt', './content/卷四_雅典.txt', './content/卷五_羯陵伽.txt', './content/中章_書房.txt', './content/卷六_長安巴格達.txt', './content/卷七_佛羅倫斯.txt', './content/夜話.txt',
 ];
 
 self.addEventListener('install', e => {

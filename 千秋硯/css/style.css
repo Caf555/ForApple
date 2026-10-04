@@ -48,6 +48,7 @@ body[data-vtheme="kalinga"] { --accent: #5fbfa6; }
 body[data-vtheme="fifties"] { --accent: #c4ab84; }
 body[data-vtheme="tang"] { --accent: #e0925a; }
 body[data-vtheme="steppe"] { --accent: #c9a25e; }
+body[data-vtheme="florence"] { --accent: #d98a64; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -59,6 +60,7 @@ body[data-vtheme="steppe"] { --accent: #c9a25e; }
   :root:not([data-theme="dark"]) body[data-vtheme="fifties"] { --accent: #6e5634; }
   :root:not([data-theme="dark"]) body[data-vtheme="tang"] { --accent: #9a3f1e; }
   :root:not([data-theme="dark"]) body[data-vtheme="steppe"] { --accent: #7a5a1c; }
+  :root:not([data-theme="dark"]) body[data-vtheme="florence"] { --accent: #9c4326; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -70,6 +72,7 @@ body[data-vtheme="steppe"] { --accent: #c9a25e; }
 :root[data-theme="light"] body[data-vtheme="fifties"] { --accent: #6e5634; }
 :root[data-theme="light"] body[data-vtheme="tang"] { --accent: #9a3f1e; }
 :root[data-theme="light"] body[data-vtheme="steppe"] { --accent: #7a5a1c; }
+:root[data-theme="light"] body[data-vtheme="florence"] { --accent: #9c4326; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -163,6 +166,11 @@ body[data-vtheme="steppe"] .banner-art {
   background:
     radial-gradient(ellipse at 70% 46%, rgba(70, 90, 110, .45) 0 18%, transparent 40%),
     linear-gradient(180deg, #d9cfb4 0%, #e6d2a2 38%, #8a8f7a 39%, #6f7a68 46%, #b89a62 47%, #a07e48 72%, #8a6a3a 100%);
+}
+body[data-vtheme="florence"] .banner-art {
+  background:
+    radial-gradient(ellipse at 62% 58%, #b5542e 0 9%, transparent 9.5%),
+    linear-gradient(180deg, #f0dcc0 0%, #e9b98c 40%, #c9784e 41%, #b8653f 52%, #d9c4a0 53%, #a88e6a 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:
@@ -445,6 +453,9 @@ body:not([data-mode="hub"]) #hub { display: none; }
 .mg-word { font-family: Georgia, "Times New Roman", serif; font-size: 44px; font-style: italic; letter-spacing: .05em; }
 .mg-word.small { font-size: 28px; font-style: normal; }
 .mg-glyph { display: block; width: 112px; height: 112px; margin: 4px auto 0; fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.mg-glyph.mg-wide { width: min(300px, 100%); height: auto; aspect-ratio: 3 / 2; stroke-width: 1.2; }
+.mg-glyph .mg-mark { fill: var(--accent); stroke: none; }
+.mg-glyph text { fill: var(--ink); stroke: none; font-size: 9px; font-family: var(--serif); }
 .mg-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
 .mg-opt { min-height: 56px; font-size: 18px; font-family: var(--serif); }
 .mg-opt.right { background: var(--good); color: #fff; }
