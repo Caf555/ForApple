@@ -2788,6 +2788,41 @@
       "seed": 7397,
       "transparent": true,
       "prompt": "A neat thin glowing document folder; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "冷卻液",
+      "seed": 7398,
+      "transparent": true,
+      "prompt": "A small vial of pale blue coolant liquid."
+    },
+    {
+      "kind": "item",
+      "name": "鏡片",
+      "seed": 7399,
+      "transparent": true,
+      "prompt": "A small thin shard of glowing mirror."
+    },
+    {
+      "kind": "item",
+      "name": "一株杜衡",
+      "seed": 7400,
+      "transparent": true,
+      "prompt": "A small wild ginger plant (Asarum) with round heart-shaped leaves."
+    },
+    {
+      "kind": "item",
+      "name": "芳芷",
+      "seed": 7401,
+      "transparent": true,
+      "prompt": "A sprig of white angelica flowers beside round leaves of wild ginger."
+    },
+    {
+      "kind": "item",
+      "name": "不合理的選項",
+      "seed": 7402,
+      "transparent": true,
+      "prompt": "A small glowing button marked with an indistinct sign, slightly cracked, chosen."
     }
   ]
 }

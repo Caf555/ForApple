@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
+  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
   "items": [
     {
       "kind": "bg",
@@ -251,6 +251,66 @@
       "name": "最後一行",
       "seed": 15406,
       "prompt": "A small dark room in zero gravity, one wall glowing with lines of indistinct text scrolling upward, a young man in white floating before it, staring at the last line, a translucent ink-haired girl beside him; the text is unreadable glowing lines. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "安寧的核心",
+      "seed": 15110,
+      "prompt": "The core of a vast benevolent AI at the hub of a space city: a round cold hall ringed by twelve tall slowly rotating pillars of light in different colors, one pillar dark except for a faint glow at its base, a huge soft orb of light with expanding ripples at the center. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "演算",
+      "seed": 15319,
+      "prompt": "A spirit made of rapidly flowing glowing numbers and geometric lines forming a sharp metallic shape; numbers indistinct.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "冷卻",
+      "seed": 15320,
+      "prompt": "A pale blue frosty spirit of coolant mist curling around cold pipes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "白光",
+      "seed": 15321,
+      "prompt": "A blinding white light spirit with no color at all, a hollow glowing silhouette.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鏡像",
+      "seed": 15322,
+      "prompt": "A dark mirror-like silhouette reflecting distorted images, mimicking a fighting pose.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "第三號",
+      "seed": 15323,
+      "prompt": "A tall straight expressionless humanoid figure made of cool blue light flowing out of a light pillar, perfectly symmetrical, calm and logical.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "第七號",
+      "seed": 15324,
+      "prompt": "A teenage girl of 17 or 18 with long straight pure white hair whose ends are perfectly crisp, not blurred, a blank empty gaze, pale flowing clothes, made of soft grey-white light; she looks like an ink-haired spirit girl but colorless.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "第七號的光柱",
+      "seed": 15407,
+      "prompt": "In a round hall of twelve colorful rotating light pillars, a translucent girl with long ink-black hair whose ends blur like ink wash stands before the one dark pillar, faint grey light at its base; a young man in white, a short-haired girl and an engineer behind her. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "兩個蘅",
+      "seed": 15408,
+      "prompt": "Two identical teenage girls facing each other in a hall of light pillars: one with long ink-black hair whose ends blur like ink wash, determined; the other with long pure white straight hair with crisp ends and empty eyes. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
     }
   ]
 }
