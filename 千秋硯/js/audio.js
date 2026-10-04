@@ -267,6 +267,19 @@ export class Audio {
         }, () => 250);
         break;
       }
+      case '戰壕': {
+        // 很低的持續音，遠方像砲聲的悶響，偶爾一段小號般的短旋律
+        pad([82.4, 123.5, 164.8], 0.016);
+        const scale = [329.6, 392, 440, 493.9, 587.3];
+        let beat = 0, idx = 2;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 16 === 5 || (beat % 16 === 13 && Math.random() < 0.5)) pluck(55, 0.06, 1.2);
+          if (beat % 8 === 0 && Math.random() < 0.7) { idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -2, 0][Math.floor(Math.random() * 4)])); this.note(scale[idx], t, 1.4, 'triangle', 0.012, bus); }
+          beat++;
+        }, () => 380);
+        break;
+      }
       case '羯陵伽': {
         // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
         pad([146.8, 220, 293.7], 0.016);

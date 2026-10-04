@@ -1,0 +1,117 @@
+{
+  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "萊比錫的廣場",
+      "seed": 14101,
+      "prompt": "Leipzig, Germany, August 1914: the crowded market square on a hot summer day, people in straw hats and parasols cheering and singing, flags hanging from windows, a newsboy on a crate waving papers, the old town hall with its tower. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "電報局",
+      "seed": 14102,
+      "prompt": "Leipzig, Germany, August 1914: inside a large imperial telegraph office: rows of brass Morse telegraph machines on long wooden desks, operators in shirtsleeves wearing headphones, paper tape spilling from receivers, copper wires along the walls, warm lamp light. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "音樂院",
+      "seed": 14103,
+      "prompt": "Leipzig, Germany, August 1914: a quiet practice room in the Leipzig Conservatory: a grand piano by tall windows with afternoon light, sheet music on the stand, a long corridor beyond with doors. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "弗里茨的家",
+      "seed": 14104,
+      "prompt": "Leipzig, Germany, August 1914: a small tidy fourth-floor apartment: a window with lace curtains, a sewing basket, a coffee pot on a table, a framed photo on the wall of a young marine in a white uniform before a church. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "火車站的月台",
+      "seed": 14105,
+      "prompt": "Leipzig, Germany, August 1914: a crowded railway platform: troop trains with soldiers leaning out of windows, flowers stuck in rifle barrels, chalk scrawls on carriages (indistinct), a brass band, women waving handkerchiefs, steam and smoke. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "插滿鮮花的火車",
+      "seed": 14401,
+      "prompt": "Leipzig, Germany, August 1914: a troop train about to depart: young soldiers in new field-grey uniforms lean from carriage windows grinning, girls push flowers into their rifle barrels, a brass band plays, a mother clings to her son's sleeve; joyful crowd, one older man at the end of the platform not cheering. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "最後一封電報",
+      "seed": 14402,
+      "prompt": "Leipzig, Germany, August 1914: night in the telegraph office: an 18-year-old operator with messy blond hair sits before a brass telegraph key, his finger hovering above it, an old grey-bearded operator with round spectacles watching beside him; single lamp, rows of silent machines. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "char",
+      "name": "弗里茨",
+      "seed": 14201,
+      "prompt": "An 18-year-old German telegraph apprentice in 1914, messy blond hair, white shirt with rolled sleeves and a grey waistcoat, holding a brass telegraph key, bright eager eyes, a big grin showing one small pointed canine tooth, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "瑪格麗特",
+      "seed": 14202,
+      "prompt": "A 20-year-old British woman music student in Leipzig in 1914, brown hair pinned up, a plain grey long dress with a high collar, holding a worn book of piano sonatas, gentle but determined eyes, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "施密特",
+      "seed": 14203,
+      "prompt": "An old German telegraph operator in his sixties in 1914, white beard, round wire spectacles, a dark waistcoat with sleeve garters, a stern face hiding kindness, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "林阿伯",
+      "seed": 14204,
+      "prompt": "A Taiwanese man in his seventies in Tainan in 2026, neat white short hair, a clean pressed short-sleeved shirt, holding an old biscuit tin, kind weathered face, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "號外",
+      "seed": 14301,
+      "prompt": "A whirling flock of fresh newspaper extra editions flapping like birds, wet ink dripping; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "軍樂",
+      "seed": 14302,
+      "prompt": "A marching creature made of brass tubas, drums and cymbals, blaring and stomping.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "電線",
+      "seed": 14303,
+      "prompt": "Copper telegraph wires peeling off poles and writhing like serpents, sparks crackling.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "火車",
+      "seed": 14304,
+      "prompt": "A steam locomotive with chalk-scrawled carriages charging forward, smoke shaped like grasping hands; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "動員令",
+      "seed": 14305,
+      "prompt": "A huge official mobilization poster with heavy stamped seals rising off a wall into a faceless towering figure; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "八月的歡呼",
+      "seed": 14306,
+      "prompt": "A blazing giant formed from a cheering summer crowd, flowers, waving hats and flags, so loud it drowns everything, joyful and terrifying.",
+      "transparent": true
+    }
+  ]
+}

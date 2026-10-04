@@ -2354,6 +2354,76 @@
       "seed": 7335,
       "transparent": true,
       "prompt": "A small stack of European paper with lines of handwriting in Latin letters; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "香腸麵包",
+      "seed": 7336,
+      "transparent": true,
+      "prompt": "A dark rye bread roll with a thick sausage."
+    },
+    {
+      "kind": "item",
+      "name": "熱咖啡",
+      "seed": 7337,
+      "transparent": true,
+      "prompt": "A steaming enamel mug of coffee."
+    },
+    {
+      "kind": "item",
+      "name": "銅線",
+      "seed": 7338,
+      "transparent": true,
+      "prompt": "A small coil of copper telegraph wire."
+    },
+    {
+      "kind": "item",
+      "name": "電報紙條",
+      "seed": 7339,
+      "transparent": true,
+      "prompt": "A strip of paper tape with printed dots and dashes."
+    },
+    {
+      "kind": "item",
+      "name": "摩斯電鍵",
+      "seed": 7340,
+      "transparent": true,
+      "prompt": "An old brass Morse telegraph key on a wooden base."
+    },
+    {
+      "kind": "item",
+      "name": "樂譜",
+      "seed": 7341,
+      "transparent": true,
+      "prompt": "A worn book of piano sonatas with pencil notes; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "撕下來的動員令",
+      "seed": 7342,
+      "transparent": true,
+      "prompt": "Half of a torn official poster with a stamped seal; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "沒有送出的電報",
+      "seed": 7343,
+      "transparent": true,
+      "prompt": "A telegram form strip with a few typed letters; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "林文彬的日記",
+      "seed": 7344,
+      "transparent": true,
+      "prompt": "A thin old thread-bound notebook with yellowed pages and mixed handwriting; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "生鏽的銅鈕扣",
+      "seed": 7345,
+      "transparent": true,
+      "prompt": "A small rusty brass military button with a crown design, beside a tiny folded paper note."
     }
   ]
 }
