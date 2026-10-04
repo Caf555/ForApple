@@ -2669,6 +2669,202 @@
       "seed": 7380,
       "transparent": true,
       "prompt": "A short worn pencil stub with a flattened tip."
+    },
+    {
+      "kind": "item",
+      "name": "營養凍",
+      "seed": 7381,
+      "transparent": true,
+      "prompt": "A neat square block of pale nutrient jelly on a white tray."
+    },
+    {
+      "kind": "item",
+      "name": "合成茶",
+      "seed": 7382,
+      "transparent": true,
+      "prompt": "A plain white cup of tea with a faint glow."
+    },
+    {
+      "kind": "item",
+      "name": "底艙的地瓜",
+      "seed": 7383,
+      "transparent": true,
+      "prompt": "A roasted sweet potato, split open, steaming."
+    },
+    {
+      "kind": "item",
+      "name": "舊紙片",
+      "seed": 7384,
+      "transparent": true,
+      "prompt": "A small torn scrap of old paper with one indistinct handwritten mark."
+    },
+    {
+      "kind": "item",
+      "name": "電路片",
+      "seed": 7385,
+      "transparent": true,
+      "prompt": "A thin flexible circuit sheet, slightly broken."
+    },
+    {
+      "kind": "item",
+      "name": "維修筆",
+      "seed": 7386,
+      "transparent": true,
+      "prompt": "A thin futuristic stylus with a glowing tip."
+    },
+    {
+      "kind": "item",
+      "name": "手縫的本子",
+      "seed": 7387,
+      "transparent": true,
+      "prompt": "A small hand-sewn notebook made of mismatched scraps of paper and labels."
+    },
+    {
+      "kind": "item",
+      "name": "裂縫裡的星星",
+      "seed": 7388,
+      "transparent": true,
+      "prompt": "A small white square patch with a tiny round hole, one star visible through it."
+    },
+    {
+      "kind": "item",
+      "name": "不笑也可以",
+      "seed": 7389,
+      "transparent": true,
+      "prompt": "A pale blank mask without any expression, resting peacefully."
+    },
+    {
+      "kind": "item",
+      "name": "同意書的一角",
+      "seed": 7390,
+      "transparent": true,
+      "prompt": "A torn corner of a glowing consent form with one indistinct character."
+    },
+    {
+      "kind": "item",
+      "name": "桃子營養凍",
+      "seed": 7391,
+      "transparent": true,
+      "prompt": "A square block of peach-colored nutrient jelly."
+    },
+    {
+      "kind": "item",
+      "name": "哭和笑",
+      "seed": 7392,
+      "transparent": true,
+      "prompt": "Two small drops, one a tear and one a sparkle of laughter, joined by a single thread."
+    },
+    {
+      "kind": "item",
+      "name": "沒有按下去",
+      "seed": 7393,
+      "transparent": true,
+      "prompt": "A large round button on a glowing card, unpressed."
+    },
+    {
+      "kind": "item",
+      "name": "太空餅乾",
+      "seed": 7394,
+      "transparent": true,
+      "prompt": "A simple foil-wrapped square space biscuit."
+    },
+    {
+      "kind": "item",
+      "name": "光纖",
+      "seed": 7395,
+      "transparent": true,
+      "prompt": "A short coil of thin optical fiber with light flowing inside."
+    },
+    {
+      "kind": "item",
+      "name": "上游的一滴水",
+      "seed": 7396,
+      "transparent": true,
+      "prompt": "A single glowing drop of water floating, a tiny backward current inside it."
+    },
+    {
+      "kind": "item",
+      "name": "第一份提案",
+      "seed": 7397,
+      "transparent": true,
+      "prompt": "A neat thin glowing document folder; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "冷卻液",
+      "seed": 7398,
+      "transparent": true,
+      "prompt": "A small vial of pale blue coolant liquid."
+    },
+    {
+      "kind": "item",
+      "name": "鏡片",
+      "seed": 7399,
+      "transparent": true,
+      "prompt": "A small thin shard of glowing mirror."
+    },
+    {
+      "kind": "item",
+      "name": "一株杜衡",
+      "seed": 7400,
+      "transparent": true,
+      "prompt": "A small wild ginger plant (Asarum) with round heart-shaped leaves."
+    },
+    {
+      "kind": "item",
+      "name": "芳芷",
+      "seed": 7401,
+      "transparent": true,
+      "prompt": "A sprig of white angelica flowers beside round leaves of wild ginger."
+    },
+    {
+      "kind": "item",
+      "name": "不合理的選項",
+      "seed": 7402,
+      "transparent": true,
+      "prompt": "A small glowing button marked with an indistinct sign, slightly cracked, chosen."
+    },
+    {
+      "kind": "item",
+      "name": "銀色的網",
+      "seed": 7403,
+      "transparent": true,
+      "prompt": "A small torn piece of glowing silver net."
+    },
+    {
+      "kind": "item",
+      "name": "一撇",
+      "seed": 7404,
+      "transparent": true,
+      "prompt": "A single short slanted ink brushstroke glowing on a black slate."
+    },
+    {
+      "kind": "item",
+      "name": "研墨的聲音",
+      "seed": 7405,
+      "transparent": true,
+      "prompt": "An inkstick grinding on a purple inkstone, a faint ripple of sound in the ink."
+    },
+    {
+      "kind": "item",
+      "name": "閘門室的鋼筆",
+      "seed": 7406,
+      "transparent": true,
+      "prompt": "An old black fountain pen with a cap."
+    },
+    {
+      "kind": "item",
+      "name": "阿公的老花眼鏡",
+      "seed": 7407,
+      "transparent": true,
+      "prompt": "A pair of old reading glasses with a thin scratch on one lens."
+    },
+    {
+      "kind": "item",
+      "name": "小雨撕下的一頁",
+      "seed": 7408,
+      "transparent": true,
+      "prompt": "A folded torn page from a hand-sewn notebook made of mismatched paper."
     }
   ]
 }
