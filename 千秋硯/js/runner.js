@@ -1,6 +1,7 @@
 // 劇本執行器：逐行播放劇本、處理選項、效果、戰鬥與演出指令
 import { checkCond, condText, addItem, addCodex, addMember, removeMember, healAll, gainExp, AXES, displayName, saveSlot, addCollection } from './state.js';
 import { FORMATIONS } from './data.js';
+import { walkMap } from './walk.js';
 
 export class Runner {
   constructor(ctx) {
@@ -270,6 +271,7 @@ export class Runner {
       case '震動': ui.quakeScreen(arg === '強'); audio.sfx(arg === '強' ? 'boss' : 'break'); await ui.fx('', 450); return;
       case '閃白': await ui.fx('white', 700); return;
       case '淡黑': await ui.fx('black', 1500); return;
+      case '走走': return walkMap(this.ctx, this, arg.trim(), c.out);
       case '限時': { const [s, d] = arg.split(/\s+/); this.timed = { sec: +s || 15, def: +d || 0 }; return; }
       case '寫字': { const [w, st] = arg.split(/\s+/); await ui.writeWords(w, st || '', (this.ctx.settings.readMode || 'page') === 'auto'); return; }
       case '背景': g.loc.bg = arg === '無' ? '' : arg; ui.setBanner(g.loc.bg); return;

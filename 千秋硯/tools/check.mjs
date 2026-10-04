@@ -20,6 +20,12 @@ for (const f of readdirSync(join(root, 'js')).filter(f => f.endsWith('.js'))) {
   const r = spawnSync(process.execPath, ['--input-type=module', '--check'], { input: readFileSync(join(root, 'js', f)) });
   if (r.status !== 0) errors.push(`js/${f} 有語法錯誤：` + (String(r.stderr).split('\n').find(l => l.startsWith('SyntaxError')) || '') + '\n' + String(r.stderr).split('\n').slice(0, 3).join('\n'));
 }
+// 走走：路人的小故事
+import { WALK_EVENTS } from '../js/walk.js';
+for (const [vol, list] of Object.entries(WALK_EVENTS)) list.forEach((e, i) => e.opts.forEach(o => (o.fx || []).forEach(([k, a]) => {
+  if (k === '道具' && !D.ITEMS[a]) errors.push(`走走・${vol} 第 ${i + 1} 個路人：道具「${a}」不存在`);
+  if (!['道具', '錢', '心印', '羈絆'].includes(k)) errors.push(`走走・${vol} 第 ${i + 1} 個路人：不認識的效果「${k}」`);
+})));
 // 敵人分工、叫幫手：名字都要存在
 for (const r in D.ENEMY_ROLES) for (const n of D.ENEMY_ROLES[r]) if (!D.ENEMIES[n]) errors.push(`敵人分工「${r}」裡的「${n}」不存在`);
 for (const [a, b] of Object.entries(D.SUMMONS)) { if (!D.ENEMIES[a]) errors.push(`叫幫手的「${a}」不存在`); if (!D.ENEMIES[b]) errors.push(`「${a}」叫來的「${b}」不存在`); }
@@ -55,7 +61,7 @@ for (const f of files) {
 
 const at = (s, c) => `${s.file} 第 ${c.line} 行`;
 const FX = ['旗標', '羈絆', '心印', '道具', '錢', '經驗', '史卷', '隊友', '封靈', '陣法', '技能', '補史', '回復'];
-const CMDS = ['地點', '年代', '卷', '主題', '音樂', '章節', '清畫面', '提示', '回復', '存檔點', '教學', '取名', '回書齋', '進度', '開放', '卷完', '商店', '論辯', '小遊戲', '書齋', '試玩結束', '背景', '插圖', '立繪', '稱呼', '天氣', '震動', '閃白', '淡黑', '寫字', '限時'];
+const CMDS = ['地點', '年代', '卷', '主題', '音樂', '章節', '清畫面', '提示', '回復', '存檔點', '教學', '取名', '回書齋', '進度', '開放', '卷完', '商店', '論辯', '小遊戲', '書齋', '試玩結束', '背景', '插圖', '立繪', '稱呼', '天氣', '震動', '閃白', '淡黑', '寫字', '限時', '走走'];
 const MUSIC = ['蘅', '府城夜', '海潮', '書齋', '緊張', '哀歌', '戰鬥', '首領', '殷商', '阿瑪納', '雅典', '羯陵伽', '舊府城', '長安', '西域', '佛羅倫斯', '墨西卡', '戰壕', '晴空', '歸墟', '無', ''];
 const THEMES = ['modern', 'dayuan', 'muye', 'amarna', 'athens', 'kalinga', 'fifties', 'tang', 'steppe', 'florence', 'mexica', 'trench', 'sky', 'abyss', 'hub'];
 // 生圖清單裡的圖名（用來檢查 @背景、@插圖、@立繪 有沒有打錯字）
@@ -111,6 +117,7 @@ for (const id in scenes) {
     if (c.t === 'cmd') {
       if (!CMDS.includes(c.name)) errors.push(`${at(s, c)}：不認識的指令「@${c.name}」`);
       if (c.name === '天氣' && !['雨', '雪', '落花', '火星', '墨', '光', '落紙', '沙', '葉', '塵', '無', '預設'].includes(c.arg)) errors.push(`${at(s, c)}：天氣「${c.arg}」應為 雨／雪／落花／火星／墨／光／落紙／沙／葉／塵／無／預設`);
+      if (c.name === '走走' && !D.POOLS[c.arg.trim()]) errors.push(`${at(s, c)}：沒有遭遇池「${c.arg}」`);
       if (c.name === '音樂' && !MUSIC.includes(c.arg)) errors.push(`${at(s, c)}：沒有音樂「${c.arg}」`);
       if (c.name === '主題' && !THEMES.includes(c.arg)) errors.push(`${at(s, c)}：沒有主題「${c.arg}」`);
       if (c.name === '商店' && !D.SHOPS[c.arg]) errors.push(`${at(s, c)}：沒有商店「${c.arg}」`);
