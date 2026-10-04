@@ -2543,6 +2543,62 @@
       "seed": 7362,
       "transparent": true,
       "prompt": "A brass British army tunic button with a crown, on a short thread."
+    },
+    {
+      "kind": "item",
+      "name": "罐頭牛肉",
+      "seed": 7363,
+      "transparent": true,
+      "prompt": "A flat WWI-era tin of corned beef, opened."
+    },
+    {
+      "kind": "item",
+      "name": "濕手帕",
+      "seed": 7364,
+      "transparent": true,
+      "prompt": "A damp folded white cotton handkerchief."
+    },
+    {
+      "kind": "item",
+      "name": "紗布",
+      "seed": 7365,
+      "transparent": true,
+      "prompt": "A rolled bandage of clean white gauze."
+    },
+    {
+      "kind": "item",
+      "name": "鋼瓶閥",
+      "seed": 7366,
+      "transparent": true,
+      "prompt": "A small brass valve from a gas cylinder."
+    },
+    {
+      "kind": "item",
+      "name": "護士錶",
+      "seed": 7367,
+      "transparent": true,
+      "prompt": "A small silver nurse's fob watch pinned on a white cloth."
+    },
+    {
+      "kind": "item",
+      "name": "濕布的道理",
+      "seed": 7368,
+      "transparent": true,
+      "prompt": "A damp cloth beside a small glass of water with a faint green wisp dissolving into it."
+    },
+    {
+      "kind": "item",
+      "name": "麵包與雲",
+      "seed": 7369,
+      "transparent": true,
+      "prompt": "A single golden wheat ear with a thin yellow-green wisp of smoke curling around it."
+    },
+    {
+      "kind": "item",
+      "name": "薩克森的鈕扣",
+      "seed": 7370,
+      "transparent": true,
+      "prompt": "A brass German army tunic button with a Saxon royal crown, on a short thread."
     }
   ]
 }

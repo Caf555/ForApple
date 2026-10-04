@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。 回三是 1914 年 12 月的法蘭德斯戰壕：英軍穿卡其色軍服、戴軟布軍帽與羊毛圍巾，德軍穿灰綠色軍服、戴有布套的尖頂盔或無簷軍帽；冬天，泥濘、結霜。",
+  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。 回三是 1914 年 12 月的法蘭德斯戰壕：英軍穿卡其色軍服、戴軟布軍帽與羊毛圍巾，德軍穿灰綠色軍服、戴有布套的尖頂盔或無簷軍帽；冬天，泥濘、結霜。 回四是 1915 年 4 月的伊珀爾：德軍戰壕前緣埋著灰色的鋼瓶；英軍與加拿大軍穿卡其色軍服，法國的阿爾及利亞部隊戴紅色圓帽；野戰醫院設在修道院裡，護士穿白色圍裙。毒氣只畫成黃綠色的霧，不要畫受傷或死亡的人的特寫。",
   "items": [
     {
       "kind": "bg",
@@ -264,6 +264,66 @@
       "name": "無人地帶的握手",
       "seed": 14406,
       "prompt": "Christmas Day 1914 in no man's land: a young German soldier in field-grey and a young British soldier in khaki shaking hands and laughing between frozen shell craters, other soldiers from both sides behind them exchanging cigarettes and food, frosty morning light, not caricatured. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "野戰醫院",
+      "seed": 14110,
+      "prompt": "A WWI field hospital set up inside an old stone convent in a small town in northern France, April 1915: a long vaulted corridor and cloister filled with rows of stretchers and iron beds, tall windows thrown open, nurses in white aprons and veils, nuns carrying basins, soft spring light, calm and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "enemy",
+      "name": "鋼瓶",
+      "seed": 14319,
+      "prompt": "A tall grey steel gas cylinder half buried in sandbags with a brass valve like a mouth, hissing a thin wisp of pale mist; menacing but not gory.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "西風",
+      "seed": 14320,
+      "prompt": "A spirit of wind made of swirling grass, small torn flags and spring air, pale green and grey, turning its direction.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "咳嗽",
+      "seed": 14321,
+      "prompt": "A hunched shadowy spirit made of grey hospital blankets and breath vapour, shaking, sorrowful rather than frightening.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "高燒",
+      "seed": 14322,
+      "prompt": "A small feverish fire spirit glowing red inside a glass medicine bottle, with heat shimmer around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "綠色的雲",
+      "seed": 14323,
+      "prompt": "A vast low rolling yellow-green cloud spirit creeping along the ground like a moving wall, with faint empty eye-like hollows, no people shown.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "同一雙手",
+      "seed": 14324,
+      "prompt": "A spirit made of two large pale hands emerging from yellow-green light: one hand holds a sheaf of golden wheat, the other grips the brass valve of a grey steel cylinder; solemn and tragic, no face.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "黃綠色的雲",
+      "seed": 14407,
+      "prompt": "Late afternoon, 22 April 1915, near Ypres: seen from behind a German trench line, a huge low yellow-green cloud rolling slowly westward across flat green spring fields toward distant trenches and a few broken trees, sun low in the west; only the cloud and landscape, no casualties shown. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "cg",
+      "name": "修道院裡的鋼琴",
+      "seed": 14408,
+      "prompt": "Night in a convent chapel turned field hospital, April 1915: a young English nurse in a white apron, hair pinned up, playing an old upright piano by candlelight, wounded soldiers on stretchers resting quietly around her, one soldier in a red fez listening; gentle and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
     }
   ]
 }
