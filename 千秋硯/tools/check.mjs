@@ -20,6 +20,9 @@ for (const f of readdirSync(join(root, 'js')).filter(f => f.endsWith('.js'))) {
   const r = spawnSync(process.execPath, ['--input-type=module', '--check'], { input: readFileSync(join(root, 'js', f)) });
   if (r.status !== 0) errors.push(`js/${f} 有語法錯誤：` + (String(r.stderr).split('\n').find(l => l.startsWith('SyntaxError')) || '') + '\n' + String(r.stderr).split('\n').slice(0, 3).join('\n'));
 }
+// 敵人分工、叫幫手：名字都要存在
+for (const r in D.ENEMY_ROLES) for (const n of D.ENEMY_ROLES[r]) if (!D.ENEMIES[n]) errors.push(`敵人分工「${r}」裡的「${n}」不存在`);
+for (const [a, b] of Object.entries(D.SUMMONS)) { if (!D.ENEMIES[a]) errors.push(`叫幫手的「${a}」不存在`); if (!D.ENEMIES[b]) errors.push(`「${a}」叫來的「${b}」不存在`); }
 for (const [n, c] of Object.entries(D.CHARACTERS)) for (const [, sk] of c.skills || []) if (!D.SKILLS[sk]) errors.push(`角色「${n}」的技能「${sk}」不存在`);
 for (const [n, e] of Object.entries(D.ENEMIES)) for (const [sk] of e.skills || []) if (sk !== '攻擊' && !D.SKILLS[sk]) errors.push(`敵人「${n}」的技能「${sk}」不存在`);
 
