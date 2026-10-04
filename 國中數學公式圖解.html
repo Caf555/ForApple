@@ -51,6 +51,21 @@ svg.viz{width:100%;height:auto;display:block;background:var(--plot);border-radiu
 .btns{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
 .btns button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
 .btns button.on{border-color:var(--c1);color:var(--c1);font-weight:700}
+.tx{white-space:normal}
+.tx i{font-family:"Times New Roman",Cambria,"Noto Serif",serif;font-size:1.1em;padding-right:.04em}
+.tx sup,.tx sub{font-size:.72em;line-height:0}
+.tx .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .15em;line-height:1.2}
+.tx .fr>span:first-child{border-bottom:1px solid currentColor;padding:0 .15em}
+.tx .ov{border-top:1px solid currentColor;padding-top:.05em}
+.tx .vc{position:relative;display:inline-block}.tx .vc::before{content:'→';position:absolute;left:0;right:0;top:-.9em;font-size:.7em;text-align:center}
+.tx .mat{display:inline-grid;column-gap:.6em;vertical-align:middle;padding:0 .4em;margin:0 .15em;border-left:1.5px solid;border-right:1.5px solid;text-align:center;line-height:1.35}
+.tx .mat.pmatrix{border-radius:.7em}
+.tx .cases{display:inline-flex;flex-direction:column;vertical-align:middle;border-left:1.5px solid;border-radius:.6em 0 0 .6em;padding-left:.45em;text-align:left;line-height:1.6}
+.tx .rows{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:2}
+.tx .xa{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 .2em}.tx .xa>span{font-size:.7em}
+.tx .op{margin-right:.15em}
+.tx .tt{font-style:normal}
+.tx.disp{display:block;text-align:center;font-size:1.12em;line-height:2;padding:.2em 0}
 .out{font-size:14px;background:var(--soft);border-radius:8px;padding:8px 10px;overflow-x:auto;line-height:1.9}
 .plain{font-size:14.5px;margin:0}
 .plain b{color:var(--c1)}
@@ -126,7 +141,71 @@ const NS='http://www.w3.org/2000/svg';
 function E(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs||{})e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
 function H(tag,cls,parent,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;if(parent)parent.appendChild(e);return e;}
 const fx=(x,d=2)=>{const v=Math.round(x*10**d)/10**d;return String(Object.is(v,-0)?0:v);};
-const T=(s,disp=false)=>window.katex?katex.renderToString(s,{throwOnError:false,displayMode:disp}):s;
+// 把算式寫法轉成一般網頁文字（× 號、上標次方、分數線、根號…），不需要外部工具
+const TXSYM={times:'×',div:'÷',pm:'±',mp:'∓',le:'≤',leq:'≤',ge:'≥',geq:'≥',ne:'≠',neq:'≠',approx:'≈',cdot:'·',cdots:'⋯',dots:'…',ldots:'…',
+  angle:'∠',circ:'°',pi:'π',alpha:'α',beta:'β',gamma:'γ',theta:'θ',omega:'ω',sigma:'σ',mu:'μ',lambda:'λ',Delta:'Δ',infty:'∞',
+  to:'→',rightarrow:'→',Rightarrow:'⇒',Leftrightarrow:'⇔',Longleftrightarrow:'⟺',iff:'⟺',mid:'|',cup:'∪',cap:'∩',sum:'Σ',int:'∫',
+  in:'∈',triangle:'△',perp:'⊥',parallel:'∥',prime:'′','{':'{','}':'}','|':'‖',lbrace:'{',rbrace:'}',
+  quad:' ',qquad:'  ',',':' ',';':' ',':':' ',' ':' ','!':'',colon:':'};
+const TXOP=['sin','cos','tan','log','ln','lim','det','max','min','exp'];
+const TXPAD=new Set(['=','&lt;','&gt;','≈','≤','≥','≠','⇒','⟺','⇔','→','+','×','÷','±']);
+function txSplit(str,sep){const out=[];let d=0,last=0;
+  for(let k=0;k<str.length;){
+    if(str[k]==='\\'&&(str[k+1]==='{'||str[k+1]==='}')){k+=2;continue;}
+    if(str.startsWith('\\begin',k)){d++;k+=6;continue;}
+    if(str.startsWith('\\end',k)){d--;k+=4;continue;}
+    if(d===0&&str.startsWith(sep,k)){out.push(str.slice(last,k));k+=sep.length;last=k;continue;}
+    if(str[k]==='{')d++;else if(str[k]==='}')d--;
+    k+=str[k]==='\\'?2:1;}
+  out.push(str.slice(last));return out;}
+function tex2html(s){
+  let i=0;
+  const esc=c=>c==='<'?'&lt;':c==='>'?'&gt;':c==='&'?'&amp;':c;
+  const sp=()=>{while(s[i]===' ')i++;};
+  const cmd=()=>{i++;const m=/^[A-Za-z]+/.exec(s.slice(i));if(m){i+=m[0].length;return m[0];}return s[i++]||'';};
+  const raw=()=>{sp();if(s[i]!=='{')return s[i++]||'';let d=1;const j=++i;while(i<s.length&&d){if(s[i]==='\\'){i+=2;continue;}if(s[i]==='{')d++;else if(s[i]==='}')d--;i++;}return s.slice(j,i-1);};
+  const group=()=>{sp();if(s[i]==='{'){i++;const h=expr('}');i++;return h;}return atom();};
+  function findEnd(env){const b='\\begin{'+env+'}',e='\\end{'+env+'}';let d=0,k=i;while(k<s.length){if(s.startsWith(b,k)){d++;k+=b.length;}else if(s.startsWith(e,k)){if(!d)return k;d--;k+=e.length;}else k++;}return s.length;}
+  function env(name,body){
+    const rows=txSplit(body,'\\\\').filter(r=>r.trim()!=='').map(r=>txSplit(r,'&').map(tex2html));
+    if(/matrix$/.test(name)){const n=Math.max(...rows.map(r=>r.length));return `<span class="mat ${name}" style="grid-template-columns:repeat(${n},auto)">${rows.map(r=>r.map(c=>`<span>${c}</span>`).join('')).join('')}</span>`;}
+    if(name==='cases')return `<span class="cases">${rows.map(r=>`<span>${r.join(' ')}</span>`).join('')}</span>`;
+    return `<span class="rows">${rows.map(r=>`<span>${r.join('')}</span>`).join('')}</span>`;}
+  function command(n){
+    if(n==='\\')return '<br>';
+    if(n in TXSYM)return TXSYM[n];
+    if(TXOP.includes(n))return `<span class="op">${n}</span>`;
+    switch(n){
+      case 'frac':case 'tfrac':case 'dfrac':{const a=group(),b=group();return `<span class="fr"><span>${a}</span><span>${b}</span></span>`;}
+      case 'sqrt':{sp();let idx='';if(s[i]==='['){const j=s.indexOf(']',i);idx=`<sup>${tex2html(s.slice(i+1,j))}</sup>`;i=j+1;}return `${idx}√<span class="ov">${group()}</span>`;}
+      case 'text':case 'mathrm':case 'textrm':case 'operatorname':case 'mbox':return `<span class="tt">${raw().replace(/[<>&]/g,esc)}</span>`;
+      case 'overline':return `<span class="ov">${group()}</span>`;
+      case 'vec':case 'overrightarrow':return `<span class="vc">${group()}</span>`;
+      case 'left':case 'right':case 'big':case 'Big':{sp();if(s[i]==='\\'){const m=cmd();return TXSYM[m]||'';}const c=s[i++];return c==='.'?'':esc(c);}
+      case 'xrightarrow':return `<span class="xa"><span>${group()}</span>⟶</span>`;
+      case 'begin':{const e=raw(),j=findEnd(e),body=s.slice(i,j);i=j+('\\end{'+e+'}').length;return env(e,body);}
+      case 'displaystyle':case 'limits':case 'nolimits':case 'textstyle':return '';
+    }
+    return n;}
+  function atom(){const c=s[i];
+    if(c==='\\')return command(cmd());
+    if(c==='{'){i++;const h=expr('}');i++;return h;}
+    i++;
+    if(/[A-Za-z]/.test(c))return `<i>${c}</i>`;
+    if(c==='-')return '−';if(c==="'")return '′';if(c==='~')return ' ';if(c==='&')return '';
+    return esc(c);}
+  function expr(stop){let h='';
+    while(i<s.length&&s[i]!==stop){const c=s[i];
+      if(c==='^'||c==='_'){i++;const g=group();h+=c==='^'?(g==='°'||g==='′'?g:`<sup>${g}</sup>`):`<sub>${g}</sub>`;continue;}
+      if(c===' '){i++;continue;}
+      let a=atom();
+      if(TXPAD.has(a)&&h)a=` ${a} `;
+      else if(a==='−'&&h.trim()&&!/[(\[{+−×÷=,⇒⟺≤≥≈±\u2009\u2003]$|&lt;$|&gt;$|<br>$/.test(h))a='\u2009−\u2009';
+      h+=a;}
+    return h;}
+  return expr(undefined);
+}
+const T=(s,disp=false)=>disp&&window.katex?katex.renderToString(s,{throwOnError:false,displayMode:true}):`<span class="tx${disp?' disp':''}">${tex2html(s)}</span>`;
 const deg=Math.PI/180;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const snap=(v,s=.5)=>Math.round(v/s)*s;
