@@ -12,6 +12,27 @@ const files = JSON.parse(mainSrc.match(/const CONTENT = (\[.*?\]);/)[1].replace(
 
 const errors = [];
 const warns = [];
+
+// 角色和敵人用到的技能，都要存在
+for (const [n, c] of Object.entries(D.CHARACTERS)) for (const [, sk] of c.skills || []) if (!D.SKILLS[sk]) errors.push(`角色「${n}」的技能「${sk}」不存在`);
+for (const [n, e] of Object.entries(D.ENEMIES)) for (const [sk] of e.skills || []) if (sk !== '攻擊' && !D.SKILLS[sk]) errors.push(`敵人「${n}」的技能「${sk}」不存在`);
+
+// data.js 裡同一個表（角色、技能、敵人、道具……）不能有重複的名稱，否則後面的會悄悄蓋掉前面的
+{
+  const src = readFileSync(join(root, 'js/data.js'), 'utf8');
+  let table = null, seen = null;
+  src.split('\n').forEach((line, i) => {
+    const m = line.match(/^export const (\w+) = \{/);
+    if (m) { table = m[1]; seen = new Map(); return; }
+    if (/^\};/.test(line)) { table = null; return; }
+    if (!table) return;
+    const k = line.match(/^  (?:'([^']+)'|([^\s:'{}\/]+)):\s/);
+    if (!k) return;
+    const key = k[1] || k[2];
+    if (seen.has(key)) errors.push(`js/data.js 第 ${i + 1} 行：${table} 裡的「${key}」重複了（第 ${seen.get(key)} 行已經有了）`);
+    else seen.set(key, i + 1);
+  });
+}
 const scenes = {};
 for (const f of files) {
   try {
@@ -26,8 +47,8 @@ for (const f of files) {
 const at = (s, c) => `${s.file} 第 ${c.line} 行`;
 const FX = ['旗標', '羈絆', '心印', '道具', '錢', '經驗', '史卷', '隊友', '封靈', '陣法', '技能', '補史', '回復'];
 const CMDS = ['地點', '年代', '卷', '主題', '音樂', '章節', '清畫面', '提示', '回復', '存檔點', '教學', '取名', '回書齋', '進度', '開放', '卷完', '商店', '論辯', '小遊戲', '書齋', '試玩結束', '背景', '插圖', '立繪', '稱呼'];
-const MUSIC = ['府城夜', '海潮', '書齋', '緊張', '哀歌', '戰鬥', '首領', '殷商', '阿瑪納', '雅典', '羯陵伽', '舊府城', '長安', '西域', '佛羅倫斯', '墨西卡', '戰壕', '晴空', '無', ''];
-const THEMES = ['modern', 'dayuan', 'muye', 'amarna', 'athens', 'kalinga', 'fifties', 'tang', 'steppe', 'florence', 'mexica', 'trench', 'sky', 'hub'];
+const MUSIC = ['府城夜', '海潮', '書齋', '緊張', '哀歌', '戰鬥', '首領', '殷商', '阿瑪納', '雅典', '羯陵伽', '舊府城', '長安', '西域', '佛羅倫斯', '墨西卡', '戰壕', '晴空', '歸墟', '無', ''];
+const THEMES = ['modern', 'dayuan', 'muye', 'amarna', 'athens', 'kalinga', 'fifties', 'tang', 'steppe', 'florence', 'mexica', 'trench', 'sky', 'abyss', 'hub'];
 // 生圖清單裡的圖名（用來檢查 @背景、@插圖、@立繪 有沒有打錯字）
 import { readdirSync } from 'node:fs';
 const imgNames = new Set();

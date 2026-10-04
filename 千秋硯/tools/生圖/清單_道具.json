@@ -2865,6 +2865,125 @@
       "seed": 7408,
       "transparent": true,
       "prompt": "A folded torn page from a hand-sewn notebook made of mismatched paper."
+    },
+    {
+      "kind": "item",
+      "name": "沉下去的味道",
+      "seed": 7409,
+      "transparent": true,
+      "prompt": "A small old wooden box holding millet cake, a green amla fruit, a cacao bean and a roasted sweet potato."
+    },
+    {
+      "kind": "item",
+      "name": "被拿走的字",
+      "seed": 7410,
+      "transparent": true,
+      "prompt": "A single sheet of old paper with faint fading writing, damp at the edges."
+    },
+    {
+      "kind": "item",
+      "name": "爸爸寫給阿公的信",
+      "seed": 7411,
+      "transparent": true,
+      "prompt": "A plain white envelope with one handwritten character on it; the character is indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "小雨寫的字",
+      "seed": 7412,
+      "transparent": true,
+      "prompt": "A torn notebook page with one large carefully written brush-like character and several crossed-out attempts; indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "找回來的調子",
+      "seed": 7413,
+      "transparent": true,
+      "prompt": "A small fragment of bark with a few musical-note-like marks, glowing softly."
+    },
+    {
+      "kind": "item",
+      "name": "第一支筆的粉",
+      "seed": 7414,
+      "transparent": true,
+      "prompt": "A small pile of fine white powder with a few splinters of a white brush."
+    },
+    {
+      "kind": "item",
+      "name": "數字的背面",
+      "seed": 7415,
+      "transparent": true,
+      "prompt": "The back of a small wooden number tag with a tiny human figure scratched into it."
+    },
+    {
+      "kind": "item",
+      "name": "叫回來的名字",
+      "seed": 7416,
+      "transparent": true,
+      "prompt": "A small glowing slip of paper with an indistinct name, warm light around it."
+    },
+    {
+      "kind": "item",
+      "name": "放下的鑿子",
+      "seed": 7417,
+      "transparent": true,
+      "prompt": "An old copper chisel resting on a flat stone."
+    },
+    {
+      "kind": "item",
+      "name": "歸墟的紙漿",
+      "seed": 7418,
+      "transparent": true,
+      "prompt": "A small handful of wet grey paper pulp."
+    },
+    {
+      "kind": "item",
+      "name": "千字紙",
+      "seed": 7419,
+      "transparent": true,
+      "prompt": "A rolled pale grey handmade paper with tiny faint shadows of characters inside, glowing softly."
+    },
+    {
+      "kind": "item",
+      "name": "透光的字",
+      "seed": 7420,
+      "transparent": true,
+      "prompt": "A thin sheet of paper held to light revealing a faint watermark-like character, indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "燻黑的鏡子",
+      "seed": 7421,
+      "transparent": true,
+      "prompt": "A small round hand mirror blackened by smoke, partly wiped clean."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆灰",
+      "seed": 7422,
+      "transparent": true,
+      "prompt": "A small pile of white chalk dust with a short stub of chalk."
+    },
+    {
+      "kind": "item",
+      "name": "阿公寫給阿墨的信",
+      "seed": 7423,
+      "transparent": true,
+      "prompt": "An opened plain white envelope with a single handwritten letter sheet; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "沒有蓋章的信",
+      "seed": 7424,
+      "transparent": true,
+      "prompt": "A folded letter in an envelope with no stamp marks, tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "東邊第一顆星",
+      "seed": 7425,
+      "transparent": true,
+      "prompt": "A single bright morning star in a pale dawn sky, small and glowing."
     }
   ]
 }

@@ -1,6 +1,6 @@
 // 時之書齋（據點）與各種選單
 import { VOLUMES, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
-import { memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
+import { histDone, histTotal, histRate, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
 import { el } from './ui.js';
 
 const CATS = ['人物誌', '地理誌', '器物誌', '典故', '妖物誌'];
@@ -14,11 +14,10 @@ export class Hub {
   render() {
     const g = this.g;
     const r = this.root; r.innerHTML = '';
-    const total = Object.keys(g.flags).filter(k => k.startsWith('補史.')).length;
     r.appendChild(el('div', { class: 'hub-head' },
       el('h1', {}, '時之書齋'),
       el('p', {}, '書頁與書頁之間的縫隙。窗外是緩緩流動的墨色雲海。'),
-      el('div', { class: 'hub-stat' }, `已修補的史頁：${total}　銀：${g.money}`)));
+      el('div', { class: 'hub-stat' }, `已修補的史頁：${histDone(g)}／${histTotal()}（${histRate(g)}%）　銀：${g.money}`)));
     const grid = el('div', { class: 'hub-grid' });
     const room = (name, sub, fn, open = true, badge) => grid.appendChild(el('button', { class: 'room' + (open ? '' : ' closed'), disabled: !open, onclick: () => { this.ctx.audio.sfx('tap'); fn(); } },
       el('b', {}, name), el('span', {}, open ? sub : '尚未開放'), badge ? el('i', { class: 'badge' }, badge) : null));
@@ -513,6 +512,15 @@ export class Hub {
     const vol = VOLUMES.find(v => v.id === g.lastVol);
     const done = vol && g.flags['卷完.' + vol.id];
     const todo = VOLUMES.filter(v => !g.flags['卷完.' + v.id]);
+    if (done && vol.id === '終卷') {
+      await this.ui.alert('《千秋硯》全劇終', [
+        '謝謝你陪知墨與蘅，走過三千年。',
+        todo.length ? `還沒走過的時代：${todo.map(v => `${v.id}〈${v.name}〉`).join('、')}。書架上的每一本書，都可以再打開。` : '書架上的每一本書，都可以再打開。換一個選擇，也許會遇見不一樣的結局。',
+        '你的存檔會保留。茶室裡，也許有人在等你。',
+      ], '回到書齋');
+      this.ctx.goHub();
+      return;
+    }
     await this.ui.alert(done ? `${vol.id}〈${vol.name}〉完` : '試玩版到此為止', done ? [
       `感謝你陪知墨與蘅走完${vol.id}〈${vol.name}〉。`,
       todo.length ? `接下來還有：${todo.map(v => `${v.id}〈${v.name}〉`).join('、')}。${todo.some(v => v.ready) ? '可以從書架進入。' : '製作中。'}` : '',

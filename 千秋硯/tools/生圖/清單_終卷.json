@@ -1,0 +1,252 @@
+{
+  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。 回四在歸墟最深處，有一座一九五二年臺南北勢街的島：木造的國民學校教室、鳳凰木、低矮的木屋與紅磚；人物衣著依 1950 年代臺灣。不描寫刑求；便衣只以敲門聲、窗簾後的眼睛呈現。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "歸墟",
+      "seed": 16101,
+      "prompt": "A boundless still black sea at the end of time with no shore and no waves, no sky above, only countless sheets of paper bearing faint faded writing drifting down slowly like snow and sinking into the water, small islands made of piled paper in the distance, deep quiet darkness with soft pale light from the falling pages. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "黑水",
+      "seed": 16301,
+      "prompt": "A spirit of perfectly flat black water rising into a smooth faceless shape, pages sinking into it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "落頁",
+      "seed": 16302,
+      "prompt": "A large falling sheet of old paper with faint fading writing, folding into a ghostly figure.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "漂流字",
+      "seed": 16303,
+      "prompt": "A single large drifting brush-written character made of ink, wandering lost on dark water; the character is abstract and unreadable.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉船",
+      "seed": 16304,
+      "prompt": "A sunken old wooden junk ship rising from black water, letters and cargo spilling from it, menacing and sorrowful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "海翁的回聲",
+      "seed": 16305,
+      "prompt": "An enormous whale made entirely of pieced-together sheets of paper covered in faint writing, rising from a black sea, mouth open to swallow falling pages.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "斷掉的白筆",
+      "seed": 16306,
+      "prompt": "A giant white writing brush broken in two halves joining back together in mid-air, taller than a man, its white tip pointing forward, surrounded by a blizzard of blank white paper.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "落下來的紙",
+      "seed": 16401,
+      "prompt": "A young man in a white shirt and a translucent girl with long ink-black hair whose ends blur like ink wash, standing on a still black sea, looking up at countless pages with faint writing falling like snow; the young man reaching out to catch one. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "紙堆上的蒂娃",
+      "seed": 16402,
+      "prompt": "On a small island made of piled old papers in a black sea, an adult Siraya indigenous woman of 17th-century Taiwan whose body is translucent with ink flowing inside, singing softly, a fragment of bark paper in her hand. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "名字的刮痕",
+      "seed": 16307,
+      "prompt": "A spirit formed from a deep scraped scar across bone, stone and paper, with a sharp blade-like edge.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "編號的木牌",
+      "seed": 16308,
+      "prompt": "A floating wooden tag with an indistinct carved number, many smaller tags clattering around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "磨平的字",
+      "seed": 16309,
+      "prompt": "A faint shadowy spirit of a shallow carved inscription worn smooth by water, almost invisible.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "灼骨的餘燼",
+      "seed": 16310,
+      "prompt": "A scorched ancient Shang oracle bone with glowing embers in its cracks, smoke rising.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鑿子的回聲",
+      "seed": 16311,
+      "prompt": "A giant hand formed from hundreds of copper and iron chisels, old and new, gripping one great chisel.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "抹名",
+      "seed": 16312,
+      "prompt": "A formless sweeping motion visualized as a translucent wiping hand made of dark mist moving across water, leaving blank smoothness behind; eerie and sorrowful.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "沒有名字的人們",
+      "seed": 16403,
+      "prompt": "Countless very faint translucent figures without faces rising from a black still sea at the end of time: an ancient laborer with rope marks on his wrists, a stone carrier, a rower with calloused hands, a woman carrying a child; a young man and a translucent ink-haired girl facing them. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "往上飄的雪",
+      "seed": 16404,
+      "prompt": "Sheets of paper bearing ink handprints, simple drawings of a goat and a river, and a few names, rising upward from a black sea like snow falling in reverse, faint figures below reaching up, a young man holding an inkstone. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "紙漿",
+      "seed": 16313,
+      "prompt": "A grey soft blob of paper pulp rising from a water vat, fibers and faint fragments of writing inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "焦黑的畫框",
+      "seed": 16314,
+      "prompt": "An empty charred Renaissance picture frame floating, smoke curling from its edges.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "羽毛的影子",
+      "seed": 16315,
+      "prompt": "A shadow figure made of iridescent green and blue feathers loosely assembled, scattering in the wind.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "電報紙",
+      "seed": 16316,
+      "prompt": "A large telegram form with blue grid lines folded into a sharp creature, the grid empty, no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "虛榮之火的回聲",
+      "seed": 16317,
+      "prompt": "A tall tiered wooden pyramid of a Renaissance bonfire piled with paintings, mirrors, lutes, books and a carnival effigy, flames rising, ghostly on dark water.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "一張白紙",
+      "seed": 16318,
+      "prompt": "A gigantic perfectly blank white sheet of paper taller than a person floating upright, pristine and cold, light reflecting off it; eerie emptiness.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "抄起來的紙",
+      "seed": 16405,
+      "prompt": "A Tang-dynasty papermaker whose body is translucent ink lifts a bamboo papermaking screen from a vat on a black sea; on the screen a pale grey sheet of paper in which countless tiny faint shadows of characters glow when backlit. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "窗簾後的眼睛",
+      "seed": 16319,
+      "prompt": "Rows of drawn curtains in old wooden windows with faint pairs of eyes behind them, merged into one tall quiet shadow.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "剝落的標語",
+      "seed": 16320,
+      "prompt": "Large red painted characters peeling off a white wall in flakes, forming a jagged creature; characters indistinct.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "一直亮著的燈",
+      "seed": 16321,
+      "prompt": "A single bare light bulb hanging from a cord, glaring with harsh unending light, a cold halo around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "敲門聲",
+      "seed": 16322,
+      "prompt": "A shadowy knocking hand emerging from an old wooden door, ripples of sound, ominous yet quiet.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "存查卷宗",
+      "seed": 16323,
+      "prompt": "A floating brown kraft-paper dossier folder with a large red rubber stamp mark, letters spilling out of it; stamp indistinct.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・歸墟之相",
+      "seed": 16324,
+      "prompt": "An elderly Taiwanese man in his seventies in a dark long robe, wide-brimmed hat on the desk beside him, reading glasses, a small mole at the corner of his mouth, sitting at a cluttered study desk writing in a notebook, papers swirling around him; tired and sorrowful rather than evil.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "父親",
+      "seed": 16406,
+      "prompt": "In a cluttered study full of old books and papers, a tired elderly Taiwanese man in a clean shirt sits on the floor against a bookshelf; before him kneels a thin young 1950s Taiwanese schoolteacher with round glasses whose body is translucent ink, holding out one finger toward him. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "天快要亮的時候",
+      "seed": 16407,
+      "prompt": "A thin young 1950s Taiwanese schoolteacher with round glasses, body of translucent ink, embracing an elderly man in his seventies who weeps, papers on the floor regaining their black ink, faint dawn light through a window. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "歸墟的正中間",
+      "seed": 16102,
+      "prompt": "The very center of a boundless still black sea at the end of time: a vast soft blue-white orb of light with slowly expanding concentric ripples, a floating black slate tablet before it, no sky, profound silence. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "安寧・核心",
+      "seed": 16325,
+      "prompt": "A tall faceless humanoid made of soft blue-white light, very bright and very gentle, arms slightly open, concentric ripples around it; serene, overwhelming, not evil.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "十一個名字",
+      "seed": 16408,
+      "prompt": "On a black sea, ten translucent ink figures from different eras stand in a row (a 17th-century Ming soldier, an ancient Qiang boy, an Egyptian stonemason, a Greek rower, an Indian fisherman, a 1950s Taiwanese teacher with a cane, a Tang papermaker, a Florentine boy, an Aztec scribe, a WWI German soldier), all with the same small pointed canine tooth in their smiles, facing a messy-haired engineer of the future. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "明天見",
+      "seed": 16409,
+      "prompt": "On a black sea at the end of time, a translucent ink-haired girl fading into light, smiling, and in the air a single large ink brush character lingering where she wrote it; a young man reaching toward her. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "千秋",
+      "seed": 16410,
+      "prompt": "Countless sheets of paper, handprints, drawings and pages rising upward from a black sea like snow falling in reverse, a warm dawn-colored light at the center; a young man and a now solid, real girl with long black hair holding hands, an elderly grandfather and a 1950s teacher standing nearby. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    }
+  ]
+}

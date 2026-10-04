@@ -193,7 +193,7 @@ export class UI {
   setAmbient(theme) {
     const box = this.ambientEl;
     if (!box) return;
-    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', sky: 'glow', hub: 'ink', modern: 'glow' }[theme] || '') : '';
+    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', sky: 'glow', abyss: 'ink', hub: 'ink', modern: 'glow' }[theme] || '') : '';
     if (box.dataset.kind === kind) return;
     box.dataset.kind = kind;
     box.innerHTML = '';
