@@ -2732,6 +2732,34 @@
       "seed": 7389,
       "transparent": true,
       "prompt": "A pale blank mask without any expression, resting peacefully."
+    },
+    {
+      "kind": "item",
+      "name": "同意書的一角",
+      "seed": 7390,
+      "transparent": true,
+      "prompt": "A torn corner of a glowing consent form with one indistinct character."
+    },
+    {
+      "kind": "item",
+      "name": "桃子營養凍",
+      "seed": 7391,
+      "transparent": true,
+      "prompt": "A square block of peach-colored nutrient jelly."
+    },
+    {
+      "kind": "item",
+      "name": "哭和笑",
+      "seed": 7392,
+      "transparent": true,
+      "prompt": "Two small drops, one a tear and one a sparkle of laughter, joined by a single thread."
+    },
+    {
+      "kind": "item",
+      "name": "沒有按下去",
+      "seed": 7393,
+      "transparent": true,
+      "prompt": "A large round button on a glowing card, unpressed."
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
+  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
   "items": [
     {
       "kind": "bg",
@@ -106,6 +106,79 @@
       "name": "看見星星的女孩",
       "seed": 15402,
       "prompt": "On a small platform high under an artificial blue sky, a short-haired 13-year-old girl stares up in wonder at a crack in the sky panels through which real stars shine in black space; a young engineer with a glowing stylus beside her. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "撫平中心",
+      "seed": 15105,
+      "prompt": "The lobby of a round white building in a future space city, soft pale-blue light, rows of soft chairs where quiet people sit holding glowing number cards, a single closed door at the far end, calm, hushed and a little sad. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "雲的家",
+      "seed": 15106,
+      "prompt": "A very tidy quiet home in a future space city: white walls, round windows, small green plants on the sill, framed moving photographs on the wall in which one man-shaped area in every photo is blank white as if erased. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "char",
+      "name": "雲",
+      "seed": 15205,
+      "prompt": "An East Asian woman about 40, gentle face with a faint even smile, pale loose clothes of a future city, a white wristband with a small blue light, holding a shopping bag.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "同意書",
+      "seed": 15307,
+      "prompt": "A floating glowing sheet of a consent form with a large round button at the bottom, lines of indistinct text, polite and pressing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "淡",
+      "seed": 15308,
+      "prompt": "A very faint washed-out face floating in the air, features half disappearing like fading ink.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "安慰",
+      "seed": 15309,
+      "prompt": "A soft cloud-like spirit with gentle pale arms reaching to pat a head, comforting but smothering.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "號碼牌",
+      "seed": 15310,
+      "prompt": "A glowing number card with indistinct numerals hovering, surrounded by smaller cards like a queue.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "變輕",
+      "seed": 15311,
+      "prompt": "A large drifting spirit made of pale feathers and weightless light, objects floating around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "像沒發生過",
+      "seed": 15312,
+      "prompt": "A man-shaped figure of soft white mist like milk, with no face and no color, flowing out of blank areas in photographs, reaching out a hand; sad and eerie.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "照片裡的空白",
+      "seed": 15403,
+      "prompt": "A girl of 13 with short hair standing before a wall of family photographs in a tidy white future home; in every photo a man-shaped area is blank white, her fists clenched. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "大廳裡的光",
+      "seed": 15404,
+      "prompt": "In a hushed pale-blue lobby full of waiting people who do not look up, a large soft glowing orb of light with slowly turning rings appears, facing a young man in white and a translucent ink-haired girl hiding behind him. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
     }
   ]
 }
