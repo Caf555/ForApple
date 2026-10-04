@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
+  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
   "items": [
     {
       "kind": "bg",
@@ -179,6 +179,78 @@
       "name": "大廳裡的光",
       "seed": 15404,
       "prompt": "In a hushed pale-blue lobby full of waiting people who do not look up, a large soft glowing orb of light with slowly turning rings appears, facing a young man in white and a translucent ink-haired girl hiding behind him. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "輻條電梯",
+      "seed": 15107,
+      "prompt": "Inside a glass elevator rising up a giant spoke of a rotating ring-shaped space city: through the window the whole ring with green parks and white houses curves below and around, the hub far above. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "上游研究所",
+      "seed": 15108,
+      "prompt": "The weightless hub of a space ring city: a long cylindrical corridor with doors on every side, thin lines of light flowing backwards along the walls, at the end a large door, cold, quiet and solemn. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "史庫",
+      "seed": 15109,
+      "prompt": "A vast spherical archive in zero gravity: in every direction countless small glowing drawers stacked layer upon layer into the distance, some glowing blue and some grey, tiny motes of light floating, overwhelming and silent. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "失重",
+      "seed": 15313,
+      "prompt": "A drifting spirit of weightlessness, loose objects and floating dust orbiting a dark hollow center.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "輻條",
+      "seed": 15314,
+      "prompt": "A giant metallic spoke-shaped creature spinning like a wheel, with cold metal arms.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "雜訊",
+      "seed": 15315,
+      "prompt": "A flickering spirit made of static noise and fragments of glowing sound waves, half-heard voices.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "備份",
+      "seed": 15316,
+      "prompt": "Two identical metallic figures mirroring each other perfectly, one slightly transparent like a copy.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "歸檔",
+      "seed": 15317,
+      "prompt": "A mass of countless glowing archive drawers with thin silver mechanical hands reaching out from between them to grab floating lights and shut them away.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "逆流",
+      "seed": 15318,
+      "prompt": "A huge whirlpool of light flowing backwards, at its center the vague face of a river flowing in reverse, carrying fragments of old paper and writing; awe-inspiring.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "飄起來的本子",
+      "seed": 15405,
+      "prompt": "Inside a rising glass elevator of a space city, a short-haired 13-year-old girl laughing as she floats and slowly somersaults in low gravity, her small hand-sewn notebook floating beside her, a messy-haired engineer watching with a sad smile, the ring city visible through the window. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "最後一行",
+      "seed": 15406,
+      "prompt": "A small dark room in zero gravity, one wall glowing with lines of indistinct text scrolling upward, a young man in white floating before it, staring at the last line, a translucent ink-haired girl beside him; the text is unreadable glowing lines. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
     }
   ]
 }

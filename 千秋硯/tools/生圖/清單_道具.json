@@ -2760,6 +2760,34 @@
       "seed": 7393,
       "transparent": true,
       "prompt": "A large round button on a glowing card, unpressed."
+    },
+    {
+      "kind": "item",
+      "name": "太空餅乾",
+      "seed": 7394,
+      "transparent": true,
+      "prompt": "A simple foil-wrapped square space biscuit."
+    },
+    {
+      "kind": "item",
+      "name": "光纖",
+      "seed": 7395,
+      "transparent": true,
+      "prompt": "A short coil of thin optical fiber with light flowing inside."
+    },
+    {
+      "kind": "item",
+      "name": "上游的一滴水",
+      "seed": 7396,
+      "transparent": true,
+      "prompt": "A single glowing drop of water floating, a tiny backward current inside it."
+    },
+    {
+      "kind": "item",
+      "name": "第一份提案",
+      "seed": 7397,
+      "transparent": true,
+      "prompt": "A neat thin glowing document folder; no readable text."
     }
   ]
 }
