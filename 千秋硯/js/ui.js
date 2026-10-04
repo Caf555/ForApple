@@ -204,6 +204,10 @@ export class UI {
   setAmbient(theme) {
     const box = this.ambientEl;
     if (!box) return;
+    // 環境聲跟著天氣與主題走（和畫面上的粒子是兩個設定）
+    const sk = this.weather != null ? this.weather : ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', abyss: 'paper' }[theme] || '');
+    const snd = { rain: 'rain', snow: 'wind', sand: 'wind', ember: 'fire', petal: 'birds', leaf: 'birds', paper: 'paper', dust: theme === 'dayuan' || theme === 'fifties' ? 'cicada' : '' }[sk] || '';
+    if (this.ctx.audio) this.ctx.audio.ambience(theme === 'trench' && snd !== 'birds' ? (snd ? snd + '+guns' : 'guns') : snd);
     const kind = !this.settings.ambient ? '' : this.weather != null ? this.weather : ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', sky: 'glow', abyss: 'paper', hub: 'ink', modern: 'glow' }[theme] || '');
     if (box.dataset.kind === kind) return;
     box.dataset.kind = kind;
