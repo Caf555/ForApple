@@ -2907,6 +2907,27 @@
       "seed": 7414,
       "transparent": true,
       "prompt": "A small pile of fine white powder with a few splinters of a white brush."
+    },
+    {
+      "kind": "item",
+      "name": "數字的背面",
+      "seed": 7415,
+      "transparent": true,
+      "prompt": "The back of a small wooden number tag with a tiny human figure scratched into it."
+    },
+    {
+      "kind": "item",
+      "name": "叫回來的名字",
+      "seed": 7416,
+      "transparent": true,
+      "prompt": "A small glowing slip of paper with an indistinct name, warm light around it."
+    },
+    {
+      "kind": "item",
+      "name": "放下的鑿子",
+      "seed": 7417,
+      "transparent": true,
+      "prompt": "An old copper chisel resting on a flat stone."
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。",
+  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。",
   "items": [
     {
       "kind": "bg",
@@ -60,6 +60,60 @@
       "name": "紙堆上的蒂娃",
       "seed": 16402,
       "prompt": "On a small island made of piled old papers in a black sea, an adult Siraya indigenous woman of 17th-century Taiwan whose body is translucent with ink flowing inside, singing softly, a fragment of bark paper in her hand. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "名字的刮痕",
+      "seed": 16307,
+      "prompt": "A spirit formed from a deep scraped scar across bone, stone and paper, with a sharp blade-like edge.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "編號的木牌",
+      "seed": 16308,
+      "prompt": "A floating wooden tag with an indistinct carved number, many smaller tags clattering around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "磨平的字",
+      "seed": 16309,
+      "prompt": "A faint shadowy spirit of a shallow carved inscription worn smooth by water, almost invisible.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "灼骨的餘燼",
+      "seed": 16310,
+      "prompt": "A scorched ancient Shang oracle bone with glowing embers in its cracks, smoke rising.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鑿子的回聲",
+      "seed": 16311,
+      "prompt": "A giant hand formed from hundreds of copper and iron chisels, old and new, gripping one great chisel.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "抹名",
+      "seed": 16312,
+      "prompt": "A formless sweeping motion visualized as a translucent wiping hand made of dark mist moving across water, leaving blank smoothness behind; eerie and sorrowful.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "沒有名字的人們",
+      "seed": 16403,
+      "prompt": "Countless very faint translucent figures without faces rising from a black still sea at the end of time: an ancient laborer with rope marks on his wrists, a stone carrier, a rower with calloused hands, a woman carrying a child; a young man and a translucent ink-haired girl facing them. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "往上飄的雪",
+      "seed": 16404,
+      "prompt": "Sheets of paper bearing ink handprints, simple drawings of a goat and a river, and a few names, rising upward from a black sea like snow falling in reverse, faint figures below reaching up, a young man holding an inkstone. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
     }
   ]
 }

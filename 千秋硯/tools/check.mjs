@@ -12,6 +12,27 @@ const files = JSON.parse(mainSrc.match(/const CONTENT = (\[.*?\]);/)[1].replace(
 
 const errors = [];
 const warns = [];
+
+// 角色和敵人用到的技能，都要存在
+for (const [n, c] of Object.entries(D.CHARACTERS)) for (const [, sk] of c.skills || []) if (!D.SKILLS[sk]) errors.push(`角色「${n}」的技能「${sk}」不存在`);
+for (const [n, e] of Object.entries(D.ENEMIES)) for (const [sk] of e.skills || []) if (sk !== '攻擊' && !D.SKILLS[sk]) errors.push(`敵人「${n}」的技能「${sk}」不存在`);
+
+// data.js 裡同一個表（角色、技能、敵人、道具……）不能有重複的名稱，否則後面的會悄悄蓋掉前面的
+{
+  const src = readFileSync(join(root, 'js/data.js'), 'utf8');
+  let table = null, seen = null;
+  src.split('\n').forEach((line, i) => {
+    const m = line.match(/^export const (\w+) = \{/);
+    if (m) { table = m[1]; seen = new Map(); return; }
+    if (/^\};/.test(line)) { table = null; return; }
+    if (!table) return;
+    const k = line.match(/^  (?:'([^']+)'|([^\s:'{}\/]+)):\s/);
+    if (!k) return;
+    const key = k[1] || k[2];
+    if (seen.has(key)) errors.push(`js/data.js 第 ${i + 1} 行：${table} 裡的「${key}」重複了（第 ${seen.get(key)} 行已經有了）`);
+    else seen.set(key, i + 1);
+  });
+}
 const scenes = {};
 for (const f of files) {
   try {
