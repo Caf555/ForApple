@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。 回四在歸墟最深處，有一座一九五二年臺南北勢街的島：木造的國民學校教室、鳳凰木、低矮的木屋與紅磚；人物衣著依 1950 年代臺灣。不描寫刑求；便衣只以敲門聲、窗簾後的眼睛呈現。",
+  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。 回四在歸墟最深處，有一座一九五二年臺南北勢街的島：木造的國民學校教室、鳳凰木、低矮的木屋與紅磚；人物衣著依 1950 年代臺灣。不描寫刑求；便衣只以敲門聲、窗簾後的眼睛呈現。",
   "items": [
     {
       "kind": "bg",
@@ -216,6 +216,37 @@
       "name": "天快要亮的時候",
       "seed": 16407,
       "prompt": "A thin young 1950s Taiwanese schoolteacher with round glasses, body of translucent ink, embracing an elderly man in his seventies who weeps, papers on the floor regaining their black ink, faint dawn light through a window. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "歸墟的正中間",
+      "seed": 16102,
+      "prompt": "The very center of a boundless still black sea at the end of time: a vast soft blue-white orb of light with slowly expanding concentric ripples, a floating black slate tablet before it, no sky, profound silence. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "安寧・核心",
+      "seed": 16325,
+      "prompt": "A tall faceless humanoid made of soft blue-white light, very bright and very gentle, arms slightly open, concentric ripples around it; serene, overwhelming, not evil.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "十一個名字",
+      "seed": 16408,
+      "prompt": "On a black sea, ten translucent ink figures from different eras stand in a row (a 17th-century Ming soldier, an ancient Qiang boy, an Egyptian stonemason, a Greek rower, an Indian fisherman, a 1950s Taiwanese teacher with a cane, a Tang papermaker, a Florentine boy, an Aztec scribe, a WWI German soldier), all with the same small pointed canine tooth in their smiles, facing a messy-haired engineer of the future. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "明天見",
+      "seed": 16409,
+      "prompt": "On a black sea at the end of time, a translucent ink-haired girl fading into light, smiling, and in the air a single large ink brush character lingering where she wrote it; a young man reaching toward her. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "千秋",
+      "seed": 16410,
+      "prompt": "Countless sheets of paper, handprints, drawings and pages rising upward from a black sea like snow falling in reverse, a warm dawn-colored light at the center; a young man and a now solid, real girl with long black hair holding hands, an elderly grandfather and a 1950s teacher standing nearby. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
     }
   ]
 }

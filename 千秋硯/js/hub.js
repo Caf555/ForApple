@@ -512,6 +512,15 @@ export class Hub {
     const vol = VOLUMES.find(v => v.id === g.lastVol);
     const done = vol && g.flags['卷完.' + vol.id];
     const todo = VOLUMES.filter(v => !g.flags['卷完.' + v.id]);
+    if (done && vol.id === '終卷') {
+      await this.ui.alert('《千秋硯》全劇終', [
+        '謝謝你陪知墨與蘅，走過三千年。',
+        todo.length ? `還沒走過的時代：${todo.map(v => `${v.id}〈${v.name}〉`).join('、')}。書架上的每一本書，都可以再打開。` : '書架上的每一本書，都可以再打開。換一個選擇，也許會遇見不一樣的結局。',
+        '你的存檔會保留。茶室裡，也許有人在等你。',
+      ], '回到書齋');
+      this.ctx.goHub();
+      return;
+    }
     await this.ui.alert(done ? `${vol.id}〈${vol.name}〉完` : '試玩版到此為止', done ? [
       `感謝你陪知墨與蘅走完${vol.id}〈${vol.name}〉。`,
       todo.length ? `接下來還有：${todo.map(v => `${v.id}〈${v.name}〉`).join('、')}。${todo.some(v => v.ready) ? '可以從書架進入。' : '製作中。'}` : '',
