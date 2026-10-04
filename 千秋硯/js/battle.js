@@ -228,7 +228,7 @@ export class Battle {
     const weakest = foes.sort((a, b) => a.hp - b.hp)[0];
     const dmg = skills.filter(s => ['mag', 'phy'].includes(SKILLS[s].type));
     if (dmg.length && Math.random() < 0.55) {
-      const best = dmg.map(s => ({ s, m: elementMult(SKILLS[s].element, weakest.el) * (SKILLS[s].power || 1) })).sort((a, b) => b.m - a.m)[0].s;
+      const best = dmg.map(s => ({ s, m: elementMult(this.skillEl(SKILLS[s]), weakest.el) * (SKILLS[s].power || 1) })).sort((a, b) => b.m - a.m)[0].s;
       return { type: 'skill', skill: best, target: weakest };
     }
     return { type: 'attack', target: weakest };
@@ -314,7 +314,8 @@ export class Battle {
     this.subMenu(`${u.name}・術法（墨 ${u.mp}）`, memberSkills(u.ref).map(s => {
       const sk = SKILLS[s];
       const act = t => this.done({ type: 'skill', skill: s, target: t });
-      return [s + (sk.element ? `〔${sk.element}〕` : ''), `墨 ${sk.cost}`, sk.desc, () => {
+      const skEl = this.skillEl(sk);
+      return [s + (skEl ? `〔${skEl}〕` : ''), `墨 ${sk.cost}`, sk.desc, () => {
         if (sk.target === 'enemy') this.pickTarget(u, 'foe', act);
         else if (sk.target === 'ally') this.pickTarget(u, 'ally', act);
         else act(null);
@@ -455,7 +456,11 @@ export class Battle {
     return pick(pool);
   }
 
+  // 曆輪：屬性隨回合轉動（第 1 回合用 cycle[0]，第 2 回合用 cycle[1]……）
+  skillEl(sk) { return sk.cycle ? sk.cycle[Math.max(0, this.round - 1) % sk.cycle.length] : sk.element; }
+
   async applySkill(u, sk, target, members) {
+    const skEl = this.skillEl(sk);
     const foesOf = u.side === 'ally' ? this.foes : this.allies;
     const friendsOf = u.side === 'ally' ? this.allies : this.foes;
     let targets;
@@ -474,10 +479,10 @@ export class Battle {
         if (!t.alive && sk.type !== 'heal') break;
         if (sk.type === 'phy') {
           const atkUnit = members ? { ...u, st: { ...u.st, atk: members.reduce((s, m) => s + this.stat(m, 'atk'), 0) * 0.6 } , buffs: u.buffs } : u;
-          this.physHit(atkUnit, t, sk.power, sk.element || u.atkEl, sk.crit, u);
+          this.physHit(atkUnit, t, sk.power, skEl || u.atkEl, sk.crit, u);
         } else if (sk.type === 'mag') {
           const mag = members ? members.reduce((s, m) => s + this.stat(m, 'mag'), 0) * 0.7 : this.stat(u, 'mag');
-          this.magHit(u, t, mag, sk.power, sk.element);
+          this.magHit(u, t, mag, sk.power, skEl);
         } else if (sk.type === 'heal') {
           if (!t.alive) continue;
           const amt = Math.round((sk.power + this.stat(u, 'mag') * 1.2) * rnd(0.95, 1.05));

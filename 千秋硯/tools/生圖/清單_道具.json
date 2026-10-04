@@ -2081,6 +2081,279 @@
       "seed": 7296,
       "transparent": true,
       "prompt": "A long dark goose-feather quill with a dry ink-stained nib."
+    },
+    {
+      "kind": "item",
+      "name": "玉米餅",
+      "seed": 7297,
+      "transparent": true,
+      "prompt": "A stack of warm maize tortillas on a clay griddle."
+    },
+    {
+      "kind": "item",
+      "name": "可可飲",
+      "seed": 7298,
+      "transparent": true,
+      "prompt": "A clay cup of frothy cacao drink with a few cacao beans and a red chili."
+    },
+    {
+      "kind": "item",
+      "name": "黑曜石片",
+      "seed": 7299,
+      "transparent": true,
+      "prompt": "A thin glossy black obsidian blade flake."
+    },
+    {
+      "kind": "item",
+      "name": "綠羽毛",
+      "seed": 7300,
+      "transparent": true,
+      "prompt": "A long iridescent green quetzal tail feather."
+    },
+    {
+      "kind": "item",
+      "name": "黑曜石刃",
+      "seed": 7301,
+      "transparent": true,
+      "prompt": "A small obsidian knife with a wooden handle bound with cord."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛扇",
+      "seed": 7302,
+      "transparent": true,
+      "prompt": "A fan of layered red, green and blue feathers on a wooden handle."
+    },
+    {
+      "kind": "item",
+      "name": "神的汙垢",
+      "seed": 7303,
+      "transparent": true,
+      "prompt": "A thin sheet of hammered gold leaf, crinkled."
+    },
+    {
+      "kind": "item",
+      "name": "說出來的預兆",
+      "seed": 7304,
+      "transparent": true,
+      "prompt": "A small piece of bark paper painted with a red and black comet; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "樹皮紙的老鷹",
+      "seed": 7305,
+      "transparent": true,
+      "prompt": "A small rough piece of bark paper painted in red and black with an eagle standing on a prickly pear cactus holding a snake, and a small round glyph beside it; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "陌生人的畫",
+      "seed": 7306,
+      "transparent": true,
+      "prompt": "A small piece of bark paper painted in red and black with a bearded man on a horse and speech scroll curls; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "莧菜糖",
+      "seed": 7307,
+      "transparent": true,
+      "prompt": "Squares of popped amaranth seeds bound with honey."
+    },
+    {
+      "kind": "item",
+      "name": "龍舌蘭汁",
+      "seed": 7308,
+      "transparent": true,
+      "prompt": "A gourd cup of milky agave sap beside a maguey leaf."
+    },
+    {
+      "kind": "item",
+      "name": "莧菜籽",
+      "seed": 7309,
+      "transparent": true,
+      "prompt": "A small pile of tiny pale amaranth seeds."
+    },
+    {
+      "kind": "item",
+      "name": "柯巴樹脂",
+      "seed": 7310,
+      "transparent": true,
+      "prompt": "A lump of translucent white copal resin."
+    },
+    {
+      "kind": "item",
+      "name": "打開的門",
+      "seed": 7311,
+      "transparent": true,
+      "prompt": "A small stone fragment carved with serpent scales."
+    },
+    {
+      "kind": "item",
+      "name": "再響一次的鼓",
+      "seed": 7312,
+      "transparent": true,
+      "prompt": "A tiny wooden hand drum with a stretched skin."
+    },
+    {
+      "kind": "item",
+      "name": "托納的頭飾",
+      "seed": 7313,
+      "transparent": true,
+      "prompt": "A feather headdress of long green quetzal plumes on a gold wire ring, half the plumes broken."
+    },
+    {
+      "kind": "item",
+      "name": "火雞湯",
+      "seed": 7314,
+      "transparent": true,
+      "prompt": "A clay pot of turkey stew with red chilies and tomatoes."
+    },
+    {
+      "kind": "item",
+      "name": "奇亞籽水",
+      "seed": 7315,
+      "transparent": true,
+      "prompt": "A gourd cup of water with swollen chia seeds."
+    },
+    {
+      "kind": "item",
+      "name": "湖底泥",
+      "seed": 7316,
+      "transparent": true,
+      "prompt": "A handful of dark wet lake-bottom mud."
+    },
+    {
+      "kind": "item",
+      "name": "小棉布",
+      "seed": 7317,
+      "transparent": true,
+      "prompt": "A small folded square of white cotton cloth."
+    },
+    {
+      "kind": "item",
+      "name": "沒有撿起來的金子",
+      "seed": 7318,
+      "transparent": true,
+      "prompt": "A small muddy lump of gold."
+    },
+    {
+      "kind": "item",
+      "name": "留下來照顧的手",
+      "seed": 7319,
+      "transparent": true,
+      "prompt": "A damp white cotton cloth folded beside a clay water bowl."
+    },
+    {
+      "kind": "item",
+      "name": "阿卡特的顏料罐",
+      "seed": 7320,
+      "transparent": true,
+      "prompt": "Two small clay paint pots side by side, one filled with red pigment and one with black."
+    },
+    {
+      "kind": "item",
+      "name": "最後的玉米",
+      "seed": 7321,
+      "transparent": true,
+      "prompt": "A single small dried ear of maize."
+    },
+    {
+      "kind": "item",
+      "name": "雨水",
+      "seed": 7322,
+      "transparent": true,
+      "prompt": "A clay jar catching raindrops."
+    },
+    {
+      "kind": "item",
+      "name": "斷矛頭",
+      "seed": 7323,
+      "transparent": true,
+      "prompt": "A broken obsidian spearhead."
+    },
+    {
+      "kind": "item",
+      "name": "土坯碎",
+      "seed": 7324,
+      "transparent": true,
+      "prompt": "A chunk of broken adobe brick."
+    },
+    {
+      "kind": "item",
+      "name": "沒有被填平的水道",
+      "seed": 7325,
+      "transparent": true,
+      "prompt": "A small clay jar of clear lake water."
+    },
+    {
+      "kind": "item",
+      "name": "燒掉的船帆",
+      "seed": 7326,
+      "transparent": true,
+      "prompt": "A scorched corner of white sailcloth."
+    },
+    {
+      "kind": "item",
+      "name": "席特拉莉的羽毛盾",
+      "seed": 7327,
+      "transparent": true,
+      "prompt": "A small round shield covered in green quetzal feathers forming an eagle standing on a cactus."
+    },
+    {
+      "kind": "item",
+      "name": "玉米粽",
+      "seed": 7328,
+      "transparent": true,
+      "prompt": "A steamed tamale wrapped in a corn husk, partly opened."
+    },
+    {
+      "kind": "item",
+      "name": "加糖的可可",
+      "seed": 7329,
+      "transparent": true,
+      "prompt": "A clay cup of frothy sweet chocolate with a small cone of sugar."
+    },
+    {
+      "kind": "item",
+      "name": "舊羽毛",
+      "seed": 7330,
+      "transparent": true,
+      "prompt": "An old faded green feather."
+    },
+    {
+      "kind": "item",
+      "name": "新紙",
+      "seed": 7331,
+      "transparent": true,
+      "prompt": "A crisp sheet of white European paper."
+    },
+    {
+      "kind": "item",
+      "name": "沒有燒完的一頁",
+      "seed": 7332,
+      "transparent": true,
+      "prompt": "A small piece of bark paper with burnt edges and half a day-sign glyph; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛的聖像",
+      "seed": 7333,
+      "transparent": true,
+      "prompt": "A small feather mosaic image of a haloed figure made of iridescent feathers."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的黑筆",
+      "seed": 7334,
+      "transparent": true,
+      "prompt": "A brush with dried black paint on its bristles."
+    },
+    {
+      "kind": "item",
+      "name": "胡安的筆記",
+      "seed": 7335,
+      "transparent": true,
+      "prompt": "A small stack of European paper with lines of handwriting in Latin letters; text indistinct."
     }
   ]
 }
