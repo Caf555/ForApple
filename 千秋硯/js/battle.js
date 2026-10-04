@@ -140,9 +140,11 @@ export class Battle {
       units.forEach(u => { u.order = this.stat(u, 'spd') * rnd(0.9, 1.1); u.acted = false; });
       if (this.round === 1 && form.firstStrike) units.forEach(u => { if (u.side === 'ally') u.order += 1000; });
       units.sort((a, b) => b.order - a.order);
+      this.turnOrder = units;
       for (const u of units) {
         if (this.over) break;
         if (!u.alive || u.acted) continue;
+        this.renderOrder(u);
         await this.takeTurn(u);
         u.acted = true;
         this.checkEnd();
@@ -489,6 +491,7 @@ export class Battle {
           this.log(`${u.name} 陷入迷惘，搞錯了方向！`);
         }
         this.log(`${u.name} 攻擊！`);
+        this.lunge(u);
         await this.pause(0.4);
         this.physHit(u, t, 1, u.atkEl);
         await this.pause();
@@ -503,6 +506,7 @@ export class Battle {
           this.quake(); this.ctx.ui.vibrate([30, 30, 60]); this.ctx.audio.sfx('boss');
           this.bigMult = 1.6;
         } else this.log(`${u.name} 使出「${act.skill}」！`);
+        if (['phy', 'mag'].includes(sk.type)) this.lunge(u, sk.type === 'mag');
         await this.pause(0.4);
         await this.applySkill(u, sk, act.target);
         this.bigMult = 1;
@@ -699,6 +703,7 @@ export class Battle {
     if (this.bigMult && u.side === 'foe') dmg *= this.bigMult;
     dmg = Math.max(1, Math.round(dmg));
     this.damage(t, dmg);
+    this.hitFx(t, magic, element, crit);
     // 打斷蓄力：用它怕的屬性打中，或打出暴擊
     if (t.charging && t.alive && (mult >= 1.3 || crit)) {
       const sk = t.charging.skill;
@@ -883,6 +888,7 @@ export class Battle {
     const bg = this.g.loc && this.g.loc.bg;
     if (ui.hasImg('bg', bg)) stage.style.setProperty('--stage-img', `url("${new URL(ui.imgSrc('bg', bg, 800), location.href).href}")`);
     this.stage = stage;
+    stage.appendChild(this.orderEl = el('div', { class: 'b-order' }));
     this.foes.forEach(f => stage.appendChild(this.foeNode(f)));
     this.layoutFoes();
     for (const gu of this.guests) {
@@ -970,6 +976,60 @@ export class Battle {
     }
   }
 
+  // 出手的人往前衝一下
+  lunge(u, magic) {
+    const n = this.nodes[u.id];
+    if (!n) return;
+    const c = magic ? 'cast' : 'lunge';
+    n.classList.remove('lunge', 'cast'); void n.offsetWidth; n.classList.add(c);
+    clearTimeout(n.lungeT); n.lungeT = setTimeout(() => n.classList.remove(c), 450);
+  }
+
+  // 被打中：近身是斬擊的線，術法是擴散的墨環
+  hitFx(t, magic, element, crit) {
+    const n = this.nodes[t.id];
+    if (!n) return;
+    if (t.side === 'ally') { n.classList.remove('hurt'); void n.offsetWidth; n.classList.add('hurt'); clearTimeout(n.hurtT); n.hurtT = setTimeout(() => n.classList.remove('hurt'), 420); return; }
+    const fx = el('span', { class: (magic ? 'hitfx ring' : 'hitfx slash') + (crit ? ' big' : '') + (element && element !== '無' ? ' el-' + element : ''), style: { '--r': Math.round(rnd(-35, 35)) + 'deg' } });
+    n.appendChild(fx);
+    setTimeout(() => fx.remove(), 520);
+  }
+
+  // 血條：直接改寬度（有動畫），扣掉的部分會留一道淡色，慢慢退掉
+  setBar(box, v, max, cls) {
+    const pct = Math.max(0, Math.min(100, max ? (v / max) * 100 : 0));
+    let bar = box.querySelector('.bar');
+    if (!bar) {
+      bar = el('div', { class: 'bar drain ' + cls }, el('b', { style: { width: pct + '%' } }), el('i', { style: { width: pct + '%' } }));
+      box.prepend(bar);
+      return;
+    }
+    const i = bar.querySelector('i'), b = bar.querySelector('b');
+    const old = parseFloat(i.style.width) || 0;
+    i.style.width = pct + '%';
+    if (pct >= old) { b.style.transition = 'none'; b.style.width = pct + '%'; void b.offsetWidth; b.style.transition = ''; }
+    else b.style.width = pct + '%';
+  }
+
+  setNum(box, text) {
+    let s = box.querySelector('span');
+    if (!s) box.appendChild(s = el('span'));
+    s.textContent = text;
+  }
+
+  // 行動順序：這一回合還沒行動的人，依序排在戰場上方
+  renderOrder(now) {
+    if (!this.orderEl) return;
+    const ui = this.ctx.ui;
+    this.orderEl.innerHTML = '';
+    const list = (this.turnOrder || []).filter(x => x.alive && (!x.acted || x === now));
+    for (const x of list.slice(0, 8)) {
+      const ck = x.side === 'ally' ? ui.charKey(x.key) : null;
+      const face = ck && ui.hasImg('char', ck) ? el('img', { src: ui.imgSrc('char', ck), alt: '' }) : el('span', {}, x.name.slice(0, 1));
+      this.orderEl.appendChild(el('div', { class: 'ord ' + (x.side === 'ally' ? 'o-ally' : 'o-foe e-' + x.el) + (x === now ? ' now' : ''), title: x.name }, face));
+    }
+  }
+
   renderAll() {
     const ui = this.ctx.ui;
     for (const f of this.foes) {
@@ -978,7 +1038,7 @@ export class Battle {
         n.classList.add('dead');
         if (f.sealed) n.classList.add('sealed');
       }
-      const bar = n.querySelector('.fc-bar'); bar.innerHTML = ''; bar.appendChild(ui.bar(f.hp, f.maxhp, 'hp'));
+      this.setBar(n.querySelector('.fc-bar'), f.hp, f.maxhp, 'hp');
       const elSpan = n.querySelector('.elem'); if (elSpan && elSpan.textContent !== f.el) { elSpan.textContent = f.el; elSpan.className = 'elem e-' + f.el; n.querySelector('.foe-blob').textContent = f.el; }
       n.classList.toggle('charging', !!f.charging && f.alive);
       if (f.fled && !n.classList.contains('dead')) n.classList.add('dead', 'fled');
@@ -988,16 +1048,16 @@ export class Battle {
     for (const gu of this.guests) {
       const n = this.nodes[gu.id];
       n.classList.toggle('dead', !gu.alive);
-      const bar = n.querySelector('.gu-bar'); bar.innerHTML = '';
-      bar.append(ui.bar(gu.hp, gu.maxhp, 'hp'), el('span', {}, `${gu.hp}/${gu.maxhp}`));
+      const bar = n.querySelector('.gu-bar');
+      this.setBar(bar, gu.hp, gu.maxhp, 'hp'); this.setNum(bar, `${gu.hp}/${gu.maxhp}`);
     }
     for (const a of this.allies) {
       const n = this.nodes[a.id];
       n.classList.toggle('dead', !a.alive);
-      const hp = n.querySelector('.ar-hp'); hp.innerHTML = '';
-      hp.append(ui.bar(a.hp, a.maxhp, 'hp'), el('span', {}, `${a.hp}/${a.maxhp}`));
-      const mp = n.querySelector('.ar-mp'); mp.innerHTML = '';
-      mp.append(ui.bar(a.mp, a.maxmp, 'mp'), el('span', {}, `${a.mp}/${a.maxmp}`));
+      const hp = n.querySelector('.ar-hp');
+      this.setBar(hp, a.hp, a.maxhp, 'hp'); this.setNum(hp, `${a.hp}/${a.maxhp}`);
+      const mp = n.querySelector('.ar-mp');
+      this.setBar(mp, a.mp, a.maxmp, 'mp'); this.setNum(mp, `${a.mp}/${a.maxmp}`);
       n.querySelector('.ar-status').textContent = Object.keys(a.status).join(' ') + (a.defending ? ' 防禦' : '');
     }
   }

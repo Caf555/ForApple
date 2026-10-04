@@ -750,3 +750,32 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .float.el-金 { color: #f4e3a6; } .float.el-木 { color: #9fe39a; } .float.el-水 { color: #9cc8ff; } .float.el-火 { color: #ffab8a; }
 .float.el-土 { color: #e6c38f; } .float.el-陰 { color: #c9b8ff; } .float.el-陽 { color: #fff1a8; }
 .float.crit.el-金, .float.crit.el-木, .float.crit.el-水, .float.crit.el-火, .float.crit.el-土, .float.crit.el-陰, .float.crit.el-陽 { text-shadow: 0 0 10px rgba(255, 207, 106, .9), 0 1px 3px #000; }
+
+/* ───────── 戰鬥：行動順序、血條緩扣、出手與命中 ───────── */
+.bar.drain { position: relative; }
+.bar.drain b { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: rgba(255, 236, 196, .75); transition: width .7s ease .35s; }
+.bar.drain i { position: relative; }
+.b-order { position: absolute; top: 8px; left: 8px; right: 8px; z-index: 101; display: flex; gap: 4px; justify-content: flex-start; pointer-events: none; }
+.b-order .ord { width: 24px; height: 24px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; background: rgba(12, 10, 8, .6); box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .25); opacity: .85; flex: none; transition: transform .2s; }
+.b-order .ord img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+.b-order .ord.o-ally { box-shadow: 0 0 0 1.5px #9fc8ff; }
+.b-order .ord.now { opacity: 1; transform: scale(1.18); box-shadow: 0 0 0 2px #ffd98a, 0 0 8px rgba(255, 217, 138, .8); }
+.b-order:empty { display: none; }
+.b-goal { top: 40px; }
+#battle .foe .foe-img, #battle .foe .foe-blob { transition: scale .16s ease, translate .16s ease; }
+#battle .foe.lunge .foe-img, #battle .foe.lunge .foe-blob { scale: 1.1; translate: 0 7%; }
+#battle .foe.cast .foe-img, #battle .foe.cast .foe-blob { scale: 1.06; }
+.ally-row { transition: translate .14s ease, box-shadow .2s; }
+.ally-row.lunge { translate: 0 -7px; }
+.ally-row.cast { box-shadow: 0 0 0 2px rgba(143, 184, 255, .8), 0 0 12px rgba(143, 184, 255, .6); }
+.ally-row.hurt { animation: hurt .4s ease; }
+@keyframes hurt { 25% { background: rgba(184, 67, 47, .35); translate: -3px 0; } 60% { translate: 3px 0; } }
+.hitfx { position: absolute; left: 50%; top: 42%; pointer-events: none; z-index: 3; --c: #fff; }
+.hitfx.el-金 { --c: #f4e3a6; } .hitfx.el-木 { --c: #9fe39a; } .hitfx.el-水 { --c: #9cc8ff; } .hitfx.el-火 { --c: #ffab8a; } .hitfx.el-土 { --c: #e6c38f; } .hitfx.el-陰 { --c: #c9b8ff; } .hitfx.el-陽 { --c: #fff1a8; }
+.hitfx.slash { width: 80%; height: 3px; margin-left: -40%; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--c) 30%, #fff 50%, var(--c) 70%, transparent); box-shadow: 0 0 8px var(--c); transform: rotate(var(--r)) scaleX(0); animation: slash .45s ease-out forwards; }
+.hitfx.slash.big { height: 5px; width: 100%; margin-left: -50%; }
+@keyframes slash { 0% { transform: rotate(var(--r)) scaleX(0); opacity: 1; } 45% { transform: rotate(var(--r)) scaleX(1); opacity: 1; } 100% { transform: rotate(var(--r)) scaleX(1.05); opacity: 0; } }
+.hitfx.ring { width: 60%; aspect-ratio: 1; margin-left: -30%; margin-top: -30%; border-radius: 50%; border: 3px solid var(--c); box-shadow: 0 0 14px var(--c), inset 0 0 10px var(--c); transform: scale(.3); animation: ring .5s ease-out forwards; }
+.hitfx.ring.big { border-width: 5px; }
+@keyframes ring { to { transform: scale(1.35); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hitfx, .ally-row.hurt { animation: none; display: none; } }
