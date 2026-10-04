@@ -1,5 +1,5 @@
 // 戰鬥引擎：回合制、五行、合擊、陣法、封靈
-import { ENEMIES, ENCOUNTERS, POOLS, SKILLS, COMBOS, FORMATIONS, STATUSES, ITEMS, CHARACTERS, OVERCOME, elementMult, enemyCodexId } from './data.js';
+import { ENEMIES, ENCOUNTERS, POOLS, SKILLS, COMBOS, FORMATIONS, STATUSES, ITEMS, CHARACTERS, OVERCOME, GENERATE, SUMMONS, ROLE_INFO, elementMult, enemyCodexId, enemyRole } from './data.js';
 import { memberStats, weaponElement, memberSkills, gainExp, bondLevel, displayName, addItem, addCodex } from './state.js';
 import { el } from './ui.js';
 
@@ -60,6 +60,9 @@ export class Battle {
     this.auto = !!this.autoPref;
     this.repeatRound = false;
     this.over = null;
+    this.chain = { el: null, n: 0, seq: -1 };
+    this.seq = 0;
+    this.shieldNoted = false;
 
     // 我方
     this.allies = g.party.map((n, i) => {
@@ -74,19 +77,26 @@ export class Battle {
     });
     if (this.allies.every(a => !a.alive)) this.allies.forEach(a => { a.hp = 1; a.alive = true; });
 
+    // 要保護的人（不能操作，倒下就輸）
+    this.guests = [];
+    if (this.enc.guest) {
+      const gd = this.enc.guest, n = this.allies.length || 1;
+      const avg = k => Math.round(this.allies.reduce((s, a) => s + a.st[k], 0) / n);
+      const hp = Math.round(avg('hp') * (gd.hp || 0.6));
+      this.guests.push({ side: 'ally', guest: true, id: 'g0', key: gd.name, name: gd.name, line: gd.line,
+        st: { atk: 0, def: avg('def'), mag: 0, res: avg('res'), spd: 0, luk: 0 },
+        maxhp: hp, hp, maxmp: 0, mp: 0, el: '無', atkEl: '無', status: {}, buffs: [], alive: true, defending: true });
+    }
+
     // 敵方
-    const counts = {};
-    this.foes = this.enc.enemies.map((k, i) => {
-      const d = ENEMIES[k];
-      counts[k] = (counts[k] || 0) + 1;
-      const dup = this.enc.enemies.filter(x => x === k).length > 1;
-      const hp = Math.round(d.hp * diff.hp * (this.enc.hpMult || 1));
-      return {
-        side: 'foe', id: 'f' + i, key: k, name: k + (dup ? ' ' + '甲乙丙丁'[counts[k] - 1] : ''), def: d,
-        st: { atk: Math.round(d.atk * diff.pow), def: d.def, mag: Math.round(d.mag * diff.pow), res: d.res, spd: d.spd, luk: d.luk },
-        maxhp: hp, hp, maxmp: 0, mp: 0, el: d.element, atkEl: d.element, status: {}, buffs: [], alive: true,
-      };
-    });
+    this.diff = diff;
+    this.foes = [];
+    this.enc.enemies.forEach(k => this.makeFoe(k));
+    this.foes.forEach(f => { if (this.enc.enemies.filter(x => x === f.key).length < 2) f.name = f.key; });
+    if (this.enc.goal === 'boss') {
+      const rw = { 首領: 3, 精英: 2, 一般: 1 };
+      this.goalFoe = [...this.foes].sort((a, b) => rw[b.def.rank] - rw[a.def.rank])[0];
+    }
 
     this.render();
     this.root.classList.add('open');
@@ -111,6 +121,15 @@ export class Battle {
     }
 
     this.log(this.enc.boss ? '強大的氣息逼近！' : '妖物出現了！');
+    if (this.enc.survive) this.log(`目標：撐過 ${this.enc.survive} 回合。不一定要打倒它。`);
+    if (this.guests.length) this.log(`目標：保護${this.guests[0].name}。${this.guests[0].name}倒下的話就輸了。`);
+    if (this.goalFoe) this.log(`目標：打倒「${this.goalFoe.name}」。它倒下，其他的影子就會散去。`);
+    for (const r of new Set(this.foes.map(f => f.role).filter(Boolean))) {
+      if (g.flags['教學.分工.' + r]) continue;
+      g.flags['教學.分工.' + r] = 1;
+      const who = this.foes.find(f => f.role === r);
+      this.log(`（「${r}」${who.name}：${ROLE_INFO[r]}）`);
+    }
     if (this.enc.boss) { this.ctx.audio.sfx('boss'); this.quake(); this.ctx.ui.vibrate(40); }
 
     while (!this.over) {
@@ -121,13 +140,28 @@ export class Battle {
       units.forEach(u => { u.order = this.stat(u, 'spd') * rnd(0.9, 1.1); u.acted = false; });
       if (this.round === 1 && form.firstStrike) units.forEach(u => { if (u.side === 'ally') u.order += 1000; });
       units.sort((a, b) => b.order - a.order);
+      this.turnOrder = units;
       for (const u of units) {
         if (this.over) break;
         if (!u.alive || u.acted) continue;
+        this.renderOrder(u);
         await this.takeTurn(u);
         u.acted = true;
         this.checkEnd();
       }
+      if (!this.over && this.guests.some(x => x.alive)) {
+        const gu = this.guests[0];
+        if (gu.line && this.round % 2 === 1) this.log(gu.line);
+      }
+      if (!this.over && this.enc.survive && this.round >= this.enc.survive) {
+        this.log(this.enc.surviveLine || '撐住了！');
+        this.foes.forEach(f => { if (f.alive) { f.alive = false; f.fled = true; } });
+        this.renderAll();
+        this.ctx.audio.sfx('good');
+        await this.pause(1.2);
+        this.over = 'win';
+      }
+      this.renderRound();
     }
 
     const result = this.over;
@@ -147,9 +181,38 @@ export class Battle {
   }
 
   checkEnd() {
+    if (this.over) return;
+    if (this.goalFoe && !this.goalFoe.alive && this.foes.some(f => f.alive)) {
+      this.foes.forEach(f => { if (f.alive) { f.alive = false; f.fled = true; } });
+      this.log('其他的影子，跟著散去了。');
+      this.renderAll();
+    }
     if (this.foes.every(f => !f.alive)) this.over = 'win';
     else if (this.allies.every(a => !a.alive)) this.over = 'lose';
+    else if (this.guests.some(x => !x.alive)) { this.log(`${this.guests[0].name}倒下了……`); this.over = 'lose'; }
   }
+
+  makeFoe(k) {
+    const d = ENEMIES[k], diff = this.diff;
+    const same = this.foes.filter(f => f.key === k).length;
+    const hp = Math.round(d.hp * diff.hp * (this.enc.hpMult || 1));
+    const f = {
+      side: 'foe', id: 'f' + this.foes.length, key: k, name: k + ' ' + '甲乙丙丁戊己庚辛'[same % 8], def: d, role: enemyRole(k),
+      st: { atk: Math.round(d.atk * diff.pow), def: d.def, mag: Math.round(d.mag * diff.pow), res: d.res, spd: d.spd, luk: d.luk },
+      maxhp: hp, hp, maxmp: 0, mp: 0, el: d.element, atkEl: d.element, status: {}, buffs: [], alive: true,
+    };
+    this.foes.push(f);
+    return f;
+  }
+
+  // 敵人選目標：有要保護的人時，三成機會衝著他去
+  foeTarget() {
+    const gu = this.guests.find(x => x.alive);
+    if (gu && Math.random() < 0.35) return gu;
+    return pick(this.allies.filter(a => a.alive));
+  }
+
+  allyPool() { return this.allies.concat(this.guests); }
 
   async takeTurn(u) {
     // 回合開始：狀態
@@ -208,11 +271,21 @@ export class Battle {
     if (u.def.rank === '首領') {
       if (u.charging) {
         const c = u.charging; u.charging = null;
-        return { type: 'skill', skill: c.skill, target: pick(this.allies.filter(a => a.alive)), big: true };
+        return { type: 'skill', skill: c.skill, target: this.foeTarget(), big: true };
       }
       u.turns = (u.turns || 0) + 1;
       const big = this.bigSkill(u);
       if (big && u.turns % 3 === 2) { u.charging = { skill: big }; return { type: 'charge' }; }
+    }
+    // 召：每三個行動叫一次幫手（場上最多四個）
+    if (u.role === '召') {
+      u.calls = (u.calls || 0) + 1;
+      if (u.calls % 3 === 2 && this.foes.filter(f => f.alive).length < 4 && (u.summoned || 0) < 3) return { type: 'summon' };
+    }
+    // 補：同伴受傷時，先替同伴縫補
+    if (u.role === '補' && !u.status.定名) {
+      const hurt = this.foes.filter(f => f.alive && f.hp < f.maxhp * 0.6).sort((a, b) => a.hp / a.maxhp - b.hp / b.maxhp)[0];
+      if (hurt && Math.random() < 0.75) return { type: 'skill', skill: '互相縫補', target: hurt };
     }
     return this.rollFoeAct(u);
   }
@@ -234,8 +307,7 @@ export class Battle {
     if (name === '回聲' && u.hp > u.maxhp * 0.6) name = '攻擊';
     // 被「書名定形」寫下名字：不能回復、也不能強化自己
     if (u.status.定名 && SKILLS[name] && (SKILLS[name].type === 'heal' || SKILLS[name].type === 'buff')) name = '攻擊';
-    const alive = this.allies.filter(a => a.alive);
-    const target = pick(alive);
+    const target = this.foeTarget();
     if (name === '攻擊') return { type: 'attack', target };
     return { type: 'skill', skill: name, target };
   }
@@ -375,7 +447,7 @@ export class Battle {
   }
 
   pickTarget(u, side, cb, filter = x => x.alive, allowDead = false) {
-    const pool = side === 'foe' ? this.foes : this.allies;
+    const pool = side === 'foe' ? this.foes : this.allyPool();
     const valid = pool.filter(x => (allowDead || x.alive) && filter(x));
     if (!valid.length) { this.ctx.ui.toast('沒有可以選擇的目標'); return; }
     if (valid.length === 1 && side === 'foe') { cb(valid[0]); return; }
@@ -399,7 +471,19 @@ export class Battle {
   // ───────── 執行 ─────────
   async execute(u, act) {
     const g = this.g;
+    this.seq++;
     switch (act.type) {
+      case 'summon': {
+        const k = SUMMONS[u.key];
+        u.summoned = (u.summoned || 0) + 1;
+        const f = this.makeFoe(k);
+        this.log(`${u.name} 叫來了幫手——「${f.name}」！`);
+        this.addFoeNode(f);
+        this.flashScreen();
+        this.ctx.audio.sfx('charge');
+        await this.pause(1);
+        break;
+      }
       case 'attack': {
         let t = act.target && act.target.alive ? act.target : this.randomFoeOf(u);
         if (u.status.迷惘 && Math.random() < 0.5) {
@@ -407,6 +491,7 @@ export class Battle {
           this.log(`${u.name} 陷入迷惘，搞錯了方向！`);
         }
         this.log(`${u.name} 攻擊！`);
+        this.lunge(u);
         await this.pause(0.4);
         this.physHit(u, t, 1, u.atkEl);
         await this.pause();
@@ -421,6 +506,7 @@ export class Battle {
           this.quake(); this.ctx.ui.vibrate([30, 30, 60]); this.ctx.audio.sfx('boss');
           this.bigMult = 1.6;
         } else this.log(`${u.name} 使出「${act.skill}」！`);
+        if (['phy', 'mag'].includes(sk.type)) this.lunge(u, sk.type === 'mag');
         await this.pause(0.4);
         await this.applySkill(u, sk, act.target);
         this.bigMult = 1;
@@ -492,8 +578,8 @@ export class Battle {
   }
 
   randomFoeOf(u) {
-    const pool = (u.side === 'ally' ? this.foes : this.allies).filter(x => x.alive);
-    return pick(pool);
+    if (u.side === 'foe') return this.foeTarget();
+    return pick(this.foes.filter(x => x.alive));
   }
 
   // 曆輪：屬性隨回合轉動（第 1 回合用 cycle[0]，第 2 回合用 cycle[1]……）
@@ -505,8 +591,8 @@ export class Battle {
 
   async applySkill(u, sk, target, members) {
     const skEl = this.skillEl(sk);
-    const foesOf = u.side === 'ally' ? this.foes : this.allies;
-    const friendsOf = u.side === 'ally' ? this.allies : this.foes;
+    const foesOf = u.side === 'ally' ? this.foes : this.allyPool();
+    const friendsOf = u.side === 'ally' ? this.allyPool() : this.foes;
     let targets;
     switch (sk.target) {
       case 'enemy': targets = [target && target.alive ? target : this.randomFoeOf(u)]; break;
@@ -538,13 +624,13 @@ export class Battle {
           this.log(`${t.name} 身上的異常消失了。`);
           this.ctx.audio.sfx('heal');
         }
-        if (sk.buff) {
+        if (sk.buff && !t.guest) {
           t.buffs.push({ ...sk.buff });
           const up = sk.buff.mult > 1;
           this.float(t, (up ? '↑' : '↓') + ({ atk: '力', def: '守', res: '定', spd: '疾', mag: '神', acc: '準' }[sk.buff.stat] || ''), up ? 'buff' : 'debuff');
           if (sk.buff.stat === 'def' && !up) t.buffs.push({ stat: 'res', mult: sk.buff.mult, turns: sk.buff.turns });
         }
-        if (sk.status && t.alive && Math.random() < (sk.chance ?? 1) * (t.def && t.def.rank === '首領' ? 0.5 : 1)) {
+        if (sk.status && t.alive && !t.guest && Math.random() < (sk.chance ?? 1) * (t.def && t.def.rank === '首領' ? 0.5 : 1)) {
           t.status[sk.status] = STATUSES[sk.status].turns + 1;
           this.log(`${t.name} 陷入「${sk.status}」！`);
           this.float(t, sk.status, 'debuff');
@@ -569,6 +655,14 @@ export class Battle {
     if (Math.random() > hit) { this.log(`${t.name} 閃開了！`); this.float(t, '閃避', 'miss'); return; }
     let dmg = (this.stat(u, 'atk') * 2 - this.stat(t, 'def')) * power;
     this.finishHit(user, t, dmg, element, forceCrit);
+    // 反：被近身攻擊時，四成機會反擊
+    if (t.role === '反' && t.alive && user.side === 'ally' && user.alive && !this.countering && Math.random() < 0.4) {
+      this.countering = true;
+      this.log(`${t.name} 反擊！`);
+      this.float(t, '反擊', 'charge');
+      this.physHit(t, user, 0.6, t.atkEl);
+      this.countering = false;
+    }
   }
 
   magHit(u, t, mag, power, element) {
@@ -579,12 +673,37 @@ export class Battle {
   finishHit(u, t, dmg, element, forceCrit, magic) {
     const mult = elementMult(element, t.el);
     dmg *= mult * rnd(0.9, 1.1);
+    // 五行相生連鎖：木→火→土→金→水→木，照順序出招，傷害越疊越高
+    if (u.side === 'ally' && !u.guest) {
+      const c = this.chain;
+      if (c.seq !== this.seq) {
+        c.seq = this.seq;
+        if (GENERATE[element]) {
+          c.n = c.el && GENERATE[c.el] === element ? Math.min(c.n + 1, 5) : 1;
+          c.el = element;
+          if (c.n >= 2) {
+            this.log(`五行相生——${c.n} 連鎖！`);
+            this.float(t, `連鎖 ×${c.n}`, 'chain');
+            this.ctx.audio.sfx('good');
+            if (!this.g.flags['教學.連鎖']) { this.g.flags['教學.連鎖'] = 1; this.log('（木生火、火生土、土生金、金生水、水生木。照這個順序出招，傷害會越疊越高。）'); }
+          }
+        } else if (element && element !== '無') { c.n = 0; c.el = null; }
+        this.renderChain();
+      }
+      if (c.n >= 2 && c.el === element) dmg *= 1 + 0.12 * (c.n - 1);
+    }
+    // 盾：還有「盾」站著的時候，其他敵人受到的傷害減少
+    if (t.side === 'foe' && t.role !== '盾' && this.foes.some(f => f.alive && f.role === '盾')) {
+      dmg *= 0.6;
+      if (!this.shieldNoted) { this.shieldNoted = true; this.log(`（「盾」擋在前面，傷害減少了。先打倒「盾」吧。）`); }
+    }
     const crit = forceCrit || Math.random() < 0.05 + (this.stat(u, 'luk') || 0) / 2000;
     if (crit) { dmg *= 1.5; if (t.side === 'foe') this.ctx.ui.vibrate(35); }
     if (t.defending) dmg *= 0.5;
     if (this.bigMult && u.side === 'foe') dmg *= this.bigMult;
     dmg = Math.max(1, Math.round(dmg));
     this.damage(t, dmg);
+    this.hitFx(t, magic, element, crit);
     // 打斷蓄力：用它怕的屬性打中，或打出暴擊
     if (t.charging && t.alive && (mult >= 1.3 || crit)) {
       const sk = t.charging.skill;
@@ -599,11 +718,11 @@ export class Battle {
     else if (mult < 0.75) note = '（被剋……）';
     else if (mult < 1) note = '（同屬性）';
     this.log(`${crit ? '暴擊！' : ''}${t.name} 受到 ${dmg} 點傷害${note}`);
-    this.float(t, String(dmg), crit ? 'crit' : 'dmg');
+    this.float(t, String(dmg), (crit ? 'crit' : 'dmg') + (element && element !== '無' ? ' el-' + element : ''));
     this.ctx.audio.sfx(crit ? 'crit' : magic ? 'magic' : 'hit');
     if (element && element !== '無') this.ctx.audio.sfx('el-' + element);
     if (this.interrupted && this.interrupted.length) { this.interrupted.forEach(m => this.log(m)); this.interrupted = []; this.ctx.audio.sfx('break'); this.ctx.ui.vibrate([20, 30, 20]); }
-    if (!t.alive) { this.log(`${t.name} ${t.side === 'foe' ? '潰散了。' : '倒下了！'}`); if (t.side === 'foe') this.ctx.audio.sfx('down'); }
+    if (!t.alive) { this.log(`${t.name} ${t.side === 'foe' ? '潰散了。' : '倒下了！'}`); if (t.side === 'foe') this.ctx.audio.sfx('down'); this.checkEnd(); }
   }
 
   damage(t, n) {
@@ -741,7 +860,8 @@ export class Battle {
   foeInfo(f) {
     const d = f.def;
     return { title: f.name, sub: `${d.rank}・${d.element}屬性・弱點：${this.weakness(d.element)}`,
-      text: d.desc, lines: [`體 ${f.hp} / ${f.maxhp}` + (Object.keys(f.status).length ? '　狀態：' + Object.keys(f.status).join('、') : '')] };
+      text: d.desc, lines: [`體 ${f.hp} / ${f.maxhp}` + (Object.keys(f.status).length ? '　狀態：' + Object.keys(f.status).join('、') : ''),
+        ...(f.role ? [`「${f.role}」：${ROLE_INFO[f.role]}`] : [])] };
   }
 
   showFoeInfo(f) {
@@ -758,6 +878,7 @@ export class Battle {
     const top = el('div', { class: 'b-top' },
       this.roundEl = el('span', { class: 'b-round' }),
       el('span', { class: 'b-form' }, this.g.formation),
+      this.chainEl = el('span', { class: 'b-chain' }),
       el('div', { class: 'b-toggles' },
         this.autoBtn = el('button', { class: 'chip' + (this.auto ? ' on' : ''), onclick: () => { this.auto = !this.auto; this.autoPref = this.auto; this.autoBtn.classList.toggle('on', this.auto); if (this.auto && this.resolveAction) { const u = this.allies.find(a => a.hl); if (u) this.done(this.allyAI(u)); } } }, '自動'),
         this.speedBtn = el('button', { class: 'chip', onclick: () => { const s = this.ctx.settings; s.battleSpeed = s.battleSpeed % 3 + 1; this.ctx.saveSettings(); this.speedBtn.textContent = ['1×', '2×', '4×'][s.battleSpeed - 1]; } }, ['1×', '2×', '4×'][this.ctx.settings.battleSpeed - 1])));
@@ -766,29 +887,17 @@ export class Battle {
     const stage = el('div', { class: 'b-stage' + (this.enc.boss ? ' boss' : '') });
     const bg = this.g.loc && this.g.loc.bg;
     if (ui.hasImg('bg', bg)) stage.style.setProperty('--stage-img', `url("${new URL(ui.imgSrc('bg', bg, 800), location.href).href}")`);
-    const rankW = { 首領: 3, 精英: 2, 一般: 1 };
-    const order = this.foes.map((f, i) => i).sort((a, b) => (rankW[this.foes[b].def.rank] - rankW[this.foes[a].def.rank]) || a - b);
-    const slots = Battle.SLOTS[Math.min(4, this.foes.length)] || Battle.SLOTS[4];
-    // 三隻的時候，把最強的放在後排中間；其餘照原本順序左右排開
-    const place = {};
-    order.forEach((fi, k) => { place[fi] = slots[k] || slots[slots.length - 1]; });
-    this.foes.forEach((f, i) => {
-      let [x, y, w] = place[i];
-      if (f.def.rank === '首領') w = Math.min(this.foes.length === 1 ? 74 : 48, w * 1.3);
-      else if (f.def.rank === '精英') w *= 1.12;
-      const hasArt = ui.hasImg('enemy', f.key);
-      const n = el('div', { class: 'foe rank-' + f.def.rank + (hasArt ? '' : ' no-art'), style: { left: x + '%', top: y + '%', '--w': w, zIndex: String(Math.round(y)) } },
-        hasArt ? el('img', { class: 'foe-img', src: ui.imgSrc('enemy', f.key), alt: '', decoding: 'async', onerror: e => { e.target.remove(); n.classList.add('no-art'); } })
-          : null,
-        el('div', { class: 'foe-blob' }, f.el),
-        el('div', { class: 'foe-tag' },
-          el('span', { class: 'elem e-' + f.el }, f.el),
-          el('div', { class: 'foe-tagr' }, el('div', { class: 'fc-name' }, f.name), el('div', { class: 'fc-bar' }))),
-        el('div', { class: 'fc-status' }));
-      n.onclick = () => this.showFoeInfo(f);
-      this.nodes[f.id] = n;
+    this.stage = stage;
+    stage.appendChild(this.orderEl = el('div', { class: 'b-order' }));
+    this.foes.forEach(f => stage.appendChild(this.foeNode(f)));
+    this.layoutFoes();
+    for (const gu of this.guests) {
+      const n = el('div', { class: 'guest' }, el('div', { class: 'gu-name' }, '保護　' + gu.name), el('div', { class: 'gu-bar' }));
+      this.nodes[gu.id] = n;
       stage.appendChild(n);
-    });
+    }
+    if (this.enc.survive || this.guests.length || this.goalFoe) stage.appendChild(this.goalEl = el('div', { class: 'b-goal' }));
+    else this.goalEl = null;
     this.logEl = el('div', { class: 'b-log', onclick: () => this.logEl.classList.toggle('full') });
     stage.appendChild(this.logEl);
 
@@ -808,7 +917,118 @@ export class Battle {
     this.renderAll();
   }
 
-  renderRound() { if (this.roundEl) this.roundEl.textContent = `第 ${this.round} 回合`; }
+  foeNode(f) {
+    const ui = this.ctx.ui;
+    const hasArt = ui.hasImg('enemy', f.key);
+    const n = el('div', { class: 'foe rank-' + f.def.rank + (hasArt ? '' : ' no-art') },
+      hasArt ? el('img', { class: 'foe-img', src: ui.imgSrc('enemy', f.key), alt: '', decoding: 'async', onerror: e => { e.target.remove(); n.classList.add('no-art'); } })
+        : null,
+      el('div', { class: 'foe-blob' }, f.el),
+      el('div', { class: 'foe-tag' },
+        el('span', { class: 'elem e-' + f.el }, f.el),
+        f.role ? el('span', { class: 'role r-' + f.role, title: ROLE_INFO[f.role] }, f.role) : null,
+        el('div', { class: 'foe-tagr' }, el('div', { class: 'fc-name' }, f.name), el('div', { class: 'fc-bar' }))),
+      el('div', { class: 'fc-status' }));
+    n.onclick = () => this.showFoeInfo(f);
+    this.nodes[f.id] = n;
+    return n;
+  }
+
+  // 依「還站著的敵人」重新排位置（叫來幫手時也會用到）
+  layoutFoes() {
+    const rankW = { 首領: 3, 精英: 2, 一般: 1 };
+    const live = this.foes.filter(f => f.alive);
+    const order = [...live].sort((a, b) => (rankW[b.def.rank] - rankW[a.def.rank]) || this.foes.indexOf(a) - this.foes.indexOf(b));
+    const slots = Battle.SLOTS[Math.min(4, Math.max(1, live.length))];
+    order.forEach((f, k) => {
+      let [x, y, w] = slots[k] || slots[slots.length - 1];
+      if (f.def.rank === '首領') w = Math.min(live.length === 1 ? 74 : 48, w * 1.3);
+      else if (f.def.rank === '精英') w *= 1.12;
+      const n = this.nodes[f.id];
+      Object.assign(n.style, { left: x + '%', top: y + '%', zIndex: String(Math.round(y)) });
+      n.style.setProperty('--w', w);
+    });
+  }
+
+  addFoeNode(f) {
+    for (const d of this.foes) if (!d.alive && this.nodes[d.id]) this.nodes[d.id].style.display = 'none';
+    const n = this.foeNode(f);
+    n.classList.add('summoned');
+    this.stage.insertBefore(n, this.logEl);
+    this.layoutFoes();
+    this.renderAll();
+  }
+
+  renderChain() {
+    if (!this.chainEl) return;
+    const c = this.chain;
+    this.chainEl.textContent = c.n >= 1 && c.el ? `${c.el}${c.n >= 2 ? '×' + c.n : ''} → ${GENERATE[c.el]}` : '';
+    this.chainEl.className = 'b-chain' + (c.n >= 2 ? ' hot' : '') + (c.el ? ' e-' + GENERATE[c.el] : '');
+    this.chainEl.title = '五行相生：下一招用這個屬性，就能接上連鎖';
+  }
+
+  renderRound() {
+    if (this.roundEl) this.roundEl.textContent = `第 ${this.round} 回合`;
+    if (this.goalEl) {
+      const e = this.enc;
+      this.goalEl.textContent = e.survive ? `撐過 ${e.survive} 回合（還剩 ${Math.max(0, e.survive - this.round + 1)}）`
+        : this.guests.length ? `保護${this.guests[0].name}` : `打倒「${this.goalFoe.name}」`;
+    }
+  }
+
+  // 出手的人往前衝一下
+  lunge(u, magic) {
+    const n = this.nodes[u.id];
+    if (!n) return;
+    const c = magic ? 'cast' : 'lunge';
+    n.classList.remove('lunge', 'cast'); void n.offsetWidth; n.classList.add(c);
+    clearTimeout(n.lungeT); n.lungeT = setTimeout(() => n.classList.remove(c), 450);
+  }
+
+  // 被打中：近身是斬擊的線，術法是擴散的墨環
+  hitFx(t, magic, element, crit) {
+    const n = this.nodes[t.id];
+    if (!n) return;
+    if (t.side === 'ally') { n.classList.remove('hurt'); void n.offsetWidth; n.classList.add('hurt'); clearTimeout(n.hurtT); n.hurtT = setTimeout(() => n.classList.remove('hurt'), 420); return; }
+    const fx = el('span', { class: (magic ? 'hitfx ring' : 'hitfx slash') + (crit ? ' big' : '') + (element && element !== '無' ? ' el-' + element : ''), style: { '--r': Math.round(rnd(-35, 35)) + 'deg' } });
+    n.appendChild(fx);
+    setTimeout(() => fx.remove(), 520);
+  }
+
+  // 血條：直接改寬度（有動畫），扣掉的部分會留一道淡色，慢慢退掉
+  setBar(box, v, max, cls) {
+    const pct = Math.max(0, Math.min(100, max ? (v / max) * 100 : 0));
+    let bar = box.querySelector('.bar');
+    if (!bar) {
+      bar = el('div', { class: 'bar drain ' + cls }, el('b', { style: { width: pct + '%' } }), el('i', { style: { width: pct + '%' } }));
+      box.prepend(bar);
+      return;
+    }
+    const i = bar.querySelector('i'), b = bar.querySelector('b');
+    const old = parseFloat(i.style.width) || 0;
+    i.style.width = pct + '%';
+    if (pct >= old) { b.style.transition = 'none'; b.style.width = pct + '%'; void b.offsetWidth; b.style.transition = ''; }
+    else b.style.width = pct + '%';
+  }
+
+  setNum(box, text) {
+    let s = box.querySelector('span');
+    if (!s) box.appendChild(s = el('span'));
+    s.textContent = text;
+  }
+
+  // 行動順序：這一回合還沒行動的人，依序排在戰場上方
+  renderOrder(now) {
+    if (!this.orderEl) return;
+    const ui = this.ctx.ui;
+    this.orderEl.innerHTML = '';
+    const list = (this.turnOrder || []).filter(x => x.alive && (!x.acted || x === now));
+    for (const x of list.slice(0, 8)) {
+      const ck = x.side === 'ally' ? ui.charKey(x.key) : null;
+      const face = ck && ui.hasImg('char', ck) ? el('img', { src: ui.imgSrc('char', ck), alt: '' }) : el('span', {}, x.name.slice(0, 1));
+      this.orderEl.appendChild(el('div', { class: 'ord ' + (x.side === 'ally' ? 'o-ally' : 'o-foe e-' + x.el) + (x === now ? ' now' : ''), title: x.name }, face));
+    }
+  }
 
   renderAll() {
     const ui = this.ctx.ui;
@@ -818,18 +1038,26 @@ export class Battle {
         n.classList.add('dead');
         if (f.sealed) n.classList.add('sealed');
       }
-      const bar = n.querySelector('.fc-bar'); bar.innerHTML = ''; bar.appendChild(ui.bar(f.hp, f.maxhp, 'hp'));
+      this.setBar(n.querySelector('.fc-bar'), f.hp, f.maxhp, 'hp');
       const elSpan = n.querySelector('.elem'); if (elSpan && elSpan.textContent !== f.el) { elSpan.textContent = f.el; elSpan.className = 'elem e-' + f.el; n.querySelector('.foe-blob').textContent = f.el; }
       n.classList.toggle('charging', !!f.charging && f.alive);
-      n.querySelector('.fc-status').textContent = Object.keys(f.status).join(' ') + (f.buffs.length ? ' ' + f.buffs.map(b => (b.mult > 1 ? '↑' : '↓')).join('') : '');
+      if (f.fled && !n.classList.contains('dead')) n.classList.add('dead', 'fled');
+      const guarded = f.alive && f.role !== '盾' && this.foes.some(x => x.alive && x.role === '盾');
+      n.querySelector('.fc-status').textContent = (guarded ? '護 ' : '') + Object.keys(f.status).join(' ') + (f.buffs.length ? ' ' + f.buffs.map(b => (b.mult > 1 ? '↑' : '↓')).join('') : '');
+    }
+    for (const gu of this.guests) {
+      const n = this.nodes[gu.id];
+      n.classList.toggle('dead', !gu.alive);
+      const bar = n.querySelector('.gu-bar');
+      this.setBar(bar, gu.hp, gu.maxhp, 'hp'); this.setNum(bar, `${gu.hp}/${gu.maxhp}`);
     }
     for (const a of this.allies) {
       const n = this.nodes[a.id];
       n.classList.toggle('dead', !a.alive);
-      const hp = n.querySelector('.ar-hp'); hp.innerHTML = '';
-      hp.append(ui.bar(a.hp, a.maxhp, 'hp'), el('span', {}, `${a.hp}/${a.maxhp}`));
-      const mp = n.querySelector('.ar-mp'); mp.innerHTML = '';
-      mp.append(ui.bar(a.mp, a.maxmp, 'mp'), el('span', {}, `${a.mp}/${a.maxmp}`));
+      const hp = n.querySelector('.ar-hp');
+      this.setBar(hp, a.hp, a.maxhp, 'hp'); this.setNum(hp, `${a.hp}/${a.maxhp}`);
+      const mp = n.querySelector('.ar-mp');
+      this.setBar(mp, a.mp, a.maxmp, 'mp'); this.setNum(mp, `${a.mp}/${a.maxmp}`);
       n.querySelector('.ar-status').textContent = Object.keys(a.status).join(' ') + (a.defending ? ' 防禦' : '');
     }
   }

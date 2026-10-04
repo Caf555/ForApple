@@ -78,6 +78,14 @@ export class UI {
     return who;
   }
 
+  // 帶表情的頭像：「蘅_笑」→ 沒有的話用平常那一張
+  faceKey(who, face) {
+    const key = this.charKey(who);
+    if (!face) return key;
+    for (const k of [key + '_' + face, who + '_' + face]) if (this.hasImg('char', k)) return k;
+    return key;
+  }
+
   // 角色資料（給頭像放大時顯示）
   charInfo(who, key) {
     const c = CHARACTERS[who];
@@ -196,6 +204,10 @@ export class UI {
   setAmbient(theme) {
     const box = this.ambientEl;
     if (!box) return;
+    // 環境聲跟著天氣與主題走（和畫面上的粒子是兩個設定）
+    const sk = this.weather != null ? this.weather : ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', abyss: 'paper' }[theme] || '');
+    const snd = { rain: 'rain', snow: 'wind', sand: 'wind', ember: 'fire', petal: 'birds', leaf: 'birds', paper: 'paper', dust: theme === 'dayuan' || theme === 'fifties' ? 'cicada' : '' }[sk] || '';
+    if (this.ctx.audio) this.ctx.audio.ambience(theme === 'trench' && snd !== 'birds' ? (snd ? snd + '+guns' : 'guns') : snd);
     const kind = !this.settings.ambient ? '' : this.weather != null ? this.weather : ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', sky: 'glow', abyss: 'paper', hub: 'ink', modern: 'glow' }[theme] || '');
     if (box.dataset.kind === kind) return;
     box.dataset.kind = kind;
@@ -227,6 +239,26 @@ export class UI {
     setTimeout(() => a.classList.remove('quake'), 520);
     this.vibrate(strong ? [40, 40, 80] : 30);
   }
+  // 寫字：一個字一個字，像毛筆寫出來一樣（光＝用光燒出來；印＝印刷的字）
+  writeWords(text, style = '', auto = false) {
+    return new Promise(resolve => {
+      const chars = Array.from(text);
+      const box = el('div', { class: 'ink-write ' + (style === '光' ? 'light' : style === '印' ? 'print' : 'brush') + (chars.length > 4 ? ' long' : '') });
+      const row = el('div', { class: 'iw-row' });
+      const per = Math.min(style === '印' ? 160 : style === '光' ? 520 : 680, Math.round(2800 / chars.length));
+      chars.forEach((c, i) => row.appendChild(el('span', { class: 'iw-ch', style: { animationDelay: (300 + i * per) + 'ms', animationDuration: (per + 260) + 'ms' } }, c)));
+      const tip = el('div', { class: 'iw-tip' }, '點一下繼續');
+      box.append(row, tip);
+      document.body.appendChild(box);
+      const total = 300 + chars.length * per + 400;
+      chars.forEach((c, i) => setTimeout(() => this.ctx && this.ctx.audio && this.ctx.audio.sfx(style === '光' ? 'good' : style === '印' ? 'tick' : 'ink'), 300 + i * per));
+      let ready = false;
+      const done = () => { if (!ready) return; box.classList.add('out'); setTimeout(() => { box.remove(); resolve(); }, 450); };
+      setTimeout(() => { ready = true; box.classList.add('ready'); if (auto) setTimeout(done, 1400); }, total);
+      box.addEventListener('click', () => { if (!ready) { box.classList.add('skip'); ready = true; box.classList.add('ready'); return; } done(); });
+    });
+  }
+
   fx(kind, ms) {
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return Promise.resolve();
     const o = $('fx');
@@ -235,11 +267,11 @@ export class UI {
   }
 
   // ───────── 對話半身像 ─────────
-  showPortrait(who) {
+  showPortrait(who, face) {
     const p = this.portrait;
     if (!p) return;
     if (!this.settings.portrait || !who) { p.classList.add('dim'); if (!this.settings.portrait) p.classList.remove('on'); return; }
-    const key = this.charKey(who);
+    const key = this.faceKey(who, face);
     if (!this.hasImg('char', key)) { p.classList.remove('on'); return; }
     p.classList.remove('dim');
     if (p.dataset.key === key && p.classList.contains('on')) return;
@@ -279,12 +311,12 @@ export class UI {
     this.story.appendChild(p.wrap);
   }
 
-  makeLine({ who, text, kind }) {
+  makeLine({ who, face, text, kind }) {
     const wrap = el('div', { class: 'line' + (who ? ' say' : ' narr') + (kind ? ' ' + kind : '') });
     let name = null;
     if (who) {
       const shown = displayName(this.ctx.g, who);
-      const key = this.charKey(who);
+      const key = this.faceKey(who, face);
       name = el('div', { class: 'who', 'data-who': who },
         this.hasImg('char', key) ? el('img', { class: 'avatar', src: this.imgSrc('char', key), alt: '', decoding: 'async', onerror: e => e.target.remove(),
           onclick: e => { e.stopPropagation(); this.viewImage('char', key, this.charInfo(who, key), () => this.continueStory()); } }) : null,
@@ -316,7 +348,7 @@ export class UI {
     }
     if (!this.pageStart) this.pageStart = wrap;
     this.scrollDown();
-    this.showPortrait(line.who);
+    this.showPortrait(line.who, line.face);
     this.ctx.audio.speak(text, line.who);
     const ms = this.skipPage ? 0 : (SPEEDS[this.settings.speed] ?? 18);
     return new Promise(resolve => {
@@ -407,10 +439,31 @@ export class UI {
   }
 
   // 選項：[{label, enabled, lock}] → Promise<index>
-  showChoices(list) {
+  showChoices(list, timer) {
     this.choices.innerHTML = '';
     this.pageStart = null;
     return new Promise(resolve => {
+      let iv = null;
+      const btns = [];
+      if (timer) {
+        // 限時抉擇：時間到了，就替你選「遲疑」的那一個
+        const bar = el('div', { class: 'ch-timer' }, el('i'), el('span'));
+        this.choices.appendChild(bar);
+        const end = performance.now() + timer.sec * 1000;
+        let lastSec = timer.sec + 1;
+        const tick = () => {
+          const left = Math.max(0, end - performance.now());
+          bar.querySelector('i').style.width = (left / (timer.sec * 1000) * 100) + '%';
+          const s = Math.ceil(left / 1000);
+          if (s !== lastSec) { lastSec = s; bar.querySelector('span').textContent = `${s} 秒`; if (s <= 5 && s > 0) this.ctx.audio.sfx('tick'); bar.classList.toggle('hurry', s <= 5); }
+          if (left <= 0) {
+            clearInterval(iv);
+            this.story.appendChild(el('div', { class: 'line note' }, '你遲疑了。'));
+            const b = btns[timer.def]; if (b) b.click();
+          }
+        };
+        iv = setInterval(tick, 100); tick();
+      }
       list.forEach((c, i) => {
         const b = el('button', { class: 'choice' + (c.enabled ? '' : ' locked') + (c.seen ? ' seen' : ''), disabled: !c.enabled },
           el('span', { class: 'mark' }, c.enabled ? '▸' : '🔒'),
@@ -418,6 +471,7 @@ export class UI {
           c.lock ? el('small', {}, c.lock) : null);
         b.addEventListener('click', () => {
           if (!c.enabled) return;
+          clearInterval(iv);
           this.ctx.audio.sfx('tap');
           this.choices.innerHTML = '';
           const echo = el('div', { class: 'line picked' }, '▸ ' + this.fmt(c.label));
@@ -425,6 +479,7 @@ export class UI {
           resolve(i);
         });
         this.choices.appendChild(b);
+        btns.push(b);
       });
       this.scrollDown();
     });

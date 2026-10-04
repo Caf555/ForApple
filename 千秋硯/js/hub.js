@@ -1,6 +1,6 @@
 // 時之書齋（據點）與各種選單
 import { VOLUMES, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
-import { histDone, histTotal, histRate, goodEnds, wavers, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
+import { histDone, histTotal, histRate, goodEnds, wavers, collection, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
 import { el } from './ui.js';
 
 const CATS = ['人物誌', '地理誌', '器物誌', '典故', '妖物誌'];
@@ -55,10 +55,21 @@ export class Hub {
         const r = g.flags[v + '.無名客'];
         const mark = !done ? '—' : r === '善' ? '善終' : r === '苦' ? '遺憾' : '—';
         const wav = g.flags[v + '.書記動搖'] ? '書記動搖' : '';
-        tbl.appendChild(el('div', { class: 'jr-row' + (r === '善' ? ' good' : r === '苦' ? ' bad' : '') },
-          el('span', { class: 'jr-vol' }, vid), el('span', { class: 'jr-who' }, done ? who : '？'), el('span', { class: 'jr-res' }, mark), el('small', {}, wav)));
+        const n = (g.choices && g.choices[vid] || []).length;
+        tbl.appendChild(el(n ? 'button' : 'div', { class: 'jr-row' + (r === '善' ? ' good' : r === '苦' ? ' bad' : '') + (n ? ' tap' : ''), onclick: n ? () => this.choiceSheet(vid) : null },
+          el('span', { class: 'jr-vol' }, vid), el('span', { class: 'jr-who' }, done ? who : '？'), el('span', { class: 'jr-res' }, mark), el('small', {}, wav + (n ? (wav ? '・' : '') + `${n} 個選擇 ›` : ''))));
       }
       body.appendChild(tbl);
+      const cl = collection();
+      const ends = [['一', '記得一切'], ['二', '溫柔的遺忘'], ['三', '補史人的代價'], ['真', '千秋']];
+      const seenN = ends.filter(([k]) => cl.結局 && cl.結局[k]).length;
+      const namelessN = VOLS.reduce((s, [, v]) => s + ['善', '苦'].filter(x => cl.無名客 && cl.無名客[v.slice(1) + '.' + x]).length, 0);
+      body.appendChild(el('h3', { class: 'jr-h' }, '收藏'));
+      body.appendChild(el('div', { class: 'jr-ends' }, ...ends.map(([k, name]) => {
+        const seen = cl.結局 && cl.結局[k];
+        return el('div', { class: 'jr-end' + (seen ? ' seen' : '') }, el('b', {}, k === '真' ? '真結局' : `結局${k}`), el('span', {}, seen ? `〈${name}〉` : '？？？'));
+      })));
+      body.appendChild(el('p', { class: 'muted small' }, `看過的結局 ${seenN} / 4・無名客的結局 ${namelessN} / 20（每一卷都有兩種）。收藏記在這台裝置上，換存檔也會保留。`));
       if (finale) {
         const ok = b => b ? '✓' : '　';
         body.appendChild(el('h3', { class: 'jr-h' }, '終卷'));
@@ -78,33 +89,105 @@ export class Hub {
     });
   }
 
+  // 這一卷做過的選擇
+  choiceSheet(vid) {
+    const list = (this.g.choices && this.g.choices[vid]) || [];
+    this.ui.sheet(`${vid}・你的選擇`, body => {
+      if (!list.length) body.appendChild(el('p', { class: 'muted' }, '這一卷還沒有記下的選擇。'));
+      body.appendChild(el('ol', { class: 'jr-choices' }, ...list.map(x => el('li', {}, x.c))));
+      body.appendChild(el('p', { class: 'muted small' }, '只記下會影響後面劇情的選擇。想換一個選擇的話，可以從書架「重玩」那一回。'));
+    });
+  }
+
   availableTalks() {
     const g = this.g;
     return TALKS.filter(t => !g.flags['夜話.' + t.id] && t.need.every(([k, a, b]) => k === '羈絆' ? bondLevel(g.bonds[a] || 0) >= b : !!g.flags[a]));
   }
 
+  // ───────── 書架：三千年的時間軸 ─────────
   shelf() {
     const g = this.g;
-    const api = this.ui.sheet('書架', body => {
-      body.appendChild(el('p', { class: 'muted' }, '每一本書，都是一個時代。'));
-      for (const v of VOLUMES) {
+    if (!this.shelfMode) this.shelfMode = 'time';
+    const api = this.ui.sheet('書架', (body, self) => {
+      body.innerHTML = '';
+      const doneN = VOLUMES.filter(v => g.flags['卷完.' + v.id]).length;
+      body.appendChild(el('div', { class: 'tl-head' },
+        el('div', {}, el('b', {}, `走過 ${doneN} / ${VOLUMES.length} 個時代`), this.ui.bar(doneN, VOLUMES.length, 'exp')),
+        el('div', { class: 'chips' }, ...[['time', '依年代'], ['vol', '依卷數']].map(([k, l]) =>
+          el('button', { class: 'chip' + (this.shelfMode === k ? ' on' : ''), onclick: () => { this.shelfMode = k; self.rebuild(); } }, l)))));
+      const list = this.shelfMode === 'time' ? [...VOLUMES].sort((a, b) => a.year - b.year) : VOLUMES;
+      const line = el('div', { class: 'timeline' + (this.shelfMode === 'time' ? '' : ' plain') });
+      for (const v of list) {
         const resume = g.resume[v.id];
         const done = g.flags['卷完.' + v.id];
-        const started = !!resume || done;
-        const card = el('div', { class: 'vol' + (v.ready && (!v.need || g.flags[v.need]) ? '' : ' locked') },
+        const open = v.ready && (!v.need || g.flags[v.need]);
+        const here = g.lastVol === v.id && !done;
+        const card = el('div', { class: 'vol' + (open ? '' : ' locked') },
           el('div', { class: 'vol-name' }, `${v.id}　${v.name}`),
           el('div', { class: 'vol-era' }, v.era),
           v.desc ? el('p', {}, v.desc) : null);
         if (v.ready && v.need && !g.flags[v.need]) card.appendChild(el('p', { class: 'muted' }, v.needText || '尚未開放'));
         else if (v.ready) {
-          if (resume && this.ctx.scenes[resume]) card.appendChild(el('button', { class: 'btn primary', onclick: () => { api.close(); this.ctx.enterVolume(v, resume); } }, '繼續'));
+          const btns = el('div', { class: 'row-btns' });
+          if (resume && this.ctx.scenes[resume]) btns.appendChild(el('button', { class: 'btn primary', onclick: () => { api.close(); this.ctx.enterVolume(v, resume); } }, '繼續'));
           else if (resume) card.appendChild(el('p', { class: 'muted' }, '下一回製作中，敬請期待。'));
-          else if (!started) card.appendChild(el('button', { class: 'btn primary', onclick: () => { api.close(); this.ctx.enterVolume(v, v.start); } }, '進入'));
-          if (done) card.appendChild(el('p', { class: 'muted' }, '已完成'));
+          else if (!resume && !done) btns.appendChild(el('button', { class: 'btn primary', onclick: () => { api.close(); this.ctx.enterVolume(v, v.start); } }, '進入'));
+          if (done) btns.appendChild(el('button', { class: 'btn', onclick: () => this.replay(v, api) }, '重玩某一回'));
+          if (btns.children.length) card.appendChild(btns);
+          if (done) card.appendChild(el('p', { class: 'muted small' }, '已完成'));
         } else card.appendChild(el('p', { class: 'muted' }, '製作中'));
-        body.appendChild(card);
+        line.appendChild(el('div', { class: 'tl-item' + (done ? ' done' : here ? ' here' : open ? ' open' : '') },
+          el('div', { class: 'tl-year' }, v.yearText), el('i', { class: 'tl-dot' }), card));
+      }
+      body.appendChild(line);
+    });
+  }
+
+  // 重玩：選一回，從那一回的開頭再走一次（隊伍換成那一回的成員）
+  replay(v, shelfApi) {
+    const g = this.g;
+    const prefix = v.start.replace(/\.(\d+\.)?開始$/, '');
+    const starts = Object.keys(this.ctx.scenes).filter(id => id === v.start || new RegExp('^' + prefix.replace('.', '\\.') + '\\.\\d+\\.開始$').test(id))
+      .sort((a, b) => (+(a.match(/\.(\d+)\.開始$/) || [0, 0])[1]) - (+(b.match(/\.(\d+)\.開始$/) || [0, 0])[1]));
+    const title = id => {
+      const c = this.ctx.scenes[id].cmds.find(x => x.t === 'cmd' && x.name === '章節');
+      return c ? c.arg.split('｜')[1] || c.arg : id;
+    };
+    const api = this.ui.sheet(`${v.id}〈${v.name}〉・重玩`, body => {
+      body.appendChild(el('p', { class: 'muted' }, '從那一回的開頭再走一次。新的選擇會蓋掉原本的選擇，結局的條件也可能跟著改變。建議先到「書案」另存一個存檔。'));
+      for (const id of starts) {
+        body.appendChild(el('button', { class: 'btn wide', onclick: async () => {
+          if (!(await this.ui.confirm(`重玩「${title(id)}」？隊伍會換成那一回的成員。`))) return;
+          api.close(); shelfApi.close();
+          this.replayParty(v, id);
+          this.ctx.enterVolume(v, id);
+        } }, title(id)));
       }
     });
+  }
+
+  // 依劇本推算：走到這一回的開頭時，隊伍裡應該有誰
+  replayParty(v, startId) {
+    const g = this.g;
+    const scenes = Object.values(this.ctx.scenes);
+    const file = this.ctx.scenes[v.start].file;
+    const until = this.ctx.scenes[startId].line;
+    let party = ['知墨', '蘅'];
+    const lvs = {};
+    for (const s of scenes.filter(s => s.file === file && s.line < until).sort((a, b) => a.line - b.line)) {
+      for (const c of s.cmds) {
+        if (c.t !== 'fx' || c.kind !== '隊友') continue;
+        const [n, k, lv] = c.args;
+        if (c.sign > 0) { if (!party.includes(n)) party.push(n); if (k === '等級') lvs[n] = +lv; }
+        else party = party.filter(x => x !== n);
+      }
+    }
+    const top = Math.max(...Object.values(g.members).map(m => m.lv), 1);
+    for (const n of party) if (!g.members[n] && CHARACTERS[n]) addMember(g, n, Math.max(lvs[n] || 1, top - 2));
+    const spirits = g.party.filter(n => CHARACTERS[n] && CHARACTERS[n].spirit);
+    g.party = party.filter(n => g.members[n]).slice(0, 4);
+    for (const s of spirits) if (g.party.length < 4) g.party.push(s);
+    healAll(g);
   }
 
   // ───────── 茶室（夜話） ─────────
@@ -530,23 +613,25 @@ export class Hub {
       opt('閱讀方式', 'readMode', ['line', 'page', 'auto'], ['逐句點擊', '整頁', '自動播放']);
       opt('文字速度', 'speed', [2, 1, 0], ['慢', '快', '立即']);
       opt('外觀', 'theme', ['auto', 'dark', 'light'], ['跟隨系統', '墨夜', '宣紙']);
-      opt('音效與音樂', 'sound', [true, false], ['開', '關'], v => { if (v) { this.ctx.audio.unlock(); this.ctx.audio.music(this.g ? this.g.loc.music : '書齋', true); } else this.ctx.audio.stopMusic(); });
+      opt('音效與音樂', 'sound', [true, false], ['開', '關'], v => { if (v) { this.ctx.audio.unlock(); this.ctx.audio.music(this.g ? this.g.loc.music : '書齋', true); } else { this.ctx.audio.stopMusic(); this.ctx.audio.stopAmbience(); } });
       opt('音量', 'volume', [0.3, 0.6, 1], ['小', '中', '大'], v => this.ctx.audio.setVolume(v));
       opt('朗讀劇情', 'tts', [false, true], ['關', '開']);
       opt('難度', 'difficulty', ['閱讀', '普通', '困難'], ['閱讀', '普通', '困難']);
       opt('戰鬥速度', 'battleSpeed', [1, 2, 3], ['1×', '2×', '4×']);
       opt('對話半身像', 'portrait', [true, false], ['開', '關'], v => { if (!v) this.ui.hidePortrait(); });
       opt('氛圍效果', 'ambient', [true, false], ['開', '關'], () => this.ui.setAmbient(this.ui.curTheme));
+      opt('環境聲', 'ambSound', [true, false], ['開', '關'], v => { if (!v) this.ctx.audio.stopAmbience(); else { this.ctx.audio.amb = null; this.ui.setAmbient(this.ui.curTheme); } });
       opt('震動', 'vibrate', [true, false], ['開', '關'], v => { if (v) this.ui.vibrate(30); });
+      opt('限時抉擇', 'timedChoice', [true, false], ['開', '關']);
       body.appendChild(el('p', { class: 'muted small' }, '閱讀方式——逐句點擊：每句都要點一下。整頁：一次跑完一頁（遇到選項或最多約六句），點一下再跑下一頁；打字中點一下可以立刻顯示整頁。自動播放：依字數停留後自動往下，打開選單時會暫停。'));
-      body.appendChild(el('p', { class: 'muted small' }, '對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
+      body.appendChild(el('p', { class: 'muted small' }, '限時抉擇：少數緊張的時刻，選項會倒數計時；時間到了，會替你選「遲疑」的那一個。關掉就不會倒數。對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。環境聲：雨聲、風聲、火堆、鳥叫、蟬聲、戰壕遠方的砲聲。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
       body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥。難度不影響任何結局條件，隨時可以切換。朗讀使用手機內建的語音，效果依裝置而定。'));
     });
   }
 
   about() {
     this.ui.alert('關於《千秋硯》', [
-      '試玩版 v1.1：序卷〈府城〉、卷一〈大員〉全五回、卷二〈牧野〉全五回、卷三〈阿瑪納〉全五回、卷四〈雅典〉回一。',
+      '完整版：序卷、卷一到卷十、中章〈書房〉與終卷〈歸墟〉。',
       '致敬《軒轅劍》與《仙劍奇俠傳》系列的文字角色扮演遊戲。',
       '本作以臺灣為立足點書寫世界史。史卷條目會標明「史實」與「虛構」；仍在延續的信仰不會被寫成法術。',
       '音樂與音效皆由程式即時合成。',
@@ -567,8 +652,10 @@ export class Hub {
       this.ctx.goHub();
       return;
     }
+    const picks = done && g.choices && g.choices[vol.id] || [];
     await this.ui.alert(done ? `${vol.id}〈${vol.name}〉完` : '試玩版到此為止', done ? [
       `感謝你陪知墨與蘅走完${vol.id}〈${vol.name}〉。`,
+      picks.length ? '這一卷，你選擇了：\n' + picks.map(x => '・' + x.c).join('\n') : '',
       todo.length ? `接下來還有：${todo.map(v => `${v.id}〈${v.name}〉`).join('、')}。${todo.some(v => v.ready) ? '可以從書架進入。' : '製作中。'}` : '',
       '你的存檔會保留。茶室裡，也許有人在等你。',
     ].filter(Boolean) : [

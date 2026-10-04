@@ -132,6 +132,18 @@ export function histDone(g) { return Object.keys(g.flags).filter(k => k.startsWi
 export function histRate(g) { return HIST_TOTAL ? Math.min(100, Math.round(histDone(g) * 100 / HIST_TOTAL)) : 0; }
 export function histTotal() { return HIST_TOTAL; }
 // 無名客在各卷善終的次數（v1～v10）
+// 跨存檔的收藏（看過的結局、無名客的兩種結局）。存在這台裝置的瀏覽器裡，不跟著存檔走
+export function collection() {
+  try { return JSON.parse(localStorage.getItem('qqy.collect') || '{}') || {}; } catch (e) { return {}; }
+}
+export function addCollection(kind, key) {
+  const c = collection();
+  c[kind] = c[kind] || {};
+  if (c[kind][key]) return;
+  c[kind][key] = Date.now();
+  try { localStorage.setItem('qqy.collect', JSON.stringify(c)); } catch (e) { /* 無痕視窗等情況存不了，就算了 */ }
+}
+
 export function goodEnds(g) { let n = 0; for (let i = 1; i <= 10; i++) if (g.flags[`v${i}.無名客`] === '善') n++; return n; }
 // 無面書記在各卷動搖的次數
 export function wavers(g) { return Object.keys(g.flags).filter(k => /^v\d+\.書記動搖$/.test(k)).length; }

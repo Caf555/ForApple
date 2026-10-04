@@ -1,5 +1,10 @@
 // 音效與氛圍音樂：全部以 Web Audio 即時合成，不需要音檔
 const PENTA = [0, 2, 4, 7, 9]; // 五聲音階
+// 蘅的主題：一小段固定的旋律（[頻率, 拍數]，0 是休止）。在書齋、夜話、結局反覆出現
+const HENG = [
+  [440, 1], [523.3, 1], [587.3, 2], [659.3, 1], [587.3, 1], [523.3, 2], [440, 1], [392, 1], [440, 3], [0, 1],
+  [587.3, 1], [659.3, 1], [784, 2], [659.3, 1], [587.3, 1], [523.3, 1], [440, 1], [587.3, 4], [0, 2],
+];
 
 export class Audio {
   constructor(ctx) {
@@ -22,6 +27,7 @@ export class Audio {
     this.master.connect(this.ac.destination);
     this.noiseBuf = this.makeNoise();
     if (this.want) this.music(this.want, true);
+    if (this.wantAmb) this.ambience(this.wantAmb);
   }
 
   setVolume(v) { if (this.master) this.master.gain.value = v; }
@@ -101,6 +107,16 @@ export class Audio {
   }
   keyOff() { if (this.keyOsc) { try { this.keyOsc.stop(); } catch (e) { /* 已停止 */ } this.keyOsc = null; } }
 
+  // 把蘅的主題吹一遍（像笛子，底下一個很淡的低八度）
+  motif(bus, beat = 0.62, gain = 0.03, from = 0, to = HENG.length) {
+    let t = this.ac.currentTime + 0.1;
+    for (const [f, n] of HENG.slice(from, to)) {
+      if (f) { this.note(f, t, n * beat * 1.15, 'sine', gain, bus); this.note(f * 2, t, n * beat * 0.6, 'sine', gain * 0.12, bus); this.note(f / 2, t, n * beat, 'triangle', gain * 0.25, bus); }
+      t += n * beat;
+    }
+    return HENG.slice(from, to).reduce((s, [, n]) => s + n, 0) * beat;
+  }
+
   music(name, force) {
     this.want = name;
     if (!this.ac) return;
@@ -146,10 +162,18 @@ export class Audio {
         waves(0.2); pad([98, 146.8], 0.02);
         loop(() => pluck(392, 0.025, 2.5), () => 4000 + Math.random() * 4000);
         break;
-      case '書齋':
+      case '書齋': {
         pad([130.8, 196, 261.6], 0.025);
-        loop(() => pluck(523.3, 0.03, 3), () => 3500 + Math.random() * 3500);
+        // 大多是零星的撥弦；偶爾，會飄出蘅的主題的前半段
+        let n = 0;
+        loop(() => { if (n++ % 9 === 4) this.motif(bus, 0.7, 0.018, 0, 10); else pluck(523.3, 0.03, 3); }, () => (n % 9 === 5 ? 9000 : 3500 + Math.random() * 3500));
         break;
+      }
+      case '蘅': {
+        pad([146.8, 220, 293.7], 0.018);
+        loop(() => this.motif(bus, 0.62, 0.032), () => 28 * 620 + 3000);
+        break;
+      }
       case '緊張':
         pad([73.4, 77.8], 0.04);
         loop(() => { const t = this.ac.currentTime; this.note(55, t, 0.25, 'sine', 0.12, bus); this.note(55, t + 0.3, 0.25, 'sine', 0.08, bus); }, () => 1400);
@@ -349,6 +373,82 @@ export class Audio {
       default:
         pad([130.8, 196], 0.02);
     }
+  }
+
+  // ───────── 環境聲：雨、風、火、鳥、蟬、紙、遠方的砲聲 ─────────
+  ambience(kind) {
+    this.wantAmb = kind;
+    if (!this.ac) return;
+    if (this.amb && this.amb.kind === kind) return;
+    this.stopAmbience();
+    if (!this.on || this.ctx.settings.ambSound === false || !kind) return;
+    const bus = this.ac.createGain();
+    bus.gain.value = 0.0001; bus.connect(this.master);
+    bus.gain.exponentialRampToValueAtTime(0.7, this.ac.currentTime + 3);
+    const cur = { kind, bus, timers: [], nodes: [] };
+    this.amb = cur;
+    const loop = (fn, ms) => { const tick = () => { if (this.amb !== cur) return; fn(); cur.timers.push(setTimeout(tick, ms())); }; cur.timers.push(setTimeout(tick, ms())); };
+    const bed = (type, freq, gain, lfoRate = 0.1, q = 0.7) => {
+      const s = this.ac.createBufferSource(); s.buffer = this.noiseBuf; s.loop = true;
+      const f = this.ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+      const g = this.ac.createGain(); g.gain.value = gain;
+      const lfo = this.ac.createOscillator(); const lg = this.ac.createGain();
+      lfo.frequency.value = lfoRate; lg.gain.value = gain * 0.5; lfo.connect(lg); lg.connect(g.gain);
+      s.connect(f); f.connect(g); g.connect(bus); s.start(); lfo.start();
+      cur.nodes.push(s, lfo);
+      return f;
+    };
+    const t = () => this.ac.currentTime;
+    for (const k of kind.split('+')) switch (k) {
+      case 'rain':
+        bed('highpass', 1600, 0.05, 0.08); bed('bandpass', 500, 0.03, 0.05);
+        loop(() => this.noise(t(), 0.03, 3000 + Math.random() * 3000, 0.03 + Math.random() * 0.03, bus), () => 60 + Math.random() * 180);
+        break;
+      case 'wind': {
+        const f = bed('lowpass', 420, 0.06, 0.07, 1.2);
+        const lfo = this.ac.createOscillator(); const lg = this.ac.createGain();
+        lfo.frequency.value = 0.05; lg.gain.value = 220; lfo.connect(lg); lg.connect(f.frequency); lfo.start(); cur.nodes.push(lfo);
+        break;
+      }
+      case 'fire':
+        bed('lowpass', 300, 0.03, 0.2);
+        loop(() => { const n = 1 + Math.floor(Math.random() * 3); for (let i = 0; i < n; i++) this.noise(t() + i * 0.03, 0.02, 2500 + Math.random() * 4000, 0.05 + Math.random() * 0.06, bus); }, () => 90 + Math.random() * 400);
+        break;
+      case 'birds':
+        loop(() => {
+          const t0 = t(), base = 2200 + Math.random() * 1600, n = 2 + Math.floor(Math.random() * 3);
+          for (let i = 0; i < n; i++) { const o = this.ac.createOscillator(); const g = this.ac.createGain(); const s0 = t0 + i * 0.13; o.frequency.setValueAtTime(base, s0); o.frequency.exponentialRampToValueAtTime(base * 1.4, s0 + 0.07); g.gain.setValueAtTime(0.0001, s0); g.gain.exponentialRampToValueAtTime(0.012, s0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, s0 + 0.1); o.connect(g); g.connect(bus); o.start(s0); o.stop(s0 + 0.12); }
+        }, () => 2500 + Math.random() * 6000);
+        break;
+      case 'cicada': {
+        const s = this.ac.createBufferSource(); s.buffer = this.noiseBuf; s.loop = true;
+        const f = this.ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 5200; f.Q.value = 6;
+        const g = this.ac.createGain(); g.gain.value = 0;
+        const am = this.ac.createOscillator(); const ag = this.ac.createGain(); am.frequency.value = 38; ag.gain.value = 0.03; am.connect(ag); ag.connect(g.gain);
+        const sw = this.ac.createOscillator(); const sg = this.ac.createGain(); sw.frequency.value = 0.09; sg.gain.value = 0.02; sw.connect(sg); sg.connect(g.gain);
+        s.connect(f); f.connect(g); g.connect(bus); s.start(); am.start(); sw.start();
+        cur.nodes.push(s, am, sw);
+        break;
+      }
+      case 'paper':
+        loop(() => this.noise(t(), 0.25 + Math.random() * 0.3, 2400 + Math.random() * 1500, 0.015 + Math.random() * 0.015, bus), () => 1200 + Math.random() * 3500);
+        break;
+      case 'guns':
+        loop(() => { const t0 = t(); this.noise(t0, 1.4, 70, 0.22, bus); this.note(42, t0, 1.2, 'sine', 0.1, bus); }, () => 6000 + Math.random() * 9000);
+        break;
+      case 'sea':
+        bed('lowpass', 500, 0.12, 0.12);
+        break;
+    }
+  }
+
+  stopAmbience() {
+    const cur = this.amb;
+    if (!cur) return;
+    this.amb = null;
+    cur.timers.forEach(clearTimeout);
+    try { cur.bus.gain.cancelScheduledValues(this.ac.currentTime); cur.bus.gain.setValueAtTime(cur.bus.gain.value || 0.5, this.ac.currentTime); cur.bus.gain.exponentialRampToValueAtTime(0.0001, this.ac.currentTime + 1.2); } catch (e) { /* 忽略 */ }
+    setTimeout(() => { cur.nodes.forEach(n => { try { n.stop(); } catch (e) { /* 已停止 */ } }); cur.bus.disconnect(); }, 1400);
   }
 
   stopMusic() {
