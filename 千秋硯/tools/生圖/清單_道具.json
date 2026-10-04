@@ -1934,6 +1934,55 @@
       "seed": 7275,
       "transparent": true,
       "prompt": "A folded paper list with many lines of careful handwriting; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "鹹魚",
+      "seed": 7276,
+      "transparent": true,
+      "prompt": "A dried salted cod on a wooden board."
+    },
+    {
+      "kind": "item",
+      "name": "蜂蜜水",
+      "seed": 7277,
+      "transparent": true,
+      "prompt": "A clay cup of warm honey water with a honey dipper."
+    },
+    {
+      "kind": "item",
+      "name": "炭",
+      "seed": 7278,
+      "transparent": true,
+      "prompt": "A stick of willow charcoal for drawing."
+    },
+    {
+      "kind": "item",
+      "name": "亞麻畫布",
+      "seed": 7279,
+      "transparent": true,
+      "prompt": "A small square of raw linen canvas with frayed edges."
+    },
+    {
+      "kind": "item",
+      "name": "沒燒完的木條",
+      "seed": 7280,
+      "transparent": true,
+      "prompt": "A wooden plank half charred black and half natural wood."
+    },
+    {
+      "kind": "item",
+      "name": "一小撮灰",
+      "seed": 7281,
+      "transparent": true,
+      "prompt": "A small pinch of grey ash on a folded cloth."
+    },
+    {
+      "kind": "item",
+      "name": "半頁詩",
+      "seed": 7282,
+      "transparent": true,
+      "prompt": "Half a page of an old handwritten poem with burnt curled edges; text indistinct."
     }
   ]
 }

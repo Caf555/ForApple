@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。 回二是 1496 年冬末到春天：薩佛納羅拉的少年隊穿白衣、舉紅十字；畫面不要出現裸體。",
+  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。 回二是 1496 年冬末到春天：薩佛納羅拉的少年隊穿白衣、舉紅十字；畫面不要出現裸體。",
   "items": [
     {
       "kind": "bg",
@@ -26,6 +26,12 @@
       "prompt": "Florence, Italy, in early 1496, early Renaissance: the plain facade and cloister gate of the Dominican convent of San Marco on a cold rainy day, a long line of thin hungry people with bowls and cloth bags waiting as friars hand out bread. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, poor people in rough tunics; boys of Savonarola's youth bands in plain white tunics carrying small red crosses. Narrow stone-paved streets, ochre houses with wooden shutters. No later Baroque elements, no modern objects, no readable text."
     },
     {
+      "kind": "bg",
+      "name": "領主廣場",
+      "seed": 12105,
+      "prompt": "Florence, Italy, February 1497, early Renaissance: the great square under a grey winter sky; in its center a towering octagonal wooden pyramid of many tiers piled with wigs, mirrors, masks, cards, lutes, books and paintings, a large straw effigy in rich clothes and a paper crown on top; thin hungry crowds all around. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, boys in plain white tunics with small red crosses. The Piazza della Signoria with the stone Palazzo della Signoria and its tall tower, the open arched loggia beside it. No later Baroque elements, no statues of later centuries, no modern objects, no readable text."
+    },
+    {
       "kind": "cg",
       "name": "敲下紅球的少年",
       "seed": 12401,
@@ -48,6 +54,18 @@
       "name": "白衣的孩子們",
       "seed": 12404,
       "prompt": "Florence, Italy, in early 1496, early Renaissance: Palm Sunday procession: thousands of children in white carrying olive branches and small red crosses walk singing toward the cathedral with its great red dome; adults lining the street weep; soft spring light. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, poor people in rough tunics; boys of Savonarola's youth bands in plain white tunics carrying small red crosses. Narrow stone-paved streets, ochre houses with wooden shutters. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "點燃的柴堆",
+      "seed": 12405,
+      "prompt": "Florence, Italy, February 1497, early Renaissance: the moment the tiered wooden pyramid is set alight: men with torches at its corners, flames climbing from the bottom tier, mirrors cracking, playing cards and pages flying up into the smoke, lute strings snapping; children in white singing, crowds weeping and cheering, church bells; seen from a little distance. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, boys in plain white tunics with small red crosses. The Piazza della Signoria with the stone Palazzo della Signoria and its tall tower, the open arched loggia beside it. No later Baroque elements, no statues of later centuries, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "從火裡抓出來的",
+      "seed": 12406,
+      "prompt": "Florence, Italy, February 1497, early Renaissance: dusk, the bonfire collapsing into embers; an 18-year-old boy in a white tunic at the edge of the fire reaches bare-handed into the flames and pulls out a small smoking scrap of canvas, his face set and pained; close and intimate, no gore. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, boys in plain white tunics with small red crosses. The Piazza della Signoria with the stone Palazzo della Signoria and its tall tower, the open arched loggia beside it. No later Baroque elements, no statues of later centuries, no modern objects, no readable text."
     },
     {
       "kind": "char",
@@ -75,6 +93,13 @@
       "name": "陳修女",
       "seed": 12204,
       "prompt": "An elderly Taiwanese Catholic nun in her seventies in 2026, a grey habit and white veil, using a black umbrella as a walking stick, gentle smiling eyes that crinkle shut, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "喬萬尼",
+      "seed": 12205,
+      "prompt": "A small loud 12-year-old Florentine boy in 1497 in a plain white tunic with a red cross, clutching a wooden staff with a red cross, fierce frightened eyes, early Italian Renaissance style.",
       "transparent": true
     },
     {
@@ -159,6 +184,48 @@
       "name": "潔淨",
       "seed": 12312,
       "prompt": "A blinding radiant figure of white light shaped from countless small white tunics, holding olive branches, so bright it casts no shadow, beautiful and frightening.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "假髮",
+      "seed": 12313,
+      "prompt": "A long braided wig of real hair writhing like a creature, its braids lashing out.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "紙牌",
+      "seed": 12314,
+      "prompt": "A whirling storm of hand-painted Renaissance playing cards with kings, queens and knights forming a figure; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "詩集",
+      "seed": 12315,
+      "prompt": "A beautifully hand-copied book with its pages fanning open like wings, loose pages swirling; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "瘟疫",
+      "seed": 12316,
+      "prompt": "A pale feverish wraith drifting through a narrow street, doors behind it marked with white lime crosses.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "柴堆",
+      "seed": 12317,
+      "prompt": "A towering octagonal tiered wooden pyramid piled with masks, mirrors, lutes and books, a straw effigy with a crooked paper crown on top coming alive and swaying.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "虛榮之火",
+      "seed": 12318,
+      "prompt": "A colossal figure of roaring bonfire flames rising from a collapsing wooden pyramid, mirrors, lutes, books and paintings burning inside its body, bells in the smoke.",
       "transparent": true
     }
   ]
