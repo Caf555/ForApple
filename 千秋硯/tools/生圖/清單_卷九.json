@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。 回三是 1914 年 12 月的法蘭德斯戰壕：英軍穿卡其色軍服、戴軟布軍帽與羊毛圍巾，德軍穿灰綠色軍服、戴有布套的尖頂盔或無簷軍帽；冬天，泥濘、結霜。 回四是 1915 年 4 月的伊珀爾：德軍戰壕前緣埋著灰色的鋼瓶；英軍與加拿大軍穿卡其色軍服，法國的阿爾及利亞部隊戴紅色圓帽；野戰醫院設在修道院裡，護士穿白色圍裙。毒氣只畫成黃綠色的霧，不要畫受傷或死亡的人的特寫。",
+  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。 回三是 1914 年 12 月的法蘭德斯戰壕：英軍穿卡其色軍服、戴軟布軍帽與羊毛圍巾，德軍穿灰綠色軍服、戴有布套的尖頂盔或無簷軍帽；冬天，泥濘、結霜。 回四是 1915 年 4 月的伊珀爾：德軍戰壕前緣埋著灰色的鋼瓶；英軍與加拿大軍穿卡其色軍服，法國的阿爾及利亞部隊戴紅色圓帽；野戰醫院設在修道院裡，護士穿白色圍裙。毒氣只畫成黃綠色的霧，不要畫受傷或死亡的人的特寫。 回五的前半是 1918 年 6 月日本德島縣的坂東俘虜收容所：木造營舍、德國戰俘穿舊的海軍制服或便服、日本衛兵穿大正時期的軍服、附近的農村與稻田、梅雨；後半是 1918 年 11 月 11 日比利時蒙斯附近的紅磚小村子，深秋、霧。",
   "items": [
     {
       "kind": "bg",
@@ -324,6 +324,79 @@
       "name": "修道院裡的鋼琴",
       "seed": 14408,
       "prompt": "Night in a convent chapel turned field hospital, April 1915: a young English nurse in a white apron, hair pinned up, playing an old upright piano by candlelight, wounded soldiers on stretchers resting quietly around her, one soldier in a red fez listening; gentle and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "坂東收容所",
+      "seed": 14111,
+      "prompt": "Bando prisoner-of-war camp in Naruto, Tokushima, Japan, rainy season 1918: rows of long wooden barracks with tiled roofs inside a simple wooden fence, the gate open, German prisoners in old navy uniforms and casual clothes trading bread with a Japanese farmer carrying a vegetable basket, green rice paddies and wooded hills behind, light drizzle, peaceful. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "蒙斯的街",
+      "seed": 14112,
+      "prompt": "A small red-brick village near Mons, Belgium, early morning of 11 November 1918: cold mist, broken windows, an abandoned handcart with bedding and a clock, a church bell tower, a low brick wall at the edge of the village facing flat autumn fields and a line of bare trees. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "enemy",
+      "name": "梅雨",
+      "seed": 14325,
+      "prompt": "A grey-blue spirit of endless June rain, made of falling drops and dripping wooden eaves, gloomy and soft.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "號碼",
+      "seed": 14326,
+      "prompt": "A spirit made of hanging wooden prisoner number tags clinking together into a faceless figure; the numbers are indistinct, no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "流感",
+      "seed": 14327,
+      "prompt": "A feverish pale-red spirit made of hot breath and a crumpled army blanket, glowing faintly, sickly but not gory.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "最後的砲彈",
+      "seed": 14328,
+      "prompt": "A large WWI artillery shell standing upright with a fiery glow at its base and a ring of smoke, menacing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "想家",
+      "seed": 14329,
+      "prompt": "A melancholy translucent figure of rain and sea mist sitting on a wooden bunk, looking toward a faraway horizon, holding a tiny toy house; sorrowful, not scary.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "最後的兩分鐘",
+      "seed": 14330,
+      "prompt": "A giant grey stone clock spirit rising from dust and smoke, its hands near eleven o'clock, a church bell hanging inside its chest; solemn and imposing; no readable numbers.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・戰壕之相",
+      "seed": 14331,
+      "prompt": "A tall faceless scribe in a dark long robe and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a short worn pencil and a thick ledger of names, standing in a misty autumn field, pages blowing in the wind, calm and eerie; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "坂東的第九",
+      "seed": 14409,
+      "prompt": "Evening, 1 June 1918, a simple wooden hall in the Bando prisoner camp: a German prisoner orchestra and an all-male choir standing in rows singing, a bearded conductor, a tall blond man playing trumpet with tears on his face; in the audience Japanese officers, village farmers and a bespectacled Taiwanese man in a suit listening; warm lamplight. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "cg",
+      "name": "十一點的田",
+      "seed": 14410,
+      "prompt": "11 o'clock, 11 November 1918, a flat autumn field near Mons: mist lifting, sunlight breaking through, soldiers in field-grey and in khaki slowly standing up from behind a brick wall and a line of trees, some kneeling, some looking at the sky, a bird flying overhead, utterly quiet. No modern objects, no readable text, no Nazi or later symbols, no gore."
     }
   ]
 }

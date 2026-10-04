@@ -2599,6 +2599,76 @@
       "seed": 7370,
       "transparent": true,
       "prompt": "A brass German army tunic button with a Saxon royal crown, on a short thread."
+    },
+    {
+      "kind": "item",
+      "name": "收容所的麵包",
+      "seed": 7371,
+      "transparent": true,
+      "prompt": "A large dark round loaf of rye bread."
+    },
+    {
+      "kind": "item",
+      "name": "比利時的蘋果",
+      "seed": 7372,
+      "transparent": true,
+      "prompt": "A single red apple."
+    },
+    {
+      "kind": "item",
+      "name": "樂譜紙",
+      "seed": 7373,
+      "transparent": true,
+      "prompt": "A sheet of printed blank music staff paper; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "停戰的電報",
+      "seed": 7374,
+      "transparent": true,
+      "prompt": "A small telegram form with indistinct handwriting; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "小號",
+      "seed": 7375,
+      "transparent": true,
+      "prompt": "A polished brass trumpet."
+    },
+    {
+      "kind": "item",
+      "name": "所有的人",
+      "seed": 7376,
+      "transparent": true,
+      "prompt": "A folded sheet of choral music tied with a ribbon; notes indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "十一點的鐘",
+      "seed": 7377,
+      "transparent": true,
+      "prompt": "An old silver pocket watch with hands at eleven o'clock; no readable numbers."
+    },
+    {
+      "kind": "item",
+      "name": "名冊的一頁",
+      "seed": 7378,
+      "transparent": true,
+      "prompt": "A single torn page from a ledger, lines of indistinct handwriting, slightly windblown; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "沒有射出的子彈",
+      "seed": 7379,
+      "transparent": true,
+      "prompt": "Five old brass rifle cartridges lying in an open palm-sized cloth."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的鉛筆",
+      "seed": 7380,
+      "transparent": true,
+      "prompt": "A short worn pencil stub with a flattened tip."
     }
   ]
 }
