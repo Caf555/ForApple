@@ -319,6 +319,9 @@ export class Translate {
     key.addEventListener('pointerup', up);
     key.addEventListener('pointerleave', e => { if (downAt) up(e); });
     key.addEventListener('contextmenu', e => e.preventDefault());
+    // 鍵盤也能打：按住空白鍵或 Enter
+    key.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat && !downAt) down(e); });
+    key.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') up(e); });
     const clear = el('button', { class: 'btn small', onclick: () => { input = ''; show(); } }, '重打這一個');
     this.body.append(prog, word, target, shown, key, clear, el('p', { class: 'muted small' }, '短短地按一下是「·」，按久一點（大約半秒）是「−」。'));
     show();
