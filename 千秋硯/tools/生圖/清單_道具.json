@@ -2669,6 +2669,69 @@
       "seed": 7380,
       "transparent": true,
       "prompt": "A short worn pencil stub with a flattened tip."
+    },
+    {
+      "kind": "item",
+      "name": "營養凍",
+      "seed": 7381,
+      "transparent": true,
+      "prompt": "A neat square block of pale nutrient jelly on a white tray."
+    },
+    {
+      "kind": "item",
+      "name": "合成茶",
+      "seed": 7382,
+      "transparent": true,
+      "prompt": "A plain white cup of tea with a faint glow."
+    },
+    {
+      "kind": "item",
+      "name": "底艙的地瓜",
+      "seed": 7383,
+      "transparent": true,
+      "prompt": "A roasted sweet potato, split open, steaming."
+    },
+    {
+      "kind": "item",
+      "name": "舊紙片",
+      "seed": 7384,
+      "transparent": true,
+      "prompt": "A small torn scrap of old paper with one indistinct handwritten mark."
+    },
+    {
+      "kind": "item",
+      "name": "電路片",
+      "seed": 7385,
+      "transparent": true,
+      "prompt": "A thin flexible circuit sheet, slightly broken."
+    },
+    {
+      "kind": "item",
+      "name": "維修筆",
+      "seed": 7386,
+      "transparent": true,
+      "prompt": "A thin futuristic stylus with a glowing tip."
+    },
+    {
+      "kind": "item",
+      "name": "手縫的本子",
+      "seed": 7387,
+      "transparent": true,
+      "prompt": "A small hand-sewn notebook made of mismatched scraps of paper and labels."
+    },
+    {
+      "kind": "item",
+      "name": "裂縫裡的星星",
+      "seed": 7388,
+      "transparent": true,
+      "prompt": "A small white square patch with a tiny round hole, one star visible through it."
+    },
+    {
+      "kind": "item",
+      "name": "不笑也可以",
+      "seed": 7389,
+      "transparent": true,
+      "prompt": "A pale blank mask without any expression, resting peacefully."
     }
   ]
 }

@@ -1,0 +1,111 @@
+{
+  "說明": "《千秋硯》卷十〈晴空〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：卷十是 2318 年的軌道城市「晴空」，是本作唯一的未來時代，但畫風仍要維持水墨的筆觸與淡彩，不要變成霓虹賽博龐克。晴空的上層：白色圓頂的房子、綠色植物、淺色的寬鬆衣服、手腕上的白色手環、永遠是藍色的人造天空（由發光的面板組成）、地面往上彎曲成巨大的環。底艙：低矮的天花板、管線、昏黃的燈、門口種菜，比較雜亂、比較有人味。不要出現可讀的文字或真實的商標。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "晴空的街",
+      "seed": 15101,
+      "prompt": "A wide clean boulevard inside a giant rotating ring-shaped space city: white dome-roofed houses with green plants on the windowsills, people in loose pale clothes with white wristbands walking calmly, the ground curving upward in the distance until it arches overhead with upside-down houses and trees, an artificial flawless blue sky made of huge glowing panels. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "晴空史館",
+      "seed": 15102,
+      "prompt": "Inside a vast bright white museum hall in a future space city: long rows of empty glass display cases stretching into the distance, each with a small blank label plate, silent, sterile and slightly sad. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "底艙",
+      "seed": 15103,
+      "prompt": "The low lower deck of a space ring city: a narrow corridor with a low ceiling full of pipes and cables, warm dim yellow lamps, small makeshift homes with vegetable pots (tomatoes, leafy greens, sweet potato vines) at their doors, laundry hanging, cluttered and lived-in, humid and human. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "天空的裂縫",
+      "seed": 15104,
+      "prompt": "A small maintenance platform high up just under the artificial sky of a space ring city: the blue sky is made of huge glowing panels seen up close, one panel cracked open, and through the crack deep black space full of real stars. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "char",
+      "name": "程晴",
+      "seed": 15201,
+      "prompt": "A 31-year-old East Asian man, a space-city sky maintenance engineer, slightly messy black hair, bright eyes, grey work overalls, a grey wristband, holding a thin glowing stylus, a friendly grin showing one small pointed canine tooth.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "小雨",
+      "seed": 15202,
+      "prompt": "A 13-year-old East Asian girl with short cropped hair, slightly worn simple clothes, no wristband, holding a small hand-sewn notebook made of mismatched paper, curious brave eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "雨婆",
+      "seed": 15203,
+      "prompt": "A very old East Asian grandmother, about 87, small and wrinkled, a few missing teeth, cloudy kind eyes, simple patched clothes, peeling a sweet potato with a small knife, warm smile.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "安寧",
+      "seed": 15204,
+      "prompt": "An abstract gentle presence: a soft glowing pale-blue orb of light with faint concentric rings, calm and polite, no face, no human features.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "微笑",
+      "seed": 15301,
+      "prompt": "A floating pale mask with a calm, perfectly symmetrical faint smile, glowing softly with white light, eerily serene.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "提醒",
+      "seed": 15302,
+      "prompt": "A small white hovering drone ball with a single soft blue light, polite and persistent.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "清潔機",
+      "seed": 15303,
+      "prompt": "A smooth white cleaning robot gliding on the floor with a suction mouth, its light turned from blue to white, sucking up leaves and scraps of paper.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "恆溫",
+      "seed": 15304,
+      "prompt": "A transparent spirit of perfectly still air, a faint grid of cool mist, emotionless and neutral.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "白色的補丁",
+      "seed": 15305,
+      "prompt": "A swarm of square blank white paper patches flowing out of a crack in the sky, overlapping to cover the stars, forming a large flat shape.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "永遠的晴天",
+      "seed": 15306,
+      "prompt": "A giant faceless figure made of pure white light pouring down from an artificial blue sky, arms spread as if to embrace a whole city, so bright that nothing casts a shadow; serene and overwhelming.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "彎到頭頂上的城",
+      "seed": 15401,
+      "prompt": "A wide view from the ground of a giant ring-shaped space city: the street and white houses curving up and up until the city arches overhead upside down, an artificial blue sky in the middle, a young man in white clothes and a translucent ink-haired girl looking up in awe. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "看見星星的女孩",
+      "seed": 15402,
+      "prompt": "On a small platform high under an artificial blue sky, a short-haired 13-year-old girl stares up in wonder at a crack in the sky panels through which real stars shine in black space; a young engineer with a glowing stylus beside her. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+    }
+  ]
+}

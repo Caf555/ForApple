@@ -267,6 +267,19 @@ export class Audio {
         }, () => 250);
         break;
       }
+      case '晴空': {
+        // 明亮、乾淨、像玻璃一樣的琶音，太完美了，反而有一點空
+        pad([261.6, 392, 523.3], 0.012);
+        const arp = [523.3, 659.3, 784, 1046.5, 784, 659.3];
+        let beat = 0;
+        loop(() => {
+          const t = this.ac.currentTime;
+          this.note(arp[beat % arp.length], t, 0.9, 'sine', 0.008, bus);
+          if (beat % 12 === 0) this.note(196, t, 3, 'sine', 0.01, bus);
+          beat++;
+        }, () => 300);
+        break;
+      }
       case '戰壕': {
         // 很低的持續音，遠方像砲聲的悶響，偶爾一段小號般的短旋律
         pad([82.4, 123.5, 164.8], 0.016);
