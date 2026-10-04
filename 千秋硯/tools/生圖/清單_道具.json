@@ -2032,6 +2032,55 @@
       "seed": 7289,
       "transparent": true,
       "prompt": "A frayed length of thick bell rope stained dark at one end."
+    },
+    {
+      "kind": "item",
+      "name": "櫻桃",
+      "seed": 7290,
+      "transparent": true,
+      "prompt": "A handful of dark red cherries with stems."
+    },
+    {
+      "kind": "item",
+      "name": "杏仁奶",
+      "seed": 7291,
+      "transparent": true,
+      "prompt": "A clay cup of white almond milk with a few almonds beside it."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛筆尖",
+      "seed": 7292,
+      "transparent": true,
+      "prompt": "A worn goose-feather quill with a blunted nib."
+    },
+    {
+      "kind": "item",
+      "name": "河灰",
+      "seed": 7293,
+      "transparent": true,
+      "prompt": "A small pinch of grey ash on a wet river pebble."
+    },
+    {
+      "kind": "item",
+      "name": "原來的那一句",
+      "seed": 7294,
+      "transparent": true,
+      "prompt": "A small slip of paper with a single line of handwriting; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "五月的花",
+      "seed": 7295,
+      "transparent": true,
+      "prompt": "A small bundle of dried spring flowers tied with a ribbon."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的羽毛筆",
+      "seed": 7296,
+      "transparent": true,
+      "prompt": "A long dark goose-feather quill with a dry ink-stained nib."
     }
   ]
 }
