@@ -263,6 +263,7 @@ export class Runner {
       case '震動': ui.quakeScreen(arg === '強'); audio.sfx(arg === '強' ? 'boss' : 'break'); await ui.fx('', 450); return;
       case '閃白': await ui.fx('white', 700); return;
       case '淡黑': await ui.fx('black', 1500); return;
+      case '寫字': { const [w, st] = arg.split(/\s+/); await ui.writeWords(w, st || '', (this.ctx.settings.readMode || 'page') === 'auto'); return; }
       case '背景': g.loc.bg = arg === '無' ? '' : arg; ui.setBanner(g.loc.bg); return;
       case '插圖': {
         const [name, ...cap] = arg.split(/\s+/);

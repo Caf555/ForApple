@@ -227,6 +227,26 @@ export class UI {
     setTimeout(() => a.classList.remove('quake'), 520);
     this.vibrate(strong ? [40, 40, 80] : 30);
   }
+  // 寫字：一個字一個字，像毛筆寫出來一樣（光＝用光燒出來；印＝印刷的字）
+  writeWords(text, style = '', auto = false) {
+    return new Promise(resolve => {
+      const chars = Array.from(text);
+      const box = el('div', { class: 'ink-write ' + (style === '光' ? 'light' : style === '印' ? 'print' : 'brush') + (chars.length > 4 ? ' long' : '') });
+      const row = el('div', { class: 'iw-row' });
+      const per = Math.min(style === '印' ? 160 : style === '光' ? 520 : 680, Math.round(2800 / chars.length));
+      chars.forEach((c, i) => row.appendChild(el('span', { class: 'iw-ch', style: { animationDelay: (300 + i * per) + 'ms', animationDuration: (per + 260) + 'ms' } }, c)));
+      const tip = el('div', { class: 'iw-tip' }, '點一下繼續');
+      box.append(row, tip);
+      document.body.appendChild(box);
+      const total = 300 + chars.length * per + 400;
+      chars.forEach((c, i) => setTimeout(() => this.ctx && this.ctx.audio && this.ctx.audio.sfx(style === '光' ? 'good' : style === '印' ? 'tick' : 'ink'), 300 + i * per));
+      let ready = false;
+      const done = () => { if (!ready) return; box.classList.add('out'); setTimeout(() => { box.remove(); resolve(); }, 450); };
+      setTimeout(() => { ready = true; box.classList.add('ready'); if (auto) setTimeout(done, 1400); }, total);
+      box.addEventListener('click', () => { if (!ready) { box.classList.add('skip'); ready = true; box.classList.add('ready'); return; } done(); });
+    });
+  }
+
   fx(kind, ms) {
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return Promise.resolve();
     const o = $('fx');
