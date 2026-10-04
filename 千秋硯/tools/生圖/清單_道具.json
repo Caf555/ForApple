@@ -2928,6 +2928,34 @@
       "seed": 7417,
       "transparent": true,
       "prompt": "An old copper chisel resting on a flat stone."
+    },
+    {
+      "kind": "item",
+      "name": "歸墟的紙漿",
+      "seed": 7418,
+      "transparent": true,
+      "prompt": "A small handful of wet grey paper pulp."
+    },
+    {
+      "kind": "item",
+      "name": "千字紙",
+      "seed": 7419,
+      "transparent": true,
+      "prompt": "A rolled pale grey handmade paper with tiny faint shadows of characters inside, glowing softly."
+    },
+    {
+      "kind": "item",
+      "name": "透光的字",
+      "seed": 7420,
+      "transparent": true,
+      "prompt": "A thin sheet of paper held to light revealing a faint watermark-like character, indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "燻黑的鏡子",
+      "seed": 7421,
+      "transparent": true,
+      "prompt": "A small round hand mirror blackened by smoke, partly wiped clean."
     }
   ]
 }

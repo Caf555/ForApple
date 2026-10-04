@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。",
+  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。",
   "items": [
     {
       "kind": "bg",
@@ -114,6 +114,54 @@
       "name": "往上飄的雪",
       "seed": 16404,
       "prompt": "Sheets of paper bearing ink handprints, simple drawings of a goat and a river, and a few names, rising upward from a black sea like snow falling in reverse, faint figures below reaching up, a young man holding an inkstone. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "紙漿",
+      "seed": 16313,
+      "prompt": "A grey soft blob of paper pulp rising from a water vat, fibers and faint fragments of writing inside.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "焦黑的畫框",
+      "seed": 16314,
+      "prompt": "An empty charred Renaissance picture frame floating, smoke curling from its edges.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "羽毛的影子",
+      "seed": 16315,
+      "prompt": "A shadow figure made of iridescent green and blue feathers loosely assembled, scattering in the wind.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "電報紙",
+      "seed": 16316,
+      "prompt": "A large telegram form with blue grid lines folded into a sharp creature, the grid empty, no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "虛榮之火的回聲",
+      "seed": 16317,
+      "prompt": "A tall tiered wooden pyramid of a Renaissance bonfire piled with paintings, mirrors, lutes, books and a carnival effigy, flames rising, ghostly on dark water.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "一張白紙",
+      "seed": 16318,
+      "prompt": "A gigantic perfectly blank white sheet of paper taller than a person floating upright, pristine and cold, light reflecting off it; eerie emptiness.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "抄起來的紙",
+      "seed": 16405,
+      "prompt": "A Tang-dynasty papermaker whose body is translucent ink lifts a bamboo papermaking screen from a vat on a black sea; on the screen a pale grey sheet of paper in which countless tiny faint shadows of characters glow when backlit. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
     }
   ]
 }
