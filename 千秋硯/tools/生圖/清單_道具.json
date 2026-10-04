@@ -2354,6 +2354,321 @@
       "seed": 7335,
       "transparent": true,
       "prompt": "A small stack of European paper with lines of handwriting in Latin letters; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "香腸麵包",
+      "seed": 7336,
+      "transparent": true,
+      "prompt": "A dark rye bread roll with a thick sausage."
+    },
+    {
+      "kind": "item",
+      "name": "熱咖啡",
+      "seed": 7337,
+      "transparent": true,
+      "prompt": "A steaming enamel mug of coffee."
+    },
+    {
+      "kind": "item",
+      "name": "銅線",
+      "seed": 7338,
+      "transparent": true,
+      "prompt": "A small coil of copper telegraph wire."
+    },
+    {
+      "kind": "item",
+      "name": "電報紙條",
+      "seed": 7339,
+      "transparent": true,
+      "prompt": "A strip of paper tape with printed dots and dashes."
+    },
+    {
+      "kind": "item",
+      "name": "摩斯電鍵",
+      "seed": 7340,
+      "transparent": true,
+      "prompt": "An old brass Morse telegraph key on a wooden base."
+    },
+    {
+      "kind": "item",
+      "name": "樂譜",
+      "seed": 7341,
+      "transparent": true,
+      "prompt": "A worn book of piano sonatas with pencil notes; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "撕下來的動員令",
+      "seed": 7342,
+      "transparent": true,
+      "prompt": "Half of a torn official poster with a stamped seal; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "沒有送出的電報",
+      "seed": 7343,
+      "transparent": true,
+      "prompt": "A telegram form strip with a few typed letters; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "林文彬的日記",
+      "seed": 7344,
+      "transparent": true,
+      "prompt": "A thin old thread-bound notebook with yellowed pages and mixed handwriting; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "生鏽的銅鈕扣",
+      "seed": 7345,
+      "transparent": true,
+      "prompt": "A small rusty brass military button with a crown design, beside a tiny folded paper note."
+    },
+    {
+      "kind": "item",
+      "name": "煎餅大蔥",
+      "seed": 7346,
+      "transparent": true,
+      "prompt": "A thin folded grain pancake wrapped around a long green scallion."
+    },
+    {
+      "kind": "item",
+      "name": "小米粥",
+      "seed": 7347,
+      "transparent": true,
+      "prompt": "A bowl of golden millet porridge."
+    },
+    {
+      "kind": "item",
+      "name": "彈殼",
+      "seed": 7348,
+      "transparent": true,
+      "prompt": "An empty brass rifle cartridge case."
+    },
+    {
+      "kind": "item",
+      "name": "鐵絲",
+      "seed": 7349,
+      "transparent": true,
+      "prompt": "A short cut piece of barbed wire."
+    },
+    {
+      "kind": "item",
+      "name": "鋼筆",
+      "seed": 7350,
+      "transparent": true,
+      "prompt": "An old black fountain pen with a gold nib."
+    },
+    {
+      "kind": "item",
+      "name": "海軍刀",
+      "seed": 7351,
+      "transparent": true,
+      "prompt": "A short naval dagger with a letter F scratched on the handle."
+    },
+    {
+      "kind": "item",
+      "name": "沒有落下的炸彈",
+      "seed": 7352,
+      "transparent": true,
+      "prompt": "A small early aerial bomb, empty and harmless, with fins."
+    },
+    {
+      "kind": "item",
+      "name": "還回來的土",
+      "seed": 7353,
+      "transparent": true,
+      "prompt": "A small cloth pouch of yellow earth."
+    },
+    {
+      "kind": "item",
+      "name": "奧圖的地址",
+      "seed": 7354,
+      "transparent": true,
+      "prompt": "A small folded slip of paper with a handwritten address; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "聖誕布丁",
+      "seed": 7355,
+      "transparent": true,
+      "prompt": "A round Christmas pudding in a cloth with a sprig of holly."
+    },
+    {
+      "kind": "item",
+      "name": "熱茶",
+      "seed": 7356,
+      "transparent": true,
+      "prompt": "A tin army mug of steaming hot tea."
+    },
+    {
+      "kind": "item",
+      "name": "沙包",
+      "seed": 7357,
+      "transparent": true,
+      "prompt": "A single filled burlap sandbag."
+    },
+    {
+      "kind": "item",
+      "name": "小蠟燭",
+      "seed": 7358,
+      "transparent": true,
+      "prompt": "A small white Christmas candle with a little flame."
+    },
+    {
+      "kind": "item",
+      "name": "信號燈",
+      "seed": 7359,
+      "transparent": true,
+      "prompt": "A WWI-era brass signal lamp."
+    },
+    {
+      "kind": "item",
+      "name": "踩過的泥",
+      "seed": 7360,
+      "transparent": true,
+      "prompt": "A clump of trench mud with a boot print."
+    },
+    {
+      "kind": "item",
+      "name": "朝天的那一槍",
+      "seed": 7361,
+      "transparent": true,
+      "prompt": "An old bolt-action rifle pointing straight up with a small puff of smoke."
+    },
+    {
+      "kind": "item",
+      "name": "交換的鈕扣",
+      "seed": 7362,
+      "transparent": true,
+      "prompt": "A brass British army tunic button with a crown, on a short thread."
+    },
+    {
+      "kind": "item",
+      "name": "罐頭牛肉",
+      "seed": 7363,
+      "transparent": true,
+      "prompt": "A flat WWI-era tin of corned beef, opened."
+    },
+    {
+      "kind": "item",
+      "name": "濕手帕",
+      "seed": 7364,
+      "transparent": true,
+      "prompt": "A damp folded white cotton handkerchief."
+    },
+    {
+      "kind": "item",
+      "name": "紗布",
+      "seed": 7365,
+      "transparent": true,
+      "prompt": "A rolled bandage of clean white gauze."
+    },
+    {
+      "kind": "item",
+      "name": "鋼瓶閥",
+      "seed": 7366,
+      "transparent": true,
+      "prompt": "A small brass valve from a gas cylinder."
+    },
+    {
+      "kind": "item",
+      "name": "護士錶",
+      "seed": 7367,
+      "transparent": true,
+      "prompt": "A small silver nurse's fob watch pinned on a white cloth."
+    },
+    {
+      "kind": "item",
+      "name": "濕布的道理",
+      "seed": 7368,
+      "transparent": true,
+      "prompt": "A damp cloth beside a small glass of water with a faint green wisp dissolving into it."
+    },
+    {
+      "kind": "item",
+      "name": "麵包與雲",
+      "seed": 7369,
+      "transparent": true,
+      "prompt": "A single golden wheat ear with a thin yellow-green wisp of smoke curling around it."
+    },
+    {
+      "kind": "item",
+      "name": "薩克森的鈕扣",
+      "seed": 7370,
+      "transparent": true,
+      "prompt": "A brass German army tunic button with a Saxon royal crown, on a short thread."
+    },
+    {
+      "kind": "item",
+      "name": "收容所的麵包",
+      "seed": 7371,
+      "transparent": true,
+      "prompt": "A large dark round loaf of rye bread."
+    },
+    {
+      "kind": "item",
+      "name": "比利時的蘋果",
+      "seed": 7372,
+      "transparent": true,
+      "prompt": "A single red apple."
+    },
+    {
+      "kind": "item",
+      "name": "樂譜紙",
+      "seed": 7373,
+      "transparent": true,
+      "prompt": "A sheet of printed blank music staff paper; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "停戰的電報",
+      "seed": 7374,
+      "transparent": true,
+      "prompt": "A small telegram form with indistinct handwriting; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "小號",
+      "seed": 7375,
+      "transparent": true,
+      "prompt": "A polished brass trumpet."
+    },
+    {
+      "kind": "item",
+      "name": "所有的人",
+      "seed": 7376,
+      "transparent": true,
+      "prompt": "A folded sheet of choral music tied with a ribbon; notes indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "十一點的鐘",
+      "seed": 7377,
+      "transparent": true,
+      "prompt": "An old silver pocket watch with hands at eleven o'clock; no readable numbers."
+    },
+    {
+      "kind": "item",
+      "name": "名冊的一頁",
+      "seed": 7378,
+      "transparent": true,
+      "prompt": "A single torn page from a ledger, lines of indistinct handwriting, slightly windblown; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "沒有射出的子彈",
+      "seed": 7379,
+      "transparent": true,
+      "prompt": "Five old brass rifle cartridges lying in an open palm-sized cloth."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的鉛筆",
+      "seed": 7380,
+      "transparent": true,
+      "prompt": "A short worn pencil stub with a flattened tip."
     }
   ]
 }

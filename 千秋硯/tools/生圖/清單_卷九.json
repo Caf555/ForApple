@@ -1,0 +1,402 @@
+{
+  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。 回三是 1914 年 12 月的法蘭德斯戰壕：英軍穿卡其色軍服、戴軟布軍帽與羊毛圍巾，德軍穿灰綠色軍服、戴有布套的尖頂盔或無簷軍帽；冬天，泥濘、結霜。 回四是 1915 年 4 月的伊珀爾：德軍戰壕前緣埋著灰色的鋼瓶；英軍與加拿大軍穿卡其色軍服，法國的阿爾及利亞部隊戴紅色圓帽；野戰醫院設在修道院裡，護士穿白色圍裙。毒氣只畫成黃綠色的霧，不要畫受傷或死亡的人的特寫。 回五的前半是 1918 年 6 月日本德島縣的坂東俘虜收容所：木造營舍、德國戰俘穿舊的海軍制服或便服、日本衛兵穿大正時期的軍服、附近的農村與稻田、梅雨；後半是 1918 年 11 月 11 日比利時蒙斯附近的紅磚小村子，深秋、霧。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "萊比錫的廣場",
+      "seed": 14101,
+      "prompt": "Leipzig, Germany, August 1914: the crowded market square on a hot summer day, people in straw hats and parasols cheering and singing, flags hanging from windows, a newsboy on a crate waving papers, the old town hall with its tower. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "電報局",
+      "seed": 14102,
+      "prompt": "Leipzig, Germany, August 1914: inside a large imperial telegraph office: rows of brass Morse telegraph machines on long wooden desks, operators in shirtsleeves wearing headphones, paper tape spilling from receivers, copper wires along the walls, warm lamp light. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "音樂院",
+      "seed": 14103,
+      "prompt": "Leipzig, Germany, August 1914: a quiet practice room in the Leipzig Conservatory: a grand piano by tall windows with afternoon light, sheet music on the stand, a long corridor beyond with doors. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "弗里茨的家",
+      "seed": 14104,
+      "prompt": "Leipzig, Germany, August 1914: a small tidy fourth-floor apartment: a window with lace curtains, a sewing basket, a coffee pot on a table, a framed photo on the wall of a young marine in a white uniform before a church. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "火車站的月台",
+      "seed": 14105,
+      "prompt": "Leipzig, Germany, August 1914: a crowded railway platform: troop trains with soldiers leaning out of windows, flowers stuck in rifle barrels, chalk scrawls on carriages (indistinct), a brass band, women waving handkerchiefs, steam and smoke. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "山東的村子",
+      "seed": 14106,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: a small rain-soaked village of rammed-earth walls and thatched roofs beside tall red sorghum fields, a muddy road with cart tracks, grey sky. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
+      "kind": "bg",
+      "name": "青島外圍的陣地",
+      "seed": 14107,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: trenches and barbed wire on hills outside the city, in the distance German forts on ridges and the town of Tsingtao with red-tiled roofs, a church spire and a large white governor's residence by a deep blue bay. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "插滿鮮花的火車",
+      "seed": 14401,
+      "prompt": "Leipzig, Germany, August 1914: a troop train about to depart: young soldiers in new field-grey uniforms lean from carriage windows grinning, girls push flowers into their rifle barrels, a brass band plays, a mother clings to her son's sleeve; joyful crowd, one older man at the end of the platform not cheering. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "最後一封電報",
+      "seed": 14402,
+      "prompt": "Leipzig, Germany, August 1914: night in the telegraph office: an 18-year-old operator with messy blond hair sits before a brass telegraph key, his finger hovering above it, an old grey-bearded operator with round spectacles watching beside him; single lamp, rows of silent machines. Clothing of 1914: men in suits, straw boater hats and flat caps, women in long skirts, high-collared blouses and wide hats with parasols, German soldiers in field-grey uniforms with spiked helmets (Pickelhaube) covered in cloth. Architecture: tall stone townhouses with steep roofs, the old Renaissance town hall with a tower. No modern objects, no readable text, no Nazi or later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "汝何處人",
+      "seed": 14403,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: in the rain at a village gate, a Taiwanese interpreter in a dark Western suit, round glasses and an armband writes in a small notebook with a fountain pen, showing it to an old Chinese villager holding a mule's rope; the old man writes back; Japanese soldiers in the background; no readable text. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
+      "kind": "cg",
+      "name": "兩架鐵鳥",
+      "seed": 14404,
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: over the bay of Tsingtao, a Japanese seaplane with floats and a German monoplane with dove-shaped wings circle each other in the sky above a seaplane carrier ship and a crane; seen from the shore. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+    },
+    {
+      "kind": "char",
+      "name": "弗里茨",
+      "seed": 14201,
+      "prompt": "An 18-year-old German telegraph apprentice in 1914, messy blond hair, white shirt with rolled sleeves and a grey waistcoat, holding a brass telegraph key, bright eager eyes, a big grin showing one small pointed canine tooth, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "瑪格麗特",
+      "seed": 14202,
+      "prompt": "A 20-year-old British woman music student in Leipzig in 1914, brown hair pinned up, a plain grey long dress with a high collar, holding a worn book of piano sonatas, gentle but determined eyes, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "施密特",
+      "seed": 14203,
+      "prompt": "An old German telegraph operator in his sixties in 1914, white beard, round wire spectacles, a dark waistcoat with sleeve garters, a stern face hiding kindness, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "林阿伯",
+      "seed": 14204,
+      "prompt": "A Taiwanese man in his seventies in Tainan in 2026, neat white short hair, a clean pressed short-sleeved shirt, holding an old biscuit tin, kind weathered face, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "林文彬",
+      "seed": 14205,
+      "prompt": "A 28-year-old Taiwanese man from Tainan in 1914, short neat hair, round wire glasses, a dark Western suit with a white armband, a small notebook and fountain pen in hand, thoughtful gentle face, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "奧圖",
+      "seed": 14206,
+      "prompt": "A 24-year-old German marine stationed in Tsingtao in 1914, blond hair like his younger brother's, a dark blue naval infantry uniform, a short naval dagger at his belt, steady kind eyes, early 20th century style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "號外",
+      "seed": 14301,
+      "prompt": "A whirling flock of fresh newspaper extra editions flapping like birds, wet ink dripping; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "軍樂",
+      "seed": 14302,
+      "prompt": "A marching creature made of brass tubas, drums and cymbals, blaring and stomping.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "電線",
+      "seed": 14303,
+      "prompt": "Copper telegraph wires peeling off poles and writhing like serpents, sparks crackling.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "火車",
+      "seed": 14304,
+      "prompt": "A steam locomotive with chalk-scrawled carriages charging forward, smoke shaped like grasping hands; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "動員令",
+      "seed": 14305,
+      "prompt": "A huge official mobilization poster with heavy stamped seals rising off a wall into a faceless towering figure; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "八月的歡呼",
+      "seed": 14306,
+      "prompt": "A blazing giant formed from a cheering summer crowd, flowers, waving hats and flags, so loud it drowns everything, joyful and terrifying.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "秋雨",
+      "seed": 14307,
+      "prompt": "A heavy autumn rain over sorghum fields condensing into a dripping grey figure, mud splashing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "徵用",
+      "seed": 14308,
+      "prompt": "A creature built from requisitioned mule carts, harnesses and grain sacks, dragging things away.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐵絲網",
+      "seed": 14309,
+      "prompt": "A tangled mass of barbed wire coils on a hillside writhing into a thorny creature.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "探照燈",
+      "seed": 14310,
+      "prompt": "A large military searchlight with a blinding white beam forming a staring eye.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐵鳥",
+      "seed": 14311,
+      "prompt": "An early 1914 aircraft of wood and canvas with dark shadowy wings, bombs hanging beneath, circling menacingly.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "借來的土地",
+      "seed": 14312,
+      "prompt": "A giant figure formed from the yellow earth of a coastal peninsula, sorghum fields, a port and forts on its body, with tattered treaty papers pinned to it, weary and sorrowful; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "bg",
+      "name": "戰壕",
+      "seed": 14108,
+      "prompt": "A muddy German front-line trench in Flanders, winter 1914: walls of sandbags and wooden planks, duckboards over icy water, a dugout entrance with a blanket for a door, soldiers in field-grey greatcoats huddled around a small brazier, frost on the parapet, grey sky. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "無人地帶的霜",
+      "seed": 14109,
+      "prompt": "No man's land in Flanders on a frosty Christmas morning 1914: flat frozen ground between two lines of trenches, shell craters filled with ice, coils of barbed wire, a few bare broken trees, pale winter sun through mist, silent and still. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "char",
+      "name": "湯米",
+      "seed": 14207,
+      "prompt": "A young British infantry private of 1914, about 20 years old, friendly freckled face, wearing a khaki service uniform, soft khaki cap, woollen scarf and puttees, a brass button missing from his tunic, smiling shyly; full body, standing, Flanders winter. No readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "泥水",
+      "seed": 14313,
+      "prompt": "A creature of cold brown trench mud and icy water rising from duckboards, dragging at boots.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "戰壕鼠",
+      "seed": 14314,
+      "prompt": "A huge shadowy trench rat, fat and bold, with gleaming eyes, not gory.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "十二月的冷",
+      "seed": 14315,
+      "prompt": "A spirit of December frost, pale blue and white, made of icicles and freezing mist, breathing cold.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "狙擊手",
+      "seed": 14316,
+      "prompt": "A faceless shadow figure behind a steel loophole plate, only a glint of a rifle scope visible, cold and patient.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無人地帶",
+      "seed": 14317,
+      "prompt": "A vast creature made of frozen craters, barbed wire and broken trees, stretching between two trenches, desolate and silent.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "第二天早上",
+      "seed": 14318,
+      "prompt": "A grey dawn spirit holding an officer's pocket watch and a whistle, a cold morning light around it, solemn rather than evil; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "戰壕上的蠟燭",
+      "seed": 14405,
+      "prompt": "Night, Christmas Eve 1914, Flanders: along the parapet of a German trench a row of small candles and little decorated fir trees glowing in the dark, soldiers in field-grey looking up quietly, frost and stars, the British line faintly visible across no man's land. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "cg",
+      "name": "無人地帶的握手",
+      "seed": 14406,
+      "prompt": "Christmas Day 1914 in no man's land: a young German soldier in field-grey and a young British soldier in khaki shaking hands and laughing between frozen shell craters, other soldiers from both sides behind them exchanging cigarettes and food, frosty morning light, not caricatured. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "野戰醫院",
+      "seed": 14110,
+      "prompt": "A WWI field hospital set up inside an old stone convent in a small town in northern France, April 1915: a long vaulted corridor and cloister filled with rows of stretchers and iron beds, tall windows thrown open, nurses in white aprons and veils, nuns carrying basins, soft spring light, calm and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "enemy",
+      "name": "鋼瓶",
+      "seed": 14319,
+      "prompt": "A tall grey steel gas cylinder half buried in sandbags with a brass valve like a mouth, hissing a thin wisp of pale mist; menacing but not gory.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "西風",
+      "seed": 14320,
+      "prompt": "A spirit of wind made of swirling grass, small torn flags and spring air, pale green and grey, turning its direction.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "咳嗽",
+      "seed": 14321,
+      "prompt": "A hunched shadowy spirit made of grey hospital blankets and breath vapour, shaking, sorrowful rather than frightening.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "高燒",
+      "seed": 14322,
+      "prompt": "A small feverish fire spirit glowing red inside a glass medicine bottle, with heat shimmer around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "綠色的雲",
+      "seed": 14323,
+      "prompt": "A vast low rolling yellow-green cloud spirit creeping along the ground like a moving wall, with faint empty eye-like hollows, no people shown.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "同一雙手",
+      "seed": 14324,
+      "prompt": "A spirit made of two large pale hands emerging from yellow-green light: one hand holds a sheaf of golden wheat, the other grips the brass valve of a grey steel cylinder; solemn and tragic, no face.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "黃綠色的雲",
+      "seed": 14407,
+      "prompt": "Late afternoon, 22 April 1915, near Ypres: seen from behind a German trench line, a huge low yellow-green cloud rolling slowly westward across flat green spring fields toward distant trenches and a few broken trees, sun low in the west; only the cloud and landscape, no casualties shown. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "cg",
+      "name": "修道院裡的鋼琴",
+      "seed": 14408,
+      "prompt": "Night in a convent chapel turned field hospital, April 1915: a young English nurse in a white apron, hair pinned up, playing an old upright piano by candlelight, wounded soldiers on stretchers resting quietly around her, one soldier in a red fez listening; gentle and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "坂東收容所",
+      "seed": 14111,
+      "prompt": "Bando prisoner-of-war camp in Naruto, Tokushima, Japan, rainy season 1918: rows of long wooden barracks with tiled roofs inside a simple wooden fence, the gate open, German prisoners in old navy uniforms and casual clothes trading bread with a Japanese farmer carrying a vegetable basket, green rice paddies and wooded hills behind, light drizzle, peaceful. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "蒙斯的街",
+      "seed": 14112,
+      "prompt": "A small red-brick village near Mons, Belgium, early morning of 11 November 1918: cold mist, broken windows, an abandoned handcart with bedding and a clock, a church bell tower, a low brick wall at the edge of the village facing flat autumn fields and a line of bare trees. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "enemy",
+      "name": "梅雨",
+      "seed": 14325,
+      "prompt": "A grey-blue spirit of endless June rain, made of falling drops and dripping wooden eaves, gloomy and soft.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "號碼",
+      "seed": 14326,
+      "prompt": "A spirit made of hanging wooden prisoner number tags clinking together into a faceless figure; the numbers are indistinct, no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "流感",
+      "seed": 14327,
+      "prompt": "A feverish pale-red spirit made of hot breath and a crumpled army blanket, glowing faintly, sickly but not gory.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "最後的砲彈",
+      "seed": 14328,
+      "prompt": "A large WWI artillery shell standing upright with a fiery glow at its base and a ring of smoke, menacing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "想家",
+      "seed": 14329,
+      "prompt": "A melancholy translucent figure of rain and sea mist sitting on a wooden bunk, looking toward a faraway horizon, holding a tiny toy house; sorrowful, not scary.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "最後的兩分鐘",
+      "seed": 14330,
+      "prompt": "A giant grey stone clock spirit rising from dust and smoke, its hands near eleven o'clock, a church bell hanging inside its chest; solemn and imposing; no readable numbers.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・戰壕之相",
+      "seed": 14331,
+      "prompt": "A tall faceless scribe in a dark long robe and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a short worn pencil and a thick ledger of names, standing in a misty autumn field, pages blowing in the wind, calm and eerie; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "坂東的第九",
+      "seed": 14409,
+      "prompt": "Evening, 1 June 1918, a simple wooden hall in the Bando prisoner camp: a German prisoner orchestra and an all-male choir standing in rows singing, a bearded conductor, a tall blond man playing trumpet with tears on his face; in the audience Japanese officers, village farmers and a bespectacled Taiwanese man in a suit listening; warm lamplight. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "cg",
+      "name": "十一點的田",
+      "seed": 14410,
+      "prompt": "11 o'clock, 11 November 1918, a flat autumn field near Mons: mist lifting, sunlight breaking through, soldiers in field-grey and in khaki slowly standing up from behind a brick wall and a line of trees, some kneeling, some looking at the sky, a bird flying overhead, utterly quiet. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    }
+  ]
+}
