@@ -2151,6 +2151,55 @@
       "seed": 7306,
       "transparent": true,
       "prompt": "A small piece of bark paper painted in red and black with a bearded man on a horse and speech scroll curls; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "莧菜糖",
+      "seed": 7307,
+      "transparent": true,
+      "prompt": "Squares of popped amaranth seeds bound with honey."
+    },
+    {
+      "kind": "item",
+      "name": "龍舌蘭汁",
+      "seed": 7308,
+      "transparent": true,
+      "prompt": "A gourd cup of milky agave sap beside a maguey leaf."
+    },
+    {
+      "kind": "item",
+      "name": "莧菜籽",
+      "seed": 7309,
+      "transparent": true,
+      "prompt": "A small pile of tiny pale amaranth seeds."
+    },
+    {
+      "kind": "item",
+      "name": "柯巴樹脂",
+      "seed": 7310,
+      "transparent": true,
+      "prompt": "A lump of translucent white copal resin."
+    },
+    {
+      "kind": "item",
+      "name": "打開的門",
+      "seed": 7311,
+      "transparent": true,
+      "prompt": "A small stone fragment carved with serpent scales."
+    },
+    {
+      "kind": "item",
+      "name": "再響一次的鼓",
+      "seed": 7312,
+      "transparent": true,
+      "prompt": "A tiny wooden hand drum with a stretched skin."
+    },
+    {
+      "kind": "item",
+      "name": "托納的頭飾",
+      "seed": 7313,
+      "transparent": true,
+      "prompt": "A feather headdress of long green quetzal plumes on a gold wire ring, half the plumes broken."
     }
   ]
 }

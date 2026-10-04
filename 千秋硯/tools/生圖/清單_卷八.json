@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷八〈特諾奇提特蘭〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：墨西卡（阿茲特克）的服飾與建築要依史料、以尊重的方式呈現；不要畫血腥或獻祭場面；不要混入馬雅或後來殖民時代的元素。真實歷史人物（蒙特蘇馬、科爾特斯、瑪林欽）只畫遠景的小人影。不要出現可讀的文字。",
+  "說明": "《千秋硯》卷八〈特諾奇提特蘭〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：墨西卡（阿茲特克）的服飾與建築要依史料、以尊重的方式呈現；不要畫血腥或獻祭場面；不要混入馬雅或後來殖民時代的元素。真實歷史人物（蒙特蘇馬、科爾特斯、瑪林欽）只畫遠景的小人影。不要出現可讀的文字。 回二的托西卡特屠殺不畫殺戮場面，只畫跳舞與事後的空廣場。",
   "items": [
     {
       "kind": "bg",
@@ -32,6 +32,12 @@
       "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: the broad southern causeway across the lake crowded with people and hundreds of canoes on both sides; a feather-covered litter with gold and jade ornaments at one end; at the other end Spanish horsemen in armor with large dogs and a vast column of Tlaxcalan warriors in quilted armor. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
     },
     {
+      "kind": "bg",
+      "name": "大神廟的廣場",
+      "seed": 13106,
+      "prompt": "Tenochtitlan, May 1520: the vast stone-paved courtyard at the foot of the twin-temple pyramid, enclosed by a long wall carved with serpent heads with only a few gates; copal smoke drifting; at dusk, empty and silent, a large upright drum lying on its side. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
       "kind": "cg",
       "name": "堤道上的相遇",
       "seed": 13401,
@@ -42,6 +48,18 @@
       "name": "燈下的樹皮紙",
       "seed": 13402,
       "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: night in the scribes' hall lit by a single clay lamp: a 16-year-old Mexica scribe apprentice sits cross-legged before a blank sheet of bark paper, brush raised but not painting, red and black paint pots beside him, a 17-year-old girl with a red hair ribbon watching; quiet and uncertain. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "托西卡特的舞",
+      "seed": 13403,
+      "prompt": "Tenochtitlan, May 1520: bright midday festival: hundreds of young men in splendid feather headdresses, gold and jade dance hand in hand in great concentric circles in the temple courtyard to the beat of upright drums; in the front ring one young man's long green quetzal plumes rise highest; a girl watches joyfully from a gate; a scribe boy sketches. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "斷了一半的羽毛",
+      "seed": 13404,
+      "prompt": "Tenochtitlan, May 1520: dusk in the empty temple courtyard: a young woman kneels beside a broken upright drum, gathering broken green quetzal feathers from a damaged headdress into her palm; a boy scribe stands beside her; quiet grief, no bodies, no blood. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
     },
     {
       "kind": "char",
@@ -69,6 +87,13 @@
       "name": "露佩",
       "seed": 13204,
       "prompt": "A cheerful Mexican woman in her forties living in Tainan in 2026, curly dark hair tied up, round face, an apron over a colorful embroidered blouse, holding a spatula at a night-market griddle, warm laughing eyes, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "托納",
+      "seed": 13205,
+      "prompt": "A tall cheerful 20-year-old Mexica young warrior in 1520, a white cotton cloak, gold lip and ear ornaments, smiling like his sister, ready for a festival dance, respectful historical style.",
       "transparent": true
     },
     {
@@ -111,6 +136,48 @@
       "name": "預兆",
       "seed": 13306,
       "prompt": "A misty apparition combining a blazing comet in the sky, a temple shrine burning by itself, a boiling lake and the shadowy figure of a weeping woman, dreamlike and ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "莧菜",
+      "seed": 13307,
+      "prompt": "A swirling mass of tiny amaranth seeds and red amaranth plumes forming a creature, a grinding stone at its core.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "螺號",
+      "seed": 13308,
+      "prompt": "A giant conch shell trumpet floating and blaring, sound waves rippling like water.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐵的冷",
+      "seed": 13309,
+      "prompt": "A cold gleaming figure made of Spanish steel helmets, breastplates and sword blades, frost-like glints.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "柯巴香",
+      "seed": 13310,
+      "prompt": "A rising column of white copal incense smoke shaped like a figure with ember eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "關上的門",
+      "seed": 13311,
+      "prompt": "A massive stone gateway in a wall carved with serpent heads, its opening sealed by a row of steel shields, looming and crushing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉默的鼓",
+      "seed": 13312,
+      "prompt": "A large upright Mexica drum with a torn skin, standing alone, an aura of heavy silence and faint echoing rings around it, mournful.",
       "transparent": true
     }
   ]
