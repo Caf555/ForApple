@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。 回二是 1496 年冬末到春天：薩佛納羅拉的少年隊穿白衣、舉紅十字；畫面不要出現裸體。",
+  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。 回二是 1496 年冬末到春天：薩佛納羅拉的少年隊穿白衣、舉紅十字；畫面不要出現裸體。",
   "items": [
     {
       "kind": "bg",
@@ -66,6 +66,18 @@
       "name": "從火裡抓出來的",
       "seed": 12406,
       "prompt": "Florence, Italy, February 1497, early Renaissance: dusk, the bonfire collapsing into embers; an 18-year-old boy in a white tunic at the edge of the fire reaches bare-handed into the flames and pulls out a small smoking scrap of canvas, his face set and pained; close and intimate, no gore. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, boys in plain white tunics with small red crosses. The Piazza della Signoria with the stone Palazzo della Signoria and its tall tower, the open arched loggia beside it. No later Baroque elements, no statues of later centuries, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "兩排柴堆",
+      "seed": 12407,
+      "prompt": "Florence, Italy, April 1498, early Renaissance: the Piazza della Signoria packed with waiting crowds on rooftops and in windows; two long parallel rows of oil-soaked firewood stretch across the square with a very narrow path between them; groups of white-habited Dominican and brown-habited Franciscan friars argue at one end; afternoon sky darkening before rain. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, Franciscan friars in brown habits. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "哭泣的鐘聲",
+      "seed": 12408,
+      "prompt": "Florence, Italy, April 1498, early Renaissance: night inside the bell tower of the convent of San Marco: an old Dominican friar hauls desperately on a thick bell rope, his hands bleeding, the great bronze bell swinging above; torchlight and angry crowds glimpsed far below through the arches. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, Franciscan friars in brown habits. No later Baroque elements, no modern objects, no readable text."
     },
     {
       "kind": "char",
@@ -226,6 +238,48 @@
       "name": "虛榮之火",
       "seed": 12318,
       "prompt": "A colossal figure of roaring bonfire flames rising from a collapsing wooden pyramid, mirrors, lutes, books and paintings burning inside its body, bells in the smoke.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "瀝青",
+      "seed": 12319,
+      "prompt": "A creature of black sticky pitch and oil dripping from stacked firewood, sparks flickering on its surface.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "起鬨",
+      "seed": 12320,
+      "prompt": "A swirling mass of open shouting mouths and pointing hands forming a jeering crowd-spirit.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "飛石",
+      "seed": 12321,
+      "prompt": "A hurling cluster of paving stones and rubble shaped into a crude giant mid-throw.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "警鐘",
+      "seed": 12322,
+      "prompt": "A great bronze convent bell ringing on its own, shockwaves rippling, its rope trailing like a tail.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "四月的雨",
+      "seed": 12323,
+      "prompt": "A sudden spring rain shower condensing into a tall grey figure, extinguished torches smoking in its hands.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "火的審判",
+      "seed": 12324,
+      "prompt": "Two long burning rows of oil-soaked firewood rising like walls with a narrow fiery path between them, the flames forming a judging giant face made of an angry crowd's shapes.",
       "transparent": true
     }
   ]

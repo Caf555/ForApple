@@ -1983,6 +1983,55 @@
       "seed": 7282,
       "transparent": true,
       "prompt": "Half a page of an old handwritten poem with burnt curled edges; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "蠶豆",
+      "seed": 7283,
+      "transparent": true,
+      "prompt": "A handful of fresh green fava bean pods with a wedge of pale cheese."
+    },
+    {
+      "kind": "item",
+      "name": "迷迭香茶",
+      "seed": 7284,
+      "transparent": true,
+      "prompt": "A clay cup of herbal tea with a sprig of rosemary."
+    },
+    {
+      "kind": "item",
+      "name": "濕木頭",
+      "seed": 7285,
+      "transparent": true,
+      "prompt": "A rain-soaked piece of firewood dripping water."
+    },
+    {
+      "kind": "item",
+      "name": "鐘銅屑",
+      "seed": 7286,
+      "transparent": true,
+      "prompt": "A few curls of bronze shavings scraped from a bell."
+    },
+    {
+      "kind": "item",
+      "name": "熄了的火把",
+      "seed": 7287,
+      "transparent": true,
+      "prompt": "An extinguished wooden torch with a wet, smoking tip."
+    },
+    {
+      "kind": "item",
+      "name": "沒有走過去的路",
+      "seed": 7288,
+      "transparent": true,
+      "prompt": "A small flat paving stone with scorch marks along one edge."
+    },
+    {
+      "kind": "item",
+      "name": "鐘繩",
+      "seed": 7289,
+      "transparent": true,
+      "prompt": "A frayed length of thick bell rope stained dark at one end."
     }
   ]
 }
