@@ -1,5 +1,5 @@
 // 劇本執行器：逐行播放劇本、處理選項、效果、戰鬥與演出指令
-import { checkCond, condText, addItem, addCodex, addMember, removeMember, healAll, gainExp, AXES, displayName, saveSlot } from './state.js';
+import { checkCond, condText, addItem, addCodex, addMember, removeMember, healAll, gainExp, AXES, displayName, saveSlot, addCollection } from './state.js';
 import { FORMATIONS } from './data.js';
 
 export class Runner {
@@ -41,6 +41,7 @@ export class Runner {
       }
       if (pc >= scene.cmds.length) { this.ctx.goHub(); return; }
       const c = scene.cmds[pc];
+      if (this.pending && --this.pending.ttl <= 0) this.pending = null;
       try {
         switch (c.t) {
           case 'text':
@@ -75,6 +76,7 @@ export class Runner {
             const idx = await ui.showChoices(shown);
             if (!alive()) return;
             this.pushLog({ t: 'text', text: '▸ ' + shown[idx].label });
+            this.pending = { label: shown[idx].label, ttl: 14 };
             if (!jump(shown[idx].target)) { this.ctx.goHub(); return; }
             break;
           }
@@ -143,6 +145,22 @@ export class Runner {
     return /^(序卷|卷|中章|終卷)/.test(v) ? v : (this.g.lastVol || '卷一');
   }
 
+  // 記下「這個選擇改變了什麼」：會影響後面劇情的旗標（有值的、書記動搖、棄鞭……）
+  noteChoice(key, val) {
+    const g = this.g;
+    if (key === '結局') addCollection('結局', String(val));
+    const m = key.match(/^v(\d+)\.無名客$/);
+    if (m) addCollection('無名客', `${m[1]}.${val}`);
+    if (!this.pending) return;
+    const meaningful = (val != null && isNaN(+val)) || /動搖|棄|自決/.test(key);
+    if (!meaningful || /寶$|完$|^開放|^教學|^配方|^夜話|^收藏/.test(key)) return;
+    const vol = this.volId();
+    g.choices = g.choices || {};
+    const list = g.choices[vol] = (g.choices[vol] || []).filter(x => x.f !== key);
+    list.push({ f: key, c: this.pending.label });
+    this.pending = null;
+  }
+
   pushLog(c) {
     const g = this.g;
     g.log.push({ who: c.who || null, text: c.text });
@@ -159,6 +177,7 @@ export class Runner {
       case '旗標':
         if (c.sign > 0) g.flags[a0] = a1 == null ? 1 : (isNaN(+a1) ? a1 : +a1);
         else delete g.flags[a0];
+        if (c.sign > 0) this.noteChoice(a0, a1);
         break;
       case '羈絆': {
         const v = n(a1) * c.sign;

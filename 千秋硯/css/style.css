@@ -820,3 +820,26 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .od-card small { color: #b8432f; margin-left: 4px; }
 .od-line, .od-pool { width: 100%; align-self: stretch; box-sizing: border-box; }
 .od-line li { width: 100%; }
+.dialog-text { white-space: pre-line; }
+
+/* ───────── 書架：時間軸；手冊：選擇與收藏 ───────── */
+.tl-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.tl-head > div:first-child { flex: 1; } .tl-head b { font-size: 14px; } .tl-head .bar { margin-top: 4px; }
+.timeline { position: relative; padding-left: 64px; }
+.timeline::before { content: ""; position: absolute; left: 52px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--line), var(--accent) 50%, var(--line)); opacity: .7; }
+.timeline.plain { padding-left: 0; } .timeline.plain::before, .timeline.plain .tl-year, .timeline.plain .tl-dot { display: none; }
+.tl-item { position: relative; }
+.tl-year { position: absolute; left: -64px; width: 44px; top: 14px; text-align: right; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.tl-dot { position: absolute; left: -17px; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); }
+.tl-item.open .tl-dot { border-color: var(--accent); }
+.tl-item.here .tl-dot { background: var(--accent); border-color: var(--accent); animation: tlpulse 1.6s ease-in-out infinite; }
+.tl-item.done .tl-dot { background: #c9a45c; border-color: #c9a45c; box-shadow: 0 0 6px rgba(201, 164, 92, .8); }
+.tl-item.done .tl-year { color: var(--accent); font-weight: 600; }
+@keyframes tlpulse { 50% { box-shadow: 0 0 0 5px rgba(201, 164, 92, .25); } }
+.jr-row.tap { width: 100%; font: inherit; color: inherit; text-align: left; cursor: pointer; border: 0; }
+.jr-ends { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.jr-end { padding: 8px 10px; border-radius: 8px; border: 1px dashed var(--line); color: var(--muted); font-size: 13px; }
+.jr-end b { display: block; font-size: 12px; }
+.jr-end.seen { border-style: solid; border-color: #c9a45c; color: var(--ink); background: rgba(201, 164, 92, .08); }
+.jr-choices { margin: 8px 0; padding-left: 1.4em; line-height: 1.7; font-family: var(--serif); }
+.jr-choices li { margin: 4px 0; }
