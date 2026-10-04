@@ -14,6 +14,12 @@ const errors = [];
 const warns = [];
 
 // 角色和敵人用到的技能，都要存在
+// 離線快取：每一個程式檔和劇本都要在 sw.js 的清單裡，不然加到主畫面以後、沒有網路時會打不開
+{
+  const sw = readFileSync(join(root, 'sw.js'), 'utf8');
+  for (const f of readdirSync(join(root, 'js')).filter(f => f.endsWith('.js'))) if (!sw.includes(`'./js/${f}'`)) errors.push(`sw.js 的離線清單少了 js/${f}`);
+  for (const f of files) if (!sw.includes(`'./${f}'`)) errors.push(`sw.js 的離線清單少了 ${f}`);
+}
 // 程式語法：一個打錯的符號就會讓整個遊戲打不開
 import { spawnSync } from 'node:child_process';
 for (const f of readdirSync(join(root, 'js')).filter(f => f.endsWith('.js'))) {
