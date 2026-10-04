@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。",
+  "說明": "《千秋硯》卷九〈戰壕〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：1914～1918 年的服飾與裝備要依史料；不要畫血腥場面；不要出現納粹或其他後來年代的標誌；每一國的士兵都不要醜化。不要出現可讀的文字。 回二是 1914 年秋天的山東與青島：日軍穿卡其色軍服與綁腿，德國海軍陸戰隊穿深藍色軍服，山東村民穿棉布衣褲；林文彬穿深色西裝、戴眼鏡與通譯臂章。 回三是 1914 年 12 月的法蘭德斯戰壕：英軍穿卡其色軍服、戴軟布軍帽與羊毛圍巾，德軍穿灰綠色軍服、戴有布套的尖頂盔或無簷軍帽；冬天，泥濘、結霜。",
   "items": [
     {
       "kind": "bg",
@@ -192,6 +192,78 @@
       "seed": 14312,
       "prompt": "A giant figure formed from the yellow earth of a coastal peninsula, sorghum fields, a port and forts on its body, with tattered treaty papers pinned to it, weary and sorrowful; no readable text.",
       "transparent": true
+    },
+    {
+      "kind": "bg",
+      "name": "戰壕",
+      "seed": 14108,
+      "prompt": "A muddy German front-line trench in Flanders, winter 1914: walls of sandbags and wooden planks, duckboards over icy water, a dugout entrance with a blanket for a door, soldiers in field-grey greatcoats huddled around a small brazier, frost on the parapet, grey sky. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "bg",
+      "name": "無人地帶的霜",
+      "seed": 14109,
+      "prompt": "No man's land in Flanders on a frosty Christmas morning 1914: flat frozen ground between two lines of trenches, shell craters filled with ice, coils of barbed wire, a few bare broken trees, pale winter sun through mist, silent and still. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "char",
+      "name": "湯米",
+      "seed": 14207,
+      "prompt": "A young British infantry private of 1914, about 20 years old, friendly freckled face, wearing a khaki service uniform, soft khaki cap, woollen scarf and puttees, a brass button missing from his tunic, smiling shyly; full body, standing, Flanders winter. No readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "泥水",
+      "seed": 14313,
+      "prompt": "A creature of cold brown trench mud and icy water rising from duckboards, dragging at boots.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "戰壕鼠",
+      "seed": 14314,
+      "prompt": "A huge shadowy trench rat, fat and bold, with gleaming eyes, not gory.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "十二月的冷",
+      "seed": 14315,
+      "prompt": "A spirit of December frost, pale blue and white, made of icicles and freezing mist, breathing cold.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "狙擊手",
+      "seed": 14316,
+      "prompt": "A faceless shadow figure behind a steel loophole plate, only a glint of a rifle scope visible, cold and patient.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無人地帶",
+      "seed": 14317,
+      "prompt": "A vast creature made of frozen craters, barbed wire and broken trees, stretching between two trenches, desolate and silent.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "第二天早上",
+      "seed": 14318,
+      "prompt": "A grey dawn spirit holding an officer's pocket watch and a whistle, a cold morning light around it, solemn rather than evil; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "戰壕上的蠟燭",
+      "seed": 14405,
+      "prompt": "Night, Christmas Eve 1914, Flanders: along the parapet of a German trench a row of small candles and little decorated fir trees glowing in the dark, soldiers in field-grey looking up quietly, frost and stars, the British line faintly visible across no man's land. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
+    },
+    {
+      "kind": "cg",
+      "name": "無人地帶的握手",
+      "seed": 14406,
+      "prompt": "Christmas Day 1914 in no man's land: a young German soldier in field-grey and a young British soldier in khaki shaking hands and laughing between frozen shell craters, other soldiers from both sides behind them exchanging cigarettes and food, frosty morning light, not caricatured. Flanders, Belgium, December 1914. No modern objects, no readable text, no Nazi or later symbols, no gore."
     }
   ]
 }

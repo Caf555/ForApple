@@ -2487,6 +2487,62 @@
       "seed": 7354,
       "transparent": true,
       "prompt": "A small folded slip of paper with a handwritten address; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "聖誕布丁",
+      "seed": 7355,
+      "transparent": true,
+      "prompt": "A round Christmas pudding in a cloth with a sprig of holly."
+    },
+    {
+      "kind": "item",
+      "name": "熱茶",
+      "seed": 7356,
+      "transparent": true,
+      "prompt": "A tin army mug of steaming hot tea."
+    },
+    {
+      "kind": "item",
+      "name": "沙包",
+      "seed": 7357,
+      "transparent": true,
+      "prompt": "A single filled burlap sandbag."
+    },
+    {
+      "kind": "item",
+      "name": "小蠟燭",
+      "seed": 7358,
+      "transparent": true,
+      "prompt": "A small white Christmas candle with a little flame."
+    },
+    {
+      "kind": "item",
+      "name": "信號燈",
+      "seed": 7359,
+      "transparent": true,
+      "prompt": "A WWI-era brass signal lamp."
+    },
+    {
+      "kind": "item",
+      "name": "踩過的泥",
+      "seed": 7360,
+      "transparent": true,
+      "prompt": "A clump of trench mud with a boot print."
+    },
+    {
+      "kind": "item",
+      "name": "朝天的那一槍",
+      "seed": 7361,
+      "transparent": true,
+      "prompt": "An old bolt-action rifle pointing straight up with a small puff of smoke."
+    },
+    {
+      "kind": "item",
+      "name": "交換的鈕扣",
+      "seed": 7362,
+      "transparent": true,
+      "prompt": "A brass British army tunic button with a crown, on a short thread."
     }
   ]
 }
