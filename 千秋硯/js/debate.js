@@ -196,7 +196,135 @@ export class Translate {
     const d = TRANSLATE[id];
     if (!d) throw new Error('沒有這個小遊戲題組：' + id);
     this.d = d; this.i = 0; this.correct = 0;
-    return new Promise(resolve => { this.resolve = resolve; this.render(); });
+    return new Promise(resolve => {
+      this.resolve = resolve;
+      if (d.kind === '研墨') this.renderInk();
+      else if (d.kind === '電碼') this.renderMorse();
+      else this.render();
+    });
+  }
+
+  header() {
+    const r = this.root; r.innerHTML = '';
+    r.classList.add('open');
+    r.appendChild(el('div', { class: 'mg-title' }, this.d.kind + '・' + this.d.title));
+    if (this.d.intro) r.appendChild(el('p', { class: 'mg-intro' }, this.d.intro));
+    r.appendChild(el('p', { class: 'mg-rule' }, this.d.rule));
+    this.body = el('div', { class: 'mg-body' });
+    r.appendChild(this.body);
+  }
+
+  finish(win, scoreText) {
+    cancelAnimationFrame(this.raf);
+    this.body.innerHTML = '';
+    this.body.appendChild(el('div', { class: 'mg-word small' }, scoreText));
+    if (win && this.d.note) this.body.appendChild(el('p', { class: 'mg-intro' }, this.d.note));
+    if (!win && this.d.noteLose) this.body.appendChild(el('p', { class: 'mg-intro' }, this.d.noteLose));
+    this.body.appendChild(el('button', { class: 'btn primary', onclick: () => { this.root.classList.remove('open'); this.resolve(win ? '勝' : '敗'); } }, win ? '過關' : '繼續'));
+  }
+
+  // ───────── 研墨：墨點轉進金色的區塊時，按「研」 ─────────
+  renderInk() {
+    const d = this.d;
+    this.header();
+    const total = d.total || 8, need = d.need || 5;
+    let tries = 0, hits = 0, zoneW = d.zone || 70, zoneA = 40 + Math.random() * 280, angle = 0, last = performance.now();
+    const speed = d.speed || 140; // 每秒幾度
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 200 200'); svg.setAttribute('class', 'mg-ink');
+    const mk = (tag, attrs) => { const n = document.createElementNS(ns, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); svg.appendChild(n); return n; };
+    mk('circle', { cx: 100, cy: 100, r: 88, class: 'ink-stone' });
+    const pool = mk('circle', { cx: 100, cy: 100, r: 62, class: 'ink-pool' });
+    const zone = mk('path', { class: 'ink-zone' });
+    const dot = mk('circle', { r: 9, class: 'ink-dot' });
+    const polar = (deg, r) => [100 + r * Math.cos((deg - 90) * Math.PI / 180), 100 + r * Math.sin((deg - 90) * Math.PI / 180)];
+    const drawZone = () => {
+      const [x1, y1] = polar(zoneA, 76), [x2, y2] = polar(zoneA + zoneW, 76);
+      zone.setAttribute('d', `M ${x1} ${y1} A 76 76 0 ${zoneW > 180 ? 1 : 0} 1 ${x2} ${y2}`);
+    };
+    drawZone();
+    const count = el('div', { class: 'mg-progress' }, `第 1 / ${total} 次　研好 0`);
+    const btn = el('button', { class: 'btn primary mg-tap' }, '研');
+    this.body.append(count, svg, btn);
+    const tick = now => {
+      angle = (angle + speed * (now - last) / 1000) % 360; last = now;
+      const [x, y] = polar(angle, 76);
+      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      this.raf = requestAnimationFrame(tick);
+    };
+    this.raf = requestAnimationFrame(tick);
+    const press = () => {
+      if (tries >= total) return;
+      tries++;
+      const rel = (angle - zoneA + 360) % 360;
+      const ok = rel <= zoneW;
+      if (ok) {
+        hits++;
+        this.ctx.audio.sfx('ink');
+        pool.style.fillOpacity = String(0.15 + 0.85 * hits / total);
+        zoneW = Math.max(32, zoneW - 5);
+      } else this.ctx.audio.sfx('fail');
+      svg.classList.remove('hit', 'miss'); void svg.offsetWidth; svg.classList.add(ok ? 'hit' : 'miss');
+      zoneA = Math.random() * 360; drawZone();
+      count.textContent = `第 ${Math.min(tries + 1, total)} / ${total} 次　研好 ${hits}`;
+      if (tries >= total) setTimeout(() => this.finish(hits >= need, `研好 ${hits} / ${total}`), 500);
+    };
+    btn.onclick = press;
+  }
+
+  // ───────── 電碼：短按「·」，長按「−」 ─────────
+  renderMorse() {
+    const d = this.d;
+    this.header();
+    let i = 0, correct = 0, input = '', downAt = 0, timer = null;
+    const word = el('div', { class: 'mg-q' });
+    const target = el('div', { class: 'mg-morse-target' });
+    const shown = el('div', { class: 'mg-morse-in' });
+    const prog = el('div', { class: 'mg-progress' });
+    const key = el('button', { class: 'btn primary mg-key' }, '按住電鍵');
+    const show = () => {
+      const it = d.items[i];
+      prog.textContent = `${i + 1} / ${d.items.length}　打對 ${correct}`;
+      word.textContent = it.w;
+      target.textContent = d.hideCode ? '' : it.code.split('').join(' ');
+      shown.textContent = input ? input.split('').join(' ') : '　';
+    };
+    const check = () => {
+      const it = d.items[i];
+      if (input.length < it.code.length) return;
+      const ok = input === it.code;
+      if (ok) correct++;
+      this.ctx.audio.sfx(ok ? 'good' : 'fail');
+      shown.classList.remove('right', 'wrong'); shown.classList.add(ok ? 'right' : 'wrong');
+      key.disabled = true;
+      setTimeout(() => {
+        shown.classList.remove('right', 'wrong'); key.disabled = false;
+        i++; input = '';
+        if (i >= d.items.length) return this.finish(correct >= d.need, `打對 ${correct} / ${d.items.length}`);
+        show();
+      }, 800);
+    };
+    const down = e => { e.preventDefault(); if (key.disabled) return; downAt = performance.now(); this.ctx.audio.keyOn(); key.classList.add('down'); };
+    const up = e => {
+      e.preventDefault();
+      if (!downAt) return;
+      const ms = performance.now() - downAt; downAt = 0;
+      this.ctx.audio.keyOff(); key.classList.remove('down');
+      input += ms < 230 ? '·' : '−';
+      show();
+      clearTimeout(timer); timer = setTimeout(check, 50);
+    };
+    key.addEventListener('pointerdown', down);
+    key.addEventListener('pointerup', up);
+    key.addEventListener('pointerleave', e => { if (downAt) up(e); });
+    key.addEventListener('contextmenu', e => e.preventDefault());
+    // 鍵盤也能打：按住空白鍵或 Enter
+    key.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat && !downAt) down(e); });
+    key.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') up(e); });
+    const clear = el('button', { class: 'btn small', onclick: () => { input = ''; show(); } }, '重打這一個');
+    this.body.append(prog, word, target, shown, key, clear, el('p', { class: 'muted small' }, '短短地按一下是「·」，按久一點（大約半秒）是「−」。'));
+    show();
   }
 
   render() {

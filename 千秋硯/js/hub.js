@@ -1,6 +1,6 @@
 // 時之書齋（據點）與各種選單
 import { VOLUMES, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
-import { histDone, histTotal, histRate, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
+import { histDone, histTotal, histRate, goodEnds, wavers, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
 import { el } from './ui.js';
 
 const CATS = ['人物誌', '地理誌', '器物誌', '典故', '妖物誌'];
@@ -28,8 +28,54 @@ export class Hub {
     const talks = this.availableTalks();
     room('茶室', '與夥伴夜話', () => this.teaRoom(), !!g.flags['開放.茶室'], talks.length ? '新' : null);
     room('隊伍', '陣法・裝備', () => this.party());
+    room('手冊', '祖父的手冊・旅程', () => this.journal());
     r.appendChild(grid);
     r.appendChild(el('p', { class: 'hub-note' }, '在書齋裡，全隊的體與墨都會完全回復。'));
+  }
+
+  // ───────── 祖父的手冊：旅程進度（結局的條件） ─────────
+  journal() {
+    const g = this.g;
+    const VOLS = [['卷一', 'v1', '石頭'], ['卷二', 'v2', '十七'], ['卷三', 'v3', '摩斯'], ['卷四', 'v4', '尼科'], ['卷五', 'v5', '瓦蘇'],
+      ['卷六', 'v6', '宋楮'], ['卷七', 'v7', '盧卡'], ['卷八', 'v8', '奇瑪'], ['卷九', 'v9', '弗里茨'], ['卷十', 'v10', '程晴']];
+    const finale = !!g.flags['卷完.卷十'];
+    this.ui.sheet('祖父的手冊', body => {
+      body.appendChild(el('p', { class: 'muted' }, '手冊的每一頁，都記著一段旅程。有些選擇，會在很久以後，才聽見回聲。'));
+      const stat = (label, value, note) => el('div', { class: 'jr-stat' }, el('b', {}, label), el('span', {}, value), note ? el('small', {}, note) : null);
+      const bond = bondLevel(g.bonds['蘅'] || 0);
+      body.appendChild(el('div', { class: 'jr-stats' },
+        stat('史冊修復', `${histDone(g)}／${histTotal()}`, `${histRate(g)}%`),
+        stat('與蘅的羈絆', '●'.repeat(bond) + '○'.repeat(5 - bond), `${bond} 級`),
+        stat('無名客善終', `${goodEnds(g)} 卷`, ''),
+        stat('書記動搖', `${wavers(g)} 次`, '')));
+      body.appendChild(el('h3', { class: 'jr-h' }, '無名客'));
+      const tbl = el('div', { class: 'jr-list' });
+      for (const [vid, v, who] of VOLS) {
+        const done = g.flags['卷完.' + vid];
+        const r = g.flags[v + '.無名客'];
+        const mark = !done ? '—' : r === '善' ? '善終' : r === '苦' ? '遺憾' : '—';
+        const wav = g.flags[v + '.書記動搖'] ? '書記動搖' : '';
+        tbl.appendChild(el('div', { class: 'jr-row' + (r === '善' ? ' good' : r === '苦' ? ' bad' : '') },
+          el('span', { class: 'jr-vol' }, vid), el('span', { class: 'jr-who' }, done ? who : '？'), el('span', { class: 'jr-res' }, mark), el('small', {}, wav)));
+      }
+      body.appendChild(tbl);
+      if (finale) {
+        const ok = b => b ? '✓' : '　';
+        body.appendChild(el('h3', { class: 'jr-h' }, '終卷'));
+        const lines = [
+          [ok(bond >= 5), '與蘅的羈絆 5 級'],
+          [ok(goodEnds(g) >= 7), '無名客在 7 卷以上善終'],
+          [ok(wavers(g) >= 5), '無面書記動搖 5 次以上（祖父才想得起來）'],
+          [ok(histRate(g) >= 90), '史冊修復率 90% 以上'],
+        ];
+        if (g.flags['終.祖父']) lines.push([ok(g.flags['終.祖父'] === '想起'), '祖父想起了父親的名字']);
+        if (g.flags['終.論辯']) lines.push([ok(g.flags['終.論辯'] === '勝'), '用話語說服了安寧']);
+        body.appendChild(el('div', { class: 'jr-list' }, ...lines.map(([m, t]) => el('div', { class: 'jr-row' + (m === '✓' ? ' good' : '') }, el('span', { class: 'jr-vol' }, m), el('span', {}, t)))));
+        if (g.flags['結局']) body.appendChild(el('p', { class: 'muted' }, `你看過的結局：${{ 一: '一、記得一切', 二: '二、溫柔的遺忘', 三: '三、補史人的代價', 真: '真結局〈千秋〉' }[g.flags['結局']] || ''}`));
+      } else {
+        body.appendChild(el('p', { class: 'muted small' }, '走完卷十以後，這裡會出現更多的頁。'));
+      }
+    });
   }
 
   availableTalks() {

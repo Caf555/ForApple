@@ -71,8 +71,35 @@ export class Audio {
       case 'card': this.note(196, t, 2.5, 'sine', 0.08); this.note(293.7, t + 0.05, 2.5, 'sine', 0.05); break;
       case 'item': this.note(880, t, 0.15, 'sine', 0.06); this.note(1318, t + 0.08, 0.25, 'sine', 0.06); break;
       case 'win': [0, 4, 7, 12, 16].forEach((s, i) => this.note(392 * Math.pow(2, s / 12), t + i * 0.09, 0.5, 'triangle', 0.07)); break;
+      // 屬性打擊聲：疊在一般的打擊聲上面
+      case 'el-金': this.note(2093, t, 0.35, 'square', 0.025); this.note(3136, t + 0.01, 0.25, 'sine', 0.03); break;
+      case 'el-木': this.note(330, t, 0.08, 'triangle', 0.12); this.noise(t, 0.06, 900, 0.12); break;
+      case 'el-水': { const o = this.ac.createOscillator(); const g = this.ac.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(900, t); o.frequency.exponentialRampToValueAtTime(260, t + 0.18); g.gain.setValueAtTime(0.07, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 0.25); this.noise(t, 0.25, 600, 0.08); break; }
+      case 'el-火': [0, 0.05, 0.11, 0.16].forEach(d => this.noise(t + d, 0.07, 3000 + Math.random() * 2000, 0.12)); this.noise(t, 0.35, 300, 0.1); break;
+      case 'el-土': this.note(65, t, 0.3, 'sine', 0.22); this.noise(t, 0.2, 180, 0.2); break;
+      case 'el-陰': this.note(155, t, 0.5, 'sine', 0.06); this.note(164.8, t, 0.5, 'sine', 0.06); break;
+      case 'el-陽': [0, 7, 12].forEach((s2, i) => this.note(1046 * Math.pow(2, s2 / 12), t + i * 0.03, 0.4, 'sine', 0.03)); break;
+      // 敵人倒下、首領的重音、蓄力、打斷
+      case 'down': [12, 7, 3, 0].forEach((s2, i) => this.note(330 * Math.pow(2, s2 / 12), t + i * 0.06, 0.25, 'triangle', 0.05)); this.noise(t + 0.2, 0.4, 500, 0.06); break;
+      case 'boss': this.note(55, t, 1.6, 'sawtooth', 0.05); this.note(82.4, t, 1.6, 'sine', 0.1); this.note(110, t + 0.02, 1.4, 'sine', 0.06); this.noise(t, 0.6, 120, 0.25); break;
+      case 'charge': { const o = this.ac.createOscillator(); const g = this.ac.createGain(); o.type = 'sawtooth'; o.frequency.setValueAtTime(80, t); o.frequency.exponentialRampToValueAtTime(320, t + 1.1); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.9); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.2); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 1.25); break; }
+      case 'break': this.noise(t, 0.25, 2500, 0.3); this.note(1568, t, 0.15, 'square', 0.04); this.note(784, t + 0.08, 0.3, 'triangle', 0.08); break;
+      // 研墨：沙、沙、沙
+      case 'ink': [0, 0.42, 0.84].forEach(d => { this.noise(t + d, 0.34, 1800, 0.07); this.noise(t + d + 0.05, 0.28, 700, 0.05); }); break;
+      case 'tick': this.note(1760, t, 0.03, 'square', 0.03); break;
+      case 'good': this.note(988, t, 0.12, 'sine', 0.06); this.note(1319, t + 0.06, 0.18, 'sine', 0.05); break;
     }
   }
+
+  // 電碼的電鍵：按住時響，放開就停
+  keyOn() {
+    if (!this.on || !this.ac || this.keyOsc) return;
+    const o = this.ac.createOscillator(); const g = this.ac.createGain();
+    o.type = 'sine'; o.frequency.value = 680; g.gain.value = 0.06;
+    o.connect(g); g.connect(this.master); o.start();
+    this.keyOsc = o;
+  }
+  keyOff() { if (this.keyOsc) { try { this.keyOsc.stop(); } catch (e) { /* 已停止 */ } this.keyOsc = null; } }
 
   music(name, force) {
     this.want = name;

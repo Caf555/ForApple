@@ -111,6 +111,7 @@ export class Battle {
     }
 
     this.log(this.enc.boss ? '強大的氣息逼近！' : '妖物出現了！');
+    if (this.enc.boss) { this.ctx.audio.sfx('boss'); this.quake(); this.ctx.ui.vibrate(40); }
 
     while (!this.over) {
       this.round++;
@@ -178,6 +179,7 @@ export class Battle {
       if (act.type !== 'flee') this.lastActions[u.key] = act;
     }
     await this.execute(u, act);
+    await this.phaseCheck();
     this.tick(u);
     this.highlight(null);
     this.renderAll();
@@ -202,7 +204,26 @@ export class Battle {
       if (p.target && !p.target.alive) p.target = pick(this.allies.filter(a => a.alive));
       return p;
     }
+    // 首領：每三個行動，會有一次「蓄力」——先預告，下一回合才使出全力的大招
+    if (u.def.rank === '首領') {
+      if (u.charging) {
+        const c = u.charging; u.charging = null;
+        return { type: 'skill', skill: c.skill, target: pick(this.allies.filter(a => a.alive)), big: true };
+      }
+      u.turns = (u.turns || 0) + 1;
+      const big = this.bigSkill(u);
+      if (big && u.turns % 3 === 2) { u.charging = { skill: big }; return { type: 'charge' }; }
+    }
     return this.rollFoeAct(u);
+  }
+
+  // 首領的大招：資料裡有指定 big 就用它；否則挑全體攻擊、威力最大的那一招
+  bigSkill(u) {
+    if (u.def.big && SKILLS[u.def.big]) return u.def.big;
+    const dmg = u.def.skills.map(([n]) => n).filter(n => SKILLS[n] && ['phy', 'mag'].includes(SKILLS[n].type));
+    if (!dmg.length) return null;
+    const score = n => { const k = SKILLS[n]; return (k.target === 'enemies' ? 1000 : 0) + (k.type === 'mag' ? k.power : k.power * 40); };
+    return dmg.sort((a, b) => score(b) - score(a))[0];
   }
 
   rollFoeAct(u) {
@@ -225,7 +246,7 @@ export class Battle {
     const heal = skills.find(s => SKILLS[s].type === 'heal');
     if (hurt && heal) return { type: 'skill', skill: heal, target: SKILLS[heal].target === 'allies' ? null : hurt };
     const foes = this.foes.filter(f => f.alive);
-    const weakest = foes.sort((a, b) => a.hp - b.hp)[0];
+    const weakest = foes.find(f => f.charging) || foes.sort((a, b) => a.hp - b.hp)[0];
     const dmg = skills.filter(s => ['mag', 'phy'].includes(SKILLS[s].type));
     if (dmg.length && Math.random() < 0.55) {
       const best = dmg.map(s => ({ s, m: elementMult(this.skillEl(SKILLS[s], weakest), weakest.el) * (SKILLS[s].power || 1) })).sort((a, b) => b.m - a.m)[0].s;
@@ -395,10 +416,29 @@ export class Battle {
         const sk = SKILLS[act.skill];
         if (u.side === 'ally' && sk.type !== 'phy' && u.status.褪色) { this.log(`${u.name} 的字褪色了，使不出術法！`); await this.pause(); break; }
         u.mp -= sk.cost;
-        this.log(`${u.name} 使出「${act.skill}」！`);
+        if (act.big) {
+          this.log(`${u.name} 使出了全力的「${act.skill}」！`);
+          this.quake(); this.ctx.ui.vibrate([30, 30, 60]); this.ctx.audio.sfx('boss');
+          this.bigMult = 1.6;
+        } else this.log(`${u.name} 使出「${act.skill}」！`);
         await this.pause(0.4);
         await this.applySkill(u, sk, act.target);
+        this.bigMult = 1;
         await this.pause();
+        break;
+      }
+      case 'charge': {
+        const sk = u.charging && u.charging.skill;
+        this.log(`⚠ ${u.name} 正在蓄力……下一回合將使出全力的「${sk}」！`);
+        if (!this.chargeHinted) {
+          this.chargeHinted = true;
+          this.log('（「防禦」可以把傷害減半；用它怕的屬性打中它，或打出暴擊，就能打斷它。）');
+        }
+        this.float(u, '蓄力', 'charge');
+        this.flashScreen();
+        this.ctx.audio.sfx('charge');
+        this.ctx.ui.vibrate(25);
+        await this.pause(1.3);
         break;
       }
       case 'combo': {
@@ -542,8 +582,17 @@ export class Battle {
     const crit = forceCrit || Math.random() < 0.05 + (this.stat(u, 'luk') || 0) / 2000;
     if (crit) { dmg *= 1.5; if (t.side === 'foe') this.ctx.ui.vibrate(35); }
     if (t.defending) dmg *= 0.5;
+    if (this.bigMult && u.side === 'foe') dmg *= this.bigMult;
     dmg = Math.max(1, Math.round(dmg));
     this.damage(t, dmg);
+    // 打斷蓄力：用它怕的屬性打中，或打出暴擊
+    if (t.charging && t.alive && (mult >= 1.3 || crit)) {
+      const sk = t.charging.skill;
+      t.charging = null;
+      t.status.定身 = 1;
+      this.interrupted = (this.interrupted || []).concat(`「${sk}」被打斷了！${t.name} 失去了平衡。`);
+      this.float(t, '打斷', 'charge');
+    }
     let note = '';
     if (mult >= 1.5) note = '（相剋！）';
     else if (mult > 1) note = '（陰陽相衝！）';
@@ -552,12 +601,15 @@ export class Battle {
     this.log(`${crit ? '暴擊！' : ''}${t.name} 受到 ${dmg} 點傷害${note}`);
     this.float(t, String(dmg), crit ? 'crit' : 'dmg');
     this.ctx.audio.sfx(crit ? 'crit' : magic ? 'magic' : 'hit');
-    if (!t.alive) this.log(`${t.name} ${t.side === 'foe' ? '潰散了。' : '倒下了！'}`);
+    if (element && element !== '無') this.ctx.audio.sfx('el-' + element);
+    if (this.interrupted && this.interrupted.length) { this.interrupted.forEach(m => this.log(m)); this.interrupted = []; this.ctx.audio.sfx('break'); this.ctx.ui.vibrate([20, 30, 20]); }
+    if (!t.alive) { this.log(`${t.name} ${t.side === 'foe' ? '潰散了。' : '倒下了！'}`); if (t.side === 'foe') this.ctx.audio.sfx('down'); }
   }
 
   damage(t, n) {
     t.hp = Math.max(0, t.hp - n);
-    if (t.hp <= 0) { t.alive = false; t.status = {}; t.buffs = []; }
+    if (t.hp <= 0) { t.alive = false; t.status = {}; t.buffs = []; t.charging = null; }
+    else if (t.side === 'foe' && t.def.rank === '首領' && !t.phase2 && t.hp <= t.maxhp * 0.5) t.phaseDue = true;
     const node = this.nodes && this.nodes[t.id];
     if (node) { node.classList.remove('shake'); void node.offsetWidth; node.classList.add('shake'); clearTimeout(node.shakeT); node.shakeT = setTimeout(() => node.classList.remove('shake'), 380); }
   }
@@ -594,6 +646,29 @@ export class Battle {
       this.log(`封靈失敗……${t.name} 掙脫了。（成功率約 ${Math.round(chance * 100)}%）`);
     }
     await this.pause();
+  }
+
+  // 首領的體剩一半：變身（換屬性、說一句話、力與神提升）
+  async phaseCheck() {
+    for (const f of this.foes) {
+      if (!f.phaseDue || !f.alive) continue;
+      f.phaseDue = false; f.phase2 = true;
+      const p = f.def.phase2 || {};
+      this.flashScreen(); this.quake();
+      this.ctx.audio.sfx('boss'); this.ctx.ui.vibrate([30, 40, 60]);
+      this.log(p.line || `${f.name} 被逼急了——它的樣子變了！`);
+      if (p.element && p.element !== f.el) { f.el = p.element; f.atkEl = p.element; this.log(`${f.name} 的屬性，變成了「${p.element}」！`); }
+      f.buffs.push({ stat: 'atk', mult: 1.2, turns: 99 }, { stat: 'mag', mult: 1.2, turns: 99 });
+      this.float(f, '變', 'charge');
+      this.renderAll();
+      await this.pause(1.4);
+    }
+  }
+
+  quake() {
+    const r = this.root;
+    r.classList.remove('quake'); void r.offsetWidth; r.classList.add('quake');
+    clearTimeout(this.quakeT); this.quakeT = setTimeout(() => r.classList.remove('quake'), 520);
   }
 
   flashScreen() {
@@ -744,6 +819,8 @@ export class Battle {
         if (f.sealed) n.classList.add('sealed');
       }
       const bar = n.querySelector('.fc-bar'); bar.innerHTML = ''; bar.appendChild(ui.bar(f.hp, f.maxhp, 'hp'));
+      const elSpan = n.querySelector('.elem'); if (elSpan && elSpan.textContent !== f.el) { elSpan.textContent = f.el; elSpan.className = 'elem e-' + f.el; n.querySelector('.foe-blob').textContent = f.el; }
+      n.classList.toggle('charging', !!f.charging && f.alive);
       n.querySelector('.fc-status').textContent = Object.keys(f.status).join(' ') + (f.buffs.length ? ' ' + f.buffs.map(b => (b.mult > 1 ? '↑' : '↓')).join('') : '');
     }
     for (const a of this.allies) {

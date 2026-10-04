@@ -175,7 +175,10 @@ export class UI {
 
   setTheme(theme) {
     const t = theme || 'modern';
-    if (this.curTheme && this.curTheme !== t && t !== 'hub' && document.body.dataset.mode === 'story') this.ink();
+    if (this.curTheme && this.curTheme !== t && t !== 'hub' && document.body.dataset.mode === 'story') {
+      this.ink();
+      if (t !== 'modern') this.ctx.audio.sfx('ink');
+    }
     this.curTheme = t;
     document.body.dataset.vtheme = t;
     this.setAmbient(t);
@@ -193,7 +196,7 @@ export class UI {
   setAmbient(theme) {
     const box = this.ambientEl;
     if (!box) return;
-    const kind = this.settings.ambient ? ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', sky: 'glow', abyss: 'ink', hub: 'ink', modern: 'glow' }[theme] || '') : '';
+    const kind = !this.settings.ambient ? '' : this.weather != null ? this.weather : ({ dayuan: 'dust', muye: 'ember', amarna: 'sand', athens: 'leaf', kalinga: 'rain', fifties: 'dust', tang: 'petal', steppe: 'sand', florence: 'ember', mexica: 'petal', trench: 'rain', sky: 'glow', abyss: 'paper', hub: 'ink', modern: 'glow' }[theme] || '');
     if (box.dataset.kind === kind) return;
     box.dataset.kind = kind;
     box.innerHTML = '';
@@ -208,6 +211,27 @@ export class UI {
         '--sz': (2 + Math.random() * (kind === 'ink' ? 5 : 3)).toFixed(1) + 'px',
       } }));
     }
+  }
+
+  // ───────── 劇本演出：天氣、震動、閃白、淡黑 ─────────
+  // 天氣蓋過主題本來的氛圍粒子；傳 null 就恢復主題預設
+  setWeather(w) {
+    const map = { 雨: 'rain', 雪: 'snow', 落花: 'petal', 火星: 'ember', 墨: 'ink', 光: 'glow', 落紙: 'paper', 沙: 'sand', 葉: 'leaf', 塵: 'dust', 無: '' };
+    this.weather = w == null || w === '預設' ? null : (map[w] ?? null);
+    if (this.ambientEl) this.ambientEl.dataset.kind = '\u0000';
+    this.setAmbient(this.curTheme);
+  }
+  quakeScreen(strong) {
+    const a = $('app');
+    a.classList.remove('quake'); void a.offsetWidth; a.classList.add('quake');
+    setTimeout(() => a.classList.remove('quake'), 520);
+    this.vibrate(strong ? [40, 40, 80] : 30);
+  }
+  fx(kind, ms) {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return Promise.resolve();
+    const o = $('fx');
+    o.className = ''; void o.offsetWidth; o.className = kind;
+    return new Promise(r => setTimeout(() => { r(); }, ms));
   }
 
   // ───────── 對話半身像 ─────────

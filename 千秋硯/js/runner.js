@@ -239,7 +239,11 @@ export class Runner {
       case '地點': g.loc.place = arg; ui.setHeader(g.loc); return;
       case '年代': g.loc.year = arg; ui.setHeader(g.loc); return;
       case '卷': g.loc.vol = arg; if (/^(序卷|卷|中章|終卷)/.test(arg)) g.lastVol = arg.split('・')[0]; ui.setHeader(g.loc); return;
-      case '主題': g.loc.theme = arg; ui.setTheme(arg); return;
+      case '主題': g.loc.theme = arg; g.loc.weather = null; ui.weather = null; ui.setTheme(arg); return;
+      case '天氣': g.loc.weather = arg === '預設' ? null : arg; ui.setWeather(g.loc.weather); return;
+      case '震動': ui.quakeScreen(arg === '強'); audio.sfx(arg === '強' ? 'boss' : 'break'); await ui.fx('', 450); return;
+      case '閃白': await ui.fx('white', 700); return;
+      case '淡黑': await ui.fx('black', 1500); return;
       case '背景': g.loc.bg = arg === '無' ? '' : arg; ui.setBanner(g.loc.bg); return;
       case '插圖': {
         const [name, ...cap] = arg.split(/\s+/);
@@ -294,7 +298,7 @@ export class Runner {
       }
       case '小遊戲': {
         const [kind, id] = arg.split(/\s+/);
-        if (!['譯字', '牽星', '識字', '透視'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
+        if (!['譯字', '牽星', '識字', '透視', '研墨', '電碼'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
         const r = await this.ctx.translate.start(id);
         const t = c.out && c.out[r];
         return t ? '→' + t : undefined;
