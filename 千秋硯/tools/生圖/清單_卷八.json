@@ -1,0 +1,117 @@
+{
+  "說明": "《千秋硯》卷八〈特諾奇提特蘭〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：墨西卡（阿茲特克）的服飾與建築要依史料、以尊重的方式呈現；不要畫血腥或獻祭場面；不要混入馬雅或後來殖民時代的元素。真實歷史人物（蒙特蘇馬、科爾特斯、瑪林欽）只畫遠景的小人影。不要出現可讀的文字。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "府城夜市",
+      "seed": 13101,
+      "prompt": "Tainan, Taiwan, 2026: a lively night market lane at night with steaming food stalls, lanterns and crowds; at the end a small stall with a hand-painted sign and colorful papel picado banners where a Mexican woman cooks tortillas on a griddle. Modern day, signs indistinct, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "湖上之城",
+      "seed": 13102,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: a wide view of the island city floating on the lake: canals full of canoes laden with flowers and maize, white houses with flowering roof gardens, the great twin-temple pyramid at the center, long causeways reaching to the shore, a smoking volcano far away, bright highland light. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "羽毛工坊",
+      "seed": 13103,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: inside a featherworker's (amanteca) workshop: a low room with woven reed mats, a wooden board covered in cotton cloth on which a hummingbird mosaic is being assembled from tiny iridescent feathers, bundles of green quetzal, blue, red macaw and yellow feathers hanging, bird cages, soft light from a canal-side doorway. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "抄寫員的房間",
+      "seed": 13104,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: inside a long stone school hall (calmecac): young scribes sit on reed mats painting on long screen-folded bark-paper books with red, black, blue and yellow pigments, clay pots of paint and brushes, painted images of people, places and day signs (no readable text). Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "堤道",
+      "seed": 13105,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: the broad southern causeway across the lake crowded with people and hundreds of canoes on both sides; a feather-covered litter with gold and jade ornaments at one end; at the other end Spanish horsemen in armor with large dogs and a vast column of Tlaxcalan warriors in quilted armor. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "堤道上的相遇",
+      "seed": 13401,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: seen from a distance on the causeway: the slender Mexica ruler in a green feather headdress steps down from his litter among barefoot nobles; facing him a bearded Spanish captain in armor; between them stands an Indigenous woman in a huipil interpreting; Spanish horsemen and dogs, Tlaxcalan warriors behind; crowds in canoes watching; figures small, faces not detailed. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "燈下的樹皮紙",
+      "seed": 13402,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: night in the scribes' hall lit by a single clay lamp: a 16-year-old Mexica scribe apprentice sits cross-legged before a blank sheet of bark paper, brush raised but not painting, red and black paint pots beside him, a 17-year-old girl with a red hair ribbon watching; quiet and uncertain. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "char",
+      "name": "奇瑪",
+      "seed": 13201,
+      "prompt": "A 16-year-old Mexica scribe apprentice in 1519, short black hair, a white cotton cloak knotted at one shoulder and a loincloth, red and black paint on his fingers, holding a reed brush and a folded bark-paper book, a small obsidian knife at his waist, a bright grin showing one small pointed canine tooth, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "席特拉莉",
+      "seed": 13202,
+      "prompt": "A 17-year-old Mexica featherworker's daughter in 1519, long black hair tied with a red ribbon, an embroidered huipil blouse and wrap skirt, a fan of green, blue and red feathers in hand, a fine bone needle tucked in her hair, sharp watchful eyes, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "阿卡特",
+      "seed": 13203,
+      "prompt": "An elderly Mexica master scribe in 1519, white hair, a plain white cotton cloak, fingers stained red and black, a calm wise lined face, holding a long folded bark-paper book, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "露佩",
+      "seed": 13204,
+      "prompt": "A cheerful Mexican woman in her forties living in Tainan in 2026, curly dark hair tied up, round face, an apron over a colorful embroidered blouse, holding a spatula at a night-market griddle, warm laughing eyes, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "特斯科科湖",
+      "seed": 13301,
+      "prompt": "A surge of brackish lake water rising in the shape of a figure, reeds and floating flowers swirling in it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "黑曜石",
+      "seed": 13302,
+      "prompt": "A jagged creature of glossy black volcanic obsidian shards, edges glinting razor sharp.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "冒煙的山",
+      "seed": 13303,
+      "prompt": "A smoking volcano-shaped spirit with glowing ember eyes and a plume of ash rising from its head.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "可可豆",
+      "seed": 13304,
+      "prompt": "A clattering swarm of cacao beans and cacao pods forming a round creature, counting itself.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "金子的光",
+      "seed": 13305,
+      "prompt": "A dazzling floating mass of Mexica gold ornaments, necklaces, banners and discs radiating a blinding greedy light that pulls at the eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "預兆",
+      "seed": 13306,
+      "prompt": "A misty apparition combining a blazing comet in the sky, a temple shrine burning by itself, a boiling lake and the shadowy figure of a weeping woman, dreamlike and ominous.",
+      "transparent": true
+    }
+  ]
+}

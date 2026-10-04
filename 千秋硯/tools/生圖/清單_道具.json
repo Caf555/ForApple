@@ -2081,6 +2081,76 @@
       "seed": 7296,
       "transparent": true,
       "prompt": "A long dark goose-feather quill with a dry ink-stained nib."
+    },
+    {
+      "kind": "item",
+      "name": "玉米餅",
+      "seed": 7297,
+      "transparent": true,
+      "prompt": "A stack of warm maize tortillas on a clay griddle."
+    },
+    {
+      "kind": "item",
+      "name": "可可飲",
+      "seed": 7298,
+      "transparent": true,
+      "prompt": "A clay cup of frothy cacao drink with a few cacao beans and a red chili."
+    },
+    {
+      "kind": "item",
+      "name": "黑曜石片",
+      "seed": 7299,
+      "transparent": true,
+      "prompt": "A thin glossy black obsidian blade flake."
+    },
+    {
+      "kind": "item",
+      "name": "綠羽毛",
+      "seed": 7300,
+      "transparent": true,
+      "prompt": "A long iridescent green quetzal tail feather."
+    },
+    {
+      "kind": "item",
+      "name": "黑曜石刃",
+      "seed": 7301,
+      "transparent": true,
+      "prompt": "A small obsidian knife with a wooden handle bound with cord."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛扇",
+      "seed": 7302,
+      "transparent": true,
+      "prompt": "A fan of layered red, green and blue feathers on a wooden handle."
+    },
+    {
+      "kind": "item",
+      "name": "神的汙垢",
+      "seed": 7303,
+      "transparent": true,
+      "prompt": "A thin sheet of hammered gold leaf, crinkled."
+    },
+    {
+      "kind": "item",
+      "name": "說出來的預兆",
+      "seed": 7304,
+      "transparent": true,
+      "prompt": "A small piece of bark paper painted with a red and black comet; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "樹皮紙的老鷹",
+      "seed": 7305,
+      "transparent": true,
+      "prompt": "A small rough piece of bark paper painted in red and black with an eagle standing on a prickly pear cactus holding a snake, and a small round glyph beside it; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "陌生人的畫",
+      "seed": 7306,
+      "transparent": true,
+      "prompt": "A small piece of bark paper painted in red and black with a bearded man on a horse and speech scroll curls; no readable text."
     }
   ]
 }

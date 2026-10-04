@@ -253,6 +253,20 @@ export class Audio {
         }, () => 300);
         break;
       }
+      case '墨西卡': {
+        // 雙音的木頭鼓（兩個音輪流敲），配上陶笛般的五聲旋律
+        pad([110, 164.8], 0.014);
+        const scale = [440, 493.9, 554.4, 659.3, 740, 880];
+        let beat = 0, idx = 2;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 4 === 0) pluck(98, 0.05, 0.4);
+          if (beat % 4 === 2 || (beat % 8 === 7 && Math.random() < 0.6)) pluck(130.8, 0.04, 0.35);
+          if (beat % 4 === 1 && Math.random() < 0.7) { idx = Math.max(0, Math.min(scale.length - 1, idx + [-1, 1, -2, 2, 0][Math.floor(Math.random() * 5)])); this.note(scale[idx], t, 0.7, 'sine', 0.018, bus); }
+          beat++;
+        }, () => 250);
+        break;
+      }
       case '羯陵伽': {
         // 坦普拉琴般持續的低音，五聲音階的旋律，和像手鼓一樣的撥奏
         pad([146.8, 220, 293.7], 0.016);
