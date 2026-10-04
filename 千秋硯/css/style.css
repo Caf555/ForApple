@@ -779,3 +779,44 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .hitfx.ring.big { border-width: 5px; }
 @keyframes ring { to { transform: scale(1.35); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .hitfx, .ally-row.hurt { animation: none; display: none; } }
+
+/* ───────── 小遊戲：描字、修復、排序 ───────── */
+.mg-trace { display: block; width: min(78vw, 300px); aspect-ratio: 1; margin: 6px auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+.mg-trace .tr-paper { fill: #efe2c4; stroke: rgba(120, 90, 50, .35); stroke-width: .6; }
+.mg-trace path, .mg-trace polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.mg-trace .tr-guide { stroke: rgba(90, 70, 50, .18); stroke-width: 6; }
+.mg-trace .tr-cur { stroke: rgba(201, 120, 60, .55); stroke-width: 7; stroke-dasharray: 2 4; animation: trcur 1s linear infinite; }
+@keyframes trcur { to { stroke-dashoffset: -12; } }
+.mg-trace .tr-done { stroke: #2a2420; stroke-width: 5; }
+.mg-trace .tr-live { stroke: #2a2420; stroke-width: 4.5; opacity: .85; }
+.mg-trace .tr-live.bad { stroke: #b8432f; transition: opacity .3s; opacity: 0; }
+.mg-trace .tr-start { fill: #4f9a5f; stroke: #fff; stroke-width: 1.2; animation: trstart 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes trstart { 50% { transform: scale(1.35); } }
+.mg-trace.glyph-done .tr-paper { fill: #f6ecd2; filter: drop-shadow(0 0 6px rgba(201, 164, 92, .8)); }
+.pz-board { display: grid; gap: 4px; width: min(92vw, 420px); margin: 8px auto; padding: 6px; border-radius: 10px; background: rgba(60, 45, 30, .2); }
+.pz-tile { padding: 0; border: 0; background: none; cursor: pointer; transform: rotate(var(--rot)); transition: transform .2s, box-shadow .2s; border-radius: 3px; overflow: hidden; box-shadow: 0 2px 5px rgba(0, 0, 0, .25); }
+.pz-tile svg { display: block; width: 100%; height: 100%; aspect-ratio: auto; }
+.pz-tile.ok { transform: none; box-shadow: 0 0 0 2px #c9a45c; }
+.pz-tile.sel { transform: scale(1.05); box-shadow: 0 0 0 3px #4f7fc4, 0 4px 12px rgba(0, 0, 0, .35); z-index: 1; }
+.pz-board.done { gap: 0; background: none; transition: gap .5s; }
+.pz-board.done .pz-tile { box-shadow: none; border-radius: 0; }
+.pz-tile .pz-bg { fill: #d9c49a; }
+.pz-tile path { fill: none; stroke: #5a4128; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.pz-tile path.pz-fill { fill: #8a5a2a; stroke: none; }
+.pz-tile text { fill: #3a2a18; font-family: var(--serif); }
+.od-line { list-style: none; counter-reset: od; margin: 8px 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.od-line li { counter-increment: od; display: flex; align-items: center; gap: 8px; }
+.od-line li::before { content: counter(od); flex: none; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); }
+.od-line li.empty { min-height: 2.2em; }
+.od-line li.empty::after { content: ""; flex: 1; height: 2em; border: 1.5px dashed var(--line); border-radius: 8px; }
+.od-line li.right::before { background: #4f9a5f; color: #fff; border-color: transparent; }
+.od-line li.wrong::before { background: #b8432f; color: #fff; border-color: transparent; }
+.od-pool { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.od-card { flex: 1 1 auto; text-align: left; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; font-size: 14px; line-height: 1.4; cursor: pointer; }
+.od-line .od-card { flex: 1; }
+.od-card.placed { border-color: var(--accent); }
+.od-card.shown { cursor: default; }
+.od-card b { display: block; font-size: 12px; color: var(--accent); }
+.od-card small { color: #b8432f; margin-left: 4px; }
+.od-line, .od-pool { width: 100%; align-self: stretch; box-sizing: border-box; }
+.od-line li { width: 100%; }

@@ -200,15 +200,20 @@ export class Translate {
       this.resolve = resolve;
       if (d.kind === '研墨') this.renderInk();
       else if (d.kind === '電碼') this.renderMorse();
+      else if (d.kind === '描字') this.renderTrace();
+      else if (d.kind === '修復') this.renderPuzzle();
+      else if (d.kind === '排序') this.renderOrder();
       else this.render();
     });
   }
+
+  name(t) { return String(t).replace(/\{名\}/g, (this.ctx.g && this.ctx.g.name) || '知墨'); }
 
   header() {
     const r = this.root; r.innerHTML = '';
     r.classList.add('open');
     r.appendChild(el('div', { class: 'mg-title' }, this.d.kind + '・' + this.d.title));
-    if (this.d.intro) r.appendChild(el('p', { class: 'mg-intro' }, this.d.intro));
+    if (this.d.intro) r.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.intro)));
     r.appendChild(el('p', { class: 'mg-rule' }, this.d.rule));
     this.body = el('div', { class: 'mg-body' });
     r.appendChild(this.body);
@@ -218,8 +223,8 @@ export class Translate {
     cancelAnimationFrame(this.raf);
     this.body.innerHTML = '';
     this.body.appendChild(el('div', { class: 'mg-word small' }, scoreText));
-    if (win && this.d.note) this.body.appendChild(el('p', { class: 'mg-intro' }, this.d.note));
-    if (!win && this.d.noteLose) this.body.appendChild(el('p', { class: 'mg-intro' }, this.d.noteLose));
+    if (win && this.d.note) this.body.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.note)));
+    if (!win && this.d.noteLose) this.body.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.noteLose)));
     this.body.appendChild(el('button', { class: 'btn primary', onclick: () => { this.root.classList.remove('open'); this.resolve(win ? '勝' : '敗'); } }, win ? '過關' : '繼續'));
   }
 
@@ -325,6 +330,187 @@ export class Translate {
     const clear = el('button', { class: 'btn small', onclick: () => { input = ''; show(); } }, '重打這一個');
     this.body.append(prog, word, target, shown, key, clear, el('p', { class: 'muted small' }, '短短地按一下是「·」，按久一點（大約半秒）是「−」。'));
     show();
+  }
+
+  // ───────── 描字：照著淡淡的筆畫，一筆一筆描 ─────────
+  renderTrace() {
+    const d = this.d;
+    this.header();
+    const ns = 'http://www.w3.org/2000/svg';
+    let gi = 0, si = 0, miss = 0;
+    const prog = el('div', { class: 'mg-progress' });
+    const label = el('div', { class: 'mg-q' });
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('class', 'mg-trace');
+    const hint = el('p', { class: 'muted small' }, '從綠色的點開始，沿著發亮的那一筆畫下去。');
+    const skip = el('button', { class: 'btn small', onclick: () => { miss++; this.ctx.audio.sfx('fail'); nextStroke(); } }, '這一筆跳過');
+    this.body.append(prog, label, svg, hint, skip);
+    let paths = [], live = null, pts = [];
+    const mk = (tag, attrs, parent = svg) => { const n = document.createElementNS(ns, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent.appendChild(n); return n; };
+    const mark = () => {
+      const it = d.items[gi];
+      prog.textContent = `第 ${gi + 1} / ${d.items.length} 個字・第 ${si + 1} / ${it.glyph.length} 筆` + (miss ? `・失誤 ${miss}` : '');
+      paths.forEach((p, k) => p.setAttribute('class', k < si ? 'tr-done' : k === si ? 'tr-cur' : 'tr-guide'));
+      svg.querySelectorAll('.tr-start').forEach(n => n.remove());
+      const p = paths[si]; if (!p) return;
+      const a = p.getPointAtLength(0);
+      mk('circle', { cx: a.x, cy: a.y, r: 4.5, class: 'tr-start' });
+    };
+    const showGlyph = () => {
+      const it = d.items[gi];
+      svg.innerHTML = '';
+      mk('rect', { x: 2, y: 2, width: 96, height: 96, rx: 6, class: 'tr-paper' });
+      paths = it.glyph.map(p => mk('path', { d: p, class: 'tr-guide' }));
+      label.textContent = it.w;
+      si = 0; mark();
+    };
+    const nextStroke = () => {
+      if (live) { live.remove(); live = null; }
+      si++;
+      if (si < paths.length) return mark();
+      paths.forEach(p => p.setAttribute('class', 'tr-done'));
+      svg.querySelectorAll('.tr-start').forEach(n => n.remove());
+      svg.classList.add('glyph-done');
+      skip.disabled = true;
+      this.ctx.audio.sfx('good');
+      setTimeout(() => {
+        svg.classList.remove('glyph-done');
+        skip.disabled = false;
+        gi++;
+        if (gi >= d.items.length) return this.finish(miss <= (d.maxMiss ?? d.items.length * 2), `描完 ${d.items.length} 個字・失誤 ${miss} 次`);
+        showGlyph();
+      }, 900);
+    };
+    const toSvg = e => { const m = svg.getScreenCTM().inverse(); const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m); return [p.x, p.y]; };
+    // 判斷：這一筆有八成的長度被描到，而且畫的線大多在筆畫附近
+    const judge = () => {
+      const p = paths[si];
+      const len = p.getTotalLength();
+      const near = (x, y, r) => pts.some(([a, b]) => (a - x) ** 2 + (b - y) ** 2 <= r * r);
+      if (len < 6) { const c = p.getPointAtLength(0); return near(c.x, c.y, 12); }
+      const n = Math.max(8, Math.round(len / 5));
+      let cover = 0;
+      const samples = [];
+      for (let k = 0; k <= n; k++) { const q = p.getPointAtLength(len * k / n); samples.push([q.x, q.y]); if (near(q.x, q.y, 11)) cover++; }
+      const onPath = pts.filter(([a, b]) => samples.some(([x, y]) => (a - x) ** 2 + (b - y) ** 2 <= 14 * 14)).length;
+      return cover / (n + 1) >= 0.7 && onPath / pts.length >= 0.7;
+    };
+    svg.addEventListener('pointerdown', e => {
+      if (si >= paths.length) return;
+      e.preventDefault();
+      try { svg.setPointerCapture(e.pointerId); } catch (_) { /* 有些瀏覽器不支援 */ }
+      pts = [toSvg(e)];
+      if (live) live.remove();
+      live = mk('polyline', { points: pts.map(p => p.join(',')).join(' '), class: 'tr-live' });
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!live) return;
+      pts.push(toSvg(e));
+      live.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+    });
+    const up = () => {
+      if (!live || !pts.length) return;
+      if (judge()) { this.ctx.audio.sfx('ink'); nextStroke(); }
+      else {
+        miss++;
+        this.ctx.audio.sfx('fail');
+        live.setAttribute('class', 'tr-live bad');
+        const l = live; live = null;
+        setTimeout(() => l.remove(), 350);
+        mark();
+      }
+      pts = [];
+    };
+    svg.addEventListener('pointerup', up);
+    svg.addEventListener('pointercancel', up);
+    showGlyph();
+  }
+
+  // ───────── 修復：把碎片換回原來的位置 ─────────
+  renderPuzzle() {
+    const d = this.d;
+    this.header();
+    const ns = 'http://www.w3.org/2000/svg';
+    const [W, H] = d.size || [300, 200];
+    const cols = d.cols || 3, rows = d.rows || 2, N = cols * rows;
+    const tw = W / cols, th = H / rows;
+    // 整張圖只畫一次，每一塊碎片用不同的 viewBox 去看它
+    const art = document.createElementNS(ns, 'g');
+    const add = (tag, attrs, text) => { const n = document.createElementNS(ns, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text) n.textContent = text; art.appendChild(n); };
+    add('rect', { x: 0, y: 0, width: W, height: H, class: 'pz-bg' });
+    for (const p of d.fills || []) add('path', { d: p, class: 'pz-fill' });
+    for (const p of d.paths || []) add('path', { d: p });
+    for (const [x, y, t, size] of d.texts || []) add('text', { x, y, 'font-size': size || 22 }, t);
+    const fixed = o => o.filter((v, i) => v === i).length;
+    let order;
+    do { order = [...Array(N).keys()].sort(() => Math.random() - 0.5); } while (fixed(order) > Math.floor(N / 4));
+    let sel = -1, moves = 0;
+    const prog = el('div', { class: 'mg-progress' });
+    const board = el('div', { class: 'pz-board', style: { gridTemplateColumns: `repeat(${cols}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)`, aspectRatio: `${W} / ${H}` } });
+    this.body.append(prog, board, el('p', { class: 'muted small' }, '點一片，再點另一片，兩片就會交換位置。放對的碎片會亮起金邊。'));
+    const draw = () => {
+      board.innerHTML = '';
+      order.forEach((piece, pos) => {
+        const sv = document.createElementNS(ns, 'svg');
+        sv.setAttribute('viewBox', `${(piece % cols) * tw} ${Math.floor(piece / cols) * th} ${tw} ${th}`);
+        sv.setAttribute('preserveAspectRatio', 'none');
+        sv.appendChild(art.cloneNode(true));
+        board.appendChild(el('button', { class: 'pz-tile' + (piece === pos ? ' ok' : '') + (sel === pos ? ' sel' : ''), 'data-piece': piece, 'data-pos': pos, 'aria-label': `碎片 ${pos + 1}`, style: { '--rot': ((piece * 37) % 7 - 3) + 'deg' }, onclick: () => tap(pos) }, sv));
+      });
+      prog.textContent = `放對 ${fixed(order)} / ${N} 片・換了 ${moves} 次`;
+    };
+    const tap = pos => {
+      if (board.classList.contains('done')) return;
+      if (sel < 0) { sel = pos; this.ctx.audio.sfx('tap'); return draw(); }
+      if (sel === pos) { sel = -1; return draw(); }
+      [order[sel], order[pos]] = [order[pos], order[sel]];
+      moves++;
+      const good = order[sel] === sel || order[pos] === pos;
+      sel = -1;
+      this.ctx.audio.sfx(good ? 'ink' : 'tap');
+      draw();
+      if (order.every((v, i) => v === i)) {
+        board.classList.add('done');
+        this.ctx.audio.sfx('good');
+        setTimeout(() => this.finish(moves <= (d.maxMoves || N * 2), `拼好了・換了 ${moves} 次`), 1100);
+      }
+    };
+    draw();
+  }
+
+  // ───────── 排序：照時間先後排好 ─────────
+  renderOrder() {
+    const d = this.d;
+    this.header();
+    const items = d.items.map((it, k) => ({ ...it, k }));
+    const pool = [...items].sort(() => Math.random() - 0.5);
+    if (pool.every((x, i) => x.k === i)) pool.reverse();
+    const line = [];
+    const prog = el('div', { class: 'mg-progress' });
+    const lineBox = el('ol', { class: 'od-line' });
+    const poolBox = el('div', { class: 'od-pool' });
+    const ok = el('button', { class: 'btn primary', disabled: true, onclick: () => check() }, '確定');
+    this.body.append(prog, lineBox, poolBox, ok);
+    const draw = () => {
+      prog.textContent = line.length < items.length ? `點選下面的卡片，照${d.by || '時間先後'}排好（${line.length} / ${items.length}）。點上面排好的卡片，可以拿回來。` : '排好了嗎？';
+      lineBox.innerHTML = ''; poolBox.innerHTML = '';
+      line.forEach((it, i) => lineBox.appendChild(el('li', {}, el('button', { class: 'od-card placed', 'data-k': it.k, onclick: () => { line.splice(i, 1); pool.push(it); this.ctx.audio.sfx('tap'); draw(); } }, it.t))));
+      for (let i = line.length; i < items.length; i++) lineBox.appendChild(el('li', { class: 'empty' }, '　'));
+      pool.forEach((it, i) => poolBox.appendChild(el('button', { class: 'od-card', 'data-k': it.k, onclick: () => { pool.splice(i, 1); line.push(it); this.ctx.audio.sfx('tap'); draw(); } }, it.t)));
+      ok.disabled = line.length < items.length;
+    };
+    const check = () => {
+      const right = line.filter((it, i) => it.k === i).length;
+      this.ctx.audio.sfx(right === items.length ? 'good' : 'fail');
+      lineBox.innerHTML = '';
+      line.forEach((it, i) => lineBox.appendChild(el('li', { class: it.k === i ? 'right' : 'wrong' },
+        el('div', { class: 'od-card shown' }, it.y ? el('b', {}, it.y) : null, it.t, it.k === i ? null : el('small', {}, `（應該排第 ${it.k + 1}）`)))));
+      poolBox.remove();
+      ok.remove();
+      const win = right >= (d.need ?? items.length);
+      this.body.appendChild(el('button', { class: 'btn primary', onclick: () => this.finish(win, `排對 ${right} / ${items.length}`) }, '繼續'));
+    };
+    draw();
   }
 
   render() {

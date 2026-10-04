@@ -298,7 +298,7 @@ export class Runner {
       }
       case '小遊戲': {
         const [kind, id] = arg.split(/\s+/);
-        if (!['譯字', '牽星', '識字', '透視', '研墨', '電碼'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
+        if (!['譯字', '牽星', '識字', '透視', '研墨', '電碼', '描字', '修復', '排序'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
         const r = await this.ctx.translate.start(id);
         const t = c.out && c.out[r];
         return t ? '→' + t : undefined;

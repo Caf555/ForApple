@@ -118,7 +118,7 @@ for (const id in scenes) {
       if (imgNames.size && (c.name === '背景' || c.name === '插圖') && c.arg && c.arg !== '無' && !imgNames.has(c.arg.split(/\s+/)[0])) warns.push(`${at(s, c)}：圖「${c.arg.split(/\s+/)[0]}」不在生圖清單裡`);
       if (imgNames.size && c.name === '立繪') { const k = c.arg.split(/\s+/)[1]; if (k && k !== '預設' && !imgNames.has(k) && !/_\d+$/.test(k)) warns.push(`${at(s, c)}：頭像「${k}」不在生圖清單裡`); }
       if (c.name === '小遊戲' && !D.TRANSLATE[c.arg.split(/\s+/)[1]]) errors.push(`${at(s, c)}：沒有小遊戲題組「${c.arg}」`);
-      if (c.name === '小遊戲' && !['譯字', '牽星', '識字', '透視', '研墨', '電碼'].includes(c.arg.split(/\s+/)[0])) errors.push(`${at(s, c)}：小遊戲種類應為 譯字/牽星/識字/透視/研墨/電碼`);
+      if (c.name === '小遊戲' && !['譯字', '牽星', '識字', '透視', '研墨', '電碼', '描字', '修復', '排序'].includes(c.arg.split(/\s+/)[0])) errors.push(`${at(s, c)}：小遊戲種類應為 譯字/牽星/識字/透視/研墨/電碼/描字/修復/排序`);
     }
   }
 }
