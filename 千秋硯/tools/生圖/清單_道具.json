@@ -2865,6 +2865,48 @@
       "seed": 7408,
       "transparent": true,
       "prompt": "A folded torn page from a hand-sewn notebook made of mismatched paper."
+    },
+    {
+      "kind": "item",
+      "name": "沉下去的味道",
+      "seed": 7409,
+      "transparent": true,
+      "prompt": "A small old wooden box holding millet cake, a green amla fruit, a cacao bean and a roasted sweet potato."
+    },
+    {
+      "kind": "item",
+      "name": "被拿走的字",
+      "seed": 7410,
+      "transparent": true,
+      "prompt": "A single sheet of old paper with faint fading writing, damp at the edges."
+    },
+    {
+      "kind": "item",
+      "name": "爸爸寫給阿公的信",
+      "seed": 7411,
+      "transparent": true,
+      "prompt": "A plain white envelope with one handwritten character on it; the character is indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "小雨寫的字",
+      "seed": 7412,
+      "transparent": true,
+      "prompt": "A torn notebook page with one large carefully written brush-like character and several crossed-out attempts; indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "找回來的調子",
+      "seed": 7413,
+      "transparent": true,
+      "prompt": "A small fragment of bark with a few musical-note-like marks, glowing softly."
+    },
+    {
+      "kind": "item",
+      "name": "第一支筆的粉",
+      "seed": 7414,
+      "transparent": true,
+      "prompt": "A small pile of fine white powder with a few splinters of a white brush."
     }
   ]
 }

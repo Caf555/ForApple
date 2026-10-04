@@ -1,0 +1,65 @@
+{
+  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "歸墟",
+      "seed": 16101,
+      "prompt": "A boundless still black sea at the end of time with no shore and no waves, no sky above, only countless sheets of paper bearing faint faded writing drifting down slowly like snow and sinking into the water, small islands made of piled paper in the distance, deep quiet darkness with soft pale light from the falling pages. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "黑水",
+      "seed": 16301,
+      "prompt": "A spirit of perfectly flat black water rising into a smooth faceless shape, pages sinking into it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "落頁",
+      "seed": 16302,
+      "prompt": "A large falling sheet of old paper with faint fading writing, folding into a ghostly figure.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "漂流字",
+      "seed": 16303,
+      "prompt": "A single large drifting brush-written character made of ink, wandering lost on dark water; the character is abstract and unreadable.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉船",
+      "seed": 16304,
+      "prompt": "A sunken old wooden junk ship rising from black water, letters and cargo spilling from it, menacing and sorrowful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "海翁的回聲",
+      "seed": 16305,
+      "prompt": "An enormous whale made entirely of pieced-together sheets of paper covered in faint writing, rising from a black sea, mouth open to swallow falling pages.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "斷掉的白筆",
+      "seed": 16306,
+      "prompt": "A giant white writing brush broken in two halves joining back together in mid-air, taller than a man, its white tip pointing forward, surrounded by a blizzard of blank white paper.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "落下來的紙",
+      "seed": 16401,
+      "prompt": "A young man in a white shirt and a translucent girl with long ink-black hair whose ends blur like ink wash, standing on a still black sea, looking up at countless pages with faint writing falling like snow; the young man reaching out to catch one. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "紙堆上的蒂娃",
+      "seed": 16402,
+      "prompt": "On a small island made of piled old papers in a black sea, an adult Siraya indigenous woman of 17th-century Taiwan whose body is translucent with ink flowing inside, singing softly, a fragment of bark paper in her hand. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    }
+  ]
+}

@@ -52,6 +52,7 @@ body[data-vtheme="florence"] { --accent: #d98a64; }
 body[data-vtheme="mexica"] { --accent: #4fb39a; }
 body[data-vtheme="trench"] { --accent: #a3a77e; }
 body[data-vtheme="sky"] { --accent: #7fb6e0; }
+body[data-vtheme="abyss"] { --accent: #c9b37e; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) body[data-vtheme="modern"] { --accent: #9a6a22; }
   :root:not([data-theme="dark"]) body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -67,6 +68,7 @@ body[data-vtheme="sky"] { --accent: #7fb6e0; }
   :root:not([data-theme="dark"]) body[data-vtheme="mexica"] { --accent: #1f6e5c; }
   :root:not([data-theme="dark"]) body[data-vtheme="trench"] { --accent: #565a32; }
   :root:not([data-theme="dark"]) body[data-vtheme="sky"] { --accent: #2a6a9c; }
+  :root:not([data-theme="dark"]) body[data-vtheme="abyss"] { --accent: #6b5a2e; }
 }
 :root[data-theme="light"] body[data-vtheme="modern"] { --accent: #9a6a22; }
 :root[data-theme="light"] body[data-vtheme="dayuan"] { --accent: #2f5f8f; }
@@ -82,6 +84,7 @@ body[data-vtheme="sky"] { --accent: #7fb6e0; }
 :root[data-theme="light"] body[data-vtheme="mexica"] { --accent: #1f6e5c; }
 :root[data-theme="light"] body[data-vtheme="trench"] { --accent: #565a32; }
 :root[data-theme="light"] body[data-vtheme="sky"] { --accent: #2a6a9c; }
+:root[data-theme="light"] body[data-vtheme="abyss"] { --accent: #6b5a2e; }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
@@ -195,6 +198,12 @@ body[data-vtheme="sky"] .banner-art {
   background:
     repeating-linear-gradient(90deg, rgba(255, 255, 255, .25) 0 1px, transparent 1px 48px) 0 0 / 100% 55% no-repeat,
     linear-gradient(180deg, #8fc6ef 0%, #b9dcf5 40%, #e8f3fb 55%, #c9d3dc 56%, #9aa7b3 80%, #7d8a96 100%);
+}
+body[data-vtheme="abyss"] .banner-art {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(240, 232, 210, .35) 0 2px, transparent 3px) 0 0 / 60px 50px,
+    radial-gradient(circle at 70% 60%, rgba(240, 232, 210, .25) 0 1.5px, transparent 2.5px) 0 0 / 80px 70px,
+    linear-gradient(180deg, #1c1a1f 0%, #121116 60%, #0b0a0d 100%);
 }
 body[data-vtheme="hub"] .banner-art {
   background:

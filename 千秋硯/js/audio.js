@@ -267,6 +267,18 @@ export class Audio {
         }, () => 250);
         break;
       }
+      case '歸墟': {
+        // 很深的持續低音，偶爾一聲像鐘、又像水滴的單音，拖得很長
+        pad([55, 82.4, 110], 0.016);
+        const bells = [261.6, 293.7, 329.6, 392, 440, 523.3];
+        let beat = 0;
+        loop(() => {
+          const t = this.ac.currentTime;
+          if (beat % 6 === 0 || Math.random() < 0.12) this.note(bells[Math.floor(Math.random() * bells.length)], t, 4, 'sine', 0.009, bus);
+          beat++;
+        }, () => 700);
+        break;
+      }
       case '晴空': {
         // 明亮、乾淨、像玻璃一樣的琶音，太完美了，反而有一點空
         pad([261.6, 392, 523.3], 0.012);

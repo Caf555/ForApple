@@ -1,6 +1,6 @@
 // 時之書齋（據點）與各種選單
 import { VOLUMES, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
-import { memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
+import { histDone, histTotal, histRate, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
 import { el } from './ui.js';
 
 const CATS = ['人物誌', '地理誌', '器物誌', '典故', '妖物誌'];
@@ -14,11 +14,10 @@ export class Hub {
   render() {
     const g = this.g;
     const r = this.root; r.innerHTML = '';
-    const total = Object.keys(g.flags).filter(k => k.startsWith('補史.')).length;
     r.appendChild(el('div', { class: 'hub-head' },
       el('h1', {}, '時之書齋'),
       el('p', {}, '書頁與書頁之間的縫隙。窗外是緩緩流動的墨色雲海。'),
-      el('div', { class: 'hub-stat' }, `已修補的史頁：${total}　銀：${g.money}`)));
+      el('div', { class: 'hub-stat' }, `已修補的史頁：${histDone(g)}／${histTotal()}（${histRate(g)}%）　銀：${g.money}`)));
     const grid = el('div', { class: 'hub-grid' });
     const room = (name, sub, fn, open = true, badge) => grid.appendChild(el('button', { class: 'room' + (open ? '' : ' closed'), disabled: !open, onclick: () => { this.ctx.audio.sfx('tap'); fn(); } },
       el('b', {}, name), el('span', {}, open ? sub : '尚未開放'), badge ? el('i', { class: 'badge' }, badge) : null));
