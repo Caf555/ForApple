@@ -2298,6 +2298,62 @@
       "seed": 7327,
       "transparent": true,
       "prompt": "A small round shield covered in green quetzal feathers forming an eagle standing on a cactus."
+    },
+    {
+      "kind": "item",
+      "name": "玉米粽",
+      "seed": 7328,
+      "transparent": true,
+      "prompt": "A steamed tamale wrapped in a corn husk, partly opened."
+    },
+    {
+      "kind": "item",
+      "name": "加糖的可可",
+      "seed": 7329,
+      "transparent": true,
+      "prompt": "A clay cup of frothy sweet chocolate with a small cone of sugar."
+    },
+    {
+      "kind": "item",
+      "name": "舊羽毛",
+      "seed": 7330,
+      "transparent": true,
+      "prompt": "An old faded green feather."
+    },
+    {
+      "kind": "item",
+      "name": "新紙",
+      "seed": 7331,
+      "transparent": true,
+      "prompt": "A crisp sheet of white European paper."
+    },
+    {
+      "kind": "item",
+      "name": "沒有燒完的一頁",
+      "seed": 7332,
+      "transparent": true,
+      "prompt": "A small piece of bark paper with burnt edges and half a day-sign glyph; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛的聖像",
+      "seed": 7333,
+      "transparent": true,
+      "prompt": "A small feather mosaic image of a haloed figure made of iridescent feathers."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的黑筆",
+      "seed": 7334,
+      "transparent": true,
+      "prompt": "A brush with dried black paint on its bristles."
+    },
+    {
+      "kind": "item",
+      "name": "胡安的筆記",
+      "seed": 7335,
+      "transparent": true,
+      "prompt": "A small stack of European paper with lines of handwriting in Latin letters; text indistinct."
     }
   ]
 }
