@@ -2249,6 +2249,55 @@
       "seed": 7320,
       "transparent": true,
       "prompt": "Two small clay paint pots side by side, one filled with red pigment and one with black."
+    },
+    {
+      "kind": "item",
+      "name": "最後的玉米",
+      "seed": 7321,
+      "transparent": true,
+      "prompt": "A single small dried ear of maize."
+    },
+    {
+      "kind": "item",
+      "name": "雨水",
+      "seed": 7322,
+      "transparent": true,
+      "prompt": "A clay jar catching raindrops."
+    },
+    {
+      "kind": "item",
+      "name": "斷矛頭",
+      "seed": 7323,
+      "transparent": true,
+      "prompt": "A broken obsidian spearhead."
+    },
+    {
+      "kind": "item",
+      "name": "土坯碎",
+      "seed": 7324,
+      "transparent": true,
+      "prompt": "A chunk of broken adobe brick."
+    },
+    {
+      "kind": "item",
+      "name": "沒有被填平的水道",
+      "seed": 7325,
+      "transparent": true,
+      "prompt": "A small clay jar of clear lake water."
+    },
+    {
+      "kind": "item",
+      "name": "燒掉的船帆",
+      "seed": 7326,
+      "transparent": true,
+      "prompt": "A scorched corner of white sailcloth."
+    },
+    {
+      "kind": "item",
+      "name": "席特拉莉的羽毛盾",
+      "seed": 7327,
+      "transparent": true,
+      "prompt": "A small round shield covered in green quetzal feathers forming an eagle standing on a cactus."
     }
   ]
 }

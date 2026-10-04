@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷八〈特諾奇提特蘭〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：墨西卡（阿茲特克）的服飾與建築要依史料、以尊重的方式呈現；不要畫血腥或獻祭場面；不要混入馬雅或後來殖民時代的元素。真實歷史人物（蒙特蘇馬、科爾特斯、瑪林欽）只畫遠景的小人影。不要出現可讀的文字。 回二的托西卡特屠殺不畫殺戮場面，只畫跳舞與事後的空廣場。 回三的天花不畫病容特寫，以照顧的手、濕布與安靜的房間表現。",
+  "說明": "《千秋硯》卷八〈特諾奇提特蘭〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：墨西卡（阿茲特克）的服飾與建築要依史料、以尊重的方式呈現；不要畫血腥或獻祭場面；不要混入馬雅或後來殖民時代的元素。真實歷史人物（蒙特蘇馬、科爾特斯、瑪林欽）只畫遠景的小人影。不要出現可讀的文字。 回二的托西卡特屠殺不畫殺戮場面，只畫跳舞與事後的空廣場。 回三的天花不畫病容特寫，以照顧的手、濕布與安靜的房間表現。 回四的圍城不畫屍體與饑餓的特寫，以瓦礫、空攤子、拉長的隊伍表現。",
   "items": [
     {
       "kind": "bg",
@@ -44,6 +44,18 @@
       "prompt": "Tenochtitlan, 1520: a dark rainy night on the long western causeway across the lake, gaps where wooden bridges have been removed, black water below, distant torches and the silhouettes of many dugout canoes approaching. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts; Spanish soldiers in steel armor; Tlaxcalan warriors in quilted cotton armor. Respectful depiction, no gore, no bodies, no readable text."
     },
     {
+      "kind": "bg",
+      "name": "被圍的城",
+      "seed": 13108,
+      "prompt": "Tenochtitlan and Tlatelolco, summer 1521, during the siege: half the island city torn down into rubble, canals being filled with stones, flowers still growing among broken walls, smoke rising, tall sailing brigantines patrolling the lake in the distance. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts, worn and dusty; Spanish brigantines with white sails on the lake. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "特拉特洛爾科的廢墟",
+      "seed": 13109,
+      "prompt": "Tenochtitlan and Tlatelolco, summer 1521, during the siege: the great market square of Tlatelolco, empty stalls, rubble and smoke, the stepped pyramid in the background, a grey sky, a sense of ending. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts, worn and dusty; Spanish brigantines with white sails on the lake. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
       "kind": "cg",
       "name": "堤道上的相遇",
       "seed": 13401,
@@ -78,6 +90,12 @@
       "name": "紅與黑的陶罐",
       "seed": 13406,
       "prompt": "Tenochtitlan, 1520: a quiet dim school hall: an elderly scribe lying on a reed mat hands two small clay paint pots, one red and one black, to a 17-year-old boy kneeling beside him holding a damp cotton cloth; soft lamp light; tender and sorrowful, no visible illness details. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts; Spanish soldiers in steel armor; Tlaxcalan warriors in quilted cotton armor. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "湖上的獨木舟",
+      "seed": 13407,
+      "prompt": "Tenochtitlan and Tlatelolco, summer 1521, during the siege: late afternoon on the lake: a single dugout canoe stopped on the water as a tall brigantine with white sails draws alongside; a young Mexica ruler in a simple cloak stands up in the canoe, unarmed, seen from far away; silhouettes, no faces. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts, worn and dusty; Spanish brigantines with white sails on the lake. Respectful depiction, no gore, no bodies, no readable text."
     },
     {
       "kind": "char",
@@ -238,6 +256,48 @@
       "name": "大疹",
       "seed": 13318,
       "prompt": "A faceless shapeless grey-red miasma spreading through a silent city street, with closed doors and a single abandoned sleeping mat, ominous and sorrowful, no human bodies, not graphic.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "斷水",
+      "seed": 13319,
+      "prompt": "A broken stone aqueduct channel spilling its last trickle, the water forming a thin despairing figure.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "拆屋",
+      "seed": 13320,
+      "prompt": "A hulking creature made of toppled whitewashed house walls, roof gardens and beams, crumbling as it moves.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鹽草",
+      "seed": 13321,
+      "prompt": "A tangle of bitter salt grass and reeds forming a thorny lurking creature at the lake shore.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "火藥煙",
+      "seed": 13322,
+      "prompt": "A billowing black cloud of gunpowder smoke with flashes of fire inside, choking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "十三艘船",
+      "seed": 13323,
+      "prompt": "A ghostly formation of thirteen tall sailing brigantines merging into one huge shadowy ship-monster on the lake, cannons smoking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "被填平的城",
+      "seed": 13324,
+      "prompt": "A colossal figure built from rubble of a demolished island city — broken walls, filled canals, roofless houses — rising from flattened ground, sorrowful and heavy.",
       "transparent": true
     }
   ]
