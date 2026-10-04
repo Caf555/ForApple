@@ -2956,6 +2956,34 @@
       "seed": 7421,
       "transparent": true,
       "prompt": "A small round hand mirror blackened by smoke, partly wiped clean."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆灰",
+      "seed": 7422,
+      "transparent": true,
+      "prompt": "A small pile of white chalk dust with a short stub of chalk."
+    },
+    {
+      "kind": "item",
+      "name": "阿公寫給阿墨的信",
+      "seed": 7423,
+      "transparent": true,
+      "prompt": "An opened plain white envelope with a single handwritten letter sheet; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "沒有蓋章的信",
+      "seed": 7424,
+      "transparent": true,
+      "prompt": "A folded letter in an envelope with no stamp marks, tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "東邊第一顆星",
+      "seed": 7425,
+      "transparent": true,
+      "prompt": "A single bright morning star in a pale dawn sky, small and glowing."
     }
   ]
 }

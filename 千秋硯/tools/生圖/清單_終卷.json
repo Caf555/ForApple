@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回三）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。",
+  "說明": "《千秋硯》終卷〈歸墟〉生圖清單（回一～回四）。畫風、節點、尺寸沿用卷一清單。注意：歸墟是時間的盡頭——一片沒有岸、沒有浪的黑色的水，上面沒有天空，只有很多很多寫著淡淡字跡的紙像雪一樣落下來；被拿走的字堆成一座座小島。各卷的人在這裡以「回聲」出現：身體是半透明的、墨在裡面流動，輪廓和他們生前一樣。畫面要安靜、莊嚴，不要恐怖。紙上的字都不要可以讀。 回四在歸墟最深處，有一座一九五二年臺南北勢街的島：木造的國民學校教室、鳳凰木、低矮的木屋與紅磚；人物衣著依 1950 年代臺灣。不描寫刑求；便衣只以敲門聲、窗簾後的眼睛呈現。",
   "items": [
     {
       "kind": "bg",
@@ -162,6 +162,60 @@
       "name": "抄起來的紙",
       "seed": 16405,
       "prompt": "A Tang-dynasty papermaker whose body is translucent ink lifts a bamboo papermaking screen from a vat on a black sea; on the screen a pale grey sheet of paper in which countless tiny faint shadows of characters glow when backlit. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "enemy",
+      "name": "窗簾後的眼睛",
+      "seed": 16319,
+      "prompt": "Rows of drawn curtains in old wooden windows with faint pairs of eyes behind them, merged into one tall quiet shadow.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "剝落的標語",
+      "seed": 16320,
+      "prompt": "Large red painted characters peeling off a white wall in flakes, forming a jagged creature; characters indistinct.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "一直亮著的燈",
+      "seed": 16321,
+      "prompt": "A single bare light bulb hanging from a cord, glaring with harsh unending light, a cold halo around it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "敲門聲",
+      "seed": 16322,
+      "prompt": "A shadowy knocking hand emerging from an old wooden door, ripples of sound, ominous yet quiet.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "存查卷宗",
+      "seed": 16323,
+      "prompt": "A floating brown kraft-paper dossier folder with a large red rubber stamp mark, letters spilling out of it; stamp indistinct.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・歸墟之相",
+      "seed": 16324,
+      "prompt": "An elderly Taiwanese man in his seventies in a dark long robe, wide-brimmed hat on the desk beside him, reading glasses, a small mole at the corner of his mouth, sitting at a cluttered study desk writing in a notebook, papers swirling around him; tired and sorrowful rather than evil.",
+      "transparent": true
+    },
+    {
+      "kind": "cg",
+      "name": "父親",
+      "seed": 16406,
+      "prompt": "In a cluttered study full of old books and papers, a tired elderly Taiwanese man in a clean shirt sits on the floor against a bookshelf; before him kneels a thin young 1950s Taiwanese schoolteacher with round glasses whose body is translucent ink, holding out one finger toward him. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "天快要亮的時候",
+      "seed": 16407,
+      "prompt": "A thin young 1950s Taiwanese schoolteacher with round glasses, body of translucent ink, embracing an elderly man in his seventies who weeps, papers on the floor regaining their black ink, faint dawn light through a window. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
     }
   ]
 }
