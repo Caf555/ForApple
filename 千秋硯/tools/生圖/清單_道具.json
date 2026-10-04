@@ -1885,6 +1885,55 @@
       "seed": 7268,
       "transparent": true,
       "prompt": "A broken shard of red Greek pottery with several lines of black glaze letters; letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "炸甜餅",
+      "seed": 7269,
+      "transparent": true,
+      "prompt": "Strips of fried carnival dough dusted with powdered sugar."
+    },
+    {
+      "kind": "item",
+      "name": "救濟麵包",
+      "seed": 7270,
+      "transparent": true,
+      "prompt": "A coarse round loaf of dark bread wrapped in cloth."
+    },
+    {
+      "kind": "item",
+      "name": "碎鏡片",
+      "seed": 7271,
+      "transparent": true,
+      "prompt": "A shard of an old hand mirror reflecting a single eye."
+    },
+    {
+      "kind": "item",
+      "name": "琴弦",
+      "seed": 7272,
+      "transparent": true,
+      "prompt": "A coiled lute string of gut on a wooden peg."
+    },
+    {
+      "kind": "item",
+      "name": "取下的面具",
+      "seed": 7273,
+      "transparent": true,
+      "prompt": "An empty carnival mask turned to show its hollow inside."
+    },
+    {
+      "kind": "item",
+      "name": "有影子的白衣",
+      "seed": 7274,
+      "transparent": true,
+      "prompt": "A small white child's tunic with a little smudge of dirt on the hem."
+    },
+    {
+      "kind": "item",
+      "name": "虛榮之物的清單",
+      "seed": 7275,
+      "transparent": true,
+      "prompt": "A folded paper list with many lines of careful handwriting; marks indistinct."
     }
   ]
 }

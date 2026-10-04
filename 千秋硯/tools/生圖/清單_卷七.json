@@ -1,5 +1,5 @@
 {
-  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。",
+  "說明": "《千秋硯》卷七〈佛羅倫斯〉生圖清單（回一～回二）。畫風、節點、尺寸沿用卷一清單。注意：1490 年代佛羅倫斯的服飾與建築；不要巴洛克或更晚的元素。真實歷史人物（薩佛納羅拉、查理八世）只畫遠景的小人影。宗教場景以尊重的方式呈現。不要出現可讀的文字。 回二是 1496 年冬末到春天：薩佛納羅拉的少年隊穿白衣、舉紅十字；畫面不要出現裸體。",
   "items": [
     {
       "kind": "bg",
@@ -20,6 +20,12 @@
       "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: interior of Florence cathedral packed with a silent crowd, men on one side and women on the other, children in front, candles, a distant pulpit with a thin friar in white and black seen very small far away, shafts of pale light. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
     },
     {
+      "kind": "bg",
+      "name": "聖馬可修道院",
+      "seed": 12104,
+      "prompt": "Florence, Italy, in early 1496, early Renaissance: the plain facade and cloister gate of the Dominican convent of San Marco on a cold rainy day, a long line of thin hungry people with bowls and cloth bags waiting as friars hand out bread. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, poor people in rough tunics; boys of Savonarola's youth bands in plain white tunics carrying small red crosses. Narrow stone-paved streets, ochre houses with wooden shutters. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
       "kind": "cg",
       "name": "敲下紅球的少年",
       "seed": 12401,
@@ -30,6 +36,18 @@
       "name": "燭光下的小畫",
       "seed": 12402,
       "prompt": "Florence, Italy, in late autumn 1494, early Renaissance: night in a painter's workshop lit by a single candle: a 17-year-old girl with her hair tied in a kerchief, paint on her hands, paints with a very fine brush on a tiny wooden panel showing an angel with a boy's face standing in a street drawn in perfect one-point perspective; a grinning 15-year-old boy leans in to look. Clothing of 1490s Florence: men in long belted gowns (lucco) or doublets and hose with soft caps, women in high-waisted gowns with sleeves and headscarves, Dominican friars in white habits with black cloaks, poor wool workers in rough tunics. Architecture: narrow stone-paved streets, tall ochre and cream houses with wooden shutters and overhanging eaves, rusticated stone palaces, the great red-brick dome of the cathedral. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "最後一聲琴弦",
+      "seed": 12403,
+      "prompt": "Florence, Italy, in early 1496, early Renaissance: at a narrow doorway in the rain, a hunched old widow hands a lute to a 17-year-old boy in a white tunic with a red cross embroidered on it; she touches one string with her finger; behind him, children in white with a wooden handcart full of mirrors, masks, cards and wigs stand silent. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, poor people in rough tunics; boys of Savonarola's youth bands in plain white tunics carrying small red crosses. Narrow stone-paved streets, ochre houses with wooden shutters. No later Baroque elements, no modern objects, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "白衣的孩子們",
+      "seed": 12404,
+      "prompt": "Florence, Italy, in early 1496, early Renaissance: Palm Sunday procession: thousands of children in white carrying olive branches and small red crosses walk singing toward the cathedral with its great red dome; adults lining the street weep; soft spring light. Clothing of 1490s Florence: men in long belted gowns or doublets and hose with soft caps, women in high-waisted gowns and headscarves, Dominican friars in white habits with black cloaks, poor people in rough tunics; boys of Savonarola's youth bands in plain white tunics carrying small red crosses. Narrow stone-paved streets, ochre houses with wooden shutters. No later Baroque elements, no modern objects, no readable text."
     },
     {
       "kind": "char",
@@ -99,6 +117,48 @@
       "name": "懸在城上的劍",
       "seed": 12306,
       "prompt": "A colossal ghostly sword hanging point-down in a grey sky above a red-brick dome, formed from the fear of a crowd, trembling, ominous, with faint shadowy hands reaching up from below.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "假面",
+      "seed": 12307,
+      "prompt": "A floating carnival mask with paint running down like tears, a hollow grin, ribbons trailing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "骰子",
+      "seed": 12308,
+      "prompt": "A pair of giant bone dice tumbling together into a clattering creature, pips glowing like eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "香粉",
+      "seed": 12309,
+      "prompt": "A swirling cloud of perfumed face powder shaped like a graceful lady with a cracked powder box for a heart.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "饑荒",
+      "seed": 12310,
+      "prompt": "A gaunt hulking figure of cracked dry earth and empty wheat stalks holding an empty clay bowl.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "狂歡節的面具",
+      "seed": 12311,
+      "prompt": "A towering heap of rain-soaked carnival masks fused together, all laughing at once, ribbons and paint streaming.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "潔淨",
+      "seed": 12312,
+      "prompt": "A blinding radiant figure of white light shaped from countless small white tunics, holding olive branches, so bright it casts no shadow, beautiful and frightening.",
       "transparent": true
     }
   ]
