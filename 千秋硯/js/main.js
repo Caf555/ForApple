@@ -9,7 +9,7 @@ import { Debate, Translate } from './debate.js';
 import { Runner } from './runner.js';
 import { Hub } from './hub.js';
 
-export const VERSION = '完整版 v3.0.0';
+export const VERSION = '完整版 v3.1.0';
 const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/卷二_牧野.txt', 'content/卷三_阿瑪納.txt', 'content/卷四_雅典.txt', 'content/卷五_羯陵伽.txt', 'content/中章_書房.txt', 'content/卷六_長安巴格達.txt', 'content/卷七_佛羅倫斯.txt', 'content/卷八_特諾奇提特蘭.txt', 'content/卷九_戰壕.txt', 'content/卷十_晴空.txt', 'content/終卷_歸墟.txt', 'content/夜話.txt'];
 
 const $ = id => document.getElementById(id);
@@ -70,7 +70,9 @@ ctx.loadGame = g => {
   $('title').classList.remove('open');
   ctx.ui.clearStory();
   if (!g.scene || !ctx.scenes[g.scene]) { ctx.goHub(); return; }
+  ctx.ui.weather = null;
   ctx.ui.setTheme(g.loc.theme);
+  if (g.loc.weather) ctx.ui.setWeather(g.loc.weather);
   ctx.ui.setHeader(g.loc);
   ctx.ui.setBanner(g.loc.bg);
   ctx.audio.music(g.loc.music);
