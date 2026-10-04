@@ -621,8 +621,9 @@ export class Hub {
       opt('對話半身像', 'portrait', [true, false], ['開', '關'], v => { if (!v) this.ui.hidePortrait(); });
       opt('氛圍效果', 'ambient', [true, false], ['開', '關'], () => this.ui.setAmbient(this.ui.curTheme));
       opt('震動', 'vibrate', [true, false], ['開', '關'], v => { if (v) this.ui.vibrate(30); });
+      opt('限時抉擇', 'timedChoice', [true, false], ['開', '關']);
       body.appendChild(el('p', { class: 'muted small' }, '閱讀方式——逐句點擊：每句都要點一下。整頁：一次跑完一頁（遇到選項或最多約六句），點一下再跑下一頁；打字中點一下可以立刻顯示整頁。自動播放：依字數停留後自動往下，打開選單時會暫停。'));
-      body.appendChild(el('p', { class: 'muted small' }, '對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
+      body.appendChild(el('p', { class: 'muted small' }, '限時抉擇：少數緊張的時刻，選項會倒數計時；時間到了，會替你選「遲疑」的那一個。關掉就不會倒數。對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
       body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥。難度不影響任何結局條件，隨時可以切換。朗讀使用手機內建的語音，效果依裝置而定。'));
     });
   }

@@ -55,7 +55,7 @@ export class Runner {
               wait = !this.nextIsText(scene, pc + 1) || this.pageLines >= 6 || this.pageChars >= 200;
             }
             ui.pageBreak = false;
-            await ui.say({ who: c.who, text: c.text }, { wait, auto: mode === 'auto' });
+            await ui.say({ who: c.who, face: c.face, text: c.text }, { wait, auto: mode === 'auto' });
             if (!alive()) return;
             if (wait) { this.pageLines = 0; this.pageChars = 0; }
             else if (ui.pageBreak) { this.pageLines = 1; this.pageChars = Array.from(c.text).length; }
@@ -73,7 +73,14 @@ export class Runner {
               return { label: ch.label, enabled: ok, lock: ok ? null : '需要：' + condText(ch.cond), target: ch.target, hidden: !ok && storyOnly, seen: !!(g.seen && g.seen[ch.target]) };
             }).filter(x => !x.hidden);
             if (!shown.length) { ui.toast('沒有可選的選項（劇本條件有誤）', 'bad'); this.ctx.goHub(); return; }
-            const idx = await ui.showChoices(shown);
+            let timer = null;
+            if (this.timed && this.ctx.settings.timedChoice !== false) {
+              const want = group[this.timed.def - 1];
+              const d = shown.findIndex(x => want && x.label === want.label && x.enabled);
+              timer = { sec: this.timed.sec, def: d >= 0 ? d : shown.map(x => x.enabled).lastIndexOf(true) };
+            }
+            this.timed = null;
+            const idx = await ui.showChoices(shown, timer);
             if (!alive()) return;
             this.pushLog({ t: 'text', text: '▸ ' + shown[idx].label });
             this.pending = { label: shown[idx].label, ttl: 14 };
@@ -263,6 +270,7 @@ export class Runner {
       case '震動': ui.quakeScreen(arg === '強'); audio.sfx(arg === '強' ? 'boss' : 'break'); await ui.fx('', 450); return;
       case '閃白': await ui.fx('white', 700); return;
       case '淡黑': await ui.fx('black', 1500); return;
+      case '限時': { const [s, d] = arg.split(/\s+/); this.timed = { sec: +s || 15, def: +d || 0 }; return; }
       case '寫字': { const [w, st] = arg.split(/\s+/); await ui.writeWords(w, st || '', (this.ctx.settings.readMode || 'page') === 'auto'); return; }
       case '背景': g.loc.bg = arg === '無' ? '' : arg; ui.setBanner(g.loc.bg); return;
       case '插圖': {

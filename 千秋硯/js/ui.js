@@ -78,6 +78,14 @@ export class UI {
     return who;
   }
 
+  // 帶表情的頭像：「蘅_笑」→ 沒有的話用平常那一張
+  faceKey(who, face) {
+    const key = this.charKey(who);
+    if (!face) return key;
+    for (const k of [key + '_' + face, who + '_' + face]) if (this.hasImg('char', k)) return k;
+    return key;
+  }
+
   // 角色資料（給頭像放大時顯示）
   charInfo(who, key) {
     const c = CHARACTERS[who];
@@ -255,11 +263,11 @@ export class UI {
   }
 
   // ───────── 對話半身像 ─────────
-  showPortrait(who) {
+  showPortrait(who, face) {
     const p = this.portrait;
     if (!p) return;
     if (!this.settings.portrait || !who) { p.classList.add('dim'); if (!this.settings.portrait) p.classList.remove('on'); return; }
-    const key = this.charKey(who);
+    const key = this.faceKey(who, face);
     if (!this.hasImg('char', key)) { p.classList.remove('on'); return; }
     p.classList.remove('dim');
     if (p.dataset.key === key && p.classList.contains('on')) return;
@@ -299,12 +307,12 @@ export class UI {
     this.story.appendChild(p.wrap);
   }
 
-  makeLine({ who, text, kind }) {
+  makeLine({ who, face, text, kind }) {
     const wrap = el('div', { class: 'line' + (who ? ' say' : ' narr') + (kind ? ' ' + kind : '') });
     let name = null;
     if (who) {
       const shown = displayName(this.ctx.g, who);
-      const key = this.charKey(who);
+      const key = this.faceKey(who, face);
       name = el('div', { class: 'who', 'data-who': who },
         this.hasImg('char', key) ? el('img', { class: 'avatar', src: this.imgSrc('char', key), alt: '', decoding: 'async', onerror: e => e.target.remove(),
           onclick: e => { e.stopPropagation(); this.viewImage('char', key, this.charInfo(who, key), () => this.continueStory()); } }) : null,
@@ -336,7 +344,7 @@ export class UI {
     }
     if (!this.pageStart) this.pageStart = wrap;
     this.scrollDown();
-    this.showPortrait(line.who);
+    this.showPortrait(line.who, line.face);
     this.ctx.audio.speak(text, line.who);
     const ms = this.skipPage ? 0 : (SPEEDS[this.settings.speed] ?? 18);
     return new Promise(resolve => {
@@ -427,10 +435,31 @@ export class UI {
   }
 
   // 選項：[{label, enabled, lock}] → Promise<index>
-  showChoices(list) {
+  showChoices(list, timer) {
     this.choices.innerHTML = '';
     this.pageStart = null;
     return new Promise(resolve => {
+      let iv = null;
+      const btns = [];
+      if (timer) {
+        // 限時抉擇：時間到了，就替你選「遲疑」的那一個
+        const bar = el('div', { class: 'ch-timer' }, el('i'), el('span'));
+        this.choices.appendChild(bar);
+        const end = performance.now() + timer.sec * 1000;
+        let lastSec = timer.sec + 1;
+        const tick = () => {
+          const left = Math.max(0, end - performance.now());
+          bar.querySelector('i').style.width = (left / (timer.sec * 1000) * 100) + '%';
+          const s = Math.ceil(left / 1000);
+          if (s !== lastSec) { lastSec = s; bar.querySelector('span').textContent = `${s} 秒`; if (s <= 5 && s > 0) this.ctx.audio.sfx('tick'); bar.classList.toggle('hurry', s <= 5); }
+          if (left <= 0) {
+            clearInterval(iv);
+            this.story.appendChild(el('div', { class: 'line note' }, '你遲疑了。'));
+            const b = btns[timer.def]; if (b) b.click();
+          }
+        };
+        iv = setInterval(tick, 100); tick();
+      }
       list.forEach((c, i) => {
         const b = el('button', { class: 'choice' + (c.enabled ? '' : ' locked') + (c.seen ? ' seen' : ''), disabled: !c.enabled },
           el('span', { class: 'mark' }, c.enabled ? '▸' : '🔒'),
@@ -438,6 +467,7 @@ export class UI {
           c.lock ? el('small', {}, c.lock) : null);
         b.addEventListener('click', () => {
           if (!c.enabled) return;
+          clearInterval(iv);
           this.ctx.audio.sfx('tap');
           this.choices.innerHTML = '';
           const echo = el('div', { class: 'line picked' }, '▸ ' + this.fmt(c.label));
@@ -445,6 +475,7 @@ export class UI {
           resolve(i);
         });
         this.choices.appendChild(b);
+        btns.push(b);
       });
       this.scrollDown();
     });

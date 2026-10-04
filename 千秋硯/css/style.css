@@ -875,3 +875,8 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .ink-write.ready .iw-tip { opacity: 1; animation: tipblink 1.6s ease-in-out infinite; }
 @keyframes tipblink { 50% { opacity: .4; } }
 @media (prefers-reduced-motion: reduce) { .iw-ch { animation-duration: .01s !important; animation-delay: 0s !important; } }
+.ch-timer { position: relative; height: 22px; margin: 2px 0 8px; border-radius: 11px; background: rgba(128, 128, 128, .18); overflow: hidden; }
+.ch-timer i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #c9a45c, #e0b86a); border-radius: 11px; transition: width .1s linear; }
+.ch-timer span { position: relative; display: block; text-align: center; font-size: 12px; line-height: 22px; font-weight: 600; color: var(--ink); }
+.ch-timer.hurry i { background: linear-gradient(90deg, #b8432f, #e0533a); animation: hurry .5s ease-in-out infinite alternate; }
+@keyframes hurry { to { opacity: .7; } }

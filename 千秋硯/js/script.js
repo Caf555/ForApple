@@ -72,8 +72,9 @@ export function parseScript(text, file = '劇本') {
     // 對白
     let m = line.match(/^【(.+?)】\s*(.*)$/);
     if (m) {
-      const who = m[1].trim();
-      push(who === '旁白' ? { t: 'text', text: m[2] } : { t: 'say', who, text: m[2] }, ln);
+      // 【蘅｜笑】：說話的人＋表情（有「蘅_笑」這張圖就換成它，沒有就用平常的頭像）
+      const [who, face] = m[1].split('｜').map(x => x.trim());
+      push(who === '旁白' ? { t: 'text', text: m[2] } : { t: 'say', who, face: face || undefined, text: m[2] }, ln);
       return;
     }
 
