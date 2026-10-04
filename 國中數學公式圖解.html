@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>國中數學公式圖解</title>
+<meta name="description" content="依臺灣 108 課綱整理國中三年的數學公式，每一條都配上可以拖拉、調整的圖。">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+:root{
+  --bg:#f5f3ee;--card:#ffffff;--plot:#fbfaf7;--soft:#f1efe9;--ink:#1f2328;--mute:#626875;--line:#dcd8cf;--grid:#ebe8e1;--axis:#8b909a;
+  --c1:#2563eb;--c2:#e2540b;--c3:#15924a;--c4:#b42ac4;--c5:#0f8a8a;
+  --c1a:rgba(37,99,235,.16);--c2a:rgba(226,84,11,.16);--c3a:rgba(21,146,74,.16);--c4a:rgba(180,42,196,.14);--c5a:rgba(15,138,138,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#15171b;--card:#1d2026;--plot:#191c21;--soft:#252932;--ink:#e8e9ec;--mute:#a1a7b3;--line:#333844;--grid:#262a32;--axis:#6f7684;
+  --c1:#6ea2ff;--c2:#ff8a4c;--c3:#4fd18a;--c4:#e07bf0;--c5:#4cc9c9;
+  --c1a:rgba(110,162,255,.2);--c2a:rgba(255,138,76,.2);--c3a:rgba(79,209,138,.2);--c4a:rgba(224,123,240,.18);--c5a:rgba(76,201,201,.2);
+}}
+:root[data-theme="dark"]{
+  --bg:#15171b;--card:#1d2026;--plot:#191c21;--soft:#252932;--ink:#e8e9ec;--mute:#a1a7b3;--line:#333844;--grid:#262a32;--axis:#6f7684;
+  --c1:#6ea2ff;--c2:#ff8a4c;--c3:#4fd18a;--c4:#e07bf0;--c5:#4cc9c9;
+  --c1a:rgba(110,162,255,.2);--c2a:rgba(255,138,76,.2);--c3a:rgba(79,209,138,.2);--c4a:rgba(224,123,240,.18);--c5a:rgba(76,201,201,.2);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.7}
+header{max-width:1200px;margin:0 auto;padding:32px 16px 12px}
+h1{font-size:clamp(26px,5vw,38px);margin:0 0 6px;letter-spacing:.02em}
+.sub{color:var(--mute);margin:0;max-width:46em}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 14px;font:inherit;font-size:15px;cursor:pointer}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+#q{flex:1 1 140px;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:15px}
+main{max-width:1200px;margin:0 auto;padding:0 16px 48px}
+.grade>h2{font-size:26px;margin:36px 0 2px}
+.grade>h2 small{font-size:15px;color:var(--mute);font-weight:400;margin-left:8px}
+.chap>h3{font-size:18px;margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--c1)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h4{margin:0;font-size:18px}
+.fml{overflow-x:auto;overflow-y:hidden;padding:2px 0;font-size:1.02em}
+.fml .katex-display{margin:.3em 0}
+svg.viz{width:100%;height:auto;display:block;background:var(--plot);border-radius:10px;border:1px solid var(--grid);user-select:none;-webkit-user-select:none}
+.ctl{display:grid;gap:2px}
+.sl{display:grid;grid-template-columns:minmax(2.6em,auto) 1fr 3.8em;gap:8px;align-items:center;font-size:14px}
+.sl input{width:100%;accent-color:var(--c1);margin:6px 0}
+.val{text-align:right;font-variant-numeric:tabular-nums;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
+.btns button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+.btns button.on{border-color:var(--c1);color:var(--c1);font-weight:700}
+.out{font-size:14px;background:var(--soft);border-radius:8px;padding:8px 10px;overflow-x:auto;line-height:1.9}
+.plain{font-size:14.5px;margin:0}
+.plain b{color:var(--c1)}
+.hint{font-size:12.5px;color:var(--mute);margin:-4px 0 0}
+.slots{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;background:var(--plot);border:1px solid var(--grid);border-radius:10px;padding:14px 8px;min-height:90px}
+.slot{width:46px;text-align:center;border:2px solid var(--c1);border-radius:8px;padding:4px 0;background:var(--c1a)}
+.slot b{display:block;font-size:20px}
+.slot small{font-size:11px;color:var(--mute)}
+.stars{font-size:22px;letter-spacing:2px;word-break:break-all;text-align:center}
+.stars .bar1{color:var(--ink);font-weight:700;padding:0 3px}
+.counts{font-size:13px;color:var(--mute);text-align:center;width:100%}
+footer{max-width:1200px;margin:0 auto;padding:16px 16px 40px;color:var(--mute);font-size:14px}
+footer a{color:var(--c1)}
+.xl{margin:0 0 8px;font-size:14px}
+.xl a{color:var(--c1);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 12px}
+/* SVG */
+.grid-l{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1.2}
+.num{fill:var(--mute);font-size:9px;text-anchor:middle;dominant-baseline:middle}
+.k0{stroke:var(--ink);stroke-width:2;fill:none}
+.k1{stroke:var(--c1);stroke-width:2.6;fill:none}
+.k2{stroke:var(--c2);stroke-width:2.6;fill:none}
+.k3{stroke:var(--c3);stroke-width:2.6;fill:none}
+.k4{stroke:var(--c4);stroke-width:2.6;fill:none}
+.k5{stroke:var(--c5);stroke-width:2.6;fill:none}
+.km{stroke:var(--mute);stroke-width:1.4;fill:none}
+.thin{stroke-width:1.4}
+.fat{stroke-width:4.5}
+.dash{stroke-dasharray:5 4}
+.f1{fill:var(--c1a);stroke:var(--c1);stroke-width:1.4}
+.f2{fill:var(--c2a);stroke:var(--c2);stroke-width:1.4}
+.f3{fill:var(--c3a);stroke:var(--c3);stroke-width:1.4}
+.f4{fill:var(--c4a);stroke:var(--c4);stroke-width:1.4}
+.f5{fill:var(--c5a);stroke:var(--c5);stroke-width:1.4}
+.fs1{fill:var(--c1);opacity:.55;stroke:var(--c1)}
+.fs2{fill:var(--c2);opacity:.55;stroke:var(--c2)}
+.fg{fill:var(--grid);stroke:var(--axis);stroke-width:1}
+.fn{fill:none}
+.d0{fill:var(--ink)}.d1{fill:var(--c1)}.d2{fill:var(--c2)}.d3{fill:var(--c3)}.d4{fill:var(--c4)}.d5{fill:var(--c5)}.dm{fill:var(--mute)}
+.t{fill:var(--ink);font-size:12px;dominant-baseline:middle}
+.tm{fill:var(--mute);font-size:11px;dominant-baseline:middle}
+.t1{fill:var(--c1)}.t2{fill:var(--c2)}.t3{fill:var(--c3)}.t4{fill:var(--c4)}
+.mid{text-anchor:middle}.end{text-anchor:end}
+.b{font-weight:700}
+.sm{font-size:10px}
+.handle{fill:var(--card);stroke-width:3;cursor:grab;touch-action:none}
+.handle:active{cursor:grabbing}
+.h1{stroke:var(--c1)}.h2{stroke:var(--c2)}.h3{stroke:var(--c3)}.h0{stroke:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <h1>國中數學公式圖解</h1>
+  <p class="xl"><a href="高中數學公式圖解.html">高中版 →</a></p>
+  <p class="sub">把國中三年的數學公式畫成圖。拉動滑桿、拖曳圓點，看公式裡的每個符號到底在說什麼。內容依臺灣 108 課綱大致的學習順序整理。</p>
+</header>
+<div class="bar"><div class="bar-in">
+  <button class="tab on" data-g="0">全部</button>
+  <button class="tab" data-g="1">國一</button>
+  <button class="tab" data-g="2">國二</button>
+  <button class="tab" data-g="3">國三</button>
+  <input id="q" type="search" placeholder="搜尋公式，例如：畢氏、圓周角" aria-label="搜尋公式">
+</div></div>
+<main id="main"></main>
+<footer>
+  <p>小提醒：各出版社教科書的章節順序略有不同，這裡的年級分類僅供參考。標示「可拖曳」的圖，可以用手指或滑鼠拖動空心圓點。</p>
+  <p>升上高中之後的內容，請看 <a href="高中數學公式圖解.html">高中數學公式圖解</a>。點子來自 Threads 上 kokazu.studio 的貼文〈高校3年間の公式全部ビジュアル化したら分かりやす過ぎた〉。</p>
+</footer>
+
+<script>
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+function E(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs||{})e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function H(tag,cls,parent,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;if(parent)parent.appendChild(e);return e;}
+const fx=(x,d=2)=>{const v=Math.round(x*10**d)/10**d;return String(Object.is(v,-0)?0:v);};
+const T=(s,disp=false)=>window.katex?katex.renderToString(s,{throwOnError:false,displayMode:disp}):s;
+const deg=Math.PI/180;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const snap=(v,s=.5)=>Math.round(v/s)*s;
+const fact=n=>{let r=1;for(let i=2;i<=n;i++)r*=i;return r;};
+const binom=(n,k)=>{if(k<0||k>n)return 0;let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return Math.round(r);};
+// 多項式（係數由高次到低次）轉成 TeX
+function terms(list){let s='';for(const [c0,v] of list){const c=Math.round(c0*100)/100;if(c===0)continue;const a=Math.abs(c);const co=(a===1&&v)?'':fx(a);s+=(s===''?(c<0?'-':''):(c<0?' - ':' + '))+co+v;}return s||'0';}
+function polyStr(cs,x='x'){const n=cs.length-1;return terms(cs.map((c,i)=>[c,n-i===0?'':n-i===1?x:`${x}^{${n-i}}`]));}
+const pm=v=>v<0?`- ${fx(-v)}`:`+ ${fx(v)}`;
+const par=v=>v<0?`(${fx(v)})`:fx(v);
+
+function Plot(box,o={}){
+  const w=o.w||300,xr=o.xr||[-5,5],yr=o.yr||[-4,4];
+  const h=o.h||Math.round(w*(yr[1]-yr[0])/(xr[1]-xr[0]));
+  const svg=E('svg',{viewBox:`0 0 ${w} ${h}`,class:'viz'},box);
+  const X=x=>(x-xr[0])/(xr[1]-xr[0])*w, Y=y=>h-(y-yr[0])/(yr[1]-yr[0])*h;
+  const IX=px=>xr[0]+px/w*(xr[1]-xr[0]), IY=py=>yr[0]+(h-py)/h*(yr[1]-yr[0]);
+  const base=E('g',{},svg),dyn=E('g',{},svg),top=E('g',{},svg);
+  const st=o.step||1;
+  if(o.grid!==false){
+    for(let x=Math.ceil(xr[0]/st)*st;x<=xr[1];x+=st)E('line',{x1:X(x),x2:X(x),y1:0,y2:h,class:'grid-l'},base);
+    for(let y=Math.ceil(yr[0]/st)*st;y<=yr[1];y+=st)E('line',{y1:Y(y),y2:Y(y),x1:0,x2:w,class:'grid-l'},base);
+  }
+  if(o.axes!==false){
+    E('line',{x1:0,x2:w,y1:Y(0),y2:Y(0),class:'axis'},base);E('line',{x1:X(0),x2:X(0),y1:0,y2:h,class:'axis'},base);
+    if(o.nums!==false&&o.grid!==false){
+      const ns=o.numStep||Math.max(st,(xr[1]-xr[0])>12?2:1);
+      for(let x=Math.ceil(xr[0]/ns)*ns;x<xr[1];x+=ns){if(Math.abs(x)<1e-9)continue;const t=E('text',{x:X(x),y:clamp(Y(0)+9,8,h-6),class:'num'},base);t.textContent=fx(x);}
+      for(let y=Math.ceil(yr[0]/ns)*ns;y<yr[1];y+=ns){if(Math.abs(y)<1e-9)continue;const t=E('text',{x:clamp(X(0)-8,8,w-8),y:Y(y),class:'num'},base);t.textContent=fx(y);}
+    }
+  }
+  const P={svg,X,Y,IX,IY,base,dyn,top,w,h,xr,yr,
+    clear(){dyn.replaceChildren();},
+    line(x1,y1,x2,y2,c='k0',p=dyn){return E('line',{x1:X(x1),y1:Y(y1),x2:X(x2),y2:Y(y2),class:c},p);},
+    dot(x,y,c='d0',r=4,p=dyn){return E('circle',{cx:X(x),cy:Y(y),r,class:c},p);},
+    circle(x,y,r,c='k0',p=dyn){return E('circle',{cx:X(x),cy:Y(y),r:Math.abs(X(r)-X(0)),class:c},p);},
+    text(x,y,s,c='t',dx=0,dy=0,p=dyn){const t=E('text',{x:X(x)+dx,y:Y(y)+dy,class:c},p);t.textContent=s;return t;},
+    rect(x,y,ww,hh,c='f1',p=dyn){const x0=Math.min(x,x+ww),y1=Math.max(y,y+hh);return E('rect',{x:X(x0),y:Y(y1),width:Math.abs(X(ww)-X(0)),height:Math.abs(Y(0)-Y(hh)),class:c},p);},
+    poly(pts,c='k0',close=false,p=dyn){return E(close?'polygon':'polyline',{points:pts.map(q=>X(q[0]).toFixed(1)+','+Y(q[1]).toFixed(1)).join(' '),class:c},p);},
+    fn(f,c='k1',a=xr[0],b=xr[1],n=240,p=dyn){
+      let d='',pen=false;const sp=yr[1]-yr[0],lo=yr[0]-sp,hi=yr[1]+sp;
+      for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;let y=f(x);if(!isFinite(y)){pen=false;continue;}y=clamp(y,lo,hi);d+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(y).toFixed(1);pen=true;}
+      return E('path',{d,class:c},p);},
+    curve(g,t0,t1,c='k1',n=240,p=dyn){
+      let d='',pen=false;
+      for(let i=0;i<=n;i++){const q=g(t0+(t1-t0)*i/n);if(!isFinite(q[0])||!isFinite(q[1])){pen=false;continue;}d+=(pen?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1);pen=true;}
+      return E('path',{d,class:c},p);},
+    arc(cx,cy,r,a0,a1,c='km',p=dyn){return P.curve(t=>[cx+r*Math.cos(t),cy+r*Math.sin(t)],a0,a1,c,40,p);},
+    arrow(x1,y1,x2,y2,k=1,p=dyn){
+      const ax=X(x1),ay=Y(y1),bx=X(x2),by=Y(y2),L=Math.hypot(bx-ax,by-ay);if(L<1)return;
+      const ux=(bx-ax)/L,uy=(by-ay)/L,s=10;
+      E('line',{x1:ax,y1:ay,x2:bx-ux*s*.6,y2:by-uy*s*.6,class:'k'+k},p);
+      E('polygon',{points:`${bx},${by} ${bx-ux*s-uy*s*.5},${by-uy*s+ux*s*.5} ${bx-ux*s+uy*s*.5},${by-uy*s-ux*s*.5}`,class:'d'+k},p);},
+    handle(x,y,onmove,c='h1'){
+      const el=E('circle',{r:9,class:'handle '+c},top);
+      const set=(x,y)=>{el.setAttribute('cx',X(x));el.setAttribute('cy',Y(y));};set(x,y);
+      el.addEventListener('pointerdown',e=>{
+        e.preventDefault();el.setPointerCapture(e.pointerId);
+        const mv=ev=>{const pt=svg.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;const q=pt.matrixTransform(svg.getScreenCTM().inverse());const r=onmove(IX(q.x),IY(q.y));if(r)set(r[0],r[1]);};
+        const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up);};
+        el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
+      });
+      return {set,el};}
+  };
+  return P;
+}
+
+function Ctl(box){
+  const wrap=H('div','ctl',box);
+  const U={on(){},
+    slider(label,min,max,step,val,fmt=fx){
+      const row=H('label','sl',wrap,`<span class="nm">${label}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}"><span class="val"></span>`);
+      const inp=row.querySelector('input'),sp=row.querySelector('.val');
+      const o={get v(){return +inp.value;},set(x){inp.value=x;sp.textContent=fmt(+inp.value);}};
+      sp.textContent=fmt(+inp.value);inp.addEventListener('input',()=>{sp.textContent=fmt(+inp.value);U.on();});return o;},
+    buttons(list,toggle=false){
+      const row=H('div','btns',wrap);
+      list.forEach(([lab,fn],i)=>{const b=H('button','',row,lab);b.type='button';if(toggle&&i===0)b.classList.add('on');
+        b.addEventListener('click',()=>{if(toggle){row.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');}fn();U.on();});});
+      return row;},
+    out(){return H('div','out',box);}
+  };
+  return U;
+}
+const sup=n=>String(n).split('').map(d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('');
+const DEG=v=>fx(v,0)+'°';
+
+/* ============================== 公式卡片 ============================== */
+const cards=[];const C=o=>cards.push(o);
+const supn=n=>String(n).split('').map(d=>d==='-'?'⁻':'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('');
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;};
+const frac=(p,q)=>{if(q<0){p=-p;q=-q;}const g=gcd(p,q)||1;p/=g;q/=g;return q===1?String(p):`\\frac{${p}}{${q}}`;};
+const angAt=(p,q,r)=>{const u=[q[0]-p[0],q[1]-p[1]],v=[r[0]-p[0],r[1]-p[1]];return Math.acos(clamp((u[0]*v[0]+u[1]*v[1])/(Math.hypot(...u)*Math.hypot(...v)||1),-1,1));};
+function arcB(P,c,u,v,r,cls){const a1=Math.atan2(u[1],u[0]);let d=Math.atan2(v[1],v[0])-a1;while(d>Math.PI)d-=2*Math.PI;while(d<=-Math.PI)d+=2*Math.PI;P.arc(c[0],c[1],r,a1,a1+d,cls);return a1+d/2;}
+const sub=(p,q)=>[p[0]-q[0],p[1]-q[1]];
+const ptOK=(x,y,lx=4.5,ly=3.5)=>[clamp(snap(x),-lx,lx),clamp(snap(y),-ly,ly)];
+
+/* ---------- 國一：整數與數線 ---------- */
+C({g:1,ch:'整數與數線',t:'絕對值與兩點距離',tex:'|a|=\\text{a 到 0 的距離}\\qquad |a-b|=\\text{a 和 b 的距離}',
+d:'絕對值就是「<b>離 0 有多遠</b>」，所以一定不是負的。數線上兩個數相減再取絕對值，就是它們之間的距離。',
+viz(b){const P=Plot(b,{xr:[-10.6,10.6],yr:[-2.2,2.2],w:320,h:120,grid:false,axes:false}),U=Ctl(b);
+  P.line(-10.3,0,10.3,0,'km',P.base);for(let i=-10;i<=10;i++){P.line(i,-.12,i,.12,'km',P.base);if(i%2===0)P.text(i,-.5,i,'num',0,0,P.base);}
+  const a=U.slider('a',-9,9,1,-3),bb=U.slider('b',-9,9,1,5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v;
+    P.line(0,1,A,1,'k1');P.line(A,.85,A,1.15,'k1');P.line(0,.85,0,1.15,'k1');P.text(A/2,1.5,`|a| = ${Math.abs(A)}`,'t mid t1');
+    P.line(A,-1.1,B,-1.1,'k2');P.line(A,-.95,A,-1.25,'k2');P.line(B,-.95,B,-1.25,'k2');P.text((A+B)/2,-1.6,`|a − b| = ${Math.abs(A-B)}`,'t mid t2');
+    P.dot(A,0,'d1',5);P.dot(B,0,'d2',5);P.text(A,.45,'a','t mid t1 b');P.text(B,.45,'b','t mid t2 b');
+    out.innerHTML=T(`|${A}|=${Math.abs(A)},\\quad |${A}-${par(B)}|=|${A-B}|=${Math.abs(A-B)}`);};
+  U.on();}});
+
+C({g:1,ch:'整數與數線',t:'正負數的加減',tex:'a+b:\\text{從 a 出發，b 為正往右、為負往左}\\qquad a-b=a+(-b)',
+d:'把加法想成在數線上<b>走路</b>：加正數往右走，加負數往左走。減去一個數，等於加上它的<b>相反數</b>，所以減法也能變成走路。',
+viz(b){const P=Plot(b,{xr:[-10.6,10.6],yr:[-1.2,2.2],w:320,h:100,grid:false,axes:false}),U=Ctl(b);
+  P.line(-10.3,0,10.3,0,'km',P.base);for(let i=-10;i<=10;i++){P.line(i,-.12,i,.12,'km',P.base);if(i%2===0)P.text(i,-.5,i,'num',0,0,P.base);}
+  let minus=false;const a=U.slider('a',-6,6,1,3),bb=U.slider('b',-6,6,1,-5);U.buttons([['a + b',()=>{minus=false;}],['a − b',()=>{minus=true;}]],true);const out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,step=minus?-B:B,R=A+step;
+    P.dot(A,0,'d1',5);P.text(A,.45,'起點','tm mid');if(step!==0)P.arrow(A,1.1,R,1.1,step>0?3:2);P.dot(R,0,'d0',5);P.line(R,0,R,1.1,'km dash');
+    P.text((A+R)/2,1.6,step>0?`往右 ${step}`:step<0?`往左 ${-step}`:'不動','t mid');
+    out.innerHTML=minus?T(`${A}-${par(B)}=${A}+${par(-B)}=${R}`):T(`${A}+${par(B)}=${R}`);};
+  U.on();}});
+
+C({g:1,ch:'分數',t:'分數的加法：通分',tex:'\\frac ab+\\frac cd=\\frac{a\\times\\frac{L}{b}+c\\times\\frac{L}{d}}{L}\\quad(L\\text{ 為 b、d 的最小公倍數})',
+d:'分母不同時，格子大小不一樣，不能直接加。把兩條都切成<b>一樣小的格子</b>（最小公倍數 L 等分），再數格子數就行了。',
+viz(b){const P=Plot(b,{xr:[-.06,2.3],yr:[-.3,3.3],w:320,h:200,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',1,5,1,1),bb=U.slider('b',2,6,1,2),c=U.slider('c',1,5,1,1),d=U.slider('d',2,6,1,3),out=U.out();
+  const bar=(y,n,k,cl,off=0,len=1)=>{for(let i=0;i<n*len;i++){const sh=i>=off&&i<off+k;P.rect(i/n,y,1/n,.6,sh?cl:'fn km thin');}};
+  U.on=()=>{P.clear();const B=bb.v,D=d.v,A=Math.min(a.v,B-1),Cc=Math.min(c.v,D-1),L=B*D/gcd(B,D),ka=A*L/B,kc=Cc*L/D;
+    bar(2.5,B,A,'f1');bar(1.5,D,Cc,'f2');
+    for(let i=0;i<2*L;i++){const cl=i<ka?'f1':i<ka+kc?'f2':'fn km thin';P.rect(i/L,.1,1/L,.6,cl);}
+    P.line(1,0,1,.8,'k0');
+    P.text(1.06,2.8,`${A}/${B}`,'t t1 b');P.text(1.06,1.8,`${Cc}/${D}`,'t t2 b');P.text(0,1.0,`切成 ${L} 等分後相加`,'tm');
+    out.innerHTML=T(`\\frac{${A}}{${B}}+\\frac{${Cc}}{${D}}=\\frac{${ka}}{${L}}+\\frac{${kc}}{${L}}=\\frac{${ka+kc}}{${L}}${gcd(ka+kc,L)>1?'='+frac(ka+kc,L):''}`)+(a.v>=B||c.v>=D?'<br><span style="color:var(--mute)">（分子要比分母小，已自動調整）</span>':'');};
+  U.on();}});
+
+C({g:1,ch:'指數與科學記號',t:'科學記號',tex:'a\\times10^{n}\\qquad(1\\le a<10,\\ n\\text{ 為整數})',
+d:'很大或很小的數，用「<b>一個 1 到 10 之間的數 × 10 的幾次方</b>」來寫，一眼就能比大小。下面是以公尺為單位的尺，每往右一格就是 10 倍。',
+viz(b){const P=Plot(b,{xr:[-8.6,13.6],yr:[-2.4,2.4],w:320,h:190,grid:false,axes:false}),U=Ctl(b);
+  const OB=[['病毒',1e-7],['細菌',2e-6],['頭髮粗細',7e-5],['螞蟻',5e-3],['人的身高',1.7],['臺北101',508],['玉山',3952],['臺灣南北長',3.94e5],['地球直徑',1.27e7],['地球到月球',3.84e8],['地球到太陽',1.5e11]];
+  P.line(-8.4,0,12.4,0,'km',P.base);for(let i=-8;i<=12;i++){P.line(i,-.1,i,.1,'km',P.base);if(i%4===0)P.text(i,-.4,'10'+supn(i),'num',0,0,P.base);}
+  OB.forEach(([s,v],i)=>{const x=Math.log10(v),y=[.9,1.7,-1.0,-1.8][i%4];P.line(x,0,x,y*.8,'km thin',P.base);P.dot(x,0,'dm',2.5,P.base);P.text(x,y,s,'tm mid sm',0,0,P.base);});
+  const a=U.slider('a',1,9.9,.1,1.7),n=U.slider('n',-8,12,1,0),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,N=n.v,v=A*10**N,x=Math.log10(v);
+    P.line(x,-2.4,x,2.4,'k2 dash thin');P.dot(x,0,'d2',5.5);
+    let near=OB[0];OB.forEach(o=>{if(Math.abs(Math.log10(o[1])-x)<Math.abs(Math.log10(near[1])-x))near=o;});
+    const dec=N>=1?Math.round(v).toLocaleString('zh-TW'):v.toFixed(1-N).replace(/\.?0+$/,'');
+    const e=Math.floor(Math.log10(near[1]));
+    out.innerHTML=T(`${fx(A,1)}\\times10^{${N}}`)+` 公尺 = ${dec} 公尺<br>最接近的是：${near[0]}（約 `+T(`${fx(near[1]/10**e,2)}\\times10^{${e}}`)+' 公尺）';};
+  U.on();}});
+
+/* ---------- 國一：一元一次方程式 ---------- */
+C({g:1,ch:'方程式與不等式',t:'一元一次方程式（天平）',tex:'ax+b=c\\ \\Rightarrow\\ ax=c-b\\ \\Rightarrow\\ x=\\frac{c-b}{a}',
+d:'等號就像一座<b>平衡的天平</b>。兩邊同時拿走一樣多、或同時分成一樣的份數，天平還是平的。這樣一步步讓左邊只剩一個 x。',hint:'藍色方塊是 x，橘色小圓是 1',
+viz(b){const P=Plot(b,{xr:[0,10],yr:[-.3,6.2],w:320,grid:false,axes:false}),U=Ctl(b);
+  P.poly([[5,0],[4.5,-.3],[5.5,-.3]],'d0',true,P.base);P.line(5,0,5,2.3,'k0',P.base);P.line(.6,2.3,9.4,2.3,'k0',P.base);
+  P.text(2.5,2.3,'左邊','tm mid',0,12,P.base);P.text(7.5,2.3,'右邊','tm mid',0,12,P.base);
+  const a=U.slider('a',1,4,1,3),bb=U.slider('b',0,8,1,4),c=U.slider('c',0,20,1,16),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,Cc=c.v;
+    let y=2.45;for(let i=0;i<A;i++){P.rect(.8+i*.85,y,.7,.7,'f1');P.text(1.15+i*.85,y+.35,'x','t mid t1 b sm');}
+    const dots=(x0,n,y0,per)=>{for(let i=0;i<n;i++){const r=Math.floor(i/per),k=i%per;P.dot(x0+k*.42,y0+r*.42,'d2',5.5);}};
+    dots(1.0,B,3.5,9);dots(5.9,Cc,2.6,9);
+    const x=(Cc-B)/A;
+    out.innerHTML=T(`${A}x+${B}=${Cc}`)+'<br>兩邊同減 '+B+'：'+T(`${A}x=${Cc-B}`)+'<br>兩邊同除以 '+A+'：'+T(`x=${frac(Cc-B,A)}${Number.isInteger(x)?'':'\\approx'+fx(x)}`);};
+  U.on();}});
+
+C({g:1,ch:'方程式與不等式',t:'一元一次不等式',tex:'ax+b>c\\ \\Rightarrow\\ \\begin{cases}x>\\frac{c-b}{a}&(a>0)\\\\x<\\frac{c-b}{a}&(a<0)\\end{cases}',
+d:'解法和方程式一樣，但有一個陷阱：<b>兩邊同乘或同除以負數時，不等號要反過來</b>。答案在數線上是一整段：空心圓代表「不包含」，實心圓代表「包含」。',
+viz(b){const P=Plot(b,{xr:[-8.6,8.6],yr:[-1.2,1.4],w:320,h:110,grid:false,axes:false}),U=Ctl(b);
+  P.line(-8.4,0,8.4,0,'km',P.base);for(let i=-8;i<=8;i++){P.line(i,-.1,i,.1,'km',P.base);if(i%2===0)P.text(i,-.5,i,'num',0,0,P.base);}
+  let op='>';const a=U.slider('a',-3,3,1,-2),bb=U.slider('b',-5,5,1,1),c=U.slider('c',-5,5,1,-5);
+  U.buttons([['>',()=>{op='>';}],['≥',()=>{op='≥';}],['<',()=>{op='<';}],['≤',()=>{op='≤';}]],true);const out=U.out();
+  const tx={'>':'>','≥':'\\ge','<':'<','≤':'\\le'},flip={'>':'<','<':'>','≥':'≤','≤':'≥'};
+  U.on=()=>{P.clear();const A=a.v===0?1:a.v,B=bb.v,Cc=c.v,o2=A<0?flip[op]:op,x0=(Cc-B)/A,right=o2==='>'||o2==='≥',incl=o2==='≥'||o2==='≤';
+    P.line(x0,.45,right?8.6:-8.6,.45,'k3 fat');P.dot(x0,.45,incl?'d3':'handle h3',5.5);
+    out.innerHTML=T(`${A}x ${pm(B)} ${tx[op]} ${Cc}`)+' ⇒ '+T(`${A}x ${tx[op]} ${Cc-B}`)+'<br>兩邊同除以 '+A+(A<0?'（<b style="color:var(--c2)">負數，不等號反向</b>）':'')+'：'+T(`x ${tx[o2]} ${frac(Cc-B,A)}`)+(a.v===0?'<br><span style="color:var(--mute)">a 不能是 0，這裡以 a = 1 計算</span>':'');};
+  U.on();}});
+
+/* ---------- 國一：直角坐標與二元一次 ---------- */
+C({g:1,ch:'直角坐標與二元一次方程式',t:'直角坐標與對稱點',tex:'P(x,y)\\ \\xrightarrow{\\text{對 y 軸}}\\ (-x,y)\\qquad P(x,y)\\ \\xrightarrow{\\text{對 x 軸}}\\ (x,-y)',
+d:'坐標 (x, y) 就是「<b>先左右、再上下</b>」。兩條軸把平面分成四個象限。對 y 軸對稱時 x 變號，對 x 軸對稱時 y 變號，對原點對稱時兩個都變號。',hint:'可拖曳：拖動點 P',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300}),U=Ctl(b),out=U.out();let p=[3,2];
+  [['第一象限',2.5,3.4],['第二象限',-2.5,3.4],['第三象限',-2.5,-3.4],['第四象限',2.5,-3.4]].forEach(([s,x,y])=>P.text(x,y,s,'tm mid',0,0,P.base));
+  P.handle(...p,(x,y)=>{p=ptOK(x,y);U.on();return p;},'h1');
+  U.on=()=>{P.clear();const [x,y]=p;P.line(x,0,x,y,'k1 dash thin');P.line(0,y,x,y,'k1 dash thin');
+    [[-x,y,'(−x, y)'],[x,-y,'(x, −y)'],[-x,-y,'(−x, −y)']].forEach(([a,c,s],i)=>{P.dot(a,c,['d2','d3','d4'][i],4);P.text(a,c,s,`tm t${i+2}`,6,-9);});
+    P.text(x,y,`P(${fx(x)}, ${fx(y)})`,'t t1 b',8,-12);
+    const q=x===0||y===0?'在坐標軸上，不屬於任何象限':x>0&&y>0?'第一象限 (+, +)':x<0&&y>0?'第二象限 (−, +)':x<0?'第三象限 (−, −)':'第四象限 (+, −)';
+    out.innerHTML=`P(${fx(x)}, ${fx(y)})：${q}<br>對 y 軸對稱 (${fx(-x)}, ${fx(y)})、對 x 軸 (${fx(x)}, ${fx(-y)})、對原點 (${fx(-x)}, ${fx(-y)})`;};
+  U.on();}});
+
+C({g:1,ch:'直角坐標與二元一次方程式',t:'二元一次聯立方程式',tex:'\\begin{cases}a_1x+b_1y=c_1\\\\a_2x+b_2y=c_2\\end{cases}\\ \\text{的解}=\\text{兩直線的交點}',
+d:'每個二元一次方程式畫出來都是一條直線。兩條線<b>相交於一點</b>就有一組解；<b>平行</b>就無解；<b>重合</b>就有無限多組解。',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-5,5],w:300}),U=Ctl(b);
+  const m1=U.slider('斜率₁',-3,3,.5,1),k1=U.slider('截距₁',-4,4,.5,1),m2=U.slider('斜率₂',-3,3,.5,-.5),k2=U.slider('截距₂',-4,4,.5,-2),out=U.out();
+  U.on=()=>{P.clear();const A=m1.v,B=k1.v,Cc=m2.v,D=k2.v;P.fn(x=>A*x+B,'k1');P.fn(x=>Cc*x+D,'k2');
+    let s='直線 1：'+T('y='+terms([[A,'x'],[B,'']]))+'　直線 2：'+T('y='+terms([[Cc,'x'],[D,'']]))+'<br>';
+    if(A===Cc)s+=B===D?'兩線<b>重合</b>：無限多組解':'兩線<b>平行</b>：無解';
+    else{const x=(D-B)/(A-Cc),y=A*x+B;P.dot(x,y,'d0',5.5);P.text(x,y,`(${fx(x)}, ${fx(y)})`,'t b',8,-10);s+='交點就是解：'+T(`x=${fx(x)},\\ y=${fx(y)}`);}
+    out.innerHTML=s;};
+  U.on();}});
+
+C({g:1,ch:'直角坐標與二元一次方程式',t:'正比與反比',tex:'\\text{正比：}\\ y=kx\\qquad \\text{反比：}\\ xy=k\\ \\left(y=\\frac kx\\right)',
+d:'<b>正比</b>：x 變 2 倍，y 也變 2 倍，圖形是通過原點的直線（例如買飲料的杯數和總價）。<b>反比</b>：x 變 2 倍，y 反而變一半，兩數相乘固定（例如固定路程時速度和時間）。',
+viz(b){const P=Plot(b,{xr:[-.6,8.6],yr:[-.6,8.6],w:280}),U=Ctl(b);let inv=false;
+  U.buttons([['正比',()=>{inv=false;}],['反比',()=>{inv=true;}]],true);const k=U.slider('k',.5,4,.5,2),out=U.out();
+  U.on=()=>{P.clear();const K=k.v,f=x=>inv?K/x:K*x;P.fn(f,'k1',inv?.05:0,8.6,300);
+    const xs=[1,2,3,4];xs.forEach(x=>{const y=f(x);P.dot(x,y,'d2',4);if(inv)P.rect(0,0,x,y,'fn km thin dash');});
+    out.innerHTML=`<table style="border-collapse:collapse;width:100%;text-align:center"><tr><td>x</td>${xs.map(x=>`<td>${x}</td>`).join('')}</tr><tr><td>y</td>${xs.map(x=>`<td><b>${fx(f(x))}</b></td>`).join('')}</tr></table>`+(inv?`每一組 x × y 都等於 ${K}（虛線長方形面積都一樣）`:`每一組 y ÷ x 都等於 ${K}`);};
+  U.on();}});
+
+/* ---------- 國二：乘法公式與多項式 ---------- */
+C({g:2,ch:'乘法公式與多項式',t:'和的平方公式',tex:'(a+b)^2=a^2+2ab+b^2',
+d:'把邊長 <b>a+b</b> 的正方形切成四塊：一塊 a²、一塊 b²、兩塊 ab。四塊加起來就是整個正方形，所以中間會多出「2ab」。',
+viz(b){const P=Plot(b,{xr:[-.6,10.4],yr:[-.6,11.2],w:280,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',1,6,.5,4),bb=U.slider('b',1,4,.5,2.5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,s=10/(A+B);
+    const r=(x,y,w,h,cl,lab)=>{P.rect(x*s,y*s,w*s,h*s,cl);P.text((x+w/2)*s,(y+h/2)*s,lab,'t mid b');};
+    r(0,B,A,A,'f1','a²');r(A,B,B,A,'f2','ab');r(0,0,A,B,'f2','ab');r(A,0,B,B,'f3','b²');
+    P.text(A*s/2,10,'a','t mid t1',0,-8);P.text((A+B/2)*s,10,'b','t mid t3',0,-8);
+    P.text(0,(B+A/2)*s,'a','t mid t1',-8);P.text(0,B/2*s,'b','t mid t3',-8);
+    out.innerHTML=T(`(${A}+${B})^2=${fx((A+B)**2)}`)+'<br>'+T(`${A}^2+2\\times${A}\\times${B}+${B}^2=${fx(A*A)}+${fx(2*A*B)}+${fx(B*B)}=${fx((A+B)**2)}`);};
+  U.on();}});
+
+C({g:2,ch:'乘法公式與多項式',t:'差的平方公式',tex:'(a-b)^2=a^2-2ab+b^2',
+d:'從 a² 的大正方形，切掉上面和右邊兩條 <b>a×b 的長條</b>。但右上角那塊 b² 被切了兩次，所以要<b>加回一次 b²</b>，剩下的就是 (a−b)²。',
+viz(b){const P=Plot(b,{xr:[-.6,10.4],yr:[-.6,11.2],w:280,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',3,6,.5,5),bb=U.slider('b',.5,2.5,.5,1.5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,s=10/A,r=(x,y,w,h,cl)=>P.rect(x*s,y*s,w*s,h*s,cl);
+    r(0,0,A,A,'fg');r(0,0,A-B,A-B,'f3');r(0,A-B,A,B,'f2');r(A-B,0,B,A,'f2');r(A-B,A-B,B,B,'f4');
+    P.text((A-B)/2*s,(A-B)/2*s,'(a−b)²','t mid b');P.text((A-B)/2*s,(A-B/2)*s,'ab','t mid');P.text((A-B/2)*s,(A-B)/2*s,'ab','t mid');P.text((A-B/2)*s,(A-B/2)*s,'b²','t mid b');
+    P.text(A/2*s,10,'a','t mid',0,-8);P.text((A-B)/2*s,0,'a − b','tm mid',0,-8);P.text(A*s,(A-B/2)*s,'b','t',4);
+    out.innerHTML=T(`(${A}-${B})^2=${fx((A-B)**2)}`)+'<br>'+T(`${A}^2-2\\times${A}\\times${B}+${B}^2=${fx(A*A)}-${fx(2*A*B)}+${fx(B*B)}=${fx((A-B)**2)}`);};
+  U.on();}});
+
+C({g:2,ch:'乘法公式與多項式',t:'平方差公式',tex:'a^2-b^2=(a+b)(a-b)',
+d:'從大正方形 a² 挖掉小正方形 b²，剩下的 L 形切成兩塊，<b>重新拼起來</b>剛好是寬 a+b、高 a−b 的長方形。',
+viz(b){const P=Plot(b,{xr:[-.4,14.6],yr:[-1,7.2],w:320,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',3,6,.5,5),bb=U.slider('b',.5,2.5,.5,2),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,s=12.4/(2*A+B+1.2),x0=(A+1.2)*s;
+    P.rect(0,0,A*s,(A-B)*s,'f1');P.rect(0,(A-B)*s,(A-B)*s,B*s,'f2');P.rect((A-B)*s,(A-B)*s,B*s,B*s,'fg dash');
+    P.text((A-B/2)*s,(A-B/2)*s,'b²','tm mid');
+    P.text(A*s/2,0,'a','t mid',0,10);
+    P.rect(x0,0,A*s,(A-B)*s,'f1');P.rect(x0+A*s,0,B*s,(A-B)*s,'f2');
+    P.text(x0+(A+B)/2*s,0,'a + b','t mid',0,10);P.text(x0+(A+B)*s,(A-B)/2*s,'a − b','t',4);
+    P.text((A+1.2)*s-.6*s,A*s/2,'⇒','t mid b');
+    out.innerHTML=T(`${A}^2-${B}^2=${fx(A*A)}-${fx(B*B)}=${fx(A*A-B*B)}`)+'<br>'+T(`(${A}+${B})(${A}-${B})=${fx(A+B)}\\times${fx(A-B)}=${fx((A+B)*(A-B))}`);};
+  U.on();}});
+
+C({g:2,ch:'乘法公式與多項式',t:'十字交乘（因式分解）',tex:'x^2+(a+b)x+ab=(x+a)(x+b)',
+d:'用積木排長方形：一塊 <b style="color:var(--c1)">x²</b>、(a+b) 條 <b style="color:var(--c2)">x 長條</b>、ab 個 <b style="color:var(--c3)">小方塊</b>。能排成完整的長方形，長和寬就是兩個因式。所以要找「相乘是常數、相加是 x 的係數」的兩個數。',
+viz(b){const P=Plot(b,{xr:[-1,10.2],yr:[-1,10.2],w:280,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',1,5,1,3),bb=U.slider('b',1,5,1,2),out=U.out();const X=4.2;
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,top=B+X;
+    P.rect(0,B,X,X,'f1');P.text(X/2,B+X/2,'x²','t mid b');
+    for(let i=0;i<A;i++){P.rect(X+i,B,1,X,'f2');}for(let j=0;j<B;j++){P.rect(0,j,X,1,'f2');}
+    for(let i=0;i<A;i++)for(let j=0;j<B;j++)P.rect(X+i,j,1,1,'f3');
+    P.text(X/2,top,'x','t mid',0,-9);P.text(X+A/2,top,`${A}`,'t mid t2 b',0,-9);P.text(0,B+X/2,'x','t',-12);P.text(0,B/2,`${B}`,'t t2 b',-12);
+    out.innerHTML=T(`x^2+${A+B}x+${A*B}=(x+${A})(x+${B})`)+`<br>${A} × ${B} = ${A*B}（常數），${A} + ${B} = ${A+B}（x 的係數）`;};
+  U.on();}});
+
+/* ---------- 國二：平方根與畢氏定理 ---------- */
+C({g:2,ch:'平方根與畢氏定理',t:'平方根',tex:'(\\sqrt{A})^2=A,\\qquad n^2<A<(n+1)^2\\Rightarrow n<\\sqrt A<n+1',
+d:'√A 就是「面積是 A 的正方形，<b>邊長是多少</b>」。不是完全平方數時，可以用前後兩個完全平方數，估計它介於哪兩個整數之間。',
+viz(b){const P=Plot(b,{xr:[-.4,7.8],yr:[-.4,7.8],w:260}),U=Ctl(b);const A=U.slider('面積 A',1,50,1,20),out=U.out();
+  U.on=()=>{P.clear();const v=A.v,s=Math.sqrt(v),n=Math.floor(s+1e-9),exact=n*n===v;
+    if(!exact)P.rect(0,0,n+1,n+1,'fn k2 dash thin');P.rect(0,0,s,s,'f1');if(!exact)P.rect(0,0,n,n,'fn k3 dash thin');
+    P.text(s/2,s/2,`面積 ${v}`,'t mid b');P.text(s/2,s,`√${v}`,'t mid t1 b',0,-9);
+    out.innerHTML=exact?T(`\\sqrt{${v}}=${n}`)+`（${v} 是完全平方數）`:T(`${n}^2=${n*n}<${v}<${(n+1)**2}=${n+1}^2`)+'<br>所以 '+T(`${n}<\\sqrt{${v}}<${n+1}`)+'，'+T(`\\sqrt{${v}}\\approx${fx(s,3)}`);};
+  U.on();}});
+
+C({g:2,ch:'平方根與畢氏定理',t:'畢氏定理（勾股定理）',tex:'a^2+b^2=c^2',
+d:'在直角三角形三邊各畫一個正方形：兩個<b>短邊</b>正方形的面積加起來，剛好等於<b>斜邊</b>正方形的面積。例如 3、4、5。',
+viz(b){const P=Plot(b,{xr:[-5.8,10.4],yr:[-5.8,10.4],w:300,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',1,5,.5,4),bb=U.slider('b',1,5,.5,3),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,c=Math.hypot(A,B);
+    P.rect(0,-A,A,A,'f1');P.rect(-B,0,B,B,'f2');P.poly([[A,0],[0,B],[B,B+A],[A+B,A]],'f3',true);P.poly([[0,0],[A,0],[0,B]],'fg',true);
+    P.text(A/2,-A/2,`a² = ${fx(A*A)}`,'t mid b');P.text(-B/2,B/2,`b² = ${fx(B*B)}`,'t mid b');P.text((A+B)/2,(A+B)/2,`c² = ${fx(c*c)}`,'t mid b');
+    P.text(A/2,0,'a','t mid t1 b',0,-8);P.text(0,B/2,'b','t t2 b',5);P.rect(0,0,.4,.4,'fn km');
+    out.innerHTML=T(`${A}^2+${B}^2=${fx(A*A)}+${fx(B*B)}=${fx(c*c)}`)+'，所以斜邊 '+T(`c=\\sqrt{${fx(c*c)}}${Number.isInteger(c)?'=':'\\approx'}${fx(c)}`);};
+  U.on();}});
+
+C({g:2,ch:'平方根與畢氏定理',t:'兩點距離公式',tex:'\\overline{AB}=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}',
+d:'兩點之間連線，配上<b style="color:var(--c1)">水平</b>和<b style="color:var(--c2)">垂直</b>兩段，就是一個直角三角形。用畢氏定理就能算出斜邊，也就是兩點距離。',hint:'可拖曳：拖動 A、B 兩點',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300}),U=Ctl(b),out=U.out();let p=[-3,-2],q=[2,2];
+  P.handle(...p,(x,y)=>{p=ptOK(x,y);U.on();return p;},'h0');P.handle(...q,(x,y)=>{q=ptOK(x,y);U.on();return q;},'h0');
+  U.on=()=>{P.clear();const dx=q[0]-p[0],dy=q[1]-p[1],d=Math.hypot(dx,dy);
+    P.line(...p,q[0],p[1],'k1');P.line(q[0],p[1],...q,'k2');P.line(...p,...q,'k0');P.text(...p,'A','t b',-14,-6);P.text(...q,'B','t b',8,-8);
+    out.innerHTML=T(`\\overline{AB}=\\sqrt{${par(dx)}^2+${par(dy)}^2}=\\sqrt{${fx(dx*dx+dy*dy)}}\\approx${fx(d)}`);};
+  U.on();}});
+
+/* ---------- 國二：一元二次方程式 ---------- */
+C({g:2,ch:'一元二次方程式',t:'公式解',tex:'ax^2+bx+c=0\\ \\Rightarrow\\ x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}',
+d:'方程式的解，就是拋物線 y = ax²+bx+c 和 <b>x 軸的交點</b>。根號裡的 b²−4ac 叫<b>判別式</b>：大於 0 有兩個解，等於 0 有一個（重根），小於 0 沒有實數解。',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-5,5],w:300}),U=Ctl(b);
+  const a=U.slider('a',-2,2,.5,1),bb=U.slider('b',-4,4,1,-1),c=U.slider('c',-4,4,1,-2),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,Cc=c.v;if(A===0){P.fn(x=>B*x+Cc,'k1');out.innerHTML='a = 0 時不是一元二次方程式';return;}
+    P.fn(x=>A*x*x+B*x+Cc,'k1');const D=B*B-4*A*Cc;
+    let s=T(`${terms([[A,'x^2'],[B,'x'],[Cc,'']])}=0`)+'<br>'+T(`b^2-4ac=${par(B)}^2-4\\times${par(A)}\\times${par(Cc)}=${fx(D)}`);
+    if(D>=0){const r1=(-B+Math.sqrt(D))/(2*A),r2=(-B-Math.sqrt(D))/(2*A);P.dot(r1,0,'d2',5);P.dot(r2,0,'d2',5);
+      s+='<br>'+T(`x=\\frac{${fx(-B)}\\pm\\sqrt{${fx(D)}}}{${fx(2*A)}}`)+(D===0?`，重根 x = ${fx(r1)}`:`，x = ${fx(Math.max(r1,r2))} 或 ${fx(Math.min(r1,r2))}`);}
+    else s+='<br>判別式 &lt; 0：沒有實數解（拋物線碰不到 x 軸）';
+    out.innerHTML=s;};
+  U.on();}});
+
+/* ---------- 國二：數列與級數 ---------- */
+C({g:2,ch:'數列與級數',t:'等差數列與等差級數',tex:'a_n=a_1+(n-1)d,\\qquad S_n=\\frac{n(a_1+a_n)}{2}',
+d:'把數列<b style="color:var(--c1)">由小到大</b>排一次，再<b style="color:var(--c2)">倒過來</b>疊上去，每一欄都是 a₁+aₙ，剛好拼成長方形。長方形面積的一半就是總和（高斯的方法）。',
+viz(b){const P=Plot(b,{xr:[-.03,1.03],yr:[-.1,1.06],w:300,h:230,grid:false,axes:false}),U=Ctl(b);
+  const n=U.slider('n',1,10,1,6),a1=U.slider('a₁',1,5,1,2),d=U.slider('d',0,3,1,1),out=U.out();
+  U.on=()=>{P.clear();const N=n.v,A=a1.v,D=d.v,an=A+(N-1)*D,Hh=A+an,cw=1/N;
+    for(let i=0;i<N;i++){const v=A+i*D,u=A+(N-1-i)*D;P.rect(i*cw+cw*.06,0,cw*.88,v/Hh,'f1');P.rect(i*cw+cw*.06,v/Hh,cw*.88,u/Hh,'f2');
+      if(N<=8){P.text(i*cw+cw/2,v/Hh/2,fx(v),'t mid t1 sm');P.text(i*cw+cw/2,(v+u/2)/Hh,fx(u),'t mid t2 sm');}}
+    P.text(.5,0,`n = ${N} 項`,'tm mid',0,10);
+    out.innerHTML=T(`a_{${N}}=${A}+(${N}-1)\\times${D}=${an}`)+'<br>'+T(`S_{${N}}=\\frac{${N}\\times(${A}+${an})}{2}=${fx(N*(A+an)/2)}`);};
+  U.on();}});
+
+
+C({g:2,ch:'數列與級數',t:'等比數列',tex:'a_n=a_1\\times r^{\\,n-1}',
+d:'每一項都是前一項<b>乘上同一個數 r</b>（公比）。r 大於 1 會越長越快（像細胞分裂），r 介於 0 和 1 之間會越來越小（像每次對折）。',
+viz(b){const P=Plot(b,{xr:[-.03,1.03],yr:[-.1,1.06],w:300,h:200,grid:false,axes:false}),U=Ctl(b);
+  const a1=U.slider('a₁',1,5,1,1),r=U.slider('r',.5,3,.5,2),n=U.slider('n',1,10,1,7),out=U.out();
+  U.on=()=>{P.clear();const N=n.v,A=a1.v,R=r.v,v=[...Array(N)].map((_,i)=>A*R**i),mx=Math.max(...v),w=1/N;
+    v.forEach((x,i)=>{P.rect(i*w+w*.08,0,w*.84,x/mx*.9,'f1');if(N<=8)P.text(i*w+w/2,x/mx*.9,fx(x),'tm mid',0,-7);});
+    out.innerHTML=`${v.map(x=>fx(x)).join('、')}<br>`+T(`a_{${N}}=${A}\\times${fx(R)}^{${N-1}}=${fx(v[N-1])}`);};
+  U.on();}});
+
+/* ---------- 國二：線型函數 ---------- */
+C({g:2,ch:'函數',t:'線型函數',tex:'y=ax+b\\qquad a:\\text{斜率}\\quad b:\\text{y 截距}',
+d:'<b>b</b> 是直線和 y 軸的交點高度；<b>a</b> 是「x 每增加 1，y 增加多少」。a 為正往右上，a 為負往右下，a = 0 是水平線（常數函數）。',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-5,5],w:300}),U=Ctl(b);const a=U.slider('a',-3,3,.5,1.5),bb=U.slider('b',-4,4,.5,-1),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v;P.fn(x=>A*x+B,'k0');P.line(0,B,1,B,'k1 fat');P.line(1,B,1,B+A,'k2 fat');P.dot(0,B,'d3',5);
+    P.text(.5,B,'1','t mid t1 b',0,A>0?12:-10);P.text(1,B+A/2,`a = ${fx(A)}`,'t t2 b',6);P.text(0,B,`(0, ${fx(B)})`,'t t3',-50,-8);
+    let s=T('y='+terms([[A,'x'],[B,'']]))+`：斜率 ${fx(A)}，y 截距 ${fx(B)}`;
+    if(A!==0){P.dot(-B/A,0,'d4',4);s+=`<br>和 x 軸交於 (${fx(-B/A)}, 0)`;}else s+='<br>a = 0：水平線（常數函數）';
+    out.innerHTML=s;};
+  U.on();}});
+
+/* ---------- 國二：幾何 ---------- */
+C({g:2,ch:'三角形與多邊形',t:'三角形內角和',tex:'\\angle A+\\angle B+\\angle C=180^\\circ',
+d:'通過 C 畫一條和 AB <b>平行的虛線</b>。∠A、∠B 會「搬」到 C 的兩側（內錯角相等），三個角剛好拼成一直線，也就是 180°。也因此<b>外角 = 兩個內對角的和</b>。',hint:'可拖曳：拖動三個頂點',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300,grid:false,axes:false}),U=Ctl(b),out=U.out();const V=[[-3.5,-2.5],[3.5,-2.5],[-.5,2.5]];
+  ['h1','h2','h3'].forEach((h,i)=>P.handle(...V[i],(x,y)=>{V[i]=ptOK(x,y);U.on();return V[i];},h));
+  U.on=()=>{P.clear();const [A,B,Cc]=V,ab=sub(B,A);
+    P.line(Cc[0]-ab[0]*2,Cc[1]-ab[1]*2,Cc[0]+ab[0]*2,Cc[1]+ab[1]*2,'km dash');
+    P.poly(V,'f5',true);
+    const m1=arcB(P,A,sub(B,A),sub(Cc,A),.7,'k1'),m2=arcB(P,B,sub(A,B),sub(Cc,B),.7,'k2'),m3=arcB(P,Cc,sub(A,Cc),sub(B,Cc),.6,'k3');
+    arcB(P,Cc,sub(A,B),sub(A,Cc),.85,'k1');arcB(P,Cc,ab,sub(B,Cc),.85,'k2');
+    [['A',A,1],['B',B,2],['C',Cc,3]].forEach(([s,p,k])=>{const g=[(A[0]+B[0]+Cc[0])/3,(A[1]+B[1]+Cc[1])/3],d=sub(p,g),L=Math.hypot(...d)||1;P.text(p[0]+d[0]/L*.55,p[1]+d[1]/L*.55,s,`t mid b t${k}`);});
+    const a1=angAt(A,B,Cc)/deg,a2=angAt(B,A,Cc)/deg,a3=angAt(Cc,A,B)/deg;
+    out.innerHTML=Math.min(a1,a2,a3)<.5?'三點在同一直線上，不是三角形':T(`${fx(a1,1)}^\\circ+${fx(a2,1)}^\\circ+${fx(a3,1)}^\\circ=${fx(a1+a2+a3,0)}^\\circ`)+'<br>∠C 的外角 = '+T(`${fx(a1,1)}^\\circ+${fx(a2,1)}^\\circ=${fx(a1+a2,1)}^\\circ`);};
+  U.on();}});
+
+C({g:2,ch:'三角形與多邊形',t:'多邊形的內角和',tex:'n\\text{ 邊形內角和}=(n-2)\\times180^\\circ,\\qquad \\text{外角和}=360^\\circ',
+d:'從一個頂點畫對角線，可以把 n 邊形切成 <b>(n−2) 個三角形</b>，每個三角形 180°。正 n 邊形每個內角都一樣，所以再除以 n。',
+viz(b){const P=Plot(b,{xr:[-1.25,1.25],yr:[-1.25,1.25],w:260,grid:false,axes:false}),U=Ctl(b);const n=U.slider('n',3,12,1,6),out=U.out();
+  U.on=()=>{P.clear();const N=n.v,s0=-Math.PI/2-Math.PI/N,v=[...Array(N)].map((_,k)=>[Math.cos(s0+2*Math.PI*k/N),Math.sin(s0+2*Math.PI*k/N)]);
+    for(let k=1;k<N-1;k++)P.poly([v[0],v[k],v[k+1]],['f1','f2','f3','f4','f5'][(k-1)%5],true);
+    P.poly(v,'k0',true);P.dot(...v[0],'d0',4.5);
+    for(let k=1;k<N-1;k++){const g=[(v[0][0]+v[k][0]+v[k+1][0])/3,(v[0][1]+v[k][1]+v[k+1][1])/3];if(N<=9)P.text(...g,k,'t mid b sm');}
+    const S=(N-2)*180;
+    out.innerHTML=`切成 ${N-2} 個三角形：`+T(`(${N}-2)\\times180^\\circ=${S}^\\circ`)+'<br>正 '+N+' 邊形每個內角 '+T(`${S}^\\circ\\div${N}=${fx(S/N,2)}^\\circ`)+'，每個外角 '+T(`${fx(360/N,2)}^\\circ`);};
+  U.on();}});
+
+C({g:2,ch:'三角形與多邊形',t:'梯形面積',tex:'\\text{梯形面積}=\\frac{(\\text{上底}+\\text{下底})\\times\\text{高}}{2}',
+d:'拿兩個一模一樣的梯形，把其中一個<b>倒過來</b>接在旁邊，會拼成一個平行四邊形：底是「上底＋下底」，高不變。梯形面積就是它的一半。',
+viz(b){const P=Plot(b,{xr:[-.5,14.5],yr:[-1,6],w:320,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('上底',1,5,.5,2.5),bb=U.slider('下底',2,7,.5,5),h=U.slider('高',1,4.5,.5,3),out=U.out();
+  U.on=()=>{P.clear();const s0=Math.max(.5,(bb.v-a.v)/2),k=Math.min(13.4/(a.v+bb.v+s0),5.2/h.v),A=a.v*k,B=bb.v*k,H_=h.v*k,s=s0*k;
+    P.poly([[0,0],[B,0],[s+A,H_],[s,H_]],'f1',true);P.poly([[B,0],[B+A,0],[B+s+A,H_],[s+A,H_]],'f2',true);
+    P.line(s,0,s,H_,'km dash');P.text(s,H_/2,'高','tm',4);
+    P.text(s+A/2,H_,'上底','t mid t1',0,-9);P.text(B/2,0,'下底','t mid t1',0,11);P.text(B+A/2,0,'上底','t mid t2',0,11);P.text(s+A+B/2,H_,'下底','t mid t2',0,-9);
+    {const A=a.v,B=bb.v,H_=h.v;out.innerHTML='平行四邊形面積 '+T(`(${A}+${B})\\times${H_}=${fx((A+B)*H_)}`)+'<br>梯形面積 '+T(`${fx((A+B)*H_)}\\div2=${fx((A+B)*H_/2)}`);}};
+  U.on();}});
+
+/* ---------- 國三：相似形 ---------- */
+C({g:3,ch:'相似形',t:'相似三角形：邊長比與面積比',tex:'\\text{邊長比}=k\\ \\Rightarrow\\ \\text{周長比}=k,\\ \\ \\text{面積比}=k^2',
+d:'把三角形放大 k 倍，<b>每一邊</b>都變 k 倍，角度不變。但面積是「長 × 寬」，兩個方向都變 k 倍，所以面積變成 <b>k² 倍</b>。放大 2 倍，面積是 4 倍。',
+viz(b){const P=Plot(b,{xr:[-.4,6.6],yr:[-.4,4.8],w:300}),U=Ctl(b);const k=U.slider('k',.5,3,.25,2),out=U.out();const T0=[[0,0],[2,0],[.6,1.4]];
+  U.on=()=>{P.clear();const K=k.v,T1=T0.map(p=>[p[0]*K,p[1]*K]);P.poly(T1,'f2',true);P.poly(T0,'f1',true);
+    P.text(1,0,'2','t mid t1 b',0,-7);P.text(K,0,fx(2*K),'t mid t2 b',0,12);
+    const a0=1.4,p0=2+Math.hypot(.6,1.4)+Math.hypot(1.4,1.4);
+    out.innerHTML=`周長 ${fx(p0)} → ${fx(p0*K)}（${fx(K)} 倍）<br>面積 `+T(`${fx(a0)}\\to${fx(a0*K*K)}`)+'（'+T(`${fx(K)}^2=${fx(K*K)}`)+' 倍）';};
+  U.on();}});
+
+/* ---------- 國三：圓 ---------- */
+C({g:3,ch:'圓',t:'圓心角與圓周角',tex:'\\text{圓周角}=\\frac12\\times\\text{同弧所對的圓心角}',
+d:'同一段弧，從<b style="color:var(--c2)">圓心</b>看過去的角度，剛好是從<b style="color:var(--c1)">圓上另一點</b>看過去的 2 倍。所以 P 在圓上怎麼移動，∠APB 都不變；如果 AB 是直徑，圓周角就是 90°。',hint:'可拖曳：A、B 和 P 都能沿著圓移動',
+viz(b){const P=Plot(b,{xr:[-3.9,3.9],yr:[-3.9,3.9],w:280,grid:false,axes:false}),U=Ctl(b),out=U.out();
+  P.circle(0,0,3,'km',P.base);P.dot(0,0,'d0',3,P.base);P.text(0,0,'O','tm',5,10,P.base);
+  const ang=[200*deg,340*deg,100*deg],pt=t=>[3*Math.cos(t),3*Math.sin(t)];
+  ['h3','h3','h1'].forEach((h,i)=>P.handle(...pt(ang[i]),(x,y)=>{ang[i]=Math.atan2(y,x);U.on();return pt(ang[i]);},h));
+  U.on=()=>{P.clear();const [tA,tB,tP]=ang,A=pt(tA),B=pt(tB),Pp=pt(tP),nrm=x=>((x%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+    const dAB=nrm(tB-tA),dAP=nrm(tP-tA);let st,sw;if(dAP<dAB){st=tB;sw=2*Math.PI-dAB;}else{st=tA;sw=dAB;}
+    P.arc(0,0,3,st,st+sw,'k3 fat');P.poly([A,[0,0],B],'k2');P.arc(0,0,.6,st,st+sw,'k2');
+    P.poly([A,Pp,B],'k1');arcB(P,Pp,sub(A,Pp),sub(B,Pp),.6,'k1');
+    [['A',A],['B',B],['P',Pp]].forEach(([s,p])=>P.text(p[0]*1.13,p[1]*1.13,s,'t mid b'));
+    const ip=angAt(Pp,A,B)/deg;
+    out.innerHTML='圓心角 '+T(`\\angle AOB=${fx(sw/deg,1)}^\\circ`)+'　圓周角 '+T(`\\angle APB=${fx(ip,1)}^\\circ`)+'<br>'+T(`${fx(sw/deg,1)}^\\circ\\div2=${fx(sw/deg/2,1)}^\\circ`)+(Math.abs(sw/deg-180)<1.5?'　AB 是直徑，圓周角 = 90°':'');};
+  U.on();}});
+
+C({g:3,ch:'圓',t:'弧長與扇形面積',tex:'\\text{弧長}=2\\pi r\\times\\frac{\\theta}{360^\\circ},\\qquad \\text{扇形面積}=\\pi r^2\\times\\frac{\\theta}{360^\\circ}',
+d:'扇形就是圓的「一塊披薩」。圓心角 θ 佔 360° 的幾分之幾，弧長和面積就佔整個圓周長、圓面積的幾分之幾。',
+viz(b){const P=Plot(b,{xr:[-5.6,5.6],yr:[-5.6,5.6],w:260,grid:false,axes:false}),U=Ctl(b);
+  const r=U.slider('r',1,5,.5,4),th=U.slider('θ',10,360,5,120,DEG),out=U.out();
+  U.on=()=>{P.clear();const R=r.v,t=th.v*deg,pts=[[0,0]];for(let i=0;i<=60;i++)pts.push([R*Math.cos(t*i/60),R*Math.sin(t*i/60)]);
+    P.circle(0,0,R,'km dash');P.poly(pts,'f1',true);P.arc(0,0,R,0,t,'k2 fat');P.line(0,0,R,0,'k0');P.text(R/2,0,'r','t mid b',0,10);
+    const fr=th.v/360;
+    out.innerHTML='弧長 '+T(`2\\pi\\times${R}\\times\\frac{${th.v}}{360}\\approx${fx(2*Math.PI*R*fr)}`)+'<br>扇形面積 '+T(`\\pi\\times${R}^2\\times\\frac{${th.v}}{360}\\approx${fx(Math.PI*R*R*fr)}`)+'（π 取 3.14159…）';};
+  U.on();}});
+
+C({g:3,ch:'圓',t:'三角形的外心、內心、重心',tex:'\\text{外心：}\\overline{OA}=\\overline{OB}=\\overline{OC}\\qquad\\text{內心：到三邊等距}\\qquad\\text{重心：中線分成 }2:1',
+d:'<b>外心</b>是三邊中垂線的交點，是外接圓的圓心（鈍角三角形的外心在外面）。<b>內心</b>是三個角平分線的交點，是內切圓的圓心。<b>重心</b>是三條中線的交點，把三角形剪下來，用筆尖頂住重心就能平衡。',hint:'可拖曳：拖動三個頂點，再切換上面的按鈕',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300,grid:false,axes:false}),U=Ctl(b);let mode=0;
+  U.buttons([['外心',()=>{mode=0;}],['內心',()=>{mode=1;}],['重心',()=>{mode=2;}]],true);const out=U.out();
+  const V=[[-3,-2.5],[3.5,-2],[-.5,2.5]];
+  ['h1','h2','h3'].forEach((h,i)=>P.handle(...V[i],(x,y)=>{V[i]=ptOK(x,y);U.on();return V[i];},h));
+  U.on=()=>{P.clear();const [A,B,Cc]=V,[ax,ay]=A,[bx,by]=B,[cx,cy]=Cc,d=2*(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by));
+    P.poly(V,'f5',true);
+    if(Math.abs(d)<1e-6){out.innerHTML='三點在同一直線上，不是三角形';return;}
+    const mid=(p,q)=>[(p[0]+q[0])/2,(p[1]+q[1])/2];
+    if(mode===0){const o=[((ax*ax+ay*ay)*(by-cy)+(bx*bx+by*by)*(cy-ay)+(cx*cx+cy*cy)*(ay-by))/d,((ax*ax+ay*ay)*(cx-bx)+(bx*bx+by*by)*(ax-cx)+(cx*cx+cy*cy)*(bx-ax))/d],R=Math.hypot(ax-o[0],ay-o[1]);
+      P.circle(...o,R,'k2 thin');[[A,B],[B,Cc],[Cc,A]].forEach(([p,q])=>{const m=mid(p,q);P.line(...m,...o,'k2 dash thin');P.dot(...m,'dm',2.5);});
+      V.forEach(p=>P.line(...o,...p,'k2 thin'));P.dot(...o,'d2',5);P.text(...o,'O','t t2 b',7,-8);
+      out.innerHTML=`外心到三個頂點的距離都是 ${fx(R)}`;}
+    else if(mode===1){const a=Math.hypot(bx-cx,by-cy),bb=Math.hypot(ax-cx,ay-cy),c=Math.hypot(ax-bx,ay-by),p=a+bb+c,I=[(a*ax+bb*bx+c*cx)/p,(a*ay+bb*by+c*cy)/p],r=Math.abs(d)/2/p;
+      P.circle(...I,r,'k1 thin');[[A,B,Cc,bb,c],[B,Cc,A,c,a],[Cc,A,B,a,bb]].forEach(([v,q,s,wq,ws])=>{const t=[(wq*q[0]+ws*s[0])/(wq+ws),(wq*q[1]+ws*s[1])/(wq+ws)];P.line(...v,...t,'k1 dash thin');});
+      P.dot(...I,'d1',5);P.text(...I,'I','t t1 b',7,-8);out.innerHTML=`內心到三邊的距離都是 ${fx(r)}（內切圓半徑）`;}
+    else{const G=[(ax+bx+cx)/3,(ay+by+cy)/3];[[A,mid(B,Cc)],[B,mid(A,Cc)],[Cc,mid(A,B)]].forEach(([v,m])=>{P.line(...v,...G,'k3');P.line(...G,...m,'k4');P.dot(...m,'dm',3);});
+      P.dot(...G,'d0',5);P.text(...G,'G','t b',7,-8);out.innerHTML='每條中線被重心分成 <b style="color:var(--c3)">頂點到重心</b> : <b style="color:var(--c4)">重心到中點</b> = 2 : 1';}};
+  U.on();}});
+
+/* ---------- 國三：二次函數 ---------- */
+C({g:3,ch:'二次函數',t:'二次函數的平移',tex:'y=a(x-h)^2+k\\qquad\\text{頂點 }(h,k)',
+d:'把 <b>y = ax²</b>（虛線）往右移 h、往上移 k，就得到 y = a(x−h)²+k。a > 0 開口向上，頂點是<b>最低點</b>；a < 0 開口向下，頂點是<b>最高點</b>。|a| 越大開口越窄。',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-5,5],w:300}),U=Ctl(b);
+  const a=U.slider('a',-2,2,.5,1),h=U.slider('h',-3,3,.5,2),k=U.slider('k',-3,3,.5,-1),out=U.out();
+  U.on=()=>{P.clear();const A=a.v===0?.5:a.v,H_=h.v,K=k.v;P.fn(x=>A*x*x,'km dash');P.fn(x=>A*(x-H_)**2+K,'k1');P.line(H_,-6,H_,6,'k3 dash thin');
+    if(H_||K)P.arrow(0,0,H_,K,2);P.dot(H_,K,'d2',5);P.text(H_,K,`(${fx(H_)}, ${fx(K)})`,'t t2 b',8,A>0?14:-12);
+    out.innerHTML=T(`y=${fx(A)}(x ${pm(-H_)})^2 ${pm(K)}`)+`<br>頂點 (${fx(H_)}, ${fx(K)})，對稱軸 x = ${fx(H_)}，開口向${A>0?'上，最小值':'下，最大值'} ${fx(K)}`+(a.v===0?'<br><span style="color:var(--mute)">a 不能是 0，這裡以 a = 0.5 計算</span>':'');};
+  U.on();}});
+
+/* ---------- 國三：統計與機率 ---------- */
+C({g:3,ch:'統計與機率',t:'四分位數與盒狀圖',tex:'\\text{四分位距 IQR}=Q_3-Q_1',
+d:'把資料由小到大排好，<b>中位數 Q₂</b> 切成兩半；左半的中位數是 <b>Q₁</b>、右半的是 <b>Q₃</b>。盒子裝著中間一半的資料，盒子越長，代表資料越分散。',
+viz(b){const P=Plot(b,{xr:[-1,21],yr:[-1.2,4.6],w:320,h:170,grid:false,axes:false}),U=Ctl(b);
+  P.line(0,0,20,0,'km',P.base);for(let i=0;i<=20;i+=2){P.line(i,-.12,i,.12,'km',P.base);P.text(i,-.6,i,'num',0,0,P.base);}
+  let data=[2,4,5,7,8,9,11,12,15,16,19];const n=U.slider('資料筆數',5,15,1,11);
+  U.buttons([['換一組資料',()=>{data=[...Array(15)].map(()=>Math.round(Math.random()*20));}]]);const out=U.out();
+  const med=a=>{const m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2;};
+  U.on=()=>{P.clear();while(data.length<15)data.push(Math.round(Math.random()*20));const d=data.slice(0,n.v).sort((x,y)=>x-y),N=d.length,h=N>>1;
+    const q2=med(d),q1=med(d.slice(0,h)),q3=med(d.slice(N%2?h+1:h));
+    const cnt={};d.forEach(x=>{cnt[x]=(cnt[x]||0)+1;P.dot(x,.15+cnt[x]*.32,'d1',4);});
+    const y0=2.9,y1=3.9;P.line(d[0],(y0+y1)/2,q1,(y0+y1)/2,'k0');P.line(q3,(y0+y1)/2,d[N-1],(y0+y1)/2,'k0');P.line(d[0],y0+.2,d[0],y1-.2,'k0');P.line(d[N-1],y0+.2,d[N-1],y1-.2,'k0');
+    P.rect(q1,y0,q3-q1,y1-y0,'f2');P.line(q2,y0,q2,y1,'k2 fat');
+    [['Q₁',q1],['Q₂',q2],['Q₃',q3]].forEach(([s,v])=>P.text(v,y1,s,'tm mid',0,-8));
+    const avg=d.reduce((a,b)=>a+b,0)/N;
+    out.innerHTML=`資料：${d.join('、')}<br>最小 ${d[0]}，Q₁ = ${fx(q1)}，中位數 Q₂ = ${fx(q2)}，Q₃ = ${fx(q3)}，最大 ${d[N-1]}<br>四分位距 = ${fx(q3-q1)}，平均數 ≈ ${fx(avg)}`;};
+  U.on();}});
+
+C({g:3,ch:'統計與機率',t:'機率：擲兩顆骰子',tex:'P(\\text{事件})=\\frac{\\text{事件發生的情形數}}{\\text{所有可能的情形數}}',
+d:'兩顆骰子一共有 6 × 6 = 36 種<b>機會相同</b>的結果。數一數點數和是某個數的格子有幾個，除以 36 就是機率。點數和 7 的格子最多，所以最容易出現。',
+viz(b){const P=Plot(b,{xr:[-.1,7.1],yr:[-.1,7.1],w:270,grid:false,axes:false}),U=Ctl(b);const s=U.slider('點數和',2,12,1,7),out=U.out();
+  for(let i=1;i<=6;i++){P.text(i+.5,6.55,i,'t mid b t1',0,0,P.base);P.text(.5,6.5-i,i,'t mid b t2',0,0,P.base);}P.text(.5,6.55,'+','tm mid',0,0,P.base);
+  U.on=()=>{P.clear();let c=0;for(let i=1;i<=6;i++)for(let j=1;j<=6;j++){const hit=i+j===s.v;if(hit)c++;P.rect(i,6-j,1,1,hit?'f2':'fn km thin');P.text(i+.5,6.5-j,i+j,hit?'t mid b':'tm mid');}
+    out.innerHTML=`點數和 = ${s.v} 的情形有 ${c} 種<br>`+T(`P=\\frac{${c}}{36}${gcd(c,36)>1?'='+frac(c,36):''}\\approx${fx(c/36,3)}`);};
+  U.on();}});
+
+/* ---------- 國三：立體圖形 ---------- */
+C({g:3,ch:'立體圖形',t:'圓柱的展開圖、表面積與體積',tex:'\\text{表面積}=2\\pi r^2+2\\pi rh,\\qquad \\text{體積}=\\pi r^2h',
+d:'把圓柱剪開攤平：上下兩個<b style="color:var(--c1)">圓</b>，中間是一個<b style="color:var(--c2)">長方形</b>，長方形的長剛好是圓周長 2πr。體積則是「底面積 × 高」，所有柱體都一樣。',
+viz(b){const P=Plot(b,{xr:[0,10],yr:[0,10],w:280,grid:false,axes:false}),U=Ctl(b);const r=U.slider('r',.5,3,.25,1.5),h=U.slider('h',1,6,.5,4),out=U.out();
+  U.on=()=>{P.clear();const R=r.v,Hh=h.v,W=2*Math.PI*R,sc=Math.min(9.4/W,9.4/(Hh+4*R)),x0=(10-W*sc)/2,y0=(10-(Hh+4*R)*sc)/2;
+    P.rect(x0,y0+2*R*sc,W*sc,Hh*sc,'f2');P.circle(x0+R*sc,y0+R*sc,R*sc,'f1');P.circle(x0+R*sc,y0+(3*R+Hh)*sc,R*sc,'f1');
+    P.text(x0+W*sc/2,y0+(2*R+Hh)*sc,'2πr','t mid t2 b',0,-9);P.text(x0+W*sc,y0+(2*R+Hh/2)*sc,'h','t t2 b',-14);
+    out.innerHTML='表面積 '+T(`2\\pi\\times${R}^2+2\\pi\\times${R}\\times${Hh}\\approx${fx(2*Math.PI*R*R+2*Math.PI*R*Hh)}`)+'<br>體積 '+T(`\\pi\\times${R}^2\\times${Hh}\\approx${fx(Math.PI*R*R*Hh)}`);};
+  U.on();}});
+
+/* ============================== 版面 ============================== */
+const GR={1:['國一','七年級'],2:['國二','八年級'],3:['國三','九年級']};
+function build(){
+  const main=document.getElementById('main');
+  for(const g of [1,2,3]){
+    const sec=H('section','grade',main);sec.dataset.g=g;H('h2','',sec,`${GR[g][0]}<small>${GR[g][1]}</small>`);
+    const chs=[...new Set(cards.filter(c=>c.g===g).map(c=>c.ch))];
+    for(const ch of chs){
+      const cs=H('div','chap',sec);H('h3','',cs,ch);const grid=H('div','grid',cs);
+      for(const c of cards.filter(c=>c.g===g&&c.ch===ch)){
+        const el=H('article','card',grid);el.dataset.s=(c.t+c.ch+c.d.replace(/<[^>]+>/g,'')).toLowerCase();
+        H('h4','',el,c.t);H('div','fml',el,T(c.tex.includes('\\qquad')?'\\begin{gathered}'+c.tex.split('\\qquad').join('\\\\')+'\\end{gathered}':c.tex,true));
+        if(c.hint)H('p','hint',el,c.hint);
+        try{c.viz(el);}catch(err){H('p','hint',el,'這張圖載入失敗：'+err.message);console.error(err);}
+        H('p','plain',el,'💡 '+c.d);
+      }
+    }
+  }
+}
+function fit(){document.querySelectorAll('.fml').forEach(el=>{el.style.fontSize='';const bs=[...el.querySelectorAll('.katex-html span')].filter(x=>!x.children.length&&x.textContent.trim());if(!bs.length)return;const L=Math.min(...bs.map(x=>x.getBoundingClientRect().left)),R=Math.max(...bs.map(x=>x.getBoundingClientRect().right)),r=el.clientWidth/(R-L);if(r<1)el.style.fontSize=Math.max(.7,r*.98)*1.02+'em';});}
+let curG='0';
+function filter(){
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  document.querySelectorAll('.grade').forEach(sec=>{
+    let any=false;
+    sec.querySelectorAll('.chap').forEach(ch=>{let n=0;ch.querySelectorAll('.card').forEach(c=>{const ok=!q||c.dataset.s.includes(q);c.hidden=!ok;if(ok)n++;});ch.hidden=!n;if(n)any=true;});
+    sec.hidden=!any||(curG!=='0'&&sec.dataset.g!==curG);
+  });
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  build();fit();if(document.fonts)document.fonts.ready.then(fit);window.addEventListener('load',fit);window.addEventListener('resize',fit);
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');curG=t.dataset.g;filter();window.scrollTo({top:document.querySelector('.bar').offsetTop,behavior:'smooth'});}));
+  document.getElementById('q').addEventListener('input',filter);
+});
+</script>
+</body>
+</html>
