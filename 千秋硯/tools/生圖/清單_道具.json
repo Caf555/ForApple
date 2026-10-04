@@ -2200,6 +2200,55 @@
       "seed": 7313,
       "transparent": true,
       "prompt": "A feather headdress of long green quetzal plumes on a gold wire ring, half the plumes broken."
+    },
+    {
+      "kind": "item",
+      "name": "火雞湯",
+      "seed": 7314,
+      "transparent": true,
+      "prompt": "A clay pot of turkey stew with red chilies and tomatoes."
+    },
+    {
+      "kind": "item",
+      "name": "奇亞籽水",
+      "seed": 7315,
+      "transparent": true,
+      "prompt": "A gourd cup of water with swollen chia seeds."
+    },
+    {
+      "kind": "item",
+      "name": "湖底泥",
+      "seed": 7316,
+      "transparent": true,
+      "prompt": "A handful of dark wet lake-bottom mud."
+    },
+    {
+      "kind": "item",
+      "name": "小棉布",
+      "seed": 7317,
+      "transparent": true,
+      "prompt": "A small folded square of white cotton cloth."
+    },
+    {
+      "kind": "item",
+      "name": "沒有撿起來的金子",
+      "seed": 7318,
+      "transparent": true,
+      "prompt": "A small muddy lump of gold."
+    },
+    {
+      "kind": "item",
+      "name": "留下來照顧的手",
+      "seed": 7319,
+      "transparent": true,
+      "prompt": "A damp white cotton cloth folded beside a clay water bowl."
+    },
+    {
+      "kind": "item",
+      "name": "阿卡特的顏料罐",
+      "seed": 7320,
+      "transparent": true,
+      "prompt": "Two small clay paint pots side by side, one filled with red pigment and one with black."
     }
   ]
 }
