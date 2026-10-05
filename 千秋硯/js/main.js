@@ -1,6 +1,6 @@
 // 遊戲入口
 import { parseScript } from './script.js';
-import { newGame, loadSlot, slotInfo, loadSettings, saveSettings, healAll, saveSlot } from './state.js';
+import { newGame, loadSlot, slotInfo, loadSettings, saveSettings, healAll, saveSlot, setHistTotal } from './state.js';
 import { CHARACTERS } from './data.js';
 import { UI, el } from './ui.js';
 import { Audio } from './audio.js';
@@ -9,8 +9,8 @@ import { Debate, Translate } from './debate.js';
 import { Runner } from './runner.js';
 import { Hub } from './hub.js';
 
-export const VERSION = '試玩版 v1.1';
-const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/卷二_牧野.txt', 'content/卷三_阿瑪納.txt', 'content/卷四_雅典.txt', 'content/夜話.txt'];
+export const VERSION = '完整版 v3.2.0';
+const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/卷二_牧野.txt', 'content/卷三_阿瑪納.txt', 'content/卷四_雅典.txt', 'content/卷五_羯陵伽.txt', 'content/中章_書房.txt', 'content/卷六_長安巴格達.txt', 'content/卷七_佛羅倫斯.txt', 'content/卷八_特諾奇提特蘭.txt', 'content/卷九_戰壕.txt', 'content/卷十_晴空.txt', 'content/終卷_歸墟.txt', 'content/夜話.txt'];
 
 const $ = id => document.getElementById(id);
 
@@ -70,7 +70,9 @@ ctx.loadGame = g => {
   $('title').classList.remove('open');
   ctx.ui.clearStory();
   if (!g.scene || !ctx.scenes[g.scene]) { ctx.goHub(); return; }
+  ctx.ui.weather = null;
   ctx.ui.setTheme(g.loc.theme);
+  if (g.loc.weather) ctx.ui.setWeather(g.loc.weather);
   ctx.ui.setHeader(g.loc);
   ctx.ui.setBanner(g.loc.bg);
   ctx.audio.music(g.loc.music);
@@ -120,7 +122,7 @@ function showTitle() {
       el('button', { class: 'btn' + (auto ? '' : ' primary'), onclick: newJourney }, '新的旅程'),
       el('button', { class: 'btn', onclick: () => { ctx.g = ctx.g || newGame(); ctx.hub.saveMenu(); } }, '讀取存檔'),
       el('button', { class: 'btn', onclick: () => ctx.hub.settings() }, '設定')),
-    el('p', { class: 't-ver' }, VERSION + '・序卷＋卷一〈大員〉＋卷二〈牧野〉＋卷三〈阿瑪納〉＋卷四〈雅典〉回一～三'));
+    el('p', { class: 't-ver' }, VERSION + '・序卷＋卷一〈大員〉＋卷二〈牧野〉＋卷三〈阿瑪納〉＋卷四〈雅典〉＋卷五〈羯陵伽〉＋中章〈書房〉＋卷六〈長安⇄巴格達〉＋卷七〈佛羅倫斯〉＋卷八〈特諾奇提特蘭〉＋卷九〈戰壕〉＋卷十〈晴空〉＋終卷〈歸墟〉'));
   t.classList.add('open');
 }
 
@@ -145,6 +147,10 @@ async function loadContent() {
       ctx.scenes[id] = scenes[id];
     }
   }
+  // 史冊的總頁數＝所有劇本裡不同的「補史」
+  const hist = new Set();
+  for (const id in ctx.scenes) for (const c of ctx.scenes[id].cmds || []) if (c.t === 'fx' && c.kind === '補史') hist.add(c.args[0]);
+  setHistTotal(hist.size);
 }
 
 // 圖片清單（可有可無）：img/manifest.json 形如 { "bg": ["新港社", ...], "cg": [...], "char": [...], "enemy": [...] }

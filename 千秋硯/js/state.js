@@ -125,6 +125,29 @@ function cmp(a, op, b) {
   }
 }
 
+// 史冊的總頁數（載入劇本時，數所有「補史」的種類），用來算修復率
+let HIST_TOTAL = 0;
+export function setHistTotal(n) { HIST_TOTAL = n; }
+export function histDone(g) { return Object.keys(g.flags).filter(k => k.startsWith('補史.')).length; }
+export function histRate(g) { return HIST_TOTAL ? Math.min(100, Math.round(histDone(g) * 100 / HIST_TOTAL)) : 0; }
+export function histTotal() { return HIST_TOTAL; }
+// 無名客在各卷善終的次數（v1～v10）
+// 跨存檔的收藏（看過的結局、無名客的兩種結局）。存在這台裝置的瀏覽器裡，不跟著存檔走
+export function collection() {
+  try { return JSON.parse(localStorage.getItem('qqy.collect') || '{}') || {}; } catch (e) { return {}; }
+}
+export function addCollection(kind, key) {
+  const c = collection();
+  c[kind] = c[kind] || {};
+  if (c[kind][key]) return;
+  c[kind][key] = Date.now();
+  try { localStorage.setItem('qqy.collect', JSON.stringify(c)); } catch (e) { /* 無痕視窗等情況存不了，就算了 */ }
+}
+
+export function goodEnds(g) { let n = 0; for (let i = 1; i <= 10; i++) if (g.flags[`v${i}.無名客`] === '善') n++; return n; }
+// 無面書記在各卷動搖的次數
+export function wavers(g) { return Object.keys(g.flags).filter(k => /^v\d+\.書記動搖$/.test(k)).length; }
+
 export function checkCond(g, cond) {
   if (!cond) return true;
   return cond.every(c => {
@@ -141,6 +164,9 @@ export function checkCond(g, cond) {
       case '隊友': v = g.party.includes(c.args[0]); break;
       case '錢': v = g.money; break;
       case '等級': v = g.members.知墨 ? g.members.知墨.lv : 1; break;
+      case '善終': v = goodEnds(g); break;
+      case '動搖': v = wavers(g); break;
+      case '修復率': v = histRate(g); break;
       default: v = false;
     }
     let r = c.op ? cmp(v, c.op, isNaN(+c.rhs) ? c.rhs : +c.rhs) : !!v;
@@ -160,6 +186,9 @@ export function condText(cond) {
       case '道具': return `道具「${a}」`;
       case '靈': return `硯池中有「${a}」`;
       case '等級': return `等級 ${c.rhs}`;
+      case '善終': return `無名客在 ${c.rhs} 卷以上善終`;
+      case '動搖': return `無面書記動搖 ${c.rhs} 次以上`;
+      case '修復率': return `史冊修復率 ${c.rhs}%`;
       default: return c.raw;
     }
   }).join('、');

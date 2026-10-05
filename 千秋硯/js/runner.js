@@ -1,6 +1,7 @@
 // 劇本執行器：逐行播放劇本、處理選項、效果、戰鬥與演出指令
-import { checkCond, condText, addItem, addCodex, addMember, removeMember, healAll, gainExp, AXES, displayName, saveSlot } from './state.js';
+import { checkCond, condText, addItem, addCodex, addMember, removeMember, healAll, gainExp, AXES, displayName, saveSlot, addCollection } from './state.js';
 import { FORMATIONS } from './data.js';
+import { walkMap } from './walk.js';
 
 export class Runner {
   constructor(ctx) {
@@ -41,6 +42,7 @@ export class Runner {
       }
       if (pc >= scene.cmds.length) { this.ctx.goHub(); return; }
       const c = scene.cmds[pc];
+      if (this.pending && --this.pending.ttl <= 0) this.pending = null;
       try {
         switch (c.t) {
           case 'text':
@@ -53,9 +55,11 @@ export class Runner {
               this.pageChars = (this.pageChars || 0) + Array.from(c.text).length;
               wait = !this.nextIsText(scene, pc + 1) || this.pageLines >= 6 || this.pageChars >= 200;
             }
-            await ui.say({ who: c.who, text: c.text }, { wait, auto: mode === 'auto' });
+            ui.pageBreak = false;
+            await ui.say({ who: c.who, face: c.face, text: c.text }, { wait, auto: mode === 'auto' });
             if (!alive()) return;
             if (wait) { this.pageLines = 0; this.pageChars = 0; }
+            else if (ui.pageBreak) { this.pageLines = 1; this.pageChars = Array.from(c.text).length; }
             pc++;
             break;
           }
@@ -70,9 +74,17 @@ export class Runner {
               return { label: ch.label, enabled: ok, lock: ok ? null : '需要：' + condText(ch.cond), target: ch.target, hidden: !ok && storyOnly, seen: !!(g.seen && g.seen[ch.target]) };
             }).filter(x => !x.hidden);
             if (!shown.length) { ui.toast('沒有可選的選項（劇本條件有誤）', 'bad'); this.ctx.goHub(); return; }
-            const idx = await ui.showChoices(shown);
+            let timer = null;
+            if (this.timed && this.ctx.settings.timedChoice !== false) {
+              const want = group[this.timed.def - 1];
+              const d = shown.findIndex(x => want && x.label === want.label && x.enabled);
+              timer = { sec: this.timed.sec, def: d >= 0 ? d : shown.map(x => x.enabled).lastIndexOf(true) };
+            }
+            this.timed = null;
+            const idx = await ui.showChoices(shown, timer);
             if (!alive()) return;
             this.pushLog({ t: 'text', text: '▸ ' + shown[idx].label });
+            this.pending = { label: shown[idx].label, ttl: 14 };
             if (!jump(shown[idx].target)) { this.ctx.goHub(); return; }
             break;
           }
@@ -138,7 +150,23 @@ export class Runner {
   // 目前所在的卷代號，例如「卷一・大員」→「卷一」
   volId() {
     const v = (this.g.loc.vol || '').split('・')[0];
-    return /^(序卷|卷)/.test(v) ? v : (this.g.lastVol || '卷一');
+    return /^(序卷|卷|中章|終卷)/.test(v) ? v : (this.g.lastVol || '卷一');
+  }
+
+  // 記下「這個選擇改變了什麼」：會影響後面劇情的旗標（有值的、書記動搖、棄鞭……）
+  noteChoice(key, val) {
+    const g = this.g;
+    if (key === '結局') addCollection('結局', String(val));
+    const m = key.match(/^v(\d+)\.無名客$/);
+    if (m) addCollection('無名客', `${m[1]}.${val}`);
+    if (!this.pending) return;
+    const meaningful = (val != null && isNaN(+val)) || /動搖|棄|自決/.test(key);
+    if (!meaningful || /寶$|完$|^開放|^教學|^配方|^夜話|^收藏/.test(key)) return;
+    const vol = this.volId();
+    g.choices = g.choices || {};
+    const list = g.choices[vol] = (g.choices[vol] || []).filter(x => x.f !== key);
+    list.push({ f: key, c: this.pending.label });
+    this.pending = null;
   }
 
   pushLog(c) {
@@ -157,6 +185,7 @@ export class Runner {
       case '旗標':
         if (c.sign > 0) g.flags[a0] = a1 == null ? 1 : (isNaN(+a1) ? a1 : +a1);
         else delete g.flags[a0];
+        if (c.sign > 0) this.noteChoice(a0, a1);
         break;
       case '羈絆': {
         const v = n(a1) * c.sign;
@@ -236,8 +265,15 @@ export class Runner {
     switch (c.name) {
       case '地點': g.loc.place = arg; ui.setHeader(g.loc); return;
       case '年代': g.loc.year = arg; ui.setHeader(g.loc); return;
-      case '卷': g.loc.vol = arg; if (/^(序卷|卷)/.test(arg)) g.lastVol = arg.split('・')[0]; ui.setHeader(g.loc); return;
-      case '主題': g.loc.theme = arg; ui.setTheme(arg); return;
+      case '卷': g.loc.vol = arg; if (/^(序卷|卷|中章|終卷)/.test(arg)) g.lastVol = arg.split('・')[0]; ui.setHeader(g.loc); return;
+      case '主題': g.loc.theme = arg; g.loc.weather = null; ui.weather = null; ui.setTheme(arg); return;
+      case '天氣': g.loc.weather = arg === '預設' ? null : arg; ui.setWeather(g.loc.weather); return;
+      case '震動': ui.quakeScreen(arg === '強'); audio.sfx(arg === '強' ? 'boss' : 'break'); await ui.fx('', 450); return;
+      case '閃白': await ui.fx('white', 700); return;
+      case '淡黑': await ui.fx('black', 1500); return;
+      case '走走': return walkMap(this.ctx, this, arg.trim(), c.out);
+      case '限時': { const [s, d] = arg.split(/\s+/); this.timed = { sec: +s || 15, def: +d || 0 }; return; }
+      case '寫字': { const [w, st] = arg.split(/\s+/); await ui.writeWords(w, st || '', (this.ctx.settings.readMode || 'page') === 'auto'); return; }
       case '背景': g.loc.bg = arg === '無' ? '' : arg; ui.setBanner(g.loc.bg); return;
       case '插圖': {
         const [name, ...cap] = arg.split(/\s+/);
@@ -292,7 +328,7 @@ export class Runner {
       }
       case '小遊戲': {
         const [kind, id] = arg.split(/\s+/);
-        if (!['譯字', '牽星', '識字'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
+        if (!['譯字', '牽星', '識字', '透視', '研墨', '電碼', '描字', '修復', '排序'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
         const r = await this.ctx.translate.start(id);
         const t = c.out && c.out[r];
         return t ? '→' + t : undefined;

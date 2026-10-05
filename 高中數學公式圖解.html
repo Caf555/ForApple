@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>高中數學公式圖解</title>
+<meta name="description" content="依臺灣 108 課綱整理高中三年的數學公式，每一條都配上可以拖拉、調整的圖。">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+:root{
+  --bg:#f5f3ee;--card:#ffffff;--plot:#fbfaf7;--soft:#f1efe9;--ink:#1f2328;--mute:#626875;--line:#dcd8cf;--grid:#ebe8e1;--axis:#8b909a;
+  --c1:#2563eb;--c2:#e2540b;--c3:#15924a;--c4:#b42ac4;--c5:#0f8a8a;
+  --c1a:rgba(37,99,235,.16);--c2a:rgba(226,84,11,.16);--c3a:rgba(21,146,74,.16);--c4a:rgba(180,42,196,.14);--c5a:rgba(15,138,138,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#15171b;--card:#1d2026;--plot:#191c21;--soft:#252932;--ink:#e8e9ec;--mute:#a1a7b3;--line:#333844;--grid:#262a32;--axis:#6f7684;
+  --c1:#6ea2ff;--c2:#ff8a4c;--c3:#4fd18a;--c4:#e07bf0;--c5:#4cc9c9;
+  --c1a:rgba(110,162,255,.2);--c2a:rgba(255,138,76,.2);--c3a:rgba(79,209,138,.2);--c4a:rgba(224,123,240,.18);--c5a:rgba(76,201,201,.2);
+}}
+:root[data-theme="dark"]{
+  --bg:#15171b;--card:#1d2026;--plot:#191c21;--soft:#252932;--ink:#e8e9ec;--mute:#a1a7b3;--line:#333844;--grid:#262a32;--axis:#6f7684;
+  --c1:#6ea2ff;--c2:#ff8a4c;--c3:#4fd18a;--c4:#e07bf0;--c5:#4cc9c9;
+  --c1a:rgba(110,162,255,.2);--c2a:rgba(255,138,76,.2);--c3a:rgba(79,209,138,.2);--c4a:rgba(224,123,240,.18);--c5a:rgba(76,201,201,.2);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.7}
+header{max-width:1200px;margin:0 auto;padding:32px 16px 12px}
+h1{font-size:clamp(26px,5vw,38px);margin:0 0 6px;letter-spacing:.02em}
+.sub{color:var(--mute);margin:0;max-width:46em}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 14px;font:inherit;font-size:15px;cursor:pointer}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+#q{flex:1 1 140px;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:15px}
+main{max-width:1200px;margin:0 auto;padding:0 16px 48px}
+.grade>h2{font-size:26px;margin:36px 0 2px}
+.grade>h2 small{font-size:15px;color:var(--mute);font-weight:400;margin-left:8px}
+.chap>h3{font-size:18px;margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--c1)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h4{margin:0;font-size:18px}
+.fml{overflow-x:auto;overflow-y:hidden;padding:2px 0;font-size:1.02em}
+.fml .katex-display{margin:.3em 0}
+svg.viz{width:100%;height:auto;display:block;background:var(--plot);border-radius:10px;border:1px solid var(--grid);user-select:none;-webkit-user-select:none}
+.ctl{display:grid;gap:2px}
+.sl{display:grid;grid-template-columns:minmax(2.6em,auto) 1fr 3.8em;gap:8px;align-items:center;font-size:14px}
+.sl input{width:100%;accent-color:var(--c1);margin:6px 0}
+.val{text-align:right;font-variant-numeric:tabular-nums;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
+.btns button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+.btns button.on{border-color:var(--c1);color:var(--c1);font-weight:700}
+.tx{white-space:normal}
+.tx i{font-family:"Times New Roman",Cambria,"Noto Serif",serif;font-size:1.1em;padding-right:.04em}
+.tx sup,.tx sub{font-size:.72em;line-height:0}
+.tx .fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .15em;line-height:1.2}
+.tx .fr>span:first-child{border-bottom:1px solid currentColor;padding:0 .15em}
+.tx .ov{border-top:1px solid currentColor;padding-top:.05em}
+.tx .vc{position:relative;display:inline-block}.tx .vc::before{content:'→';position:absolute;left:0;right:0;top:-.9em;font-size:.7em;text-align:center}
+.tx .mat{display:inline-grid;column-gap:.6em;vertical-align:middle;padding:0 .4em;margin:0 .15em;border-left:1.5px solid;border-right:1.5px solid;text-align:center;line-height:1.35}
+.tx .mat.pmatrix{border-radius:.7em}
+.tx .cases{display:inline-flex;flex-direction:column;vertical-align:middle;border-left:1.5px solid;border-radius:.6em 0 0 .6em;padding-left:.45em;text-align:left;line-height:1.6}
+.tx .rows{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:2}
+.tx .xa{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 .2em}.tx .xa>span{font-size:.7em}
+.tx .op{margin-right:.15em}
+.tx .tt{font-style:normal}
+.tx.disp{display:block;text-align:center;font-size:1.12em;line-height:2;padding:.2em 0}
+.out{font-size:14px;background:var(--soft);border-radius:8px;padding:8px 10px;overflow-x:auto;line-height:1.9}
+.plain{font-size:14.5px;margin:0}
+.plain b{color:var(--c1)}
+.hint{font-size:12.5px;color:var(--mute);margin:-4px 0 0}
+.slots{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;background:var(--plot);border:1px solid var(--grid);border-radius:10px;padding:14px 8px;min-height:90px}
+.slot{width:46px;text-align:center;border:2px solid var(--c1);border-radius:8px;padding:4px 0;background:var(--c1a)}
+.slot b{display:block;font-size:20px}
+.slot small{font-size:11px;color:var(--mute)}
+.stars{font-size:22px;letter-spacing:2px;word-break:break-all;text-align:center}
+.stars .bar1{color:var(--ink);font-weight:700;padding:0 3px}
+.counts{font-size:13px;color:var(--mute);text-align:center;width:100%}
+footer{max-width:1200px;margin:0 auto;padding:16px 16px 40px;color:var(--mute);font-size:14px}
+footer a{color:var(--c1)}
+.xl{margin:0 0 8px;font-size:14px}
+.xl a{color:var(--c1);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 12px}
+/* SVG */
+.grid-l{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1.2}
+.num{fill:var(--mute);font-size:9px;text-anchor:middle;dominant-baseline:middle}
+.k0{stroke:var(--ink);stroke-width:2;fill:none}
+.k1{stroke:var(--c1);stroke-width:2.6;fill:none}
+.k2{stroke:var(--c2);stroke-width:2.6;fill:none}
+.k3{stroke:var(--c3);stroke-width:2.6;fill:none}
+.k4{stroke:var(--c4);stroke-width:2.6;fill:none}
+.k5{stroke:var(--c5);stroke-width:2.6;fill:none}
+.km{stroke:var(--mute);stroke-width:1.4;fill:none}
+.thin{stroke-width:1.4}
+.fat{stroke-width:4.5}
+.dash{stroke-dasharray:5 4}
+.f1{fill:var(--c1a);stroke:var(--c1);stroke-width:1.4}
+.f2{fill:var(--c2a);stroke:var(--c2);stroke-width:1.4}
+.f3{fill:var(--c3a);stroke:var(--c3);stroke-width:1.4}
+.f4{fill:var(--c4a);stroke:var(--c4);stroke-width:1.4}
+.f5{fill:var(--c5a);stroke:var(--c5);stroke-width:1.4}
+.fs1{fill:var(--c1);opacity:.55;stroke:var(--c1)}
+.fs2{fill:var(--c2);opacity:.55;stroke:var(--c2)}
+.fg{fill:var(--grid);stroke:var(--axis);stroke-width:1}
+.fn{fill:none}
+.d0{fill:var(--ink)}.d1{fill:var(--c1)}.d2{fill:var(--c2)}.d3{fill:var(--c3)}.d4{fill:var(--c4)}.d5{fill:var(--c5)}.dm{fill:var(--mute)}
+.t{fill:var(--ink);font-size:12px;dominant-baseline:middle}
+.tm{fill:var(--mute);font-size:11px;dominant-baseline:middle}
+.t1{fill:var(--c1)}.t2{fill:var(--c2)}.t3{fill:var(--c3)}.t4{fill:var(--c4)}
+.mid{text-anchor:middle}.end{text-anchor:end}
+.b{font-weight:700}
+.sm{font-size:10px}
+.handle{fill:var(--card);stroke-width:3;cursor:grab;touch-action:none}
+.handle:active{cursor:grabbing}
+.h1{stroke:var(--c1)}.h2{stroke:var(--c2)}.h3{stroke:var(--c3)}.h0{stroke:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <h1>高中數學公式圖解</h1>
+  <p class="xl"><a href="國中數學公式圖解.html">國中版 →</a></p>
+  <p class="sub">把高中三年的數學公式畫成圖。拉動滑桿、拖曳圓點，看公式裡的每個符號到底在說什麼。內容依臺灣 108 課綱大致的學習順序整理。</p>
+</header>
+<div class="bar"><div class="bar-in">
+  <button class="tab on" data-g="0">全部</button>
+  <button class="tab" data-g="1">高一</button>
+  <button class="tab" data-g="2">高二</button>
+  <button class="tab" data-g="3">高三</button>
+  <input id="q" type="search" placeholder="搜尋公式，例如：餘弦、機率" aria-label="搜尋公式">
+</div></div>
+<main id="main"></main>
+<footer>
+  <p>小提醒：各出版社教科書的章節順序略有不同，部分單元（例如圓錐曲線、二項分布）依選修課程而定，這裡的年級分類僅供參考。標示「可拖曳」的圖，可以用手指或滑鼠拖動空心圓點。</p>
+  <p>點子來自 Threads 上 kokazu.studio 的貼文〈高校3年間の公式全部ビジュアル化したら分かりやす過ぎた〉，這裡改寫為臺灣課綱的正體中文版。</p>
+</footer>
+
+<script>
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+function E(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs||{})e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function H(tag,cls,parent,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;if(parent)parent.appendChild(e);return e;}
+const fx=(x,d=2)=>{const v=Math.round(x*10**d)/10**d;return String(Object.is(v,-0)?0:v);};
+// 把算式寫法轉成一般網頁文字（× 號、上標次方、分數線、根號…），不需要外部工具
+const TXSYM={times:'×',div:'÷',pm:'±',mp:'∓',le:'≤',leq:'≤',ge:'≥',geq:'≥',ne:'≠',neq:'≠',approx:'≈',cdot:'·',cdots:'⋯',dots:'…',ldots:'…',
+  angle:'∠',circ:'°',pi:'π',alpha:'α',beta:'β',gamma:'γ',theta:'θ',omega:'ω',sigma:'σ',mu:'μ',lambda:'λ',Delta:'Δ',infty:'∞',
+  to:'→',rightarrow:'→',Rightarrow:'⇒',Leftrightarrow:'⇔',Longleftrightarrow:'⟺',iff:'⟺',mid:'|',cup:'∪',cap:'∩',sum:'Σ',int:'∫',
+  in:'∈',triangle:'△',perp:'⊥',parallel:'∥',prime:'′','{':'{','}':'}','|':'‖',lbrace:'{',rbrace:'}',
+  quad:' ',qquad:'  ',',':' ',';':' ',':':' ',' ':' ','!':'',colon:':'};
+const TXOP=['sin','cos','tan','log','ln','lim','det','max','min','exp'];
+const TXPAD=new Set(['=','&lt;','&gt;','≈','≤','≥','≠','⇒','⟺','⇔','→','+','×','÷','±']);
+function txSplit(str,sep){const out=[];let d=0,last=0;
+  for(let k=0;k<str.length;){
+    if(str[k]==='\\'&&(str[k+1]==='{'||str[k+1]==='}')){k+=2;continue;}
+    if(str.startsWith('\\begin',k)){d++;k+=6;continue;}
+    if(str.startsWith('\\end',k)){d--;k+=4;continue;}
+    if(d===0&&str.startsWith(sep,k)){out.push(str.slice(last,k));k+=sep.length;last=k;continue;}
+    if(str[k]==='{')d++;else if(str[k]==='}')d--;
+    k+=str[k]==='\\'?2:1;}
+  out.push(str.slice(last));return out;}
+function tex2html(s){
+  let i=0;
+  const esc=c=>c==='<'?'&lt;':c==='>'?'&gt;':c==='&'?'&amp;':c;
+  const sp=()=>{while(s[i]===' ')i++;};
+  const cmd=()=>{i++;const m=/^[A-Za-z]+/.exec(s.slice(i));if(m){i+=m[0].length;return m[0];}return s[i++]||'';};
+  const raw=()=>{sp();if(s[i]!=='{')return s[i++]||'';let d=1;const j=++i;while(i<s.length&&d){if(s[i]==='\\'){i+=2;continue;}if(s[i]==='{')d++;else if(s[i]==='}')d--;i++;}return s.slice(j,i-1);};
+  const group=()=>{sp();if(s[i]==='{'){i++;const h=expr('}');i++;return h;}return atom();};
+  function findEnd(env){const b='\\begin{'+env+'}',e='\\end{'+env+'}';let d=0,k=i;while(k<s.length){if(s.startsWith(b,k)){d++;k+=b.length;}else if(s.startsWith(e,k)){if(!d)return k;d--;k+=e.length;}else k++;}return s.length;}
+  function env(name,body){
+    const rows=txSplit(body,'\\\\').filter(r=>r.trim()!=='').map(r=>txSplit(r,'&').map(tex2html));
+    if(/matrix$/.test(name)){const n=Math.max(...rows.map(r=>r.length));return `<span class="mat ${name}" style="grid-template-columns:repeat(${n},auto)">${rows.map(r=>r.map(c=>`<span>${c}</span>`).join('')).join('')}</span>`;}
+    if(name==='cases')return `<span class="cases">${rows.map(r=>`<span>${r.join(' ')}</span>`).join('')}</span>`;
+    return `<span class="rows">${rows.map(r=>`<span>${r.join('')}</span>`).join('')}</span>`;}
+  function command(n){
+    if(n==='\\')return '<br>';
+    if(n in TXSYM)return TXSYM[n];
+    if(TXOP.includes(n))return `<span class="op">${n}</span>`;
+    switch(n){
+      case 'frac':case 'tfrac':case 'dfrac':{const a=group(),b=group();return `<span class="fr"><span>${a}</span><span>${b}</span></span>`;}
+      case 'sqrt':{sp();let idx='';if(s[i]==='['){const j=s.indexOf(']',i);idx=`<sup>${tex2html(s.slice(i+1,j))}</sup>`;i=j+1;}return `${idx}√<span class="ov">${group()}</span>`;}
+      case 'text':case 'mathrm':case 'textrm':case 'operatorname':case 'mbox':return `<span class="tt">${raw().replace(/[<>&]/g,esc)}</span>`;
+      case 'overline':return `<span class="ov">${group()}</span>`;
+      case 'vec':case 'overrightarrow':return `<span class="vc">${group()}</span>`;
+      case 'left':case 'right':case 'big':case 'Big':{sp();if(s[i]==='\\'){const m=cmd();return TXSYM[m]||'';}const c=s[i++];return c==='.'?'':esc(c);}
+      case 'xrightarrow':return `<span class="xa"><span>${group()}</span>⟶</span>`;
+      case 'begin':{const e=raw(),j=findEnd(e),body=s.slice(i,j);i=j+('\\end{'+e+'}').length;return env(e,body);}
+      case 'displaystyle':case 'limits':case 'nolimits':case 'textstyle':return '';
+    }
+    return n;}
+  function atom(){const c=s[i];
+    if(c==='\\')return command(cmd());
+    if(c==='{'){i++;const h=expr('}');i++;return h;}
+    i++;
+    if(/[A-Za-z]/.test(c))return `<i>${c}</i>`;
+    if(c==='-')return '−';if(c==="'")return '′';if(c==='~')return ' ';if(c==='&')return '';
+    return esc(c);}
+  function expr(stop){let h='';
+    while(i<s.length&&s[i]!==stop){const c=s[i];
+      if(c==='^'||c==='_'){i++;const g=group();h+=c==='^'?(g==='°'||g==='′'?g:`<sup>${g}</sup>`):`<sub>${g}</sub>`;continue;}
+      if(c===' '){i++;continue;}
+      let a=atom();
+      if(TXPAD.has(a)&&h)a=` ${a} `;
+      else if(a==='−'&&h.trim()&&!/[(\[{+−×÷=,⇒⟺≤≥≈±\u2009\u2003]$|&lt;$|&gt;$|<br>$/.test(h))a='\u2009−\u2009';
+      h+=a;}
+    return h;}
+  return expr(undefined);
+}
+const T=(s,disp=false)=>disp&&window.katex?katex.renderToString(s,{throwOnError:false,displayMode:true}):`<span class="tx${disp?' disp':''}">${tex2html(s)}</span>`;
+const deg=Math.PI/180;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const snap=(v,s=.5)=>Math.round(v/s)*s;
+const fact=n=>{let r=1;for(let i=2;i<=n;i++)r*=i;return r;};
+const binom=(n,k)=>{if(k<0||k>n)return 0;let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return Math.round(r);};
+// 多項式（係數由高次到低次）轉成 TeX
+function terms(list){let s='';for(const [c0,v] of list){const c=Math.round(c0*100)/100;if(c===0)continue;const a=Math.abs(c);const co=(a===1&&v)?'':fx(a);s+=(s===''?(c<0?'-':''):(c<0?' - ':' + '))+co+v;}return s||'0';}
+function polyStr(cs,x='x'){const n=cs.length-1;return terms(cs.map((c,i)=>[c,n-i===0?'':n-i===1?x:`${x}^{${n-i}}`]));}
+const pm=v=>v<0?`- ${fx(-v)}`:`+ ${fx(v)}`;
+const par=v=>v<0?`(${fx(v)})`:fx(v);
+
+function Plot(box,o={}){
+  const w=o.w||300,xr=o.xr||[-5,5],yr=o.yr||[-4,4];
+  const h=o.h||Math.round(w*(yr[1]-yr[0])/(xr[1]-xr[0]));
+  const svg=E('svg',{viewBox:`0 0 ${w} ${h}`,class:'viz'},box);
+  const X=x=>(x-xr[0])/(xr[1]-xr[0])*w, Y=y=>h-(y-yr[0])/(yr[1]-yr[0])*h;
+  const IX=px=>xr[0]+px/w*(xr[1]-xr[0]), IY=py=>yr[0]+(h-py)/h*(yr[1]-yr[0]);
+  const base=E('g',{},svg),dyn=E('g',{},svg),top=E('g',{},svg);
+  const st=o.step||1;
+  if(o.grid!==false){
+    for(let x=Math.ceil(xr[0]/st)*st;x<=xr[1];x+=st)E('line',{x1:X(x),x2:X(x),y1:0,y2:h,class:'grid-l'},base);
+    for(let y=Math.ceil(yr[0]/st)*st;y<=yr[1];y+=st)E('line',{y1:Y(y),y2:Y(y),x1:0,x2:w,class:'grid-l'},base);
+  }
+  if(o.axes!==false){
+    E('line',{x1:0,x2:w,y1:Y(0),y2:Y(0),class:'axis'},base);E('line',{x1:X(0),x2:X(0),y1:0,y2:h,class:'axis'},base);
+    if(o.nums!==false&&o.grid!==false){
+      const ns=o.numStep||Math.max(st,(xr[1]-xr[0])>12?2:1);
+      for(let x=Math.ceil(xr[0]/ns)*ns;x<xr[1];x+=ns){if(Math.abs(x)<1e-9)continue;const t=E('text',{x:X(x),y:clamp(Y(0)+9,8,h-6),class:'num'},base);t.textContent=fx(x);}
+      for(let y=Math.ceil(yr[0]/ns)*ns;y<yr[1];y+=ns){if(Math.abs(y)<1e-9)continue;const t=E('text',{x:clamp(X(0)-8,8,w-8),y:Y(y),class:'num'},base);t.textContent=fx(y);}
+    }
+  }
+  const P={svg,X,Y,IX,IY,base,dyn,top,w,h,xr,yr,
+    clear(){dyn.replaceChildren();},
+    line(x1,y1,x2,y2,c='k0',p=dyn){return E('line',{x1:X(x1),y1:Y(y1),x2:X(x2),y2:Y(y2),class:c},p);},
+    dot(x,y,c='d0',r=4,p=dyn){return E('circle',{cx:X(x),cy:Y(y),r,class:c},p);},
+    circle(x,y,r,c='k0',p=dyn){return E('circle',{cx:X(x),cy:Y(y),r:Math.abs(X(r)-X(0)),class:c},p);},
+    text(x,y,s,c='t',dx=0,dy=0,p=dyn){const t=E('text',{x:X(x)+dx,y:Y(y)+dy,class:c},p);t.textContent=s;return t;},
+    rect(x,y,ww,hh,c='f1',p=dyn){const x0=Math.min(x,x+ww),y1=Math.max(y,y+hh);return E('rect',{x:X(x0),y:Y(y1),width:Math.abs(X(ww)-X(0)),height:Math.abs(Y(0)-Y(hh)),class:c},p);},
+    poly(pts,c='k0',close=false,p=dyn){return E(close?'polygon':'polyline',{points:pts.map(q=>X(q[0]).toFixed(1)+','+Y(q[1]).toFixed(1)).join(' '),class:c},p);},
+    fn(f,c='k1',a=xr[0],b=xr[1],n=240,p=dyn){
+      let d='',pen=false;const sp=yr[1]-yr[0],lo=yr[0]-sp,hi=yr[1]+sp;
+      for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;let y=f(x);if(!isFinite(y)){pen=false;continue;}y=clamp(y,lo,hi);d+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(y).toFixed(1);pen=true;}
+      return E('path',{d,class:c},p);},
+    curve(g,t0,t1,c='k1',n=240,p=dyn){
+      let d='',pen=false;
+      for(let i=0;i<=n;i++){const q=g(t0+(t1-t0)*i/n);if(!isFinite(q[0])||!isFinite(q[1])){pen=false;continue;}d+=(pen?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1);pen=true;}
+      return E('path',{d,class:c},p);},
+    arc(cx,cy,r,a0,a1,c='km',p=dyn){return P.curve(t=>[cx+r*Math.cos(t),cy+r*Math.sin(t)],a0,a1,c,40,p);},
+    arrow(x1,y1,x2,y2,k=1,p=dyn){
+      const ax=X(x1),ay=Y(y1),bx=X(x2),by=Y(y2),L=Math.hypot(bx-ax,by-ay);if(L<1)return;
+      const ux=(bx-ax)/L,uy=(by-ay)/L,s=10;
+      E('line',{x1:ax,y1:ay,x2:bx-ux*s*.6,y2:by-uy*s*.6,class:'k'+k},p);
+      E('polygon',{points:`${bx},${by} ${bx-ux*s-uy*s*.5},${by-uy*s+ux*s*.5} ${bx-ux*s+uy*s*.5},${by-uy*s-ux*s*.5}`,class:'d'+k},p);},
+    handle(x,y,onmove,c='h1'){
+      const el=E('circle',{r:9,class:'handle '+c},top);
+      const set=(x,y)=>{el.setAttribute('cx',X(x));el.setAttribute('cy',Y(y));};set(x,y);
+      el.addEventListener('pointerdown',e=>{
+        e.preventDefault();el.setPointerCapture(e.pointerId);
+        const mv=ev=>{const pt=svg.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;const q=pt.matrixTransform(svg.getScreenCTM().inverse());const r=onmove(IX(q.x),IY(q.y));if(r)set(r[0],r[1]);};
+        const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up);};
+        el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
+      });
+      return {set,el};}
+  };
+  return P;
+}
+
+function Ctl(box){
+  const wrap=H('div','ctl',box);
+  const U={on(){},
+    slider(label,min,max,step,val,fmt=fx){
+      const row=H('label','sl',wrap,`<span class="nm">${label}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}"><span class="val"></span>`);
+      const inp=row.querySelector('input'),sp=row.querySelector('.val');
+      const o={get v(){return +inp.value;},set(x){inp.value=x;sp.textContent=fmt(+inp.value);}};
+      sp.textContent=fmt(+inp.value);inp.addEventListener('input',()=>{sp.textContent=fmt(+inp.value);U.on();});return o;},
+    buttons(list,toggle=false){
+      const row=H('div','btns',wrap);
+      list.forEach(([lab,fn],i)=>{const b=H('button','',row,lab);b.type='button';if(toggle&&i===0)b.classList.add('on');
+        b.addEventListener('click',()=>{if(toggle){row.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');}fn();U.on();});});
+      return row;},
+    out(){return H('div','out',box);}
+  };
+  return U;
+}
+const sup=n=>String(n).split('').map(d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('');
+const DEG=v=>fx(v,0)+'°';
+
+/* ============================== 公式卡片 ============================== */
+const cards=[];const C=o=>cards.push(o);
+
+/* ---------- 高一：數與式 ---------- */
+C({g:1,ch:'數與式',t:'和的平方公式',tex:'(a+b)^2=a^2+2ab+b^2',
+d:'把邊長 <b>a+b</b> 的正方形切成四塊：一塊 a²、一塊 b²、兩塊 ab。四塊加起來就是整個正方形，所以中間會多出「2ab」。',
+viz(b){const P=Plot(b,{xr:[-.6,10.4],yr:[-.6,11.2],w:280,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',1,6,.5,4),bb=U.slider('b',1,4,.5,2.5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,s=10/(A+B);
+    const r=(x,y,w,h,cl,lab)=>{P.rect(x*s,y*s,w*s,h*s,cl);P.text((x+w/2)*s,(y+h/2)*s,lab,'t mid b');};
+    r(0,B,A,A,'f1','a²');r(A,B,B,A,'f2','ab');r(0,0,A,B,'f2','ab');r(A,0,B,B,'f3','b²');
+    P.text(A*s/2,10,'a','t mid t1',0,-8);P.text((A+B/2)*s,10,'b','t mid t3',0,-8);
+    P.text(0,(B+A/2)*s,'a','t mid t1',-8);P.text(0,B/2*s,'b','t mid t3',-8);
+    out.innerHTML=T(`(${A}+${B})^2=${fx((A+B)**2)}`)+'<br>'+T(`${A}^2+2\\times${A}\\times${B}+${B}^2=${fx(A*A)}+${fx(2*A*B)}+${fx(B*B)}=${fx((A+B)**2)}`);};
+  U.on();}});
+
+C({g:1,ch:'數與式',t:'平方差公式',tex:'a^2-b^2=(a+b)(a-b)',
+d:'從大正方形 a² 挖掉小正方形 b²，剩下的 L 形切成兩塊，<b>重新拼起來</b>剛好是寬 a+b、高 a−b 的長方形。',
+viz(b){const P=Plot(b,{xr:[-.4,14.6],yr:[-1,7.2],w:320,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',3,6,.5,5),bb=U.slider('b',.5,2.5,.5,2),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,s=12.4/(2*A+B+1.2),x0=(A+1.2)*s;
+    P.rect(0,0,A*s,(A-B)*s,'f1');P.rect(0,(A-B)*s,(A-B)*s,B*s,'f2');P.rect((A-B)*s,(A-B)*s,B*s,B*s,'fg dash');
+    P.text((A-B/2)*s,(A-B/2)*s,'b²','tm mid');
+    P.text(A*s/2,0,'a','t mid',0,10);
+    P.rect(x0,0,A*s,(A-B)*s,'f1');P.rect(x0+A*s,0,B*s,(A-B)*s,'f2');
+    P.text(x0+(A+B)/2*s,0,'a + b','t mid',0,10);P.text(x0+(A+B)*s,(A-B)/2*s,'a − b','t',4);
+    P.text((A+1.2)*s-.6*s,A*s/2,'⇒','t mid b');
+    out.innerHTML=T(`${A}^2-${B}^2=${fx(A*A)}-${fx(B*B)}=${fx(A*A-B*B)}`)+'<br>'+T(`(${A}+${B})(${A}-${B})=${fx(A+B)}\\times${fx(A-B)}=${fx((A+B)*(A-B))}`);};
+  U.on();}});
+
+C({g:1,ch:'數與式',t:'絕對值＝距離',tex:'|x-a|<r \\iff a-r<x<a+r',
+d:'|x−a| 就是數線上 <b>x 到 a 的距離</b>。「距離小於 r」的點，正好落在以 a 為中心、左右各 r 的區間裡。',hint:'可拖曳：拖動數線上的空心圓點 x',
+viz(b){const P=Plot(b,{xr:[-6.6,6.6],yr:[-1.4,1.8],w:320,h:110,grid:false,axes:false}),U=Ctl(b);
+  P.line(-6.4,0,6.4,0,'km',P.base);for(let i=-6;i<=6;i++){P.line(i,-.12,i,.12,'km',P.base);P.text(i,-.55,fx(i),'num',0,0,P.base);}
+  const a=U.slider('a',-3,3,.5,1),r=U.slider('r',.5,3,.5,2),out=U.out();let x=-1.5;
+  P.handle(x,0,(X)=>{x=clamp(snap(X),-6,6);U.on();return [x,0];},'h2');
+  U.on=()=>{P.clear();const A=a.v,R=r.v,d=Math.abs(x-A);
+    P.line(A-R,0,A+R,0,'k3 fat');P.dot(A-R,0,'d3',4);P.dot(A+R,0,'d3',4);
+    P.dot(A,0,'d1',5);P.text(A,.5,'a','t mid t1 b');
+    P.line(Math.min(x,A),1.05,Math.max(x,A),1.05,'k2');P.line(x,.9,x,1.2,'k2');P.line(A,.9,A,1.2,'k2');
+    P.text((x+A)/2,1.45,`距離 ${fx(d)}`,'t mid t2');
+    const ok=d<R;
+    out.innerHTML=T(`|x-a|=|${fx(x)}-${par(A)}|=${fx(d)}`)+`　${ok?'小於':'不小於'} r = ${fx(R)}，所以 x ${ok?'<b style="color:var(--c3)">在</b>':'<b style="color:var(--c2)">不在</b>'}綠色區間 `+T(`${fx(A-R)}<x<${fx(A+R)}`)+' 內';};
+  U.on();}});
+
+C({g:1,ch:'數與式',t:'算幾不等式',tex:'\\frac{a+b}{2}\\ge\\sqrt{ab}\\quad(a,b>0)',
+d:'以 a+b 為直徑畫半圓。<b style="color:var(--c1)">半徑</b>就是算術平均；在 a、b 交界處往上畫到圓上的<b style="color:var(--c2)">垂直線段</b>，長度剛好是幾何平均。垂直線段永遠不會比半徑長，a=b 時兩者一樣長。',
+viz(b){const P=Plot(b,{xr:[-.6,10.6],yr:[-1.1,5.8],w:320,grid:false,axes:false}),U=Ctl(b);
+  P.fn(x=>Math.sqrt(Math.max(0,25-(x-5)**2)),'k4 thin',0,10,200,P.base);P.line(0,0,10,0,'k0',P.base);
+  P.text(0,-.5,'A','tm mid',0,0,P.base);P.text(10,-.5,'B','tm mid',0,0,P.base);P.text(5,-.5,'O','tm mid',0,0,P.base);
+  const a=U.slider('a',.5,9.5,.25,2.5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=10-A,g=Math.sqrt(A*B);
+    P.line(5,0,5,5,'k1');P.line(5,0,A,g,'k1 dash thin');P.line(A,0,A,g,'k2');P.dot(A,g,'d2',4);P.dot(A,0,'d0',3);
+    P.text(5,5,'(a+b)/2','t mid t1',0,-8);P.text(A,g/2,'√(ab)','t t2',A<5?-52:6);
+    P.text(A/2,0,`a=${fx(A)}`,'tm mid',0,14);P.text(A+B/2,0,`b=${fx(B)}`,'tm mid',0,14);
+    out.innerHTML=T(`\\frac{a+b}{2}=${fx((A+B)/2)}\\ \\ge\\ \\sqrt{ab}=\\sqrt{${fx(A*B)}}\\approx${fx(g)}`)+(A===B?'　等號成立（a = b）':'');};
+  U.on();}});
+
+/* ---------- 高一：直線與圓 ---------- */
+C({g:1,ch:'直線與圓',t:'斜率與點斜式',tex:'m=\\frac{y_2-y_1}{x_2-x_1},\\qquad y-y_1=m(x-x_1)',
+d:'斜率就是「<b style="color:var(--c2)">往上走多少</b>」除以「<b style="color:var(--c1)">往右走多少</b>」。右上斜是正的，右下斜是負的，水平線是 0，鉛直線沒有斜率。',hint:'可拖曳：拖動兩個空心圓點',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300}),U=Ctl(b),out=U.out();let p=[-2,-1],q=[2,2];
+  P.handle(...p,(x,y)=>{p=[clamp(snap(x),-4.5,4.5),clamp(snap(y),-3.5,3.5)];U.on();return p;},'h0');
+  P.handle(...q,(x,y)=>{q=[clamp(snap(x),-4.5,4.5),clamp(snap(y),-3.5,3.5)];U.on();return q;},'h0');
+  U.on=()=>{P.clear();const dx=q[0]-p[0],dy=q[1]-p[1];
+    if(dx===0&&dy===0){out.innerHTML='兩點重合，無法決定一條直線';return;}
+    if(dx===0){P.line(p[0],-5,p[0],5,'k0');out.innerHTML=`鉛直線 x = ${fx(p[0])}：Δx = 0，斜率<b>不存在</b>`;return;}
+    const m=dy/dx;P.line(-6,p[1]+m*(-6-p[0]),6,p[1]+m*(6-p[0]),'k0 thin');
+    P.line(p[0],p[1],q[0],p[1],'k1');P.line(q[0],p[1],q[0],q[1],'k2');
+    P.text((p[0]+q[0])/2,p[1],`Δx=${fx(dx)}`,'t mid t1',0,dy>0?12:-10);P.text(q[0],(p[1]+q[1])/2,`Δy=${fx(dy)}`,'t t2',dx>0?5:-58);
+    out.innerHTML=T(`m=\\frac{${fx(q[1])}-${par(p[1])}}{${fx(q[0])}-${par(p[0])}}=\\frac{${fx(dy)}}{${fx(dx)}}=${fx(m)}`)+'<br>'+T(`y ${pm(-p[1])}=${fx(m)}(x ${pm(-p[0])})`).replace('+ 0','');};
+  U.on();}});
+
+C({g:1,ch:'直線與圓',t:'點到直線的距離',tex:'d(P,L)=\\frac{|ax_0+by_0+c|}{\\sqrt{a^2+b^2}}',
+d:'從點 P 往直線畫<b>垂直線</b>，垂足到 P 的長度就是距離。把 P 的座標代進直線方程式左邊，再除以 √(a²+b²) 就算得出來。',hint:'可拖曳：拖動點 P。直線固定為 3x − 4y + 4 = 0',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300}),U=Ctl(b),out=U.out();let p=[2,-2];
+  P.line(-6,(3*-6+4)/4,6,(3*6+4)/4,'k1',P.base);P.text(-3.8,(3*-3.8+4)/4,'L','t t1 b',-12);
+  P.handle(...p,(x,y)=>{p=[clamp(snap(x),-4.5,4.5),clamp(snap(y),-3.5,3.5)];U.on();return p;},'h2');
+  U.on=()=>{P.clear();const v=3*p[0]-4*p[1]+4,t=v/25,f=[p[0]-3*t,p[1]+4*t],d=Math.abs(v)/5;
+    P.line(p[0],p[1],f[0],f[1],'k2');P.dot(...f,'d2',3.5);P.text(...p,'P','t b',10,-10);
+    out.innerHTML=T(`d=\\frac{|3\\times${par(p[0])}-4\\times${par(p[1])}+4|}{\\sqrt{3^2+4^2}}=\\frac{${fx(Math.abs(v))}}{5}=${fx(d)}`);};
+  U.on();}});
+
+C({g:1,ch:'直線與圓',t:'圓的方程式',tex:'(x-h)^2+(y-k)^2=r^2',
+d:'圓就是「到圓心 (h, k) 距離都等於 r」的所有點。把距離公式兩邊平方，就得到這個式子；展開後是一般式 x²+y²+Dx+Ey+F=0。',
+viz(b){const P=Plot(b,{xr:[-6,6],yr:[-5,5],w:300}),U=Ctl(b);
+  const h=U.slider('h',-3,3,.5,1),k=U.slider('k',-2,2,.5,-.5),r=U.slider('r',.5,3,.5,2.5),out=U.out();
+  U.on=()=>{P.clear();const H_=h.v,K=k.v,R=r.v;P.circle(H_,K,R,'f1');P.dot(H_,K,'d0',4);
+    P.line(H_,K,H_+R*Math.cos(.6),K+R*Math.sin(.6),'k2');P.text(H_+R/2*Math.cos(.6),K+R/2*Math.sin(.6),'r','t t2 b',-4,-9);
+    P.text(H_,K,`(${fx(H_)}, ${fx(K)})`,'t mid',0,13);
+    const D=-2*H_,Ee=-2*K,F=H_*H_+K*K-R*R;
+    out.innerHTML='標準式：'+T(`(x ${pm(-H_)})^2+(y ${pm(-K)})^2=${fx(R*R)}`)+'<br>一般式：'+T(terms([[1,'x^2'],[1,'y^2'],[D,'x'],[Ee,'y'],[F,'']])+'=0');};
+  U.on();}});
+
+/* ---------- 高一：多項式函數 ---------- */
+C({g:1,ch:'多項式函數',t:'二次函數：頂點與判別式',tex:'y=ax^2+bx+c\\qquad =a\\left(x+\\frac{b}{2a}\\right)^2-\\frac{b^2-4ac}{4a}',
+d:'配方後就能直接看出<b>頂點</b>和<b>對稱軸</b>。判別式 D=b²−4ac 決定拋物線和 x 軸交幾個點：D>0 兩個、D=0 一個、D<0 沒有。',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-5,5],w:300}),U=Ctl(b);
+  const a=U.slider('a',-2,2,.1,1),bb=U.slider('b',-4,4,.5,-2),c=U.slider('c',-4,4,.5,-2),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,Cc=c.v;
+    if(Math.abs(A)<.05){P.fn(x=>B*x+Cc,'k1');out.innerHTML='a = 0 時是直線，不是二次函數';return;}
+    const h=-B/(2*A),D=B*B-4*A*Cc,k=-D/(4*A);
+    P.line(h,-6,h,6,'km dash');P.fn(x=>A*x*x+B*x+Cc,'k1');P.dot(h,k,'d2',5);P.text(h,k,'頂點','t t2',8,A>0?12:-12);
+    let s=`頂點 (${fx(h)}, ${fx(k)})，對稱軸 x = ${fx(h)}<br>`+T(`D=${fx(B*B)}-4\\times${par(A)}\\times${par(Cc)}=${fx(D)}`);
+    if(D>1e-9){const r1=(-B-Math.sqrt(D))/(2*A),r2=(-B+Math.sqrt(D))/(2*A);P.dot(r1,0,'d3',4.5);P.dot(r2,0,'d3',4.5);s+=` &gt; 0，兩個實根 ${fx(Math.min(r1,r2))}、${fx(Math.max(r1,r2))}<br>根與係數：`+T(`\\alpha+\\beta=-\\tfrac ba=${fx(-B/A)},\\ \\alpha\\beta=\\tfrac ca=${fx(Cc/A)}`);}
+    else if(Math.abs(D)<=1e-9){P.dot(h,0,'d3',4.5);s+=' = 0，一個重根';}
+    else s+=' &lt; 0，沒有實根（和 x 軸不相交）';
+    out.innerHTML=s;};
+  U.on();}});
+
+C({g:1,ch:'多項式函數',t:'餘式定理',tex:'f(x)\\div(x-a)\\ \\text{的餘式}=f(a)',
+d:'f(x) 除以 (x−a) 不必真的長除法：直接把 a 代進去，<b>函數值 f(a) 就是餘式</b>。在圖上就是 x=a 那點的高度。',hint:'圖中 f(x) = x³ − 4x + 1',
+viz(b){const P=Plot(b,{xr:[-3,3],yr:[-7,7],w:300,h:260,numStep:2}),U=Ctl(b);
+  const f=x=>x**3-4*x+1;P.fn(f,'k1',-3,3,200,P.base);
+  const a=U.slider('a',-2.5,2.5,.5,1.5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,r=f(A);P.line(A,0,A,r,'k2 fat');P.dot(A,r,'d2',5);P.text(A,r/2,`f(a) = ${fx(r)}`,A>0?'t t2 b end':'t t2 b',A>0?-8:8);
+    out.innerHTML=T(`x^3-4x+1=(x ${pm(-A)})(${polyStr([1,A,A*A-4])})${r<0?'-':'+'}${fx(Math.abs(r))}`)+'<br>餘式 = '+T(`f(${fx(A)})=${fx(r)}`)+(Math.abs(r)<1e-9?'，餘式為 0，所以 (x − a) 是因式':'');};
+  U.on();}});
+
+C({g:1,ch:'多項式函數',t:'勘根定理',tex:'f(a)\\,f(b)<0\\qquad\\Rightarrow f(x)=0\\text{ 在 }a,b\\text{ 之間至少有一實根}',
+d:'多項式的圖形是一條不會斷掉的曲線。如果左端在 x 軸下面、右端在上面（或相反），中間<b>一定會穿過 x 軸</b>。',hint:'圖中 f(x) = x³ − 4x + 1',
+viz(b){const P=Plot(b,{xr:[-3,3],yr:[-7,7],w:300,h:260,numStep:2}),U=Ctl(b);
+  const f=x=>x**3-4*x+1;
+  const a=U.slider('a',-3,3,.25,0),bb=U.slider('b',-3,3,.25,1),out=U.out();
+  U.on=()=>{P.clear();const lo=Math.min(a.v,bb.v),hi=Math.max(a.v,bb.v),fa=f(lo),fb=f(hi),ok=fa*fb<0;
+    P.rect(lo,-8,hi-lo,16,ok?'f3':'fg');P.fn(f,'k1');
+    P.dot(lo,fa,fa<0?'d2':'d1',5);P.dot(hi,fb,fb<0?'d2':'d1',5);
+    out.innerHTML=T(`f(${fx(lo)})=${fx(fa)},\\ f(${fx(hi)})=${fx(fb)}`)+'<br>'+(ok?'兩者異號，乘積 &lt; 0 ⇒ <b style="color:var(--c3)">中間必有實根</b>':'乘積 ≥ 0 ⇒ 勘根定理無法判斷（可能沒有根，也可能有偶數個）');};
+  U.on();}});
+
+/* ---------- 高一下：數列與級數 ---------- */
+C({g:1,ch:'數列與級數',t:'等差數列與等差級數',tex:'a_n=a_1+(n-1)d,\\qquad S_n=\\frac{n(a_1+a_n)}{2}',
+d:'把數列<b style="color:var(--c1)">由小到大</b>排一次，再<b style="color:var(--c2)">倒過來</b>疊上去，每一欄都是 a₁+aₙ，剛好拼成長方形。長方形面積的一半就是總和（高斯的方法）。',
+viz(b){const P=Plot(b,{xr:[-.03,1.03],yr:[-.1,1.06],w:300,h:230,grid:false,axes:false}),U=Ctl(b);
+  const n=U.slider('n',1,10,1,6),a1=U.slider('a₁',1,5,1,2),d=U.slider('d',0,3,1,1),out=U.out();
+  U.on=()=>{P.clear();const N=n.v,A=a1.v,D=d.v,an=A+(N-1)*D,Hh=A+an,cw=1/N;
+    for(let i=0;i<N;i++){const v=A+i*D,u=A+(N-1-i)*D;P.rect(i*cw+cw*.06,0,cw*.88,v/Hh,'f1');P.rect(i*cw+cw*.06,v/Hh,cw*.88,u/Hh,'f2');
+      if(N<=8){P.text(i*cw+cw/2,v/Hh/2,fx(v),'t mid t1 sm');P.text(i*cw+cw/2,(v+u/2)/Hh,fx(u),'t mid t2 sm');}}
+    P.text(.5,0,`n = ${N} 項`,'tm mid',0,10);
+    out.innerHTML=T(`a_{${N}}=${A}+(${N}-1)\\times${D}=${an}`)+'<br>'+T(`S_{${N}}=\\frac{${N}\\times(${A}+${an})}{2}=${fx(N*(A+an)/2)}`);};
+  U.on();}});
+
+C({g:1,ch:'數列與級數',t:'等比級數',tex:'S_n=\\frac{a_1(1-r^n)}{1-r}\\quad(r\\ne1)',
+d:'把面積 1 的正方形一直對切：<b>½ + ¼ + ⅛ + …</b>，每次加上剩下的一半。加越多項越接近 1，但永遠不會超過。',
+viz(b){const P=Plot(b,{xr:[-.02,1.02],yr:[-.02,1.02],w:260,grid:false,axes:false}),U=Ctl(b);
+  const n=U.slider('n',1,12,1,4),out=U.out();
+  U.on=()=>{P.clear();let x=0,y=0,w=1,h=1;P.rect(0,0,1,1,'fg dash');
+    for(let i=0;i<n.v;i++){let r;if(i%2===0){r=[x,y,w/2,h];x+=w/2;w/=2;}else{r=[x,y,w,h/2];y+=h/2;h/=2;}
+      P.rect(...r,i%2?'f2':'f1');if(i<5)P.text(r[0]+r[2]/2,r[1]+r[3]/2,`1/${2**(i+1)}`,'t mid b');}
+    const S=1-0.5**n.v;
+    out.innerHTML=T(`S_{${n.v}}=\\frac{\\frac12\\left(1-(\\frac12)^{${n.v}}\\right)}{1-\\frac12}=1-\\left(\\tfrac12\\right)^{${n.v}}\\approx${fx(S,4)}`);};
+  U.on();}});
+
+/* ---------- 高一下：排列組合 ---------- */
+C({g:1,ch:'排列組合',t:'排列',tex:'P^{n}_{k}=n(n-1)\\cdots(n-k+1)=\\frac{n!}{(n-k)!}',
+d:'從 n 個人選 k 個排成一列：第 1 個位置有 n 種選法，第 2 個位置少一人只剩 n−1 種……每個位置的選法<b>相乘</b>就是答案（乘法原理）。',
+viz(b){const box=H('div','slots',b),U=Ctl(b);const n=U.slider('n',1,10,1,6),k=U.slider('k',1,10,1,3),out=U.out();
+  U.on=()=>{const N=n.v,K=Math.min(k.v,N);let s='';
+    for(let i=0;i<K;i++)s+=(i?'<span>×</span>':'')+`<div class="slot"><b>${N-i}</b><small>第${i+1}位</small></div>`;
+    box.innerHTML=s;const v=fact(N)/fact(N-K);
+    out.innerHTML=T(`P^{${N}}_{${K}}=\\frac{${N}!}{${N-K}!}=${v}`)+(k.v>N?'<br>k 不能大於 n，這裡以 k = n 計算':'');};
+  U.on();}});
+
+C({g:1,ch:'排列組合',t:'組合、巴斯卡三角形與二項式定理',tex:'C^{n}_{k}=\\frac{n!}{k!(n-k)!}=C^{n-1}_{k-1}+C^{n-1}_{k},\\qquad (a+b)^n=\\sum_{k=0}^{n}C^{n}_{k}a^{n-k}b^{k}',
+d:'巴斯卡三角形裡，每個數都是<b style="color:var(--c3)">左上和右上</b>兩數相加。第 n 列正好是 C(n,0)、C(n,1)…C(n,n)，也就是 (a+b)ⁿ 展開後的係數。',
+viz(b){const P=Plot(b,{xr:[0,320],yr:[-254,0],w:320,grid:false,axes:false}),U=Ctl(b);
+  const n=U.slider('n',1,10,1,5),k=U.slider('k',0,10,1,2),out=U.out();
+  const pos=(r,c)=>[160+(c-r/2)*29,-(r*23+13)];
+  U.on=()=>{P.clear();const N=n.v,K=Math.min(k.v,N);
+    for(let r=0;r<=10;r++)for(let c=0;c<=r;c++){const [x,y]=pos(r,c);let cl=null;
+      if(r===N&&c===K)cl='d2';else if(r===N-1&&(c===K||c===K-1))cl='d3';else if(r===N)cl='fs1';
+      if(cl)E('circle',{cx:P.X(x),cy:P.Y(y),r:11.5,class:cl,opacity:cl==='fs1'?.25:.9},P.dyn);
+      P.text(x,y,binom(r,c),'t mid'+((r===N&&c===K)||(r===N-1&&(c===K||c===K-1))?' b':' sm'));}
+    const coefs=[...Array(N+1)].map((_,i)=>binom(N,i)).join('、');
+    out.innerHTML=T(`C^{${N}}_{${K}}=${K>0&&K<N?`C^{${N-1}}_{${K-1}}+C^{${N-1}}_{${K}}=${binom(N-1,K-1)}+${binom(N-1,K)}=`:''}${binom(N,K)}`)+`<br>(a+b)<sup>${N}</sup> 的係數：${coefs}`+(k.v>N?'<br>k 不能大於 n，這裡以 k = n 計算':'');};
+  U.on();}});
+
+C({g:1,ch:'排列組合',t:'重複組合（H）',tex:'H^{n}_{k}=C^{n+k-1}_{k}',
+d:'把 k 個相同的球分給 n 個人（可以有人拿 0 個），等於排列 <b>k 顆星星和 n−1 根隔板</b>：只要決定星星放在哪些位置，就決定了一種分法。',
+viz(b){const box=H('div','slots',b),U=Ctl(b);const n=U.slider('n（人）',2,5,1,3),k=U.slider('k（球）',1,8,1,5);
+  let seed=1;U.buttons([['換一種分法',()=>{seed++;}]]);const out=U.out();
+  U.on=()=>{const N=n.v,K=k.v,L=N+K-1;let idx=[...Array(L).keys()];
+    let s=seed*9301+49297;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280;};
+    for(let i=L-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+    const bars=new Set(idx.slice(0,N-1));let html='',g=0;const cnt=Array(N).fill(0);
+    for(let i=0;i<L;i++){if(bars.has(i)){html+='<span class="bar1">|</span>';g++;}else{html+=`<span style="color:var(--c${g%5+1})">★</span>`;cnt[g]++;}}
+    box.innerHTML=`<div class="stars">${html}</div><div class="counts">${cnt.map((c,i)=>`<span style="color:var(--c${i%5+1})">第${i+1}人：${c}</span>`).join('　')}</div>`;
+    out.innerHTML=T(`H^{${N}}_{${K}}=C^{${N}+${K}-1}_{${K}}=C^{${L}}_{${K}}=${binom(L,K)}`)+` 種分法<br>也就是方程式 x₁+…+x<sub>${N}</sub> = ${K} 的非負整數解個數`;};
+  U.on();}});
+
+/* ---------- 高一下：機率 ---------- */
+C({g:1,ch:'機率',t:'機率的加法原理',tex:'P(A\\cup B)=P(A)+P(B)-P(A\\cap B)',
+d:'把 A 和 B 的機率直接相加時，<b>中間重疊的部分算了兩次</b>，所以要扣掉一次。',
+viz(b){const P=Plot(b,{xr:[0,10],yr:[0,6.2],w:300,grid:false,axes:false}),U=Ctl(b);
+  P.rect(.2,.2,9.6,5.8,'fg',P.base);P.text(.5,5.7,'樣本空間 S','tm',0,0,P.base);
+  P.circle(3.9,3,2.4,'f1',P.base);P.circle(6.1,3,2.4,'f2',P.base);P.text(2.2,5.1,'A','t t1 b',0,0,P.base);P.text(7.8,5.1,'B','t t2 b',0,0,P.base);
+  const a=U.slider('P(A)',0,1,.05,.5),bb=U.slider('P(B)',0,1,.05,.4),i=U.slider('P(A∩B)',0,1,.05,.2),out=U.out();
+  U.on=()=>{P.clear();let A=a.v,B=bb.v,I=i.v,note='';
+    const lo=Math.max(0,A+B-1),hi=Math.min(A,B);if(I<lo-1e-9||I>hi+1e-9){I=clamp(I,lo,hi);note=`<br><span style="color:var(--mute)">（P(A∩B) 必須介於 ${fx(lo)} 和 ${fx(hi)} 之間，已自動調整為 ${fx(I)}）</span>`;}
+    P.text(2.7,3,fx(A-I),'t mid b');P.text(5,3,fx(I),'t mid b');P.text(7.3,3,fx(B-I),'t mid b');P.text(9.2,.7,fx(1-A-B+I),'tm mid');
+    out.innerHTML=T(`P(A\\cup B)=${fx(A)}+${fx(B)}-${fx(I)}=${fx(A+B-I)}`)+note;};
+  U.on();}});
+
+C({g:1,ch:'機率',t:'條件機率與貝氏定理',tex:'P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)},\\qquad P(B\\mid A)=\\frac{P(B)P(A\\mid B)}{P(A)}',
+d:'正方形面積代表 1。先依 B 發生與否切成左右兩塊，再依 A 切上下。條件機率就是<b>「只看某一塊」時，A 佔多少比例</b>。例：B = 真的感冒，A = 快篩陽性，可以算出「陽性時真的感冒」的機率。',
+viz(b){const P=Plot(b,{xr:[-.04,1.04],yr:[-.14,1.08],w:300,grid:false,axes:false}),U=Ctl(b);
+  const pb=U.slider('P(B)',.05,.95,.01,.3),ab=U.slider('P(A|B)',0,1,.01,.9),ab2=U.slider("P(A|B')",0,1,.01,.2),out=U.out();
+  U.on=()=>{P.clear();const B=pb.v,x=ab.v,y=ab2.v;
+    P.rect(0,0,B,x,'fs1');P.rect(0,x,B,1-x,'f1');P.rect(B,0,1-B,y,'fs2');P.rect(B,y,1-B,1-y,'f2');
+    P.text(B/2,-.06,'B','t mid t1 b');P.text(B+(1-B)/2,-.06,"B'（B 沒發生）",'t mid t2');
+    if(x>.08)P.text(B/2,x/2,'A∩B','t mid b');if(y>.08)P.text(B+(1-B)/2,y/2,"A∩B'",'t mid b');
+    const AB=B*x,A=AB+(1-B)*y;
+    out.innerHTML=T(`P(A\\cap B)=${fx(B)}\\times${fx(x)}=${fx(AB,3)}`)+'<br>'+T(`P(A)=${fx(AB,3)}+${fx(1-B)}\\times${fx(y)}=${fx(A,3)}`)+'<br>'+(A>0?T(`P(B\\mid A)=\\frac{${fx(AB,3)}}{${fx(A,3)}}\\approx${fx(AB/A,3)}`):'P(A) = 0，無法計算 P(B|A)');};
+  U.on();}});
+
+/* ---------- 高一下：數據分析 ---------- */
+C({g:1,ch:'數據分析',t:'標準差',tex:'\\sigma=\\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}(x_i-\\mu)^2}',
+d:'每筆資料到<b style="color:var(--c2)">平均數 μ</b> 的距離畫成正方形，所有正方形面積的平均就是<b>變異數</b>，再開根號就是標準差。資料越分散，正方形越大。',
+viz(b){const P=Plot(b,{xr:[-.5,10.5],yr:[-1.2,6.2],w:320,grid:false,axes:false}),U=Ctl(b);
+  P.line(0,0,10,0,'km',P.base);for(let i=0;i<=10;i++){P.line(i,-.1,i,.1,'km',P.base);P.text(i,-.55,i,'num',0,0,P.base);}
+  let base=[-2.6,-1.5,-.9,-.3,.4,.8,1.7,2.4];
+  const s=U.slider('分散程度',.2,1.8,.1,1);U.buttons([['換一組資料',()=>{base=base.map(()=>(Math.random()*2-1)*2.8);}]]);const out=U.out();
+  U.on=()=>{P.clear();const xs=base.map(v=>clamp(5+s.v*v,0,10)),n=xs.length,mu=xs.reduce((a,b)=>a+b)/n,vr=xs.reduce((a,x)=>a+(x-mu)**2,0)/n;
+    xs.forEach(x=>{const d=x-mu;P.rect(Math.min(x,mu),0,Math.abs(d),Math.abs(d),'f1');});
+    P.line(mu,-.2,mu,6.2,'k2 dash');P.text(mu,5.9,'μ','t t2 b',6);xs.forEach(x=>P.dot(x,0,'d0',4));
+    out.innerHTML=`資料：${xs.map(x=>fx(x,1)).join('、')}<br>`+T(`\\mu=${fx(mu)},\\ \\sigma^2=${fx(vr)},\\ \\sigma=${fx(Math.sqrt(vr))}`);};
+  U.on();}});
+
+C({g:1,ch:'數據分析',t:'相關係數與迴歸直線',tex:'y-\\mu_y=r\\,\\frac{\\sigma_y}{\\sigma_x}(x-\\mu_x)',
+d:'相關係數 r 介於 −1 和 1：越接近 ±1，點越貼近一直線；接近 0 代表沒有直線關係。<b style="color:var(--c2)">迴歸直線</b>一定通過兩變數的平均點，斜率是 r·σy/σx。',
+viz(b){const P=Plot(b,{xr:[-3.5,3.5],yr:[-3.5,3.5],w:280}),U=Ctl(b);
+  const gen=()=>{const g=()=>{const u=1-Math.random(),v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};return [...Array(40)].map(()=>[g(),g()]);};
+  let z=gen();const rho=U.slider('目標相關',-1,1,.05,.7);U.buttons([['重新抽樣',()=>{z=gen();}]]);const out=U.out();
+  U.on=()=>{P.clear();const R=rho.v,pts=z.map(([a,c])=>[a*.95,(R*a+Math.sqrt(1-R*R)*c)*.95]);
+    const n=pts.length,mx=pts.reduce((s,p)=>s+p[0],0)/n,my=pts.reduce((s,p)=>s+p[1],0)/n;
+    let sxx=0,syy=0,sxy=0;pts.forEach(([x,y])=>{sxx+=(x-mx)**2;syy+=(y-my)**2;sxy+=(x-mx)*(y-my);});
+    const r=sxy/Math.sqrt(sxx*syy),m=sxy/sxx,k=my-m*mx;
+    pts.forEach(p=>P.dot(...p,'d1',3.2));P.line(-4,m*-4+k,4,m*4+k,'k2');P.dot(mx,my,'d2',5);
+    const a=Math.abs(r),word=a>=.7?'高度':a>=.3?'中度':a>=.1?'低度':'幾乎沒有';
+    out.innerHTML=T(`r=${fx(r)}`)+`（${word}${a>=.1?(r>0?'正相關':'負相關'):'相關'}）<br>迴歸直線：`+T('y='+terms([[m,'x'],[k,'']]));};
+  U.on();}});
+
+/* ---------- 高二：三角函數 ---------- */
+C({g:2,ch:'三角函數',t:'單位圓與三角函數',tex:'\\sin\\theta=y,\\ \\cos\\theta=x,\\ \\tan\\theta=\\frac yx,\\qquad \\sin^2\\theta+\\cos^2\\theta=1',
+d:'在半徑 1 的圓上轉 θ 角，那一點的<b style="color:var(--c1)">橫座標是 cos θ</b>、<b style="color:var(--c2)">縱座標是 sin θ</b>。把 sin θ 的高度隨角度畫出來，就是下面的正弦波。',
+viz(b){const P=Plot(b,{xr:[-1.5,1.5],yr:[-1.5,1.5],w:240,step:.5,nums:false}),Q=Plot(b,{xr:[-.4,6.7],yr:[-1.4,1.4],w:320,h:130,grid:false}),U=Ctl(b);
+  P.circle(0,0,1,'km',P.base);P.line(1,-1.5,1,1.5,'k3 dash thin',P.base);
+  Q.fn(Math.sin,'k2 thin',0,2*Math.PI,200,Q.base);Q.fn(Math.cos,'k1 thin dash',0,2*Math.PI,200,Q.base);
+  [[Math.PI/2,'π/2'],[Math.PI,'π'],[1.5*Math.PI,'3π/2'],[2*Math.PI,'2π']].forEach(([x,s])=>{Q.line(x,-.06,x,.06,'km',Q.base);Q.text(x,-.25,s,'num',0,0,Q.base);});
+  const th=U.slider('θ',0,360,1,40,DEG),out=U.out();
+  U.on=()=>{P.clear();Q.clear();const t=th.v*deg,c=Math.cos(t),s=Math.sin(t);
+    P.arc(0,0,.25,0,t,'km');P.line(0,0,c,s,'k0');P.line(0,0,c,0,'k1 fat');P.line(c,0,c,s,'k2 fat');
+    if(Math.abs(c)>.08){const tn=s/c;P.line(0,0,1,tn,'k3 dash thin');P.line(1,0,1,tn,'k3');}
+    P.dot(c,s,'d0',5);
+    Q.line(t,0,t,s,'k2');Q.dot(t,s,'d2',4.5);Q.dot(t,c,'d1',3.5);
+    out.innerHTML=T(`\\sin${fx(th.v,0)}^\\circ=${fx(s,3)},\\ \\cos${fx(th.v,0)}^\\circ=${fx(c,3)}`)+(Math.abs(c)>1e-9?'，'+T(`\\tan=${fx(s/c,3)}`):'，tan 不存在')+'<br>'+T(`(${fx(s,3)})^2+(${fx(c,3)})^2=1`);};
+  U.on();}});
+
+C({g:2,ch:'三角函數',t:'正弦定理',tex:'\\frac{a}{\\sin A}=\\frac{b}{\\sin B}=\\frac{c}{\\sin C}=2R',
+d:'任何三角形都能畫出一個<b>外接圓</b>（半徑 R）。不管三角形形狀怎麼變，每一邊除以對角的 sin 值，都等於外接圓的直徑 2R。',hint:'可拖曳：沿著圓拖動三個頂點（外接圓半徑 R = 3）',
+viz(b){const P=Plot(b,{xr:[-4.3,4.3],yr:[-3.8,3.8],w:300,grid:false,axes:false}),U=Ctl(b),out=U.out();
+  P.circle(0,0,3,'km dash',P.base);P.dot(0,0,'dm',2.5,P.base);
+  const ang=[100*deg,215*deg,330*deg],pt=t=>[3*Math.cos(t),3*Math.sin(t)];
+  ['h1','h2','h3'].forEach((h,i)=>P.handle(...pt(ang[i]),(x,y)=>{ang[i]=Math.atan2(y,x);U.on();return pt(ang[i]);},h));
+  U.on=()=>{P.clear();const [A,B,Cc]=ang.map(pt),d=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1]);
+    const a=d(B,Cc),bb=d(A,Cc),c=d(A,B),an=(p,q,r)=>{const u=[q[0]-p[0],q[1]-p[1]],v=[r[0]-p[0],r[1]-p[1]];return Math.acos(clamp((u[0]*v[0]+u[1]*v[1])/(Math.hypot(...u)*Math.hypot(...v)),-1,1));};
+    const aA=an(A,B,Cc),aB=an(B,A,Cc),aC=an(Cc,A,B);
+    P.poly([A,B,Cc],'f5',true);P.line(0,0,...A,'km dash');P.text(A[0]/2,A[1]/2,'R','tm',4);
+    [[A,'A',1],[B,'B',2],[Cc,'C',3]].forEach(([p,s,k],i)=>P.text(p[0]*1.16,p[1]*1.16,s,`t mid b t${k}`));
+    const mid=(p,q,s)=>{const m=[(p[0]+q[0])/2,(p[1]+q[1])/2],L=Math.hypot(...m)||1;P.text(m[0]-m[0]/L*.35,m[1]-m[1]/L*.35,s,'t mid');};
+    mid(B,Cc,'a');mid(A,Cc,'b');mid(A,B,'c');
+    const ok=Math.min(aA,aB,aC)>.02;
+    out.innerHTML=ok?T(`\\tfrac{${fx(a)}}{\\sin${fx(aA/deg,0)}^\\circ}=${fx(a/Math.sin(aA))},\\ \\tfrac{${fx(bb)}}{\\sin${fx(aB/deg,0)}^\\circ}=${fx(bb/Math.sin(aB))},\\ \\tfrac{${fx(c)}}{\\sin${fx(aC/deg,0)}^\\circ}=${fx(c/Math.sin(aC))}`)+'<br>都等於 2R = 6':'三個頂點太靠近，無法構成三角形';};
+  U.on();}});
+
+C({g:2,ch:'三角函數',t:'餘弦定理與三角形面積',tex:'c^2=a^2+b^2-2ab\\cos C,\\qquad \\text{面積}=\\frac12ab\\sin C',
+d:'知道兩邊和夾角，就能算第三邊。當 C = 90° 時 cos C = 0，公式就變回<b>畢氏定理</b> c² = a² + b²；C 越大，c 越長。',
+viz(b){const P=Plot(b,{xr:[-5.6,6.2],yr:[-1,5.6],w:320,grid:false,axes:false}),U=Ctl(b);
+  const a=U.slider('a',1,5,.5,4),bb=U.slider('b',1,5,.5,3),C_=U.slider('C',10,170,1,60,DEG),out=U.out();
+  U.on=()=>{P.clear();const A_=a.v,B_=bb.v,t=C_.v*deg,Bp=[A_,0],Ap=[B_*Math.cos(t),B_*Math.sin(t)],c=Math.sqrt(A_*A_+B_*B_-2*A_*B_*Math.cos(t));
+    P.poly([[0,0],Bp,Ap],'f1',true);P.line(0,0,...Bp,'k1');P.line(0,0,...Ap,'k3');P.line(...Bp,...Ap,'k2');P.arc(0,0,.6,0,t,'km');
+    P.text(0,0,'C','t b',-12,8);P.text(...Bp,'B','t b',6,8);P.text(...Ap,'A','t b',-4,-10);
+    P.text(A_/2,0,'a','t mid t1 b',0,12);P.text(Ap[0]/2,Ap[1]/2,'b','t t3 b',-12,-4);P.text((Bp[0]+Ap[0])/2,(Ap[1])/2,'c','t t2 b',8,-4);
+    out.innerHTML=T(`c^2=${A_}^2+${B_}^2-2\\times${A_}\\times${B_}\\times\\cos${C_.v}^\\circ=${fx(c*c)}`)+'，'+T(`c\\approx${fx(c)}`)+'<br>面積 = '+T(`\\frac12\\times${A_}\\times${B_}\\times\\sin${C_.v}^\\circ\\approx${fx(.5*A_*B_*Math.sin(t))}`)+(C_.v===90?'<br>C = 90°：就是畢氏定理！':'');};
+  U.on();}});
+
+C({g:2,ch:'三角函數',t:'和角公式',tex:'\\sin(\\alpha+\\beta)=\\sin\\alpha\\cos\\beta+\\cos\\alpha\\sin\\beta\\\\\\cos(\\alpha+\\beta)=\\cos\\alpha\\cos\\beta-\\sin\\alpha\\sin\\beta',
+d:'長度 1 的斜邊轉到 α+β。先轉 α 走 cos β，再轉直角走 sin β。終點的高度 sin(α+β) 正好分成兩段：<b style="color:var(--c1)">sin α cos β</b> 加上 <b style="color:var(--c2)">cos α sin β</b>。',
+viz(b){const P=Plot(b,{xr:[-.08,1.12],yr:[-.08,1.12],w:280,grid:false}),U=Ctl(b);
+  P.arc(0,0,1,0,Math.PI/2,'km dash thin',P.base);
+  const al=U.slider('α',5,45,1,30,DEG),be=U.slider('β',5,45,1,25,DEG),out=U.out();
+  U.on=()=>{P.clear();const a=al.v*deg,bb=be.v*deg,Q=[Math.cos(bb)*Math.cos(a),Math.cos(bb)*Math.sin(a)],Pp=[Math.cos(a+bb),Math.sin(a+bb)];
+    P.line(0,0,...Q,'k0 thin');P.line(...Q,...Pp,'k0 thin');P.line(0,0,...Pp,'k0');
+    P.line(...Q,Q[0],0,'k1 dash thin');P.line(...Q,Pp[0],Q[1],'km dash thin');
+    P.line(Pp[0],0,Pp[0],Q[1],'k1 fat');P.line(Pp[0],Q[1],...Pp,'k2 fat');
+    P.arc(0,0,.18,0,a,'k1 thin');P.arc(0,0,.28,a,a+bb,'k2 thin');
+    P.text(.22*Math.cos(a/2),.22*Math.sin(a/2),'α','t t1 b',4);P.text(.33*Math.cos(a+bb/2),.33*Math.sin(a+bb/2),'β','t t2 b',3);
+    P.text(Q[0]/2,Q[1]/2,'cos β','tm',4,10);P.text((Q[0]+Pp[0])/2,(Q[1]+Pp[1])/2,'sin β','tm',6);P.text(Pp[0]/2,Pp[1]/2,'1','t b',-10);
+    P.dot(...Pp,'d0',4);
+    out.innerHTML=T(`\\sin${al.v+be.v}^\\circ=${fx(Math.sin(a)*Math.cos(bb),3)}+${fx(Math.cos(a)*Math.sin(bb),3)}=${fx(Math.sin(a+bb),3)}`)+'<br>'+T(`\\cos${al.v+be.v}^\\circ=${fx(Math.cos(a)*Math.cos(bb),3)}-${fx(Math.sin(a)*Math.sin(bb),3)}=${fx(Math.cos(a+bb),3)}`);};
+  U.on();}});
+
+C({g:2,ch:'三角函數',t:'正弦函數的圖形',tex:'y=a\\sin(bx+c)+d',
+d:'<b>a</b> 控制上下的振幅，<b>b</b> 控制波的疏密（週期 2π/|b|），<b>c</b> 讓波左右平移，<b>d</b> 讓整條波上下平移。灰色虛線是原本的 y = sin x。',
+viz(b){const P=Plot(b,{xr:[-1.2,7.4],yr:[-4.5,4.5],w:320,h:240,numStep:2}),U=Ctl(b);
+  P.fn(Math.sin,'km dash',-1.2,7.4,200,P.base);
+  const a=U.slider('a',-3,3,.5,2),bb=U.slider('b',.5,3,.5,1),c=U.slider('c',-Math.PI,Math.PI,Math.PI/12,0,v=>Math.abs(v)<1e-9?'0':fx(v/Math.PI)+'π'),d=U.slider('d',-2,2,.5,0),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,Cc=c.v,D=d.v;P.fn(x=>A*Math.sin(B*x+Cc)+D,'k1');P.line(-2,D,8,D,'k3 dash thin');
+    out.innerHTML=`振幅 |a| = ${fx(Math.abs(A))}，週期 `+T(`\\frac{2\\pi}{${fx(B)}}\\approx${fx(2*Math.PI/B)}`)+`<br>最大值 ${fx(D+Math.abs(A))}，最小值 ${fx(D-Math.abs(A))}`;};
+  U.on();}});
+
+/* ---------- 高二：指數與對數 ---------- */
+C({g:2,ch:'指數與對數',t:'指數函數與對數函數',tex:'y=a^x\\ \\Longleftrightarrow\\ x=\\log_a y\\quad(a>0,\\ a\\ne1)',
+d:'對數就是指數「反過來問」：a 的幾次方會等於 y？所以 <b style="color:var(--c1)">y=aˣ</b> 和 <b style="color:var(--c2)">y=logₐx</b> 的圖形對稱於直線 y = x。a > 1 時都遞增，0 < a < 1 時都遞減。',
+viz(b){const P=Plot(b,{xr:[-4,5],yr:[-3,6],w:300}),U=Ctl(b);P.line(-4,-4,6,6,'km dash',P.base);
+  const a=U.slider('a',.2,4,.1,2),out=U.out();
+  U.on=()=>{P.clear();const A=a.v;if(Math.abs(A-1)<1e-9){P.line(-5,1,6,1,'k1');out.innerHTML='a = 1 時 1ˣ 永遠等於 1，不能當底數';return;}
+    P.fn(x=>A**x,'k1');P.fn(x=>x>0?Math.log(x)/Math.log(A):NaN,'k2',.0005,5,400);
+    P.dot(0,1,'d1',4);P.dot(1,0,'d2',4);P.text(0,1,'(0,1)','t t1',6,-8);P.text(1,0,'(1,0)','t t2',4,12);
+    out.innerHTML=T(`a=${fx(A)}`)+`，${A>1?'a &gt; 1，兩條都<b>遞增</b>':'0 &lt; a &lt; 1，兩條都<b>遞減</b>'}<br>例：`+T(`${fx(A)}^{2}=${fx(A*A)}\\iff\\log_{${fx(A)}}${fx(A*A)}=2`);};
+  U.on();}});
+
+C({g:2,ch:'指數與對數',t:'對數律（計算尺原理）',tex:'\\log(xy)=\\log x+\\log y\\qquad \\log\\frac xy=\\log x-\\log y\\qquad \\log x^n=n\\log x',
+d:'在「對數刻度」的尺上，長度代表 log 值。把 <b style="color:var(--c1)">log x</b> 和 <b style="color:var(--c2)">log y</b> 兩段接起來，終點的刻度剛好是 <b>x × y</b>。這就是以前工程師用計算尺做乘法的原理：乘法變成加法。',
+viz(b){const P=Plot(b,{xr:[-.08,2.08],yr:[-1.3,1.3],w:320,h:150,grid:false,axes:false}),U=Ctl(b);
+  P.line(0,.6,2,.6,'k0',P.base);
+  for(let d=0;d<2;d++)for(let i=1;i<=10;i++){if(d===1&&i===1)continue;const v=i*10**d,x=Math.log10(v);P.line(x,.6,x,.85,'km',P.base);if(d===0||[10,20,30,50,100].includes(v)||i===10)P.text(x,1.05,v,'num',0,0,P.base);}
+  P.text(0,.3,'log 刻度','tm',0,0,P.base);
+  const x=U.slider('x',1,10,.1,2),y=U.slider('y',1,10,.1,3),out=U.out();
+  U.on=()=>{P.clear();const lx=Math.log10(x.v),ly=Math.log10(y.v),L=lx+ly;
+    P.line(0,-.4,lx,-.4,'k1 fat');P.line(lx,-.4,L,-.4,'k2 fat');P.line(L,-.65,L,.6,'k0 dash thin');P.dot(L,.6,'d0',4.5);
+    P.text(lx/2,-.4,'log x','t mid t1',0,16);P.text(lx+ly/2,-.4,'log y','t mid t2',0,16);P.text(L,.15,`x·y = ${fx(x.v*y.v)}`,L>1.5?'t b end':'t b',L>1.5?-6:6);
+    out.innerHTML=T(`\\log${fx(x.v)}+\\log${fx(y.v)}=${fx(lx,3)}+${fx(ly,3)}=${fx(L,3)}=\\log${fx(x.v*y.v)}`);};
+  U.on();}});
+
+/* ---------- 高二：向量 ---------- */
+C({g:2,ch:'向量與矩陣',t:'向量的內積',tex:'\\vec a\\cdot\\vec b=|\\vec a||\\vec b|\\cos\\theta=a_1b_1+a_2b_2',
+d:'內積 = <b style="color:var(--c1)">a 的長度</b> × <b style="color:var(--c3)">b 投影到 a 上的長度</b>。兩向量夾角小於 90° 時內積為正，剛好 90°（垂直）時為 0，大於 90° 時為負。',hint:'可拖曳：拖動兩個向量的箭頭端',
+viz(b){const P=Plot(b,{xr:[-5,5],yr:[-4,4],w:300}),U=Ctl(b),out=U.out();let A=[3,1],B=[1,3];
+  P.handle(...A,(x,y)=>{A=[clamp(snap(x),-4.5,4.5),clamp(snap(y),-3.5,3.5)];U.on();return A;},'h1');
+  P.handle(...B,(x,y)=>{B=[clamp(snap(x),-4.5,4.5),clamp(snap(y),-3.5,3.5)];U.on();return B;},'h2');
+  U.on=()=>{P.clear();const la=Math.hypot(...A),lb=Math.hypot(...B),dot=A[0]*B[0]+A[1]*B[1];
+    if(la===0||lb===0){out.innerHTML='零向量沒有方向，內積為 0';return;}
+    const k=dot/(la*la),pr=[A[0]*k,A[1]*k];
+    P.line(-A[0]*3,-A[1]*3,A[0]*3,A[1]*3,'km thin dash');
+    P.line(0,0,...pr,'k3 fat');P.line(...B,...pr,'km dash');
+    P.arrow(0,0,...A,1);P.arrow(0,0,...B,2);
+    const t1=Math.atan2(A[1],A[0]),t2=Math.atan2(B[1],B[0]);let dt=t2-t1;while(dt>Math.PI)dt-=2*Math.PI;while(dt<-Math.PI)dt+=2*Math.PI;P.arc(0,0,.7,t1,t1+dt,'km');
+    P.text(...A,'a','t t1 b',8,-8);P.text(...B,'b','t t2 b',8,-8);
+    const th=Math.acos(clamp(dot/(la*lb),-1,1))/deg;
+    out.innerHTML=T(`\\vec a\\cdot\\vec b=${par(A[0])}\\times${par(B[0])}+${par(A[1])}\\times${par(B[1])}=${fx(dot)}`)+'<br>'+T(`|\\vec a||\\vec b|\\cos\\theta=${fx(la)}\\times${fx(lb)}\\times\\cos${fx(th,1)}^\\circ\\approx${fx(dot)}`);};
+  U.on();}});
+
+C({g:2,ch:'向量與矩陣',t:'矩陣與線性變換、行列式',tex:'\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}ax+by\\\\cx+dy\\end{pmatrix}\\qquad \\det=ad-bc',
+d:'2×2 矩陣會把整張方格紙拉伸、旋轉或翻轉。第一行 (a, c) 是<b style="color:var(--c2)">x 方向單位向量</b>的去處，第二行 (b, d) 是 <b style="color:var(--c3)">y 方向單位向量</b>的去處。<b>行列式</b>就是單位正方形變形後的面積（負號代表翻面）。',
+viz(b){const P=Plot(b,{xr:[-4,4],yr:[-4,4],w:280,nums:false}),U=Ctl(b);
+  const a=U.slider('a',-2,2,.1,1),bb=U.slider('b',-2,2,.1,.5),c=U.slider('c',-2,2,.1,0),d=U.slider('d',-2,2,.1,1);
+  const set=(m)=>{a.set(m[0]);bb.set(m[1]);c.set(m[2]);d.set(m[3]);};
+  U.buttons([['不變',()=>set([1,0,0,1])],['旋轉 90°',()=>set([0,-1,1,0])],['鏡射 x 軸',()=>set([1,0,0,-1])],['放大 2 倍',()=>set([2,0,0,2])],['推移',()=>set([1,1,0,1])],['壓扁',()=>set([1,2,.5,1])]]);
+  const out=U.out();
+  U.on=()=>{P.clear();const A=a.v,B=bb.v,Cc=c.v,D=d.v,M=(x,y)=>[A*x+B*y,Cc*x+D*y];
+    for(let i=-6;i<=6;i++){P.line(...M(i,-6),...M(i,6),'k1 thin');P.line(...M(-6,i),...M(6,i),'k1 thin');}
+    P.dyn.querySelectorAll('line').forEach(l=>l.setAttribute('opacity',.35));
+    P.poly([[0,0],M(1,0),M(1,1),M(0,1)],'f4',true);P.arrow(0,0,...M(1,0),2);P.arrow(0,0,...M(0,1),3);
+    const det=A*D-B*Cc;
+    out.innerHTML=T(`\\det\\begin{pmatrix}${fx(A)}&${fx(B)}\\\\${fx(Cc)}&${fx(D)}\\end{pmatrix}=${par(A)}\\times${par(D)}-${par(B)}\\times${par(Cc)}=${fx(det)}`)+'<br>'+(Math.abs(det)<1e-9?'行列式 = 0：平面被壓扁成一條線（或一點），這個矩陣沒有反矩陣':`面積變成原來的 ${fx(Math.abs(det))} 倍${det<0?'，而且翻面了':''}`);};
+  U.on();}});
+
+C({g:2,ch:'向量與矩陣',t:'外積與平行四邊形面積',tex:'\\vec a\\times\\vec b=\\left(\\begin{vmatrix}a_2&a_3\\\\b_2&b_3\\end{vmatrix},\\begin{vmatrix}a_3&a_1\\\\b_3&b_1\\end{vmatrix},\\begin{vmatrix}a_1&a_2\\\\b_1&b_2\\end{vmatrix}\\right)\\qquad|\\vec a\\times\\vec b|=|\\vec a||\\vec b|\\sin\\theta',
+d:'外積是一個<b style="color:var(--c3)">同時垂直 a 和 b 的向量</b>，常拿來當平面的法向量。它的長度剛好等於 a、b 張成的<b>平行四邊形面積</b>。',hint:'拉動「視角」可以旋轉立體圖',
+viz(b){const P=Plot(b,{xr:[-3.6,3.6],yr:[-2.4,4.2],w:300,grid:false,axes:false}),U=Ctl(b);
+  const ph=U.slider('夾角 θ',10,170,1,60,DEG),yaw=U.slider('視角',0,360,1,320,DEG),out=U.out();
+  U.on=()=>{P.clear();const yw=yaw.v*deg,pt=.7,pr=([x,y,z])=>{const x1=x*Math.cos(yw)-y*Math.sin(yw),y1=x*Math.sin(yw)+y*Math.cos(yw);return [x1,z*Math.cos(pt)+y1*Math.sin(pt)];};
+    const t=ph.v*deg,a=[2,0,0],bv=[1.5*Math.cos(t),1.5*Math.sin(t),0],n=[a[1]*bv[2]-a[2]*bv[1],a[2]*bv[0]-a[0]*bv[2],a[0]*bv[1]-a[1]*bv[0]];
+    [[[3,0,0],'x'],[[0,3,0],'y'],[[0,0,3.3],'z']].forEach(([v,s])=>{P.line(0,0,...pr(v),'km thin');P.text(...pr(v),s,'tm',4,-4);});
+    P.poly([[0,0,0],a,[a[0]+bv[0],a[1]+bv[1],0],bv].map(pr),'f4',true);
+    P.arrow(0,0,...pr(a),1);P.arrow(0,0,...pr(bv),2);P.arrow(0,0,...pr(n),3);
+    P.text(...pr(a),'a','t t1 b',6,6);P.text(...pr(bv),'b','t t2 b',6,6);P.text(...pr(n),'a×b','t t3 b',6,-4);
+    out.innerHTML=T(`\\vec a=(2,0,0),\\ \\vec b=(${fx(bv[0])},${fx(bv[1])},0)`)+'<br>'+T(`\\vec a\\times\\vec b=(0,0,${fx(n[2])})`)+'，長度 '+T(`2\\times1.5\\times\\sin${ph.v}^\\circ=${fx(Math.abs(n[2]))}`)+' ＝ 平行四邊形面積';};
+  U.on();}});
+
+/* ---------- 高三：圓錐曲線 ---------- */
+C({g:3,ch:'圓錐曲線',t:'橢圓',tex:'\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=1,\\qquad \\overline{PF_1}+\\overline{PF_2}=2a,\\quad c^2=a^2-b^2',
+d:'橢圓上任一點 P 到兩個<b>焦點</b>的距離和都一樣，等於長軸長 2a。離心率 e = c/a 越接近 0 越圓，越接近 1 越扁。',
+viz(b){const P=Plot(b,{xr:[-6,6],yr:[-4.5,4.5],w:320,numStep:2}),U=Ctl(b);
+  const a=U.slider('a',2,5.5,.5,4.5),e=U.slider('離心率 e',0,.95,.05,.6),t=U.slider('P 的位置',0,360,1,50,DEG),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,c=A*e.v,B=A*Math.sqrt(1-e.v**2),p=[A*Math.cos(t.v*deg),B*Math.sin(t.v*deg)];
+    P.curve(s=>[A*Math.cos(s),B*Math.sin(s)],0,2*Math.PI,'k0');P.line(-c,0,...p,'k1');P.line(c,0,...p,'k2');
+    P.dot(-c,0,'d1',4.5);P.dot(c,0,'d2',4.5);P.dot(...p,'d0',5);P.text(-c,0,'F₁','t t1',-6,14);P.text(c,0,'F₂','t t2',-6,14);P.text(...p,'P','t b',8,-8);
+    const d1=Math.hypot(p[0]+c,p[1]),d2=Math.hypot(p[0]-c,p[1]);
+    out.innerHTML=T(`\\overline{PF_1}+\\overline{PF_2}=${fx(d1)}+${fx(d2)}=${fx(d1+d2)}=2a`)+'<br>'+T(`a=${fx(A)},\\ b=${fx(B)},\\ c=${fx(c)}`);};
+  U.on();}});
+
+C({g:3,ch:'圓錐曲線',t:'雙曲線',tex:'\\frac{x^2}{a^2}-\\frac{y^2}{b^2}=1,\\qquad \\left|\\overline{PF_1}-\\overline{PF_2}\\right|=2a,\\quad c^2=a^2+b^2',
+d:'雙曲線上任一點到兩焦點的<b>距離差</b>固定為 2a。兩條灰色虛線是<b>漸近線</b> y = ±(b/a)x，曲線越往外越貼近它們，但永遠碰不到。',
+viz(b){const P=Plot(b,{xr:[-7,7],yr:[-5,5],w:320,numStep:2}),U=Ctl(b);
+  const a=U.slider('a',1,3,.5,2),e=U.slider('離心率 e',1.1,2.5,.05,1.5),u=U.slider('P 的位置',-2,2,.05,.9),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,c=A*e.v,B=A*Math.sqrt(e.v**2-1),p=[A*Math.cosh(u.v),B*Math.sinh(u.v)];
+    P.line(-8,-8*B/A,8,8*B/A,'km dash');P.line(-8,8*B/A,8,-8*B/A,'km dash');
+    P.curve(s=>[A*Math.cosh(s),B*Math.sinh(s)],-3,3,'k0');P.curve(s=>[-A*Math.cosh(s),B*Math.sinh(s)],-3,3,'k0');
+    P.line(-c,0,...p,'k1');P.line(c,0,...p,'k2');P.dot(-c,0,'d1',4.5);P.dot(c,0,'d2',4.5);P.dot(...p,'d0',5);
+    P.text(-c,0,'F₁','t t1',-6,14);P.text(c,0,'F₂','t t2',-6,14);P.text(...p,'P','t b',8,-8);
+    const d1=Math.hypot(p[0]+c,p[1]),d2=Math.hypot(p[0]-c,p[1]);
+    out.innerHTML=T(`\\left|${fx(d1)}-${fx(d2)}\\right|=${fx(Math.abs(d1-d2))}=2a`)+'<br>'+T(`a=${fx(A)},\\ b=${fx(B)},\\ c=${fx(c)}`);};
+  U.on();}});
+
+C({g:3,ch:'圓錐曲線',t:'拋物線',tex:'y^2=4cx,\\qquad \\overline{PF}=d(P,L)',
+d:'拋物線上每一點到<b style="color:var(--c1)">焦點 F</b> 的距離，都等於它到<b style="color:var(--c2)">準線 L</b> 的距離。衛星天線、手電筒反射鏡都是利用這個形狀，把光集中在焦點。',
+viz(b){const P=Plot(b,{xr:[-3,7],yr:[-5,5],w:300,numStep:2}),U=Ctl(b);
+  const c=U.slider('c',.5,2,.25,1),t=U.slider('P 的位置',-4.5,4.5,.1,2.5),out=U.out();
+  U.on=()=>{P.clear();const Cc=c.v,p=[t.v**2/(4*Cc),t.v];
+    P.line(-Cc,-6,-Cc,6,'k2 dash');P.text(-Cc,4.5,'L','t t2 b',-12);
+    P.curve(s=>[s*s/(4*Cc),s],-6,6,'k0');P.line(Cc,0,...p,'k1');P.line(-Cc,p[1],...p,'k2');
+    P.dot(Cc,0,'d1',4.5);P.text(Cc,0,'F','t t1 b',4,14);P.dot(...p,'d0',5);P.text(...p,'P','t b',8,-8);
+    const d=Math.hypot(p[0]-Cc,p[1]);
+    out.innerHTML=T(`\\overline{PF}=${fx(d)},\\quad d(P,L)=${fx(p[0])}+${fx(Cc)}=${fx(p[0]+Cc)}`)+'<br>焦點 '+T(`F(${fx(Cc)},0)`)+'，準線 '+T(`x=${fx(-Cc)}`);};
+  U.on();}});
+
+/* ---------- 高三：複數 ---------- */
+C({g:3,ch:'複數與極式',t:'棣美弗定理',tex:'z=r(\\cos\\theta+i\\sin\\theta)\\qquad \\Rightarrow z^n=r^n(\\cos n\\theta+i\\sin n\\theta)',
+d:'複數相乘時「<b>長度相乘、角度相加</b>」。所以 z 的 n 次方，就是長度變成 rⁿ、角度轉 n 次 θ。r > 1 時會向外螺旋，r < 1 時向內縮。',
+viz(b){const P=Plot(b,{xr:[-2.3,2.3],yr:[-2.3,2.3],w:280,step:.5,nums:false}),U=Ctl(b);
+  P.circle(0,0,1,'km dash',P.base);P.text(2.15,0,'實','tm',0,-8,P.base);P.text(0,2.15,'虛','tm',6,0,P.base);
+  const r=U.slider('r',.8,1.2,.01,1.05),th=U.slider('θ',5,120,1,30,DEG),n=U.slider('n',1,12,1,6),out=U.out();
+  U.on=()=>{P.clear();const R=r.v,t=th.v*deg,N=n.v,pts=[];for(let k=0;k<=N;k++)pts.push([R**k*Math.cos(k*t),R**k*Math.sin(k*t)]);
+    P.poly(pts,'km');pts.forEach((p,k)=>P.dot(...p,k===N?'d2':'d1',k===N?5:3));
+    P.arrow(0,0,...pts[1],1);P.arrow(0,0,...pts[N],2);P.text(...pts[1],'z','t t1 b',6,-6);P.text(...pts[N],'z'+(N>1?sup(N):''),'t t2 b',6,-6);
+    const rn=R**N,ang=(N*th.v)%360;
+    out.innerHTML=T(`z^{${N}}=${fx(R)}^{${N}}(\\cos${N*th.v}^\\circ+i\\sin${N*th.v}^\\circ)\\approx${fx(rn*Math.cos(N*t))}${rn*Math.sin(N*t)<0?'-':'+'}${fx(Math.abs(rn*Math.sin(N*t)))}i`)+`<br>長度 ${fx(rn,3)}，方向等同 ${fx(ang,0)}°`;};
+  U.on();}});
+
+C({g:3,ch:'複數與極式',t:'1 的 n 次方根',tex:'z^n=1\\ \\Rightarrow\\ z=\\cos\\frac{2k\\pi}{n}+i\\sin\\frac{2k\\pi}{n}\\qquad k=0,1,\\dots,n-1',
+d:'方程式 zⁿ = 1 在複數裡有 <b>n 個根</b>，它們平均分布在單位圓上，連起來是一個正 n 邊形，而且全部加起來等於 0。',
+viz(b){const P=Plot(b,{xr:[-1.4,1.4],yr:[-1.4,1.4],w:260,step:.5,nums:false}),U=Ctl(b);
+  P.circle(0,0,1,'km dash',P.base);
+  const n=U.slider('n',2,12,1,6),out=U.out();
+  U.on=()=>{P.clear();const N=n.v,pts=[...Array(N)].map((_,k)=>[Math.cos(2*k*Math.PI/N),Math.sin(2*k*Math.PI/N)]);
+    P.poly(pts,'f1',true);pts.forEach((p,k)=>{P.line(0,0,...p,'km thin');P.dot(...p,k===0?'d2':'d1',4.5);if(N<=8)P.text(p[0]*1.18,p[1]*1.18,k===0?'1':'ω'+(k>1?sup(k):''),'t mid sm');});
+    out.innerHTML=`每個根相隔 360° ÷ ${N} = ${fx(360/N,1)}°<br>`+T(`\\omega=\\cos${fx(360/N,1)}^\\circ+i\\sin${fx(360/N,1)}^\\circ,\\quad 1+\\omega+\\cdots+\\omega^{${N-1}}=0`);};
+  U.on();}});
+
+/* ---------- 高三：機率統計 ---------- */
+C({g:3,ch:'機率統計',t:'二項分布',tex:'P(X=k)=C^{n}_{k}\\,p^k(1-p)^{n-k},\\qquad E(X)=np,\\ \\mathrm{Var}(X)=np(1-p)',
+d:'重複做 n 次「成功機率 p」的試驗，成功 k 次的機率。例如投籃命中率 0.3、投 10 次。長條圖最高的地方大約在<b style="color:var(--c2)">期望值 np</b> 附近。',
+viz(b){const P=Plot(b,{xr:[-.02,1.02],yr:[-.1,1.08],w:320,h:220,grid:false,axes:false}),U=Ctl(b);
+  const n=U.slider('n',1,30,1,10),p=U.slider('p',.05,.95,.05,.3),out=U.out();
+  U.on=()=>{P.clear();const N=n.v,pp=p.v,pr=[...Array(N+1)].map((_,k)=>binom(N,k)*pp**k*(1-pp)**(N-k)),mx=Math.max(...pr),w=1/(N+1);
+    P.line(0,0,1,0,'km');
+    pr.forEach((v,k)=>{P.rect(k*w+w*.08,0,w*.84,v/mx*.95,'f1');if(N<=15||k%5===0)P.text(k*w+w/2,-.05,k,'num');});
+    const m=N*pp;P.line((m+.5)*w,0,(m+.5)*w,1.02,'k2 dash');P.text((m+.5)*w,1.02,`np = ${fx(m)}`,'t t2',4);
+    out.innerHTML=T(`E(X)=${N}\\times${fx(pp)}=${fx(m)},\\ \\mathrm{Var}(X)=${fx(m*(1-pp))},\\ \\sigma\\approx${fx(Math.sqrt(m*(1-pp)))}`)+`<br>機率最大的是 k = ${pr.indexOf(mx)}（`+T(`P\\approx${fx(mx,3)}`)+'）';};
+  U.on();}});
+
+/* ---------- 高三：微積分 ---------- */
+C({g:3,ch:'微積分',t:'導數：割線變切線',tex:"f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}",
+d:'兩點連成的<b style="color:var(--c2)">割線</b>斜率是平均變化率。讓第二個點越來越靠近（h → 0），割線就會變成<b style="color:var(--c3)">切線</b>，切線斜率就是導數 f′(a)。',hint:'圖中 f(x) = 0.2x³ − x + 1',
+viz(b){const P=Plot(b,{xr:[-3.5,3.5],yr:[-2.5,4.5],w:300}),U=Ctl(b);const f=x=>.2*x**3-x+1,df=x=>.6*x*x-1;
+  P.fn(f,'k1',-3.5,3.5,200,P.base);
+  const a=U.slider('a',-2.5,2.5,.1,1),h=U.slider('h',-2,2,.05,1.5),out=U.out();
+  U.on=()=>{P.clear();const A=a.v,Hh=h.v,m=df(A);
+    P.line(-4,f(A)+m*(-4-A),4,f(A)+m*(4-A),'k3 dash');
+    let s='';
+    if(Math.abs(Hh)>1e-9){const ms=(f(A+Hh)-f(A))/Hh;P.line(-4,f(A)+ms*(-4-A),4,f(A)+ms*(4-A),'k2');P.dot(A+Hh,f(A+Hh),'d2',4.5);s=`割線斜率 `+T(`\\frac{f(${fx(A+Hh)})-f(${fx(A)})}{${fx(Hh)}}=${fx(ms,3)}`)+'<br>';}
+    else s='h = 0：割線和切線重合<br>';
+    P.dot(A,f(A),'d0',5);
+    out.innerHTML=s+'切線斜率 '+T(`f'(${fx(A)})=0.6\\times${par(A)}^2-1=${fx(m,3)}`);};
+  U.on();}});
+
+C({g:3,ch:'微積分',t:'導函數、遞增遞減與極值',tex:"(x^n)'=nx^{n-1},\\qquad f'(x)>0\\Rightarrow\\text{遞增},\\ f'(x)<0\\Rightarrow\\text{遞減}",
+d:'上圖是 f(x)=x³−3x，下圖是它的導函數 f′(x)=3x²−3。<b style="color:var(--c1)">f′ 在 x 軸上方</b>的地方，f 往上爬；在下方的地方，f 往下走；f′ = 0 的地方就是<b>極大、極小值</b>。',
+viz(b){const P=Plot(b,{xr:[-2.5,2.5],yr:[-3,3],w:300,h:170}),Q=Plot(b,{xr:[-2.5,2.5],yr:[-4,6],w:300,h:140,numStep:2}),U=Ctl(b);
+  const f=x=>x**3-3*x,df=x=>3*x*x-3;
+  P.fn(f,'k3',-2.5,-1,80,P.base);P.fn(f,'k2',-1,1,80,P.base);P.fn(f,'k3',1,2.5,80,P.base);
+  P.dot(-1,2,'d0',4,P.base);P.dot(1,-2,'d0',4,P.base);P.text(-1,2,'極大','t',6,-10,P.base);P.text(1,-2,'極小','t',6,12,P.base);
+  Q.fn(df,'k1',-2.5,2.5,200,Q.base);Q.rect(-1,-4,2,10,'fg',Q.base);Q.base.lastChild.setAttribute('opacity',.5);Q.text(-2.4,5.3,"f′(x)",'t t1 b',0,0,Q.base);
+  const x0=U.slider('x',-2.2,2.2,.05,-1.6),out=U.out();
+  U.on=()=>{P.clear();Q.clear();const x=x0.v,m=df(x);
+    P.line(x-.7,f(x)-.7*m,x+.7,f(x)+.7*m,'k1');P.dot(x,f(x),'d1',5);
+    Q.line(x,0,x,m,'k1 dash');Q.dot(x,m,'d1',5);
+    const st=Math.abs(m)<.06?'≈ 0：這裡是<b>極值</b>（切線水平）':m>0?'&gt; 0：f 正在<b style="color:var(--c3)">遞增</b>':'&lt; 0：f 正在<b style="color:var(--c2)">遞減</b>';
+    out.innerHTML=T(`f'(${fx(x)})=3\\times${par(x)}^2-3=${fx(m)}`)+' '+st;};
+  U.on();}});
+
+C({g:3,ch:'微積分',t:'定積分與黎曼和',tex:'\\int_a^b f(x)\\,dx=\\lim_{n\\to\\infty}\\sum_{k=1}^{n}f(x_k)\\,\\Delta x=F(b)-F(a)',
+d:'把曲線下的面積切成 n 個細長方形加起來（黎曼和）。切得越細，總和越接近真正的面積。微積分基本定理說：這個面積可以直接用<b>反導函數 F</b> 算出來。',hint:'圖中 f(x) = x²，反導函數 F(x) = x³/3',
+viz(b){const P=Plot(b,{xr:[-.3,3.3],yr:[-.6,9.6],w:300,h:230,numStep:2}),U=Ctl(b);const f=x=>x*x;
+  let right=true;
+  const n=U.slider('n',1,60,1,6),bb=U.slider('b',1,3,.1,2.5);U.buttons([['右端點（上和）',()=>{right=true;}],['左端點（下和）',()=>{right=false;}]],true);const out=U.out();
+  U.on=()=>{P.clear();const N=n.v,B=bb.v,dx=B/N;let S=0;
+    for(let k=0;k<N;k++){const xk=right?(k+1)*dx:k*dx,v=f(xk);S+=v*dx;P.rect(k*dx,0,dx,v,'f2');}
+    P.fn(f,'k1',-.3,3.3);
+    const ex=B**3/3;
+    out.innerHTML=`黎曼和（n = ${N}）≈ ${fx(S,3)}<br>`+T(`\\int_0^{${fx(B)}}x^2\\,dx=\\frac{${fx(B)}^3}{3}-0\\approx${fx(ex,3)}`)+`　誤差 ${fx(S-ex,3)}`;};
+  U.on();}});
+
+/* ============================== 版面 ============================== */
+const GR={1:['高一','必修（第一、二冊）'],2:['高二','數A／數B（第三、四冊）'],3:['高三','選修（數甲／數乙）']};
+function build(){
+  const main=document.getElementById('main');
+  for(const g of [1,2,3]){
+    const sec=H('section','grade',main);sec.dataset.g=g;H('h2','',sec,`${GR[g][0]}<small>${GR[g][1]}</small>`);
+    const chs=[...new Set(cards.filter(c=>c.g===g).map(c=>c.ch))];
+    for(const ch of chs){
+      const cs=H('div','chap',sec);H('h3','',cs,ch);const grid=H('div','grid',cs);
+      for(const c of cards.filter(c=>c.g===g&&c.ch===ch)){
+        const el=H('article','card',grid);el.dataset.s=(c.t+c.ch+c.d.replace(/<[^>]+>/g,'')).toLowerCase();
+        H('h4','',el,c.t);H('div','fml',el,T(c.tex.includes('\\qquad')?'\\begin{gathered}'+c.tex.split('\\qquad').join('\\\\')+'\\end{gathered}':c.tex,true));
+        if(c.hint)H('p','hint',el,c.hint);
+        try{c.viz(el);}catch(err){H('p','hint',el,'這張圖載入失敗：'+err.message);console.error(err);}
+        H('p','plain',el,'💡 '+c.d);
+      }
+    }
+  }
+}
+function fit(){document.querySelectorAll('.fml').forEach(el=>{el.style.fontSize='';const bs=[...el.querySelectorAll('.katex-html span')].filter(x=>!x.children.length&&x.textContent.trim());if(!bs.length)return;const L=Math.min(...bs.map(x=>x.getBoundingClientRect().left)),R=Math.max(...bs.map(x=>x.getBoundingClientRect().right)),r=el.clientWidth/(R-L);if(r<1)el.style.fontSize=Math.max(.7,r*.98)*1.02+'em';});}
+let curG='0';
+function filter(){
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  document.querySelectorAll('.grade').forEach(sec=>{
+    let any=false;
+    sec.querySelectorAll('.chap').forEach(ch=>{let n=0;ch.querySelectorAll('.card').forEach(c=>{const ok=!q||c.dataset.s.includes(q);c.hidden=!ok;if(ok)n++;});ch.hidden=!n;if(n)any=true;});
+    sec.hidden=!any||(curG!=='0'&&sec.dataset.g!==curG);
+  });
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  build();fit();if(document.fonts)document.fonts.ready.then(fit);window.addEventListener('load',fit);window.addEventListener('resize',fit);
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');curG=t.dataset.g;filter();window.scrollTo({top:document.querySelector('.bar').offsetTop,behavior:'smooth'});}));
+  document.getElementById('q').addEventListener('input',filter);
+});
+</script>
+</body>
+</html>

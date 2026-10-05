@@ -1017,6 +1017,1973 @@
       "seed": 7144,
       "transparent": true,
       "prompt": "A small red ancient Greek vase covered in rows of tiny indistinct black painted marks."
+    },
+    {
+      "kind": "item",
+      "name": "大麥粥",
+      "seed": 7145,
+      "transparent": true,
+      "prompt": "A simple clay bowl of steaming barley porridge with a drizzle of olive oil."
+    },
+    {
+      "kind": "item",
+      "name": "卵石",
+      "seed": 7146,
+      "transparent": true,
+      "prompt": "A small handful of smooth white and dark river pebbles."
+    },
+    {
+      "kind": "item",
+      "name": "水鐘碎片",
+      "seed": 7147,
+      "transparent": true,
+      "prompt": "A broken fragment of a red clay water jar with a small hole near its base."
+    },
+    {
+      "kind": "item",
+      "name": "兩造之石",
+      "seed": 7148,
+      "transparent": true,
+      "prompt": "Two small pebbles fused together, one white and one black."
+    },
+    {
+      "kind": "item",
+      "name": "多一點時間",
+      "seed": 7149,
+      "transparent": true,
+      "prompt": "A small clay water-clock spout plug of beeswax, glowing faintly."
+    },
+    {
+      "kind": "item",
+      "name": "一顆白卵石",
+      "seed": 7150,
+      "transparent": true,
+      "prompt": "A single plain small white pebble, softly glowing."
+    },
+    {
+      "kind": "item",
+      "name": "起訴書的抄本",
+      "seed": 7151,
+      "transparent": true,
+      "prompt": "A modern notebook page with a careful copy of ancient Greek capital letters in ink; letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "無花果蜜餅",
+      "seed": 7152,
+      "transparent": true,
+      "prompt": "A small round honey cake made with mashed figs on a clay plate."
+    },
+    {
+      "kind": "item",
+      "name": "毒堇葉",
+      "seed": 7153,
+      "transparent": true,
+      "prompt": "A few feathery hemlock leaves with a tiny cluster of white flowers."
+    },
+    {
+      "kind": "item",
+      "name": "鐵環",
+      "seed": 7154,
+      "transparent": true,
+      "prompt": "A single broken rusty iron ring from a chain."
+    },
+    {
+      "kind": "item",
+      "name": "陶片筆",
+      "seed": 7155,
+      "transparent": true,
+      "prompt": "A writing stylus whose shaft is a sharpened reddish pottery sherd bound with cord."
+    },
+    {
+      "kind": "item",
+      "name": "打開的鐐銬",
+      "seed": 7156,
+      "transparent": true,
+      "prompt": "An opened iron shackle with its chain hanging loose."
+    },
+    {
+      "kind": "item",
+      "name": "公雞的羽毛",
+      "seed": 7157,
+      "transparent": true,
+      "prompt": "A single glossy rooster tail feather, bronze-green and dark."
+    },
+    {
+      "kind": "item",
+      "name": "尼科的票",
+      "seed": 7158,
+      "transparent": true,
+      "prompt": "Two small pebbles, one white and one dark, resting together in an open palm."
+    },
+    {
+      "kind": "item",
+      "name": "柏拉圖的筆記",
+      "seed": 7159,
+      "transparent": true,
+      "prompt": "A small stack of ancient wooden wax writing tablets bound with cord, covered in indistinct scratched marks."
+    },
+    {
+      "kind": "item",
+      "name": "米糕",
+      "seed": 7160,
+      "transparent": true,
+      "prompt": "A few small round white steamed rice cakes on a banana leaf."
+    },
+    {
+      "kind": "item",
+      "name": "椰子水",
+      "seed": 7161,
+      "transparent": true,
+      "prompt": "A green coconut cut open at the top with a hollow reed straw."
+    },
+    {
+      "kind": "item",
+      "name": "薑黃膏",
+      "seed": 7162,
+      "transparent": true,
+      "prompt": "A small clay dish of bright yellow turmeric paste."
+    },
+    {
+      "kind": "item",
+      "name": "投石索",
+      "seed": 7163,
+      "transparent": true,
+      "prompt": "A simple sling woven from brown coconut fiber with a small leather pouch."
+    },
+    {
+      "kind": "item",
+      "name": "近衛之弓",
+      "seed": 7164,
+      "transparent": true,
+      "prompt": "A bamboo longbow wound with red thread at the grip."
+    },
+    {
+      "kind": "item",
+      "name": "棉披巾",
+      "seed": 7165,
+      "transparent": true,
+      "prompt": "A folded fine white cotton shawl, very thin and soft."
+    },
+    {
+      "kind": "item",
+      "name": "斷箭",
+      "seed": 7166,
+      "transparent": true,
+      "prompt": "A broken wooden arrow with an iron head, muddy."
+    },
+    {
+      "kind": "item",
+      "name": "紅土",
+      "seed": 7167,
+      "transparent": true,
+      "prompt": "A small lump of dried red laterite earth."
+    },
+    {
+      "kind": "item",
+      "name": "河貝",
+      "seed": 7168,
+      "transparent": true,
+      "prompt": "A few small river shells."
+    },
+    {
+      "kind": "item",
+      "name": "象鈴",
+      "seed": 7169,
+      "transparent": true,
+      "prompt": "A small bronze elephant bell on a rope."
+    },
+    {
+      "kind": "item",
+      "name": "不響的象鈴",
+      "seed": 7170,
+      "transparent": true,
+      "prompt": "A small bronze elephant bell stuffed with white cotton."
+    },
+    {
+      "kind": "item",
+      "name": "河貝串",
+      "seed": 7171,
+      "transparent": true,
+      "prompt": "A necklace strung with small river shells on a cotton cord."
+    },
+    {
+      "kind": "item",
+      "name": "石與弦",
+      "seed": 7172,
+      "transparent": true,
+      "prompt": "A sling whose cord has been replaced with a taut bowstring."
+    },
+    {
+      "kind": "item",
+      "name": "拓片的描本",
+      "seed": 7173,
+      "transparent": true,
+      "prompt": "A modern notebook page with careful ink tracings of unfamiliar ancient script; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "阿媽的腳鈴",
+      "seed": 7174,
+      "transparent": true,
+      "prompt": "A tiny blackened bronze anklet bell, smaller than a fingernail."
+    },
+    {
+      "kind": "item",
+      "name": "粗米粥",
+      "seed": 7175,
+      "transparent": true,
+      "prompt": "A large clay bowl of thick soft rice porridge."
+    },
+    {
+      "kind": "item",
+      "name": "野蜂蜜",
+      "seed": 7176,
+      "transparent": true,
+      "prompt": "A piece of wild honeycomb wrapped in a large green leaf."
+    },
+    {
+      "kind": "item",
+      "name": "稻種",
+      "seed": 7177,
+      "transparent": true,
+      "prompt": "A small handful of rice seeds in a cotton cloth."
+    },
+    {
+      "kind": "item",
+      "name": "樹脂",
+      "seed": 7178,
+      "transparent": true,
+      "prompt": "A lump of golden fragrant tree resin."
+    },
+    {
+      "kind": "item",
+      "name": "一把稻種",
+      "seed": 7179,
+      "transparent": true,
+      "prompt": "A small bundle of rice seeds tied in white cotton cloth with a red thread."
+    },
+    {
+      "kind": "item",
+      "name": "巡行之弓",
+      "seed": 7180,
+      "transparent": true,
+      "prompt": "A bamboo longbow wound with both red and white thread at the grip."
+    },
+    {
+      "kind": "item",
+      "name": "林中哨",
+      "seed": 7181,
+      "transparent": true,
+      "prompt": "A small whistle carved from bamboo on a cord."
+    },
+    {
+      "kind": "item",
+      "name": "刻滿名字的棕櫚葉",
+      "seed": 7182,
+      "transparent": true,
+      "prompt": "A long strip of dried palm leaf densely scratched with tiny indistinct marks."
+    },
+    {
+      "kind": "item",
+      "name": "瓦蘇的第一枝鐵筆",
+      "seed": 7183,
+      "transparent": true,
+      "prompt": "A simple iron writing stylus with two small crude marks scratched on its shaft."
+    },
+    {
+      "kind": "item",
+      "name": "芒果",
+      "seed": 7184,
+      "transparent": true,
+      "prompt": "A ripe yellow-orange mango."
+    },
+    {
+      "kind": "item",
+      "name": "酥油餅",
+      "seed": 7185,
+      "transparent": true,
+      "prompt": "A thick golden flatbread glistening with ghee on a leaf plate."
+    },
+    {
+      "kind": "item",
+      "name": "菩提葉",
+      "seed": 7186,
+      "transparent": true,
+      "prompt": "A single heart-shaped bodhi leaf with a long pointed tip."
+    },
+    {
+      "kind": "item",
+      "name": "藥草種子",
+      "seed": 7187,
+      "transparent": true,
+      "prompt": "A small cloth pouch spilling medicinal herb seeds."
+    },
+    {
+      "kind": "item",
+      "name": "一片葉子",
+      "seed": 7188,
+      "transparent": true,
+      "prompt": "A heart-shaped bodhi leaf pressed between strips of old palm leaf."
+    },
+    {
+      "kind": "item",
+      "name": "路邊的榕樹",
+      "seed": 7189,
+      "transparent": true,
+      "prompt": "A small piece of banyan aerial root tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "白色的頭巾",
+      "seed": 7190,
+      "transparent": true,
+      "prompt": "A neatly folded long white cotton turban cloth."
+    },
+    {
+      "kind": "item",
+      "name": "懺悔詔的抄本",
+      "seed": 7191,
+      "transparent": true,
+      "prompt": "A long palm-leaf strip densely copied with tiny indistinct script."
+    },
+    {
+      "kind": "item",
+      "name": "放歸的名單",
+      "seed": 7192,
+      "transparent": true,
+      "prompt": "A short palm-leaf strip with a list of tiny indistinct marks, tied with a white thread."
+    },
+    {
+      "kind": "item",
+      "name": "棕櫚糖",
+      "seed": 7193,
+      "transparent": true,
+      "prompt": "A few dark brown lumps of palm jaggery on a leaf."
+    },
+    {
+      "kind": "item",
+      "name": "岩屑",
+      "seed": 7194,
+      "transparent": true,
+      "prompt": "A small pile of grey stone chips with chisel marks."
+    },
+    {
+      "kind": "item",
+      "name": "季風花",
+      "seed": 7195,
+      "transparent": true,
+      "prompt": "A few small white wildflowers with wet petals."
+    },
+    {
+      "kind": "item",
+      "name": "石中象",
+      "seed": 7196,
+      "transparent": true,
+      "prompt": "A small stone fragment with the faint carved front leg of an elephant."
+    },
+    {
+      "kind": "item",
+      "name": "拓包",
+      "seed": 7197,
+      "transparent": true,
+      "prompt": "A round cloth rubbing pad stuffed with cotton, its face darkened with ink."
+    },
+    {
+      "kind": "item",
+      "name": "村口的石",
+      "seed": 7198,
+      "transparent": true,
+      "prompt": "A smooth round grey river stone, sized for a sling."
+    },
+    {
+      "kind": "item",
+      "name": "道利的拓片",
+      "seed": 7199,
+      "transparent": true,
+      "prompt": "A sheet of paper with a white-on-black ink rubbing of a few lines of indistinct carved script."
+    },
+    {
+      "kind": "item",
+      "name": "刻名字的石頭",
+      "seed": 7200,
+      "transparent": true,
+      "prompt": "A notebook sketch of a large round riverside boulder densely carved with tiny indistinct marks."
+    },
+    {
+      "kind": "item",
+      "name": "一片空白的棕櫚葉",
+      "seed": 7201,
+      "transparent": true,
+      "prompt": "A clean, completely blank strip of dried palm leaf."
+    },
+    {
+      "kind": "item",
+      "name": "阿摩勒果",
+      "seed": 7202,
+      "transparent": true,
+      "prompt": "A few small round pale green amalaka (Indian gooseberry) fruits."
+    },
+    {
+      "kind": "item",
+      "name": "纏滿白線的弓",
+      "seed": 7203,
+      "transparent": true,
+      "prompt": "An old bamboo longbow entirely wound from end to end in white thread."
+    },
+    {
+      "kind": "item",
+      "name": "重新讀懂的字",
+      "seed": 7204,
+      "transparent": true,
+      "prompt": "A small chip of stone bearing a few indistinct carved script marks, softly glowing."
+    },
+    {
+      "kind": "item",
+      "name": "蓮蒂的鈴",
+      "seed": 7205,
+      "transparent": true,
+      "prompt": "A small bronze anklet bell on a thin cord."
+    },
+    {
+      "kind": "item",
+      "name": "另外半顆阿摩勒果",
+      "seed": 7206,
+      "transparent": true,
+      "prompt": "Half of a small pale green amalaka fruit, cut side up."
+    },
+    {
+      "kind": "item",
+      "name": "碗粿",
+      "seed": 7207,
+      "transparent": true,
+      "prompt": "A bowl of Tainan-style savory rice pudding topped with minced pork and egg yolk."
+    },
+    {
+      "kind": "item",
+      "name": "虱目魚粥",
+      "seed": 7208,
+      "transparent": true,
+      "prompt": "A bowl of milkfish congee with a slice of fish belly."
+    },
+    {
+      "kind": "item",
+      "name": "仙草",
+      "seed": 7209,
+      "transparent": true,
+      "prompt": "A bowl of dark grass jelly."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆盒",
+      "seed": 7210,
+      "transparent": true,
+      "prompt": "An old wooden chalk box with white and red chalk sticks."
+    },
+    {
+      "kind": "item",
+      "name": "舊球棒",
+      "seed": 7211,
+      "transparent": true,
+      "prompt": "An old wooden baseball bat with cloth tape wrapped around the grip."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆",
+      "seed": 7212,
+      "transparent": true,
+      "prompt": "A single stub of white chalk."
+    },
+    {
+      "kind": "item",
+      "name": "舊報紙",
+      "seed": 7213,
+      "transparent": true,
+      "prompt": "A folded yellowed old newspaper with some pieces cut out; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "啟明的鋼筆",
+      "seed": 7214,
+      "transparent": true,
+      "prompt": "An old black fountain pen with two tiny indistinct engraved marks on the cap."
+    },
+    {
+      "kind": "item",
+      "name": "撕掉的稿紙",
+      "seed": 7215,
+      "transparent": true,
+      "prompt": "A sheet of grid writing paper torn in half; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "拉開的窗簾",
+      "seed": 7216,
+      "transparent": true,
+      "prompt": "A small piece of faded floral curtain fabric."
+    },
+    {
+      "kind": "item",
+      "name": "爸爸的檔案夾",
+      "seed": 7217,
+      "transparent": true,
+      "prompt": "A brown manila folder with two indistinct handwritten marks on the cover."
+    },
+    {
+      "kind": "item",
+      "name": "一九五一年的合照",
+      "seed": 7218,
+      "transparent": true,
+      "prompt": "A small old black-and-white photograph of a teacher with schoolchildren in front of a wooden classroom; faces tiny and indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "遺書的抄本",
+      "seed": 7219,
+      "transparent": true,
+      "prompt": "A notebook page with careful handwritten copying in ink; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "胡餅",
+      "seed": 7220,
+      "transparent": true,
+      "prompt": "A round flatbread covered with sesame seeds, freshly baked."
+    },
+    {
+      "kind": "item",
+      "name": "葡萄乾",
+      "seed": 7221,
+      "transparent": true,
+      "prompt": "A small pile of dark purple raisins."
+    },
+    {
+      "kind": "item",
+      "name": "搗杵",
+      "seed": 7222,
+      "transparent": true,
+      "prompt": "A heavy wooden pestle with a handle polished smooth by hands."
+    },
+    {
+      "kind": "item",
+      "name": "駝鈴",
+      "seed": 7223,
+      "transparent": true,
+      "prompt": "A string of small bronze camel bells on a leather cord."
+    },
+    {
+      "kind": "item",
+      "name": "楮皮",
+      "seed": 7224,
+      "transparent": true,
+      "prompt": "A bundle of pale paper-mulberry inner bark strips."
+    },
+    {
+      "kind": "item",
+      "name": "麻纖維",
+      "seed": 7225,
+      "transparent": true,
+      "prompt": "A loose tuft of pale hemp fibers."
+    },
+    {
+      "kind": "item",
+      "name": "紙的描本",
+      "seed": 7226,
+      "transparent": true,
+      "prompt": "A modern notebook page with careful ink tracings of unfamiliar flowing script written right to left; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "第一張紙",
+      "seed": 7227,
+      "transparent": true,
+      "prompt": "A single thin sheet of handmade paper, translucent fibers visible against light."
+    },
+    {
+      "kind": "item",
+      "name": "撕掉的約",
+      "seed": 7228,
+      "transparent": true,
+      "prompt": "A document torn in two, the halves placed together showing the tear."
+    },
+    {
+      "kind": "item",
+      "name": "牡丹箋",
+      "seed": 7229,
+      "transparent": true,
+      "prompt": "A sheet of handmade paper with pressed peony petals in the fibers."
+    },
+    {
+      "kind": "item",
+      "name": "肉乾",
+      "seed": 7230,
+      "transparent": true,
+      "prompt": "A few strips of dried mutton jerky tied with a cord."
+    },
+    {
+      "kind": "item",
+      "name": "馬奶",
+      "seed": 7231,
+      "transparent": true,
+      "prompt": "A leather flask of mare's milk with a wooden stopper."
+    },
+    {
+      "kind": "item",
+      "name": "馬鬃",
+      "seed": 7232,
+      "transparent": true,
+      "prompt": "A coarse bundle of horse mane hair tied at one end."
+    },
+    {
+      "kind": "item",
+      "name": "烽灰",
+      "seed": 7233,
+      "transparent": true,
+      "prompt": "A small heap of black beacon ash with a few charred twigs."
+    },
+    {
+      "kind": "item",
+      "name": "兩面旗",
+      "seed": 7234,
+      "transparent": true,
+      "prompt": "A small triangular banner on a short pole, its two sides painted differently, no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "渡河的繩",
+      "seed": 7235,
+      "transparent": true,
+      "prompt": "A coiled rope braided from horsehair, still a little wet."
+    },
+    {
+      "kind": "item",
+      "name": "杜環的一頁",
+      "seed": 7236,
+      "transparent": true,
+      "prompt": "A single page of handmade paper with water-blurred ink brush notes and a tiny sketched route map; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "金桃",
+      "seed": 7237,
+      "transparent": true,
+      "prompt": "A golden peach with a leaf."
+    },
+    {
+      "kind": "item",
+      "name": "甜瓜",
+      "seed": 7238,
+      "transparent": true,
+      "prompt": "A sliced Central Asian melon, juicy pale flesh."
+    },
+    {
+      "kind": "item",
+      "name": "桑皮",
+      "seed": 7239,
+      "transparent": true,
+      "prompt": "Strips of mulberry bark tied in a bundle."
+    },
+    {
+      "kind": "item",
+      "name": "破麻布",
+      "seed": 7240,
+      "transparent": true,
+      "prompt": "Torn strips of old hemp cloth in a small pile."
+    },
+    {
+      "kind": "item",
+      "name": "公開的祕方",
+      "seed": 7241,
+      "transparent": true,
+      "prompt": "A sheet of handmade paper covered with step-by-step diagrams of papermaking, an opened padlock beside it; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "霓裳殘譜",
+      "seed": 7242,
+      "transparent": true,
+      "prompt": "Half of a torn sheet of an ancient Chinese music score with indistinct notation."
+    },
+    {
+      "kind": "item",
+      "name": "撒馬爾罕紙",
+      "seed": 7243,
+      "transparent": true,
+      "prompt": "A sheet of fine paper-mulberry paper held to light, long fibers visible, a small mulberry leaf on it."
+    },
+    {
+      "kind": "item",
+      "name": "烤魚",
+      "seed": 7244,
+      "transparent": true,
+      "prompt": "A large river fish split open and grilled on wooden stakes, charred edges."
+    },
+    {
+      "kind": "item",
+      "name": "椰棗蜜",
+      "seed": 7245,
+      "transparent": true,
+      "prompt": "A small clay jar of thick dark date syrup with a drip on the rim."
+    },
+    {
+      "kind": "item",
+      "name": "泥磚屑",
+      "seed": 7246,
+      "transparent": true,
+      "prompt": "A broken piece of sun-dried mud brick with straw in it."
+    },
+    {
+      "kind": "item",
+      "name": "棉籽",
+      "seed": 7247,
+      "transparent": true,
+      "prompt": "A handful of oily dark cotton seeds with a few white fibers."
+    },
+    {
+      "kind": "item",
+      "name": "四門鑰",
+      "seed": 7248,
+      "transparent": true,
+      "prompt": "Four small bronze keys on a single ring, pointing in four directions."
+    },
+    {
+      "kind": "item",
+      "name": "歸心",
+      "seed": 7249,
+      "transparent": true,
+      "prompt": "A small clay ball painted with an arrow pointing one way."
+    },
+    {
+      "kind": "item",
+      "name": "圓城的設計圖",
+      "seed": 7250,
+      "transparent": true,
+      "prompt": "A sheet of handmade paper with an ink plan of a perfectly round city with two rings of walls and four gates; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "杏仁甜餅",
+      "seed": 7251,
+      "transparent": true,
+      "prompt": "Small almond pastries in thin dough glistening with syrup on a plate."
+    },
+    {
+      "kind": "item",
+      "name": "玫瑰水",
+      "seed": 7252,
+      "transparent": true,
+      "prompt": "A small glass flask of rose water with a rose petal beside it."
+    },
+    {
+      "kind": "item",
+      "name": "羊皮碎",
+      "seed": 7253,
+      "transparent": true,
+      "prompt": "A thin translucent scrap of scraped parchment with faint ghost lines."
+    },
+    {
+      "kind": "item",
+      "name": "紅墨",
+      "seed": 7254,
+      "transparent": true,
+      "prompt": "A small ceramic inkpot of red ink with a reed pen."
+    },
+    {
+      "kind": "item",
+      "name": "再生紙",
+      "seed": 7255,
+      "transparent": true,
+      "prompt": "A sheet of recycled handmade paper with faint traces of old writing in its fibers; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "紙中字",
+      "seed": 7256,
+      "transparent": true,
+      "prompt": "A small sheet of paper held to light showing a faint thicker shape inside the paper; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "羊皮名冊",
+      "seed": 7257,
+      "transparent": true,
+      "prompt": "An old rolled parchment register partly open with columns of indistinct flowing script and one small ink character beside a line; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "小竹簾",
+      "seed": 7258,
+      "transparent": true,
+      "prompt": "A tiny bamboo paper-making mould, palm-sized, with a few drops of white pulp."
+    },
+    {
+      "kind": "item",
+      "name": "栗子餅",
+      "seed": 7259,
+      "transparent": true,
+      "prompt": "A flat rustic chestnut-flour cake with rosemary on top, cut into squares."
+    },
+    {
+      "kind": "item",
+      "name": "燉豆子",
+      "seed": 7260,
+      "transparent": true,
+      "prompt": "A clay pot of stewed white beans with sage leaves."
+    },
+    {
+      "kind": "item",
+      "name": "蛋黃",
+      "seed": 7261,
+      "transparent": true,
+      "prompt": "A cracked egg shell holding a single bright yolk on a stone slab."
+    },
+    {
+      "kind": "item",
+      "name": "青金石屑",
+      "seed": 7262,
+      "transparent": true,
+      "prompt": "A small heap of deep blue lapis lazuli fragments with golden flecks."
+    },
+    {
+      "kind": "item",
+      "name": "松鼠毛筆",
+      "seed": 7263,
+      "transparent": true,
+      "prompt": "A fine Renaissance paintbrush made of squirrel hair bound to a quill and stick, a tiny C carved on the handle."
+    },
+    {
+      "kind": "item",
+      "name": "木十字",
+      "seed": 7264,
+      "transparent": true,
+      "prompt": "A wooden staff with a small red-painted wooden cross at the top."
+    },
+    {
+      "kind": "item",
+      "name": "拆下的紋章",
+      "seed": 7265,
+      "transparent": true,
+      "prompt": "A single red wooden ball with half its paint chipped off."
+    },
+    {
+      "kind": "item",
+      "name": "收進鞘的劍",
+      "seed": 7266,
+      "transparent": true,
+      "prompt": "A small sword sheathed in a plain leather scabbard."
+    },
+    {
+      "kind": "item",
+      "name": "燒焦的畫布",
+      "seed": 7267,
+      "transparent": true,
+      "prompt": "A tiny scrap of old canvas with burnt curled edges, a delicately painted brown eye with fine lashes at its center."
+    },
+    {
+      "kind": "item",
+      "name": "寫著名字的陶片",
+      "seed": 7268,
+      "transparent": true,
+      "prompt": "A broken shard of red Greek pottery with several lines of black glaze letters; letters indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "炸甜餅",
+      "seed": 7269,
+      "transparent": true,
+      "prompt": "Strips of fried carnival dough dusted with powdered sugar."
+    },
+    {
+      "kind": "item",
+      "name": "救濟麵包",
+      "seed": 7270,
+      "transparent": true,
+      "prompt": "A coarse round loaf of dark bread wrapped in cloth."
+    },
+    {
+      "kind": "item",
+      "name": "碎鏡片",
+      "seed": 7271,
+      "transparent": true,
+      "prompt": "A shard of an old hand mirror reflecting a single eye."
+    },
+    {
+      "kind": "item",
+      "name": "琴弦",
+      "seed": 7272,
+      "transparent": true,
+      "prompt": "A coiled lute string of gut on a wooden peg."
+    },
+    {
+      "kind": "item",
+      "name": "取下的面具",
+      "seed": 7273,
+      "transparent": true,
+      "prompt": "An empty carnival mask turned to show its hollow inside."
+    },
+    {
+      "kind": "item",
+      "name": "有影子的白衣",
+      "seed": 7274,
+      "transparent": true,
+      "prompt": "A small white child's tunic with a little smudge of dirt on the hem."
+    },
+    {
+      "kind": "item",
+      "name": "虛榮之物的清單",
+      "seed": 7275,
+      "transparent": true,
+      "prompt": "A folded paper list with many lines of careful handwriting; marks indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "鹹魚",
+      "seed": 7276,
+      "transparent": true,
+      "prompt": "A dried salted cod on a wooden board."
+    },
+    {
+      "kind": "item",
+      "name": "蜂蜜水",
+      "seed": 7277,
+      "transparent": true,
+      "prompt": "A clay cup of warm honey water with a honey dipper."
+    },
+    {
+      "kind": "item",
+      "name": "炭",
+      "seed": 7278,
+      "transparent": true,
+      "prompt": "A stick of willow charcoal for drawing."
+    },
+    {
+      "kind": "item",
+      "name": "亞麻畫布",
+      "seed": 7279,
+      "transparent": true,
+      "prompt": "A small square of raw linen canvas with frayed edges."
+    },
+    {
+      "kind": "item",
+      "name": "沒燒完的木條",
+      "seed": 7280,
+      "transparent": true,
+      "prompt": "A wooden plank half charred black and half natural wood."
+    },
+    {
+      "kind": "item",
+      "name": "一小撮灰",
+      "seed": 7281,
+      "transparent": true,
+      "prompt": "A small pinch of grey ash on a folded cloth."
+    },
+    {
+      "kind": "item",
+      "name": "半頁詩",
+      "seed": 7282,
+      "transparent": true,
+      "prompt": "Half a page of an old handwritten poem with burnt curled edges; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "蠶豆",
+      "seed": 7283,
+      "transparent": true,
+      "prompt": "A handful of fresh green fava bean pods with a wedge of pale cheese."
+    },
+    {
+      "kind": "item",
+      "name": "迷迭香茶",
+      "seed": 7284,
+      "transparent": true,
+      "prompt": "A clay cup of herbal tea with a sprig of rosemary."
+    },
+    {
+      "kind": "item",
+      "name": "濕木頭",
+      "seed": 7285,
+      "transparent": true,
+      "prompt": "A rain-soaked piece of firewood dripping water."
+    },
+    {
+      "kind": "item",
+      "name": "鐘銅屑",
+      "seed": 7286,
+      "transparent": true,
+      "prompt": "A few curls of bronze shavings scraped from a bell."
+    },
+    {
+      "kind": "item",
+      "name": "熄了的火把",
+      "seed": 7287,
+      "transparent": true,
+      "prompt": "An extinguished wooden torch with a wet, smoking tip."
+    },
+    {
+      "kind": "item",
+      "name": "沒有走過去的路",
+      "seed": 7288,
+      "transparent": true,
+      "prompt": "A small flat paving stone with scorch marks along one edge."
+    },
+    {
+      "kind": "item",
+      "name": "鐘繩",
+      "seed": 7289,
+      "transparent": true,
+      "prompt": "A frayed length of thick bell rope stained dark at one end."
+    },
+    {
+      "kind": "item",
+      "name": "櫻桃",
+      "seed": 7290,
+      "transparent": true,
+      "prompt": "A handful of dark red cherries with stems."
+    },
+    {
+      "kind": "item",
+      "name": "杏仁奶",
+      "seed": 7291,
+      "transparent": true,
+      "prompt": "A clay cup of white almond milk with a few almonds beside it."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛筆尖",
+      "seed": 7292,
+      "transparent": true,
+      "prompt": "A worn goose-feather quill with a blunted nib."
+    },
+    {
+      "kind": "item",
+      "name": "河灰",
+      "seed": 7293,
+      "transparent": true,
+      "prompt": "A small pinch of grey ash on a wet river pebble."
+    },
+    {
+      "kind": "item",
+      "name": "原來的那一句",
+      "seed": 7294,
+      "transparent": true,
+      "prompt": "A small slip of paper with a single line of handwriting; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "五月的花",
+      "seed": 7295,
+      "transparent": true,
+      "prompt": "A small bundle of dried spring flowers tied with a ribbon."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的羽毛筆",
+      "seed": 7296,
+      "transparent": true,
+      "prompt": "A long dark goose-feather quill with a dry ink-stained nib."
+    },
+    {
+      "kind": "item",
+      "name": "玉米餅",
+      "seed": 7297,
+      "transparent": true,
+      "prompt": "A stack of warm maize tortillas on a clay griddle."
+    },
+    {
+      "kind": "item",
+      "name": "可可飲",
+      "seed": 7298,
+      "transparent": true,
+      "prompt": "A clay cup of frothy cacao drink with a few cacao beans and a red chili."
+    },
+    {
+      "kind": "item",
+      "name": "黑曜石片",
+      "seed": 7299,
+      "transparent": true,
+      "prompt": "A thin glossy black obsidian blade flake."
+    },
+    {
+      "kind": "item",
+      "name": "綠羽毛",
+      "seed": 7300,
+      "transparent": true,
+      "prompt": "A long iridescent green quetzal tail feather."
+    },
+    {
+      "kind": "item",
+      "name": "黑曜石刃",
+      "seed": 7301,
+      "transparent": true,
+      "prompt": "A small obsidian knife with a wooden handle bound with cord."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛扇",
+      "seed": 7302,
+      "transparent": true,
+      "prompt": "A fan of layered red, green and blue feathers on a wooden handle."
+    },
+    {
+      "kind": "item",
+      "name": "神的汙垢",
+      "seed": 7303,
+      "transparent": true,
+      "prompt": "A thin sheet of hammered gold leaf, crinkled."
+    },
+    {
+      "kind": "item",
+      "name": "說出來的預兆",
+      "seed": 7304,
+      "transparent": true,
+      "prompt": "A small piece of bark paper painted with a red and black comet; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "樹皮紙的老鷹",
+      "seed": 7305,
+      "transparent": true,
+      "prompt": "A small rough piece of bark paper painted in red and black with an eagle standing on a prickly pear cactus holding a snake, and a small round glyph beside it; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "陌生人的畫",
+      "seed": 7306,
+      "transparent": true,
+      "prompt": "A small piece of bark paper painted in red and black with a bearded man on a horse and speech scroll curls; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "莧菜糖",
+      "seed": 7307,
+      "transparent": true,
+      "prompt": "Squares of popped amaranth seeds bound with honey."
+    },
+    {
+      "kind": "item",
+      "name": "龍舌蘭汁",
+      "seed": 7308,
+      "transparent": true,
+      "prompt": "A gourd cup of milky agave sap beside a maguey leaf."
+    },
+    {
+      "kind": "item",
+      "name": "莧菜籽",
+      "seed": 7309,
+      "transparent": true,
+      "prompt": "A small pile of tiny pale amaranth seeds."
+    },
+    {
+      "kind": "item",
+      "name": "柯巴樹脂",
+      "seed": 7310,
+      "transparent": true,
+      "prompt": "A lump of translucent white copal resin."
+    },
+    {
+      "kind": "item",
+      "name": "打開的門",
+      "seed": 7311,
+      "transparent": true,
+      "prompt": "A small stone fragment carved with serpent scales."
+    },
+    {
+      "kind": "item",
+      "name": "再響一次的鼓",
+      "seed": 7312,
+      "transparent": true,
+      "prompt": "A tiny wooden hand drum with a stretched skin."
+    },
+    {
+      "kind": "item",
+      "name": "托納的頭飾",
+      "seed": 7313,
+      "transparent": true,
+      "prompt": "A feather headdress of long green quetzal plumes on a gold wire ring, half the plumes broken."
+    },
+    {
+      "kind": "item",
+      "name": "火雞湯",
+      "seed": 7314,
+      "transparent": true,
+      "prompt": "A clay pot of turkey stew with red chilies and tomatoes."
+    },
+    {
+      "kind": "item",
+      "name": "奇亞籽水",
+      "seed": 7315,
+      "transparent": true,
+      "prompt": "A gourd cup of water with swollen chia seeds."
+    },
+    {
+      "kind": "item",
+      "name": "湖底泥",
+      "seed": 7316,
+      "transparent": true,
+      "prompt": "A handful of dark wet lake-bottom mud."
+    },
+    {
+      "kind": "item",
+      "name": "小棉布",
+      "seed": 7317,
+      "transparent": true,
+      "prompt": "A small folded square of white cotton cloth."
+    },
+    {
+      "kind": "item",
+      "name": "沒有撿起來的金子",
+      "seed": 7318,
+      "transparent": true,
+      "prompt": "A small muddy lump of gold."
+    },
+    {
+      "kind": "item",
+      "name": "留下來照顧的手",
+      "seed": 7319,
+      "transparent": true,
+      "prompt": "A damp white cotton cloth folded beside a clay water bowl."
+    },
+    {
+      "kind": "item",
+      "name": "阿卡特的顏料罐",
+      "seed": 7320,
+      "transparent": true,
+      "prompt": "Two small clay paint pots side by side, one filled with red pigment and one with black."
+    },
+    {
+      "kind": "item",
+      "name": "最後的玉米",
+      "seed": 7321,
+      "transparent": true,
+      "prompt": "A single small dried ear of maize."
+    },
+    {
+      "kind": "item",
+      "name": "雨水",
+      "seed": 7322,
+      "transparent": true,
+      "prompt": "A clay jar catching raindrops."
+    },
+    {
+      "kind": "item",
+      "name": "斷矛頭",
+      "seed": 7323,
+      "transparent": true,
+      "prompt": "A broken obsidian spearhead."
+    },
+    {
+      "kind": "item",
+      "name": "土坯碎",
+      "seed": 7324,
+      "transparent": true,
+      "prompt": "A chunk of broken adobe brick."
+    },
+    {
+      "kind": "item",
+      "name": "沒有被填平的水道",
+      "seed": 7325,
+      "transparent": true,
+      "prompt": "A small clay jar of clear lake water."
+    },
+    {
+      "kind": "item",
+      "name": "燒掉的船帆",
+      "seed": 7326,
+      "transparent": true,
+      "prompt": "A scorched corner of white sailcloth."
+    },
+    {
+      "kind": "item",
+      "name": "席特拉莉的羽毛盾",
+      "seed": 7327,
+      "transparent": true,
+      "prompt": "A small round shield covered in green quetzal feathers forming an eagle standing on a cactus."
+    },
+    {
+      "kind": "item",
+      "name": "玉米粽",
+      "seed": 7328,
+      "transparent": true,
+      "prompt": "A steamed tamale wrapped in a corn husk, partly opened."
+    },
+    {
+      "kind": "item",
+      "name": "加糖的可可",
+      "seed": 7329,
+      "transparent": true,
+      "prompt": "A clay cup of frothy sweet chocolate with a small cone of sugar."
+    },
+    {
+      "kind": "item",
+      "name": "舊羽毛",
+      "seed": 7330,
+      "transparent": true,
+      "prompt": "An old faded green feather."
+    },
+    {
+      "kind": "item",
+      "name": "新紙",
+      "seed": 7331,
+      "transparent": true,
+      "prompt": "A crisp sheet of white European paper."
+    },
+    {
+      "kind": "item",
+      "name": "沒有燒完的一頁",
+      "seed": 7332,
+      "transparent": true,
+      "prompt": "A small piece of bark paper with burnt edges and half a day-sign glyph; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "羽毛的聖像",
+      "seed": 7333,
+      "transparent": true,
+      "prompt": "A small feather mosaic image of a haloed figure made of iridescent feathers."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的黑筆",
+      "seed": 7334,
+      "transparent": true,
+      "prompt": "A brush with dried black paint on its bristles."
+    },
+    {
+      "kind": "item",
+      "name": "胡安的筆記",
+      "seed": 7335,
+      "transparent": true,
+      "prompt": "A small stack of European paper with lines of handwriting in Latin letters; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "香腸麵包",
+      "seed": 7336,
+      "transparent": true,
+      "prompt": "A dark rye bread roll with a thick sausage."
+    },
+    {
+      "kind": "item",
+      "name": "熱咖啡",
+      "seed": 7337,
+      "transparent": true,
+      "prompt": "A steaming enamel mug of coffee."
+    },
+    {
+      "kind": "item",
+      "name": "銅線",
+      "seed": 7338,
+      "transparent": true,
+      "prompt": "A small coil of copper telegraph wire."
+    },
+    {
+      "kind": "item",
+      "name": "電報紙條",
+      "seed": 7339,
+      "transparent": true,
+      "prompt": "A strip of paper tape with printed dots and dashes."
+    },
+    {
+      "kind": "item",
+      "name": "摩斯電鍵",
+      "seed": 7340,
+      "transparent": true,
+      "prompt": "An old brass Morse telegraph key on a wooden base."
+    },
+    {
+      "kind": "item",
+      "name": "樂譜",
+      "seed": 7341,
+      "transparent": true,
+      "prompt": "A worn book of piano sonatas with pencil notes; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "撕下來的動員令",
+      "seed": 7342,
+      "transparent": true,
+      "prompt": "Half of a torn official poster with a stamped seal; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "沒有送出的電報",
+      "seed": 7343,
+      "transparent": true,
+      "prompt": "A telegram form strip with a few typed letters; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "林文彬的日記",
+      "seed": 7344,
+      "transparent": true,
+      "prompt": "A thin old thread-bound notebook with yellowed pages and mixed handwriting; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "生鏽的銅鈕扣",
+      "seed": 7345,
+      "transparent": true,
+      "prompt": "A small rusty brass military button with a crown design, beside a tiny folded paper note."
+    },
+    {
+      "kind": "item",
+      "name": "煎餅大蔥",
+      "seed": 7346,
+      "transparent": true,
+      "prompt": "A thin folded grain pancake wrapped around a long green scallion."
+    },
+    {
+      "kind": "item",
+      "name": "小米粥",
+      "seed": 7347,
+      "transparent": true,
+      "prompt": "A bowl of golden millet porridge."
+    },
+    {
+      "kind": "item",
+      "name": "彈殼",
+      "seed": 7348,
+      "transparent": true,
+      "prompt": "An empty brass rifle cartridge case."
+    },
+    {
+      "kind": "item",
+      "name": "鐵絲",
+      "seed": 7349,
+      "transparent": true,
+      "prompt": "A short cut piece of barbed wire."
+    },
+    {
+      "kind": "item",
+      "name": "鋼筆",
+      "seed": 7350,
+      "transparent": true,
+      "prompt": "An old black fountain pen with a gold nib."
+    },
+    {
+      "kind": "item",
+      "name": "海軍刀",
+      "seed": 7351,
+      "transparent": true,
+      "prompt": "A short naval dagger with a letter F scratched on the handle."
+    },
+    {
+      "kind": "item",
+      "name": "沒有落下的炸彈",
+      "seed": 7352,
+      "transparent": true,
+      "prompt": "A small early aerial bomb, empty and harmless, with fins."
+    },
+    {
+      "kind": "item",
+      "name": "還回來的土",
+      "seed": 7353,
+      "transparent": true,
+      "prompt": "A small cloth pouch of yellow earth."
+    },
+    {
+      "kind": "item",
+      "name": "奧圖的地址",
+      "seed": 7354,
+      "transparent": true,
+      "prompt": "A small folded slip of paper with a handwritten address; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "聖誕布丁",
+      "seed": 7355,
+      "transparent": true,
+      "prompt": "A round Christmas pudding in a cloth with a sprig of holly."
+    },
+    {
+      "kind": "item",
+      "name": "熱茶",
+      "seed": 7356,
+      "transparent": true,
+      "prompt": "A tin army mug of steaming hot tea."
+    },
+    {
+      "kind": "item",
+      "name": "沙包",
+      "seed": 7357,
+      "transparent": true,
+      "prompt": "A single filled burlap sandbag."
+    },
+    {
+      "kind": "item",
+      "name": "小蠟燭",
+      "seed": 7358,
+      "transparent": true,
+      "prompt": "A small white Christmas candle with a little flame."
+    },
+    {
+      "kind": "item",
+      "name": "信號燈",
+      "seed": 7359,
+      "transparent": true,
+      "prompt": "A WWI-era brass signal lamp."
+    },
+    {
+      "kind": "item",
+      "name": "踩過的泥",
+      "seed": 7360,
+      "transparent": true,
+      "prompt": "A clump of trench mud with a boot print."
+    },
+    {
+      "kind": "item",
+      "name": "朝天的那一槍",
+      "seed": 7361,
+      "transparent": true,
+      "prompt": "An old bolt-action rifle pointing straight up with a small puff of smoke."
+    },
+    {
+      "kind": "item",
+      "name": "交換的鈕扣",
+      "seed": 7362,
+      "transparent": true,
+      "prompt": "A brass British army tunic button with a crown, on a short thread."
+    },
+    {
+      "kind": "item",
+      "name": "罐頭牛肉",
+      "seed": 7363,
+      "transparent": true,
+      "prompt": "A flat WWI-era tin of corned beef, opened."
+    },
+    {
+      "kind": "item",
+      "name": "濕手帕",
+      "seed": 7364,
+      "transparent": true,
+      "prompt": "A damp folded white cotton handkerchief."
+    },
+    {
+      "kind": "item",
+      "name": "紗布",
+      "seed": 7365,
+      "transparent": true,
+      "prompt": "A rolled bandage of clean white gauze."
+    },
+    {
+      "kind": "item",
+      "name": "鋼瓶閥",
+      "seed": 7366,
+      "transparent": true,
+      "prompt": "A small brass valve from a gas cylinder."
+    },
+    {
+      "kind": "item",
+      "name": "護士錶",
+      "seed": 7367,
+      "transparent": true,
+      "prompt": "A small silver nurse's fob watch pinned on a white cloth."
+    },
+    {
+      "kind": "item",
+      "name": "濕布的道理",
+      "seed": 7368,
+      "transparent": true,
+      "prompt": "A damp cloth beside a small glass of water with a faint green wisp dissolving into it."
+    },
+    {
+      "kind": "item",
+      "name": "麵包與雲",
+      "seed": 7369,
+      "transparent": true,
+      "prompt": "A single golden wheat ear with a thin yellow-green wisp of smoke curling around it."
+    },
+    {
+      "kind": "item",
+      "name": "薩克森的鈕扣",
+      "seed": 7370,
+      "transparent": true,
+      "prompt": "A brass German army tunic button with a Saxon royal crown, on a short thread."
+    },
+    {
+      "kind": "item",
+      "name": "收容所的麵包",
+      "seed": 7371,
+      "transparent": true,
+      "prompt": "A large dark round loaf of rye bread."
+    },
+    {
+      "kind": "item",
+      "name": "比利時的蘋果",
+      "seed": 7372,
+      "transparent": true,
+      "prompt": "A single red apple."
+    },
+    {
+      "kind": "item",
+      "name": "樂譜紙",
+      "seed": 7373,
+      "transparent": true,
+      "prompt": "A sheet of printed blank music staff paper; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "停戰的電報",
+      "seed": 7374,
+      "transparent": true,
+      "prompt": "A small telegram form with indistinct handwriting; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "小號",
+      "seed": 7375,
+      "transparent": true,
+      "prompt": "A polished brass trumpet."
+    },
+    {
+      "kind": "item",
+      "name": "所有的人",
+      "seed": 7376,
+      "transparent": true,
+      "prompt": "A folded sheet of choral music tied with a ribbon; notes indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "十一點的鐘",
+      "seed": 7377,
+      "transparent": true,
+      "prompt": "An old silver pocket watch with hands at eleven o'clock; no readable numbers."
+    },
+    {
+      "kind": "item",
+      "name": "名冊的一頁",
+      "seed": 7378,
+      "transparent": true,
+      "prompt": "A single torn page from a ledger, lines of indistinct handwriting, slightly windblown; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "沒有射出的子彈",
+      "seed": 7379,
+      "transparent": true,
+      "prompt": "Five old brass rifle cartridges lying in an open palm-sized cloth."
+    },
+    {
+      "kind": "item",
+      "name": "無面書記的鉛筆",
+      "seed": 7380,
+      "transparent": true,
+      "prompt": "A short worn pencil stub with a flattened tip."
+    },
+    {
+      "kind": "item",
+      "name": "營養凍",
+      "seed": 7381,
+      "transparent": true,
+      "prompt": "A neat square block of pale nutrient jelly on a white tray."
+    },
+    {
+      "kind": "item",
+      "name": "合成茶",
+      "seed": 7382,
+      "transparent": true,
+      "prompt": "A plain white cup of tea with a faint glow."
+    },
+    {
+      "kind": "item",
+      "name": "底艙的地瓜",
+      "seed": 7383,
+      "transparent": true,
+      "prompt": "A roasted sweet potato, split open, steaming."
+    },
+    {
+      "kind": "item",
+      "name": "舊紙片",
+      "seed": 7384,
+      "transparent": true,
+      "prompt": "A small torn scrap of old paper with one indistinct handwritten mark."
+    },
+    {
+      "kind": "item",
+      "name": "電路片",
+      "seed": 7385,
+      "transparent": true,
+      "prompt": "A thin flexible circuit sheet, slightly broken."
+    },
+    {
+      "kind": "item",
+      "name": "維修筆",
+      "seed": 7386,
+      "transparent": true,
+      "prompt": "A thin futuristic stylus with a glowing tip."
+    },
+    {
+      "kind": "item",
+      "name": "手縫的本子",
+      "seed": 7387,
+      "transparent": true,
+      "prompt": "A small hand-sewn notebook made of mismatched scraps of paper and labels."
+    },
+    {
+      "kind": "item",
+      "name": "裂縫裡的星星",
+      "seed": 7388,
+      "transparent": true,
+      "prompt": "A small white square patch with a tiny round hole, one star visible through it."
+    },
+    {
+      "kind": "item",
+      "name": "不笑也可以",
+      "seed": 7389,
+      "transparent": true,
+      "prompt": "A pale blank mask without any expression, resting peacefully."
+    },
+    {
+      "kind": "item",
+      "name": "同意書的一角",
+      "seed": 7390,
+      "transparent": true,
+      "prompt": "A torn corner of a glowing consent form with one indistinct character."
+    },
+    {
+      "kind": "item",
+      "name": "桃子營養凍",
+      "seed": 7391,
+      "transparent": true,
+      "prompt": "A square block of peach-colored nutrient jelly."
+    },
+    {
+      "kind": "item",
+      "name": "哭和笑",
+      "seed": 7392,
+      "transparent": true,
+      "prompt": "Two small drops, one a tear and one a sparkle of laughter, joined by a single thread."
+    },
+    {
+      "kind": "item",
+      "name": "沒有按下去",
+      "seed": 7393,
+      "transparent": true,
+      "prompt": "A large round button on a glowing card, unpressed."
+    },
+    {
+      "kind": "item",
+      "name": "太空餅乾",
+      "seed": 7394,
+      "transparent": true,
+      "prompt": "A simple foil-wrapped square space biscuit."
+    },
+    {
+      "kind": "item",
+      "name": "光纖",
+      "seed": 7395,
+      "transparent": true,
+      "prompt": "A short coil of thin optical fiber with light flowing inside."
+    },
+    {
+      "kind": "item",
+      "name": "上游的一滴水",
+      "seed": 7396,
+      "transparent": true,
+      "prompt": "A single glowing drop of water floating, a tiny backward current inside it."
+    },
+    {
+      "kind": "item",
+      "name": "第一份提案",
+      "seed": 7397,
+      "transparent": true,
+      "prompt": "A neat thin glowing document folder; no readable text."
+    },
+    {
+      "kind": "item",
+      "name": "冷卻液",
+      "seed": 7398,
+      "transparent": true,
+      "prompt": "A small vial of pale blue coolant liquid."
+    },
+    {
+      "kind": "item",
+      "name": "鏡片",
+      "seed": 7399,
+      "transparent": true,
+      "prompt": "A small thin shard of glowing mirror."
+    },
+    {
+      "kind": "item",
+      "name": "一株杜衡",
+      "seed": 7400,
+      "transparent": true,
+      "prompt": "A small wild ginger plant (Asarum) with round heart-shaped leaves."
+    },
+    {
+      "kind": "item",
+      "name": "芳芷",
+      "seed": 7401,
+      "transparent": true,
+      "prompt": "A sprig of white angelica flowers beside round leaves of wild ginger."
+    },
+    {
+      "kind": "item",
+      "name": "不合理的選項",
+      "seed": 7402,
+      "transparent": true,
+      "prompt": "A small glowing button marked with an indistinct sign, slightly cracked, chosen."
+    },
+    {
+      "kind": "item",
+      "name": "銀色的網",
+      "seed": 7403,
+      "transparent": true,
+      "prompt": "A small torn piece of glowing silver net."
+    },
+    {
+      "kind": "item",
+      "name": "一撇",
+      "seed": 7404,
+      "transparent": true,
+      "prompt": "A single short slanted ink brushstroke glowing on a black slate."
+    },
+    {
+      "kind": "item",
+      "name": "研墨的聲音",
+      "seed": 7405,
+      "transparent": true,
+      "prompt": "An inkstick grinding on a purple inkstone, a faint ripple of sound in the ink."
+    },
+    {
+      "kind": "item",
+      "name": "閘門室的鋼筆",
+      "seed": 7406,
+      "transparent": true,
+      "prompt": "An old black fountain pen with a cap."
+    },
+    {
+      "kind": "item",
+      "name": "阿公的老花眼鏡",
+      "seed": 7407,
+      "transparent": true,
+      "prompt": "A pair of old reading glasses with a thin scratch on one lens."
+    },
+    {
+      "kind": "item",
+      "name": "小雨撕下的一頁",
+      "seed": 7408,
+      "transparent": true,
+      "prompt": "A folded torn page from a hand-sewn notebook made of mismatched paper."
+    },
+    {
+      "kind": "item",
+      "name": "沉下去的味道",
+      "seed": 7409,
+      "transparent": true,
+      "prompt": "A small old wooden box holding millet cake, a green amla fruit, a cacao bean and a roasted sweet potato."
+    },
+    {
+      "kind": "item",
+      "name": "被拿走的字",
+      "seed": 7410,
+      "transparent": true,
+      "prompt": "A single sheet of old paper with faint fading writing, damp at the edges."
+    },
+    {
+      "kind": "item",
+      "name": "爸爸寫給阿公的信",
+      "seed": 7411,
+      "transparent": true,
+      "prompt": "A plain white envelope with one handwritten character on it; the character is indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "小雨寫的字",
+      "seed": 7412,
+      "transparent": true,
+      "prompt": "A torn notebook page with one large carefully written brush-like character and several crossed-out attempts; indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "找回來的調子",
+      "seed": 7413,
+      "transparent": true,
+      "prompt": "A small fragment of bark with a few musical-note-like marks, glowing softly."
+    },
+    {
+      "kind": "item",
+      "name": "第一支筆的粉",
+      "seed": 7414,
+      "transparent": true,
+      "prompt": "A small pile of fine white powder with a few splinters of a white brush."
+    },
+    {
+      "kind": "item",
+      "name": "數字的背面",
+      "seed": 7415,
+      "transparent": true,
+      "prompt": "The back of a small wooden number tag with a tiny human figure scratched into it."
+    },
+    {
+      "kind": "item",
+      "name": "叫回來的名字",
+      "seed": 7416,
+      "transparent": true,
+      "prompt": "A small glowing slip of paper with an indistinct name, warm light around it."
+    },
+    {
+      "kind": "item",
+      "name": "放下的鑿子",
+      "seed": 7417,
+      "transparent": true,
+      "prompt": "An old copper chisel resting on a flat stone."
+    },
+    {
+      "kind": "item",
+      "name": "歸墟的紙漿",
+      "seed": 7418,
+      "transparent": true,
+      "prompt": "A small handful of wet grey paper pulp."
+    },
+    {
+      "kind": "item",
+      "name": "千字紙",
+      "seed": 7419,
+      "transparent": true,
+      "prompt": "A rolled pale grey handmade paper with tiny faint shadows of characters inside, glowing softly."
+    },
+    {
+      "kind": "item",
+      "name": "透光的字",
+      "seed": 7420,
+      "transparent": true,
+      "prompt": "A thin sheet of paper held to light revealing a faint watermark-like character, indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "燻黑的鏡子",
+      "seed": 7421,
+      "transparent": true,
+      "prompt": "A small round hand mirror blackened by smoke, partly wiped clean."
+    },
+    {
+      "kind": "item",
+      "name": "粉筆灰",
+      "seed": 7422,
+      "transparent": true,
+      "prompt": "A small pile of white chalk dust with a short stub of chalk."
+    },
+    {
+      "kind": "item",
+      "name": "阿公寫給阿墨的信",
+      "seed": 7423,
+      "transparent": true,
+      "prompt": "An opened plain white envelope with a single handwritten letter sheet; text indistinct."
+    },
+    {
+      "kind": "item",
+      "name": "沒有蓋章的信",
+      "seed": 7424,
+      "transparent": true,
+      "prompt": "A folded letter in an envelope with no stamp marks, tied with string."
+    },
+    {
+      "kind": "item",
+      "name": "東邊第一顆星",
+      "seed": 7425,
+      "transparent": true,
+      "prompt": "A single bright morning star in a pale dawn sky, small and glowing."
     }
   ]
 }

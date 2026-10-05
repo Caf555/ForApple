@@ -1,0 +1,47 @@
+{
+ "說明": "《千秋硯》主角表情頭像（知墨、蘅各三種：笑、哭、驚）。劇本寫【蘅｜笑】時會換成「蘅_笑」這張圖；還沒有圖的時候，遊戲會自動用平常的頭像。種子沿用原本的頭像，讓臉和衣服盡量一樣。",
+ "items": [
+  {
+   "kind": "char",
+   "name": "知墨_笑",
+   "seed": 2101,
+   "transparent": true,
+   "prompt": "A gentle 27-year-old Taiwanese man, short neat black hair, calm attentive eyes, wearing a plain dark crew-neck T-shirt with a canvas work apron, the look of a careful book restorer. Expression: smiling warmly, eyes softly crinkled with happiness. Same character design, same clothes and hairstyle as the usual portrait."
+  },
+  {
+   "kind": "char",
+   "name": "知墨_哭",
+   "seed": 2101,
+   "transparent": true,
+   "prompt": "A gentle 27-year-old Taiwanese man, short neat black hair, calm attentive eyes, wearing a plain dark crew-neck T-shirt with a canvas work apron, the look of a careful book restorer. Expression: crying quietly, tears running down the cheeks, eyes glistening, trembling lips. Same character design, same clothes and hairstyle as the usual portrait."
+  },
+  {
+   "kind": "char",
+   "name": "知墨_驚",
+   "seed": 2101,
+   "transparent": true,
+   "prompt": "A gentle 27-year-old Taiwanese man, short neat black hair, calm attentive eyes, wearing a plain dark crew-neck T-shirt with a canvas work apron, the look of a careful book restorer. Expression: surprised, eyes wide open, lips slightly parted, eyebrows raised. Same character design, same clothes and hairstyle as the usual portrait."
+  },
+  {
+   "kind": "char",
+   "name": "蘅_笑",
+   "seed": 2102,
+   "transparent": true,
+   "prompt": "An ethereal girl who looks about 17, a spirit living inside an ancient inkstone, long black hair whose ends dissolve softly like ink dropped in water, slightly translucent pale skin, curious bright eyes, wearing a flowing light robe of no particular era in pale grey and indigo. Expression: smiling warmly, eyes softly crinkled with happiness. Same character design, same clothes and hairstyle as the usual portrait."
+  },
+  {
+   "kind": "char",
+   "name": "蘅_哭",
+   "seed": 2102,
+   "transparent": true,
+   "prompt": "An ethereal girl who looks about 17, a spirit living inside an ancient inkstone, long black hair whose ends dissolve softly like ink dropped in water, slightly translucent pale skin, curious bright eyes, wearing a flowing light robe of no particular era in pale grey and indigo. Expression: crying quietly, tears running down the cheeks, eyes glistening, trembling lips. Same character design, same clothes and hairstyle as the usual portrait."
+  },
+  {
+   "kind": "char",
+   "name": "蘅_驚",
+   "seed": 2102,
+   "transparent": true,
+   "prompt": "An ethereal girl who looks about 17, a spirit living inside an ancient inkstone, long black hair whose ends dissolve softly like ink dropped in water, slightly translucent pale skin, curious bright eyes, wearing a flowing light robe of no particular era in pale grey and indigo. Expression: surprised, eyes wide open, lips slightly parted, eyebrows raised. Same character design, same clothes and hairstyle as the usual portrait."
+  }
+ ]
+}

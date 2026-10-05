@@ -1,0 +1,403 @@
+{
+  "說明": "《千秋硯》卷八〈特諾奇提特蘭〉生圖清單（回一～回五）。畫風、節點、尺寸沿用卷一清單。注意：墨西卡（阿茲特克）的服飾與建築要依史料、以尊重的方式呈現；不要畫血腥或獻祭場面；不要混入馬雅或後來殖民時代的元素。真實歷史人物（蒙特蘇馬、科爾特斯、瑪林欽）只畫遠景的小人影。不要出現可讀的文字。 回二的托西卡特屠殺不畫殺戮場面，只畫跳舞與事後的空廣場。 回三的天花不畫病容特寫，以照顧的手、濕布與安靜的房間表現。 回四的圍城不畫屍體與饑餓的特寫，以瓦礫、空攤子、拉長的隊伍表現。 回五是約 1555 年的墨西哥城：建在廢墟上的新城，石砌的街道與教堂工地，原住民與西班牙人的服飾混雜。",
+  "items": [
+    {
+      "kind": "bg",
+      "name": "府城夜市",
+      "seed": 13101,
+      "prompt": "Tainan, Taiwan, 2026: a lively night market lane at night with steaming food stalls, lanterns and crowds; at the end a small stall with a hand-painted sign and colorful papel picado banners where a Mexican woman cooks tortillas on a griddle. Modern day, signs indistinct, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "湖上之城",
+      "seed": 13102,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: a wide view of the island city floating on the lake: canals full of canoes laden with flowers and maize, white houses with flowering roof gardens, the great twin-temple pyramid at the center, long causeways reaching to the shore, a smoking volcano far away, bright highland light. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "羽毛工坊",
+      "seed": 13103,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: inside a featherworker's (amanteca) workshop: a low room with woven reed mats, a wooden board covered in cotton cloth on which a hummingbird mosaic is being assembled from tiny iridescent feathers, bundles of green quetzal, blue, red macaw and yellow feathers hanging, bird cages, soft light from a canal-side doorway. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "抄寫員的房間",
+      "seed": 13104,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: inside a long stone school hall (calmecac): young scribes sit on reed mats painting on long screen-folded bark-paper books with red, black, blue and yellow pigments, clay pots of paint and brushes, painted images of people, places and day signs (no readable text). Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "堤道",
+      "seed": 13105,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: the broad southern causeway across the lake crowded with people and hundreds of canoes on both sides; a feather-covered litter with gold and jade ornaments at one end; at the other end Spanish horsemen in armor with large dogs and a vast column of Tlaxcalan warriors in quilted armor. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "bg",
+      "name": "大神廟的廣場",
+      "seed": 13106,
+      "prompt": "Tenochtitlan, May 1520: the vast stone-paved courtyard at the foot of the twin-temple pyramid, enclosed by a long wall carved with serpent heads with only a few gates; copal smoke drifting; at dusk, empty and silent, a large upright drum lying on its side. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "夜裡的堤道",
+      "seed": 13107,
+      "prompt": "Tenochtitlan, 1520: a dark rainy night on the long western causeway across the lake, gaps where wooden bridges have been removed, black water below, distant torches and the silhouettes of many dugout canoes approaching. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts; Spanish soldiers in steel armor; Tlaxcalan warriors in quilted cotton armor. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "被圍的城",
+      "seed": 13108,
+      "prompt": "Tenochtitlan and Tlatelolco, summer 1521, during the siege: half the island city torn down into rubble, canals being filled with stones, flowers still growing among broken walls, smoke rising, tall sailing brigantines patrolling the lake in the distance. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts, worn and dusty; Spanish brigantines with white sails on the lake. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "特拉特洛爾科的廢墟",
+      "seed": 13109,
+      "prompt": "Tenochtitlan and Tlatelolco, summer 1521, during the siege: the great market square of Tlatelolco, empty stalls, rubble and smoke, the stepped pyramid in the background, a grey sky, a sense of ending. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts, worn and dusty; Spanish brigantines with white sails on the lake. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "新的城",
+      "seed": 13110,
+      "prompt": "Mexico City around 1555, built on the ruins of Tenochtitlan: a wide straight street leading to a plaza where a large stone church is being built, some building stones still showing carved serpents, muddy ground and a high-water stain on walls after a flood, mixed crowds. Indigenous Nahua people in white cotton cloaks and huipils, some mixing in European garments; Spanish colonists and Franciscan friars in grey habits. Straight streets, stone houses with balconies, a cathedral under construction using stones from old temples, remnants of canals, flood marks on walls. Respectful depiction, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "新的羽毛工坊",
+      "seed": 13111,
+      "prompt": "Mexico City around 1555, built on the ruins of Tenochtitlan: a small featherworker's workshop: an elderly Nahua woman assembles a Christian saint image from tiny iridescent feathers on a board, bundles of green, blue and red feathers hanging, bone needles, light from a doorway. Indigenous Nahua people in white cotton cloaks and huipils, some mixing in European garments; Spanish colonists and Franciscan friars in grey habits. Straight streets, stone houses with balconies, a cathedral under construction using stones from old temples, remnants of canals, flood marks on walls. Respectful depiction, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "聖十字學院",
+      "seed": 13112,
+      "prompt": "Mexico City around 1555, built on the ruins of Tenochtitlan: inside the Franciscan College of Santa Cruz in Tlatelolco: a long room where young Nahua students in white sit at tables writing with quill pens on European paper, an old Nahua man with two small clay pots at his waist speaking, an elderly friar listening at a distant desk. Indigenous Nahua people in white cotton cloaks and huipils, some mixing in European garments; Spanish colonists and Franciscan friars in grey habits. Straight streets, stone houses with balconies, a cathedral under construction using stones from old temples, remnants of canals, flood marks on walls. Respectful depiction, no readable text."
+    },
+    {
+      "kind": "bg",
+      "name": "奇瑪的家",
+      "seed": 13113,
+      "prompt": "Mexico City around 1555, built on the ruins of Tenochtitlan: a small adobe house on the north edge of the city, a courtyard full of orange marigolds, a clay jar half hidden under a loose stone in the corner, evening light. Indigenous Nahua people in white cotton cloaks and huipils, some mixing in European garments; Spanish colonists and Franciscan friars in grey habits. Straight streets, stone houses with balconies, a cathedral under construction using stones from old temples, remnants of canals, flood marks on walls. Respectful depiction, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "堤道上的相遇",
+      "seed": 13401,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: seen from a distance on the causeway: the slender Mexica ruler in a green feather headdress steps down from his litter among barefoot nobles; facing him a bearded Spanish captain in armor; between them stands an Indigenous woman in a huipil interpreting; Spanish horsemen and dogs, Tlaxcalan warriors behind; crowds in canoes watching; figures small, faces not detailed. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "燈下的樹皮紙",
+      "seed": 13402,
+      "prompt": "Tenochtitlan, the Mexica (Aztec) island capital in Lake Texcoco, November 1519: night in the scribes' hall lit by a single clay lamp: a 16-year-old Mexica scribe apprentice sits cross-legged before a blank sheet of bark paper, brush raised but not painting, red and black paint pots beside him, a 17-year-old girl with a red hair ribbon watching; quiet and uncertain. Mexica clothing: men in white cotton loincloths and cloaks (tilmatli) knotted at the shoulder, women in wrap skirts and embroidered blouses (huipilli), nobles with feather ornaments and jade; Tlaxcalan warriors in quilted cotton armor; Spanish soldiers in steel helmets and breastplates. Architecture: whitewashed flat-roofed houses with roof gardens, canals with dugout canoes, causeways, chinampa fields, the twin-temple pyramid (blue shrine and red shrine), volcanoes on the horizon. Respectful depiction, no gore, no readable text, no modern objects."
+    },
+    {
+      "kind": "cg",
+      "name": "托西卡特的舞",
+      "seed": 13403,
+      "prompt": "Tenochtitlan, May 1520: bright midday festival: hundreds of young men in splendid feather headdresses, gold and jade dance hand in hand in great concentric circles in the temple courtyard to the beat of upright drums; in the front ring one young man's long green quetzal plumes rise highest; a girl watches joyfully from a gate; a scribe boy sketches. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "斷了一半的羽毛",
+      "seed": 13404,
+      "prompt": "Tenochtitlan, May 1520: dusk in the empty temple courtyard: a young woman kneels beside a broken upright drum, gathering broken green quetzal feathers from a damaged headdress into her palm; a boy scribe stands beside her; quiet grief, no bodies, no blood. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "雨夜的堤道",
+      "seed": 13405,
+      "prompt": "Tenochtitlan, 1520: night of heavy rain: chaos on the causeway, Spanish soldiers and horses fleeing in the dark, a broken bridge gap, glints of gold sinking into black water, hundreds of canoes with torches emerging from the darkness; seen from a canoe low on the water; no gore. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts; Spanish soldiers in steel armor; Tlaxcalan warriors in quilted cotton armor. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "紅與黑的陶罐",
+      "seed": 13406,
+      "prompt": "Tenochtitlan, 1520: a quiet dim school hall: an elderly scribe lying on a reed mat hands two small clay paint pots, one red and one black, to a 17-year-old boy kneeling beside him holding a damp cotton cloth; soft lamp light; tender and sorrowful, no visible illness details. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts; Spanish soldiers in steel armor; Tlaxcalan warriors in quilted cotton armor. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "湖上的獨木舟",
+      "seed": 13407,
+      "prompt": "Tenochtitlan and Tlatelolco, summer 1521, during the siege: late afternoon on the lake: a single dugout canoe stopped on the water as a tall brigantine with white sails draws alongside; a young Mexica ruler in a simple cloak stands up in the canoe, unarmed, seen from far away; silhouettes, no faces. Mexica clothing: white cotton cloaks and loincloths, huipil blouses and wrap skirts, worn and dusty; Spanish brigantines with white sails on the lake. Respectful depiction, no gore, no bodies, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "陶罐裡的老鷹",
+      "seed": 13408,
+      "prompt": "Mexico City around 1555, built on the ruins of Tenochtitlan: close-up at dusk: wrinkled hands unwrap an oilcloth inside an old clay jar, revealing small sheets of red and black painted bark paper, each showing an eagle standing on a prickly pear cactus; a six-year-old girl peeks from a doorway. Indigenous Nahua people in white cotton cloaks and huipils, some mixing in European garments; Spanish colonists and Franciscan friars in grey habits. Straight streets, stone houses with balconies, a cathedral under construction using stones from old temples, remnants of canals, flood marks on walls. Respectful depiction, no readable text."
+    },
+    {
+      "kind": "cg",
+      "name": "老人說，年輕人寫",
+      "seed": 13409,
+      "prompt": "Mexico City around 1555, built on the ruins of Tenochtitlan: night in the college by a single lamp: an old Nahua man with eyes closed speaks, while a 20-year-old Nahua student across from him writes his words with a quill in Latin letters on white paper; a pile of written pages; intimate and solemn. Indigenous Nahua people in white cotton cloaks and huipils, some mixing in European garments; Spanish colonists and Franciscan friars in grey habits. Straight streets, stone houses with balconies, a cathedral under construction using stones from old temples, remnants of canals, flood marks on walls. Respectful depiction, no readable text."
+    },
+    {
+      "kind": "char",
+      "name": "奇瑪",
+      "seed": 13201,
+      "prompt": "A 16-year-old Mexica scribe apprentice in 1519, short black hair, a white cotton cloak knotted at one shoulder and a loincloth, red and black paint on his fingers, holding a reed brush and a folded bark-paper book, a small obsidian knife at his waist, a bright grin showing one small pointed canine tooth, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "席特拉莉",
+      "seed": 13202,
+      "prompt": "A 17-year-old Mexica featherworker's daughter in 1519, long black hair tied with a red ribbon, an embroidered huipil blouse and wrap skirt, a fan of green, blue and red feathers in hand, a fine bone needle tucked in her hair, sharp watchful eyes, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "阿卡特",
+      "seed": 13203,
+      "prompt": "An elderly Mexica master scribe in 1519, white hair, a plain white cotton cloak, fingers stained red and black, a calm wise lined face, holding a long folded bark-paper book, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "露佩",
+      "seed": 13204,
+      "prompt": "A cheerful Mexican woman in her forties living in Tainan in 2026, curly dark hair tied up, round face, an apron over a colorful embroidered blouse, holding a spatula at a night-market griddle, warm laughing eyes, modern day.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "托納",
+      "seed": 13205,
+      "prompt": "A tall cheerful 20-year-old Mexica young warrior in 1520, a white cotton cloak, gold lip and ear ornaments, smiling like his sister, ready for a festival dance, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "奇瑪_52",
+      "seed": 13206,
+      "prompt": "A 52-year-old Nahua painter-scribe in Mexico City around 1555, grey hair, slightly stooped, a white cotton cloak, two small old clay paint pots (red and black) hanging at his waist, kind tired eyes, a smile showing one small pointed canine tooth, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "席特拉莉_53",
+      "seed": 13207,
+      "prompt": "A 53-year-old Nahua featherworker woman in Mexico City around 1555, white hair tied with a faded red ribbon, small pockmark scars on her cheeks, an embroidered huipil, holding a feather fan and a bone needle, warm wise eyes, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "char",
+      "name": "胡安",
+      "seed": 13208,
+      "prompt": "A 20-year-old Nahua student at the College of Santa Cruz in 1555, short black hair, a plain white cotton shirt and cloak, a quill pen and a sheaf of paper, earnest curious eyes, respectful historical style.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "特斯科科湖",
+      "seed": 13301,
+      "prompt": "A surge of brackish lake water rising in the shape of a figure, reeds and floating flowers swirling in it.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "黑曜石",
+      "seed": 13302,
+      "prompt": "A jagged creature of glossy black volcanic obsidian shards, edges glinting razor sharp.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "冒煙的山",
+      "seed": 13303,
+      "prompt": "A smoking volcano-shaped spirit with glowing ember eyes and a plume of ash rising from its head.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "可可豆",
+      "seed": 13304,
+      "prompt": "A clattering swarm of cacao beans and cacao pods forming a round creature, counting itself.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "金子的光",
+      "seed": 13305,
+      "prompt": "A dazzling floating mass of Mexica gold ornaments, necklaces, banners and discs radiating a blinding greedy light that pulls at the eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "預兆",
+      "seed": 13306,
+      "prompt": "A misty apparition combining a blazing comet in the sky, a temple shrine burning by itself, a boiling lake and the shadowy figure of a weeping woman, dreamlike and ominous.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "莧菜",
+      "seed": 13307,
+      "prompt": "A swirling mass of tiny amaranth seeds and red amaranth plumes forming a creature, a grinding stone at its core.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "螺號",
+      "seed": 13308,
+      "prompt": "A giant conch shell trumpet floating and blaring, sound waves rippling like water.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鐵的冷",
+      "seed": 13309,
+      "prompt": "A cold gleaming figure made of Spanish steel helmets, breastplates and sword blades, frost-like glints.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "柯巴香",
+      "seed": 13310,
+      "prompt": "A rising column of white copal incense smoke shaped like a figure with ember eyes.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "關上的門",
+      "seed": 13311,
+      "prompt": "A massive stone gateway in a wall carved with serpent heads, its opening sealed by a row of steel shields, looming and crushing.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉默的鼓",
+      "seed": 13312,
+      "prompt": "A large upright Mexica drum with a torn skin, standing alone, an aura of heavy silence and faint echoing rings around it, mournful.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "雨夜",
+      "seed": 13313,
+      "prompt": "A shadowy figure woven from heavy night rain over a dark lake, eyes like distant torches.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "獨木舟",
+      "seed": 13314,
+      "prompt": "A long dugout canoe carved from a single tree, rising and lunging like a beast from the water.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "斷橋",
+      "seed": 13315,
+      "prompt": "A broken causeway bridge gap with splintered wooden beams forming jagged jaws over black water.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "紅疹",
+      "seed": 13316,
+      "prompt": "An abstract creeping cloud of red spots spreading like a stain through the air, ominous but not graphic, no human body.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "沉下去的金子",
+      "seed": 13317,
+      "prompt": "A huge shimmering shape of gold necklaces, plates and ingots sinking in black water, dragging chains of gold upward like grasping arms.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "大疹",
+      "seed": 13318,
+      "prompt": "A faceless shapeless grey-red miasma spreading through a silent city street, with closed doors and a single abandoned sleeping mat, ominous and sorrowful, no human bodies, not graphic.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "斷水",
+      "seed": 13319,
+      "prompt": "A broken stone aqueduct channel spilling its last trickle, the water forming a thin despairing figure.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "拆屋",
+      "seed": 13320,
+      "prompt": "A hulking creature made of toppled whitewashed house walls, roof gardens and beams, crumbling as it moves.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "鹽草",
+      "seed": 13321,
+      "prompt": "A tangle of bitter salt grass and reeds forming a thorny lurking creature at the lake shore.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "火藥煙",
+      "seed": 13322,
+      "prompt": "A billowing black cloud of gunpowder smoke with flashes of fire inside, choking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "十三艘船",
+      "seed": 13323,
+      "prompt": "A ghostly formation of thirteen tall sailing brigantines merging into one huge shadowy ship-monster on the lake, cannons smoking.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "被填平的城",
+      "seed": 13324,
+      "prompt": "A colossal figure built from rubble of a demolished island city — broken walls, filled canals, roofless houses — rising from flattened ground, sorrowful and heavy.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "新的牆",
+      "seed": 13325,
+      "prompt": "A wall of newly cut stones, some showing carved serpents on their hidden faces, rising as a looming figure.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "新名字",
+      "seed": 13326,
+      "prompt": "A shadowy figure covered in pasted-over labels and painted-over symbols, its old shape faintly visible beneath; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "大水",
+      "seed": 13327,
+      "prompt": "Floodwater rising through a colonial street in the shape of a figure, remembering the lake that was filled.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "銀礦",
+      "seed": 13328,
+      "prompt": "A glittering creature of raw silver ore and mine timbers emerging from a dark mine shaft.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "燒書的火",
+      "seed": 13329,
+      "prompt": "A bonfire made of stacked screen-fold bark-paper books, painted pages curling into flames shaped like grasping hands; no readable text.",
+      "transparent": true
+    },
+    {
+      "kind": "enemy",
+      "name": "無面書記・墨西卡之相",
+      "seed": 13330,
+      "prompt": "A tall faceless scribe in a dark long robe and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a brush soaked in black paint, painting over a carved serpent on a stone and writing a new name beside it, calm and eerie; no readable text.",
+      "transparent": true
+    }
+  ]
+}
