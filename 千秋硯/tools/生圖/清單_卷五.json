@@ -92,7 +92,7 @@
       "kind": "cg",
       "name": "棕櫚葉名冊",
       "seed": 3402,
-      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War of the Mauryan emperor Ashoka: inside a dim army tent, a long strip of palm leaf densely scratched with tiny indistinct marks lies across the knees of a man holding an iron stylus, while a thin boy with messy hair leans close, watching intently; a woman guard with a bow stands in the doorway; warm lamp light. People of the Mauryan period wear simple unstitched white or undyed cotton garments (dhoti and a shawl over the shoulder), some with turbans, bare feet or simple sandals; houses are bamboo, mud and thatch with palm-leaf roofs. No later Mughal or medieval elements, no domes, no stone temples, no modern clothing."
+      "prompt": "Ancient eastern India (Kalinga, modern Odisha) around 261 BC, during the Kalinga War: inside a dim army tent, a lean bearded MAN of about 35, clearly male with a short black beard and a bare chest, his hair in a small topknot, sits cross-legged holding up in one hand a single long, narrow, flat strip of dried palm leaf like an ancient Indian palm-leaf manuscript page: about a forearm long and only two fingers wide, thin, stiff and smooth, pale golden-tan with fine lengthwise veins, a small round hole near one end, held horizontally, and with an iron stylus in his other hand he scratches tiny marks into it; a small stack of more such narrow leaf strips lies beside him; a thin boy with messy hair leans close, watching intently; a woman guard with a bow stands in the doorway; warm lamp light. Not paper, not a scroll, not a wide sheet. People of the Mauryan period wear simple unstitched white or undyed cotton garments (a dhoti wrapped at the waist and a shawl over one shoulder), no stitched shirts, no buttons, no collars."
     },
     {
       "kind": "bg",
@@ -122,7 +122,7 @@
       "kind": "char",
       "name": "巴德拉",
       "seed": 3204,
-      "prompt": "A neat middle-aged Mauryan official about 45 years old, clean white cotton garments and a simple turban, a short trimmed beard, holding a bundle of palm-leaf records, an orderly, reasonable face with a hint of buried sadness, ancient Indian style.",
+      "prompt": "A neat middle-aged Mauryan official about 45 years old, a short trimmed beard and a simple white turban, wearing unstitched clean white cotton: a dhoti wrapped at the waist and a white shawl draped over one shoulder and across the chest, the other shoulder and arm bare, a thin gold armlet; no stitched shirt, no tunic, no buttons, no collar; holding a small bundle of palm-leaf records tied with cord; an orderly, reasonable face with a hint of buried sadness.",
       "transparent": true
     },
     {
@@ -216,7 +216,7 @@
       "kind": "enemy",
       "name": "舊習",
       "seed": 3315,
-      "prompt": "A massive squat stone-like figure sitting in the middle of a road, heavy and immovable, covered in moss and old dust, arms crossed, stubborn.",
+      "prompt": "A massive squat stone-like figure sitting in the middle of a dusty earthen village path, heavy and immovable, covered in moss and old dust, arms crossed, stubborn. The ground is bare packed dirt with wheel ruts and grass tufts: no asphalt, no paved road, no painted lines.",
       "transparent": true
     },
     {

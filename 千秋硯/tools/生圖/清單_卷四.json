@@ -371,7 +371,7 @@
       "kind": "bg",
       "name": "陪審法庭",
       "seed": 9112,
-      "prompt": "Ancient Athens in 399 BC: an open-air law court enclosure in the Agora: rows of plain wooden benches packed with hundreds of ordinary older citizens as jurors, a low wooden railing separating them from a crowd of standing spectators, a speaker's platform, a large painted clay water clock on a stand dripping water, morning light. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+      "prompt": "Ancient Athens in 399 BC: an open-air law court enclosure in the Agora: rows of plain wooden benches packed with hundreds of ordinary older citizens as jurors, a low wooden railing separating them from a crowd of standing spectators, a speaker's platform, and beside it a water clock, morning light. The Athenian water clock (klepsydra) is just two plain painted clay pots: a large jar with a small bronze spout near its base set on a stand, water trickling from the spout into a second pot on the ground below. It has no clock face, no dial, no numbers, no hands, nothing mechanical. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs and no chimneys. No Roman armor, no arches, no domes, no marble everywhere."
     },
     {
       "kind": "bg",
@@ -445,7 +445,7 @@
       "kind": "cg",
       "name": "毒堇之杯",
       "seed": 9410,
-      "prompt": "Ancient Athens in 399 BC: in a prison room at dusk, a barefoot old man with a white beard sits calmly on a wooden bed holding a simple clay cup, surrounded by grieving friends, one elderly friend covering his face; soft warm light from a high window; dignified and serene, no gore. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs. No Roman armor, no arches, no domes, no marble everywhere."
+      "prompt": "Ancient Athens in 399 BC: INDOORS, inside a small closed prison room enclosed on all four sides by rough stone walls, with a beaten-earth floor and a low wooden ceiling, the only opening a single small high barred window; the background behind the people is a solid stone wall; at dusk: a barefoot old man with a white beard, balding, with a snub nose, sits calmly on a plain wooden bed holding a simple clay cup, surrounded by grieving friends inside the room, one elderly friend covering his face; soft warm light falls from one small high window; no outdoor street, no other houses visible; dignified and serene, no gore. People wear simple draped wool or linen garments (chiton and himation) and sandals or bare feet; ordinary houses are low mud-brick and rubble buildings with tiled roofs and no chimneys. No Roman armor, no arches, no domes, no marble everywhere."
     }
   ]
 }

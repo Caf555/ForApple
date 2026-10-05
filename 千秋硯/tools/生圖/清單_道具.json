@@ -1051,7 +1051,7 @@
       "name": "多一點時間",
       "seed": 7149,
       "transparent": true,
-      "prompt": "A small clay water-clock spout plug of beeswax, glowing faintly."
+      "prompt": "The bottom part of an ancient Greek clay water-clock jar: a rounded terracotta pot base painted with simple black bands, a tiny bronze spout hole near its foot plugged with a small blob of golden beeswax that glows faintly. No clock face, no dial, no numbers, no hands."
     },
     {
       "kind": "item",
@@ -1065,7 +1065,7 @@
       "name": "起訴書的抄本",
       "seed": 7151,
       "transparent": true,
-      "prompt": "A modern notebook page with a careful copy of ancient Greek capital letters in ink; letters indistinct."
+      "prompt": "A small modern notebook lying open, seen at a low angle, the page filled with rows of tiny careful pencil strokes copied from an inscription, faint and blurred so that no letter or word can be read. No readable words, no Latin letters, no Chinese characters."
     },
     {
       "kind": "item",
@@ -1079,7 +1079,7 @@
       "name": "毒堇葉",
       "seed": 7153,
       "transparent": true,
-      "prompt": "A few feathery hemlock leaves with a tiny cluster of white flowers."
+      "prompt": "A small sprig of poison hemlock: finely divided lacy fern-like leaves like wild parsley or carrot tops, bright green, on a smooth hollow green stem with small purple blotches, and one tiny flat umbrella-shaped cluster of white flowers. Not pine, not fir, not needles, not a conifer."
     },
     {
       "kind": "item",
@@ -1093,7 +1093,7 @@
       "name": "陶片筆",
       "seed": 7155,
       "transparent": true,
-      "prompt": "A writing stylus whose shaft is a sharpened reddish pottery sherd bound with cord."
+      "prompt": "An ancient writing stylus made from a long narrow shard of reddish-brown terracotta pottery, ground down to a sharp point at one end, the other end wrapped with a few turns of hemp cord as a grip. It is all fired clay and cord: no metal tip, no wood, not a pencil."
     },
     {
       "kind": "item",
@@ -1114,7 +1114,7 @@
       "name": "尼科的票",
       "seed": 7158,
       "transparent": true,
-      "prompt": "Two small pebbles, one white and one dark, resting together in an open palm."
+      "prompt": "Two small smooth river pebbles lying side by side on a scrap of undyed cloth, one white and one dark grey. Only the two pebbles and the cloth: no hand, no fingers, no people."
     },
     {
       "kind": "item",
@@ -1149,7 +1149,7 @@
       "name": "投石索",
       "seed": 7163,
       "transparent": true,
-      "prompt": "A simple sling woven from brown coconut fiber with a small leather pouch."
+      "prompt": "An ancient sling lying stretched out flat: two long thin cords braided from brown coconut fibre, joined in the middle by a small woven cradle pouch for a stone, one cord ending in a finger loop. It is just cords and a small cradle: not a bag, not a purse, not a handbag."
     },
     {
       "kind": "item",
@@ -1191,7 +1191,7 @@
       "name": "象鈴",
       "seed": 7169,
       "transparent": true,
-      "prompt": "A small bronze elephant bell on a rope."
+      "prompt": "A single heavy cast-bronze bell, rounded and slightly bell-shaped with a flared mouth and a clapper inside, dull golden-brown with green patina, hung from a thick knotted rope as worn on an elephant's neck. Just the bell: no elephant figure, no statue."
     },
     {
       "kind": "item",
@@ -1212,14 +1212,14 @@
       "name": "石與弦",
       "seed": 7172,
       "transparent": true,
-      "prompt": "A sling whose cord has been replaced with a taut bowstring."
+      "prompt": "An ancient sling lying stretched out flat: its two long cords are a tight, pale twisted bowstring, joined in the middle by a small woven coconut-fibre cradle holding a round river stone, one end with a finger loop. Only cords and the stone: no bow, no wooden stave."
     },
     {
       "kind": "item",
       "name": "拓片的描本",
       "seed": 7173,
       "transparent": true,
-      "prompt": "A modern notebook page with careful ink tracings of unfamiliar ancient script; marks indistinct."
+      "prompt": "A small modern notebook lying open, seen at a low angle, its page covered with careful ink tracings of ancient Brahmi script: rows of simple geometric signs built from short straight lines, plus signs, small circles, right angles, hooks and dots, too small and worn to read; absolutely no Chinese characters, no Latin letters."
     },
     {
       "kind": "item",
@@ -1275,21 +1275,21 @@
       "name": "林中哨",
       "seed": 7181,
       "transparent": true,
-      "prompt": "A small whistle carved from bamboo on a cord."
+      "prompt": "A small hand-made whistle: a short piece of natural green-yellow bamboo cut just below a joint, with a slanted notch near the open end and one small hole, hung on a thin plant-fibre cord. Not a plastic or metal whistle, no round chamber."
     },
     {
       "kind": "item",
       "name": "刻滿名字的棕櫚葉",
       "seed": 7182,
       "transparent": true,
-      "prompt": "A long strip of dried palm leaf densely scratched with tiny indistinct marks."
+      "prompt": "A single long, narrow, flat strip of dried palm leaf like an ancient indian palm-leaf manuscript page: about a forearm long and only two fingers wide, thin, stiff and smooth, pale golden-tan with fine lengthwise veins, a small round hole near one end, lying flat, its whole surface densely scratched with rows of tiny dark marks of ancient Brahmi script: rows of simple geometric signs built from short straight lines, plus signs, small circles, right angles, hooks and dots, too small and worn to read; absolutely no Chinese characters, no Latin letters."
     },
     {
       "kind": "item",
       "name": "瓦蘇的第一枝鐵筆",
       "seed": 7183,
       "transparent": true,
-      "prompt": "A simple iron writing stylus with two small crude marks scratched on its shaft."
+      "prompt": "A simple ancient iron writing stylus for palm leaves: a thin straight rod of dark hand-forged iron about a hand long, sharpened to a fine point at one end, the other end slightly flattened, two small crude marks scratched on its shaft. All iron: not a fountain pen, no nib, no cap, no wooden handle."
     },
     {
       "kind": "item",
@@ -1331,7 +1331,7 @@
       "name": "路邊的榕樹",
       "seed": 7189,
       "transparent": true,
-      "prompt": "A small piece of banyan aerial root tied with string."
+      "prompt": "Botanical watercolor illustration of one short cut piece of banyan aerial root lying alone on a plain white background: a thin, woody, twisted brown root strand about a hand long, like a piece of rough brown rope, with a tuft of fine hair-like rootlets at one end, tied in the middle with a bit of string. Nothing else: no bottle, no jar, no glass, no container."
     },
     {
       "kind": "item",
@@ -1345,14 +1345,14 @@
       "name": "懺悔詔的抄本",
       "seed": 7191,
       "transparent": true,
-      "prompt": "A long palm-leaf strip densely copied with tiny indistinct script."
+      "prompt": "Two or three long, narrow, flat strip of dried palm leaf like an ancient Indian palm-leaf manuscript pages: about a forearm long and only two fingers wide, thin, stiff and smooth, pale golden-tan with fine lengthwise veins, a small round hole near one end, lying flat, stacked loosely and held by a cord through the holes, densely written with rows of tiny dark ancient Brahmi script: rows of simple geometric signs built from short straight lines, plus signs, small circles, right angles, hooks and dots, too small and worn to read; absolutely no Chinese characters, no Latin letters. Not cloth, not a roll."
     },
     {
       "kind": "item",
       "name": "放歸的名單",
       "seed": 7192,
       "transparent": true,
-      "prompt": "A short palm-leaf strip with a list of tiny indistinct marks, tied with a white thread."
+      "prompt": "A single long, narrow, flat strip of dried palm leaf like an ancient indian palm-leaf manuscript page: about a forearm long and only two fingers wide, thin, stiff and smooth, pale golden-tan with fine lengthwise veins, a small round hole near one end, lying flat, tied around the middle with a white cotton thread, with a short column of tiny dark marks of ancient Brahmi script: rows of simple geometric signs built from short straight lines, plus signs, small circles, right angles, hooks and dots, too small and worn to read; absolutely no Chinese characters, no Latin letters. Not palm fronds, not whole leaves."
     },
     {
       "kind": "item",
@@ -1373,7 +1373,7 @@
       "name": "季風花",
       "seed": 7195,
       "transparent": true,
-      "prompt": "A few small white wildflowers with wet petals."
+      "prompt": "Botanical watercolor illustration of one small cut sprig of wild white flowers: three or four little five-petalled white blossoms on a slender green stem with two narrow leaves, a few raindrops on the petals, lying alone on a plain white background. Nothing else in the picture at all: no teapot, no pot, no cup, no vase, no container."
     },
     {
       "kind": "item",
@@ -1401,21 +1401,21 @@
       "name": "道利的拓片",
       "seed": 7199,
       "transparent": true,
-      "prompt": "A sheet of paper with a white-on-black ink rubbing of a few lines of indistinct carved script."
+      "prompt": "A sheet of rough handmade paper with a black ink rubbing made from a carved rock: mostly solid black, with three rows of pale grey-white simple geometric carved signs made only of plus signs, small circles, single vertical strokes with a tiny hook, right-angle brackets, short dashes and dots, spaced apart in rows, like a primitive alphabet of stick symbols; no complex strokes, no Chinese characters, no Korean hangul, no Japanese, no Latin letters; edges uneven."
     },
     {
       "kind": "item",
       "name": "刻名字的石頭",
       "seed": 7200,
       "transparent": true,
-      "prompt": "A notebook sketch of a large round riverside boulder densely carved with tiny indistinct marks."
+      "prompt": "An open modern notebook with a pencil sketch on its page: a large round riverside boulder drawn in pencil, its surface covered all over with tiny scratched marks drawn as fine lines; a pencil lying across the page. Nothing readable."
     },
     {
       "kind": "item",
       "name": "一片空白的棕櫚葉",
       "seed": 7201,
       "transparent": true,
-      "prompt": "A clean, completely blank strip of dried palm leaf."
+      "prompt": "A single long, narrow, flat strip of dried palm leaf like an ancient indian palm-leaf manuscript page: about a forearm long and only two fingers wide, thin, stiff and smooth, pale golden-tan with fine lengthwise veins, a small round hole near one end, lying flat, completely clean and blank with no marks at all. Not a block, not a bundle."
     },
     {
       "kind": "item",
@@ -1436,7 +1436,7 @@
       "name": "重新讀懂的字",
       "seed": 7204,
       "transparent": true,
-      "prompt": "A small chip of stone bearing a few indistinct carved script marks, softly glowing."
+      "prompt": "A small grey chip of rock with a few cleanly carved simple geometric carved signs made only of plus signs, small circles, single vertical strokes with a tiny hook, right-angle brackets, short dashes and dots, spaced apart in rows, like a primitive alphabet of stick symbols; no complex strokes, no Chinese characters, no Korean hangul, no Japanese, no Latin letters, the carved lines softly glowing warm gold."
     },
     {
       "kind": "item",
