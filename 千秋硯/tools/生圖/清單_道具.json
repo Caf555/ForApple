@@ -967,14 +967,14 @@
       "name": "蜂蜜芝麻餅",
       "seed": 7137,
       "transparent": true,
-      "prompt": "A few small round ancient Greek honey and sesame cakes on a clay plate."
+      "prompt": "A few small flat ancient Greek festival cakes on a plain clay plate: thin round discs of pressed sesame seeds bound with honey, golden-brown and glossy with honey, densely covered in seeds, a drizzle of honey on the plate. Flat and thin like brittle discs, not puffy buns, not bread rolls."
     },
     {
       "kind": "item",
       "name": "誓石碎片",
       "seed": 7138,
       "transparent": true,
-      "prompt": "A small chip of grey marble with a few indistinct carved marks."
+      "prompt": "A small broken chip of pale grey marble with sharp fresh edges, on its smooth face a few lines of very worn, shallow ancient Greek capital letters carved in rows, eroded and blurred so they cannot be read; absolutely no Chinese characters, no Latin words, no crosses or Christian symbols."
     },
     {
       "kind": "item",
@@ -988,7 +988,7 @@
       "name": "誓約護符",
       "seed": 7140,
       "transparent": true,
-      "prompt": "A small grey stone amulet on a cord with indistinct carved marks, solemn."
+      "prompt": "A small flat oval of grey marble worn as an amulet on a leather cord, on its face a few lines of very worn, shallow ancient Greek capital letters carved in rows, eroded and blurred so they cannot be read; absolutely no Chinese characters, no Latin words, no crosses or Christian symbols; solemn."
     },
     {
       "kind": "item",
@@ -1009,7 +1009,7 @@
       "name": "和解的誓詞",
       "seed": 7143,
       "transparent": true,
-      "prompt": "A small marble fragment carved with indistinct lines of an oath, with an olive leaf beside it."
+      "prompt": "A small broken fragment of a white marble inscription slab, its flat face carved with a few lines of very worn, shallow ancient Greek capital letters carved in rows, eroded and blurred so they cannot be read; absolutely no Chinese characters, no Latin words, no crosses or Christian symbols; a single grey-green olive leaf lies beside it."
     },
     {
       "kind": "item",

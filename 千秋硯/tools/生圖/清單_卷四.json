@@ -203,7 +203,7 @@
       "kind": "bg",
       "name": "埃里達諾斯河",
       "seed": 9109,
-      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: a small stream flowing through the Kerameikos cemetery outside the city walls at night in heavy rain, its water muddy and rising over its stone-lined banks, simple grave stelae and funerary markers leaning in the floodwater, potters' kilns faintly visible in the distance, dark and melancholy."
+      "prompt": "Ancient Athens in 403 BC, the year democracy was restored: a small stream flowing through the Kerameikos cemetery outside the city walls at night in heavy rain, its water muddy and rising over its stone-lined banks, simple grave stelae and funerary markers leaning in the floodwater, their carved surfaces plain or carved with faint relief figures, any inscriptions worn away and unreadable; potters' kilns faintly visible in the distance, dark and melancholy. No readable letters."
     },
     {
       "kind": "char",
@@ -223,7 +223,7 @@
       "kind": "char",
       "name": "梅內克勒斯",
       "seed": 9209,
-      "prompt": "A thin middle-aged Greek potter about 45 years old, expressionless guarded face, short beard, a clean work tunic with clay on his forearms, standing stiffly, ancient Greek style.",
+      "prompt": "A thin middle-aged Greek potter about 45 years old, expressionless guarded face, short beard, wearing an ancient Greek exomis: a short sleeveless tunic of undyed wool fastened on one shoulder, leaving the other shoulder bare, belted with a cord, clay on his forearms; no apron, no T-shirt, no modern clothes; standing stiffly.",
       "transparent": true
     },
     {
