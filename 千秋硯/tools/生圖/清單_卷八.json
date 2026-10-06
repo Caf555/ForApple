@@ -35,7 +35,7 @@
       "kind": "bg",
       "name": "大神廟的廣場",
       "seed": 13106,
-      "prompt": "Tenochtitlan, May 1520: the vast stone-paved courtyard at the foot of the twin-temple pyramid, enclosed by a long wall carved with serpent heads with only a few gates; copal smoke drifting; at dusk, empty and silent, a large upright drum lying on its side. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+      "prompt": "Tenochtitlan, May 1520: the vast stone-paved courtyard at the foot of the twin-temple pyramid, enclosed by a long wall carved with serpent heads with only a few gates; copal smoke drifting; at dusk, empty and silent, a large upright drum lying on its side. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The Templo Mayor: one broad, steep stepped pyramid with TWO parallel staircases side by side on its front face, and on its flat top TWO separate small shrines standing side by side, the left shrine painted red, the right shrine painted blue and white, each a box-shaped house with a tall flat roof; not a single-temple Maya pyramid, not Chichen Itza. A sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
     },
     {
       "kind": "bg",
@@ -101,7 +101,7 @@
       "kind": "cg",
       "name": "斷了一半的羽毛",
       "seed": 13404,
-      "prompt": "Tenochtitlan, May 1520: dusk in the empty temple courtyard: a young woman kneels beside a broken upright drum, gathering broken green quetzal feathers from a damaged headdress into her palm; a boy scribe stands beside her; quiet grief, no bodies, no blood. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The great twin-temple pyramid, a sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
+      "prompt": "Tenochtitlan, May 1520: dusk in the empty temple courtyard: a young woman kneels beside a broken upright drum, gathering broken green quetzal feathers from a damaged headdress into her palm; a boy scribe stands beside her; quiet grief, no bodies, no blood. Mexica clothing: men in white cotton cloaks and loincloths, nobles and young warriors in feather headdresses, gold and jade; women in huipil blouses and wrap skirts. The Templo Mayor: one broad, steep stepped pyramid with TWO parallel staircases side by side on its front face, and on its flat top TWO separate small shrines standing side by side, the left shrine painted red, the right shrine painted blue and white, each a box-shaped house with a tall flat roof; not a single-temple Maya pyramid, not Chichen Itza. A sacred precinct enclosed by a wall carved with serpent heads (coatepantli). Respectful depiction, no gore, no bodies, no readable text."
     },
     {
       "kind": "cg",
@@ -228,7 +228,7 @@
       "kind": "enemy",
       "name": "預兆",
       "seed": 13306,
-      "prompt": "A misty apparition combining a blazing comet in the sky, a temple shrine burning by itself, a boiling lake and the shadowy figure of a weeping woman, dreamlike and ominous.",
+      "prompt": "A misty dreamlike apparition: a blazing comet streaking across the night sky; below it, burning by itself, a small Mexica temple shrine of the Aztec kind, a box-shaped stone house with a flat roof and painted walls standing on top of a steep stepped pyramid platform with a central staircase; a boiling lake; and the shadowy figure of a weeping woman in a long cotton huipil. Ominous. Mesoamerican architecture only: no East Asian roofs, no pagoda, no curved eaves.",
       "transparent": true
     },
     {
@@ -298,7 +298,7 @@
       "kind": "enemy",
       "name": "紅疹",
       "seed": 13316,
-      "prompt": "An abstract creeping cloud of red spots spreading like a stain through the air, ominous but not graphic, no human body.",
+      "prompt": "Abstract ink-wash texture: thousands of tiny faded rust-red and grey speckles drifting through empty white space in a loose swirling cloud, like dust or pollen in the air, soft and diffuse at the edges. Pure abstract pattern of dots: no figure, no creature, no silhouette, no body, no head, no limbs, nothing shaped like a person.",
       "transparent": true
     },
     {
@@ -396,7 +396,7 @@
       "kind": "enemy",
       "name": "無面書記・墨西卡之相",
       "seed": 13330,
-      "prompt": "A tall faceless scribe in a dark long robe and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a brush soaked in black paint, painting over a carved serpent on a stone and writing a new name beside it, calm and eerie; no readable text.",
+      "prompt": "A tall faceless scribe in a dark long robe and a wide-brimmed hat, a smooth featureless face with a deep crack across it, holding a brush soaked in black paint, painting over a carved feathered serpent relief on a grey stone; beside it a few new painted marks that are simple meaningless squiggles and blots. Calm and eerie. No Chinese characters, no letters, no readable writing.",
       "transparent": true
     }
   ]

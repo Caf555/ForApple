@@ -2094,7 +2094,7 @@
       "name": "可可飲",
       "seed": 7298,
       "transparent": true,
-      "prompt": "A clay cup of frothy cacao drink with a few cacao beans and a red chili."
+      "prompt": "A round hollowed calabash gourd bowl, or a small painted Mexica clay bowl without a handle, filled with dark brown frothy cacao drink with thick foam on top, a few cacao beans and one red chili beside it. No mug, no handle, no coffee-cup look."
     },
     {
       "kind": "item",
@@ -2108,7 +2108,7 @@
       "name": "綠羽毛",
       "seed": 7300,
       "transparent": true,
-      "prompt": "A long iridescent green quetzal tail feather."
+      "prompt": "A single long resplendent quetzal tail plume: very long, narrow, flowing emerald-green feathers with a metallic blue-green sheen, smooth and tapering to a point, with no eye spots, lying in a gentle curve. Not a peacock feather."
     },
     {
       "kind": "item",
@@ -2122,35 +2122,35 @@
       "name": "羽毛扇",
       "seed": 7302,
       "transparent": true,
-      "prompt": "A fan of layered red, green and blue feathers on a wooden handle."
+      "prompt": "Seen from the front: a round flat disc of tightly packed feathers, red at the outer ring, then green, then blue at the centre, like a feathered shield-shaped circle, mounted on the top of a short straight carved wooden handle below it. It is a solid round disc, like a lollipop of feathers; no ribs, no sticks, no folding."
     },
     {
       "kind": "item",
       "name": "神的汙垢",
       "seed": 7303,
       "transparent": true,
-      "prompt": "A thin sheet of hammered gold leaf, crinkled."
+      "prompt": "One thin sheet of hammered gold leaf floating at a slight tilt, crinkled and gently curling, catching light. The gold leaf is the only object; thin and flat."
     },
     {
       "kind": "item",
       "name": "說出來的預兆",
       "seed": 7304,
       "transparent": true,
-      "prompt": "A small piece of bark paper painted with a red and black comet; no readable text."
+      "prompt": "A small piece of amate bark paper with a comet painted in the flat style of an Aztec codex: thick black outlines filled with flat red and black colour, figures drawn in profile, simple and bold, on rough beige amate bark paper with a fibrous texture and torn edges. No Chinese painting style, no calligraphy, no seals, no Chinese characters, no Latin letters."
     },
     {
       "kind": "item",
       "name": "樹皮紙的老鷹",
       "seed": 7305,
       "transparent": true,
-      "prompt": "A small rough piece of bark paper painted in red and black with an eagle standing on a prickly pear cactus holding a snake, and a small round glyph beside it; no readable text."
+      "prompt": "A small piece of rough beige amate bark paper with a fibrous texture and torn edges; on it, painted in the flat style of an Aztec codex with thick black outlines and flat red and black colour: a single eagle seen in profile with spread wings, perched on top of a green prickly pear cactus, a snake in its beak. Only the eagle, the cactus and the snake: no people, no human figures. No Chinese characters, no letters."
     },
     {
       "kind": "item",
       "name": "陌生人的畫",
       "seed": 7306,
       "transparent": true,
-      "prompt": "A small piece of bark paper painted in red and black with a bearded man on a horse and speech scroll curls; no readable text."
+      "prompt": "A small piece of amate bark paper with a bearded stranger in a helmet riding a horse, small curly speech scrolls coming from his mouth, painted in the flat style of an Aztec codex: thick black outlines filled with flat red and black colour, figures drawn in profile, simple and bold, on rough beige amate bark paper with a fibrous texture and torn edges. No Chinese painting style, no calligraphy, no seals, no Chinese characters, no Latin letters."
     },
     {
       "kind": "item",
@@ -2199,7 +2199,7 @@
       "name": "托納的頭飾",
       "seed": 7313,
       "transparent": true,
-      "prompt": "A feather headdress of long green quetzal plumes on a gold wire ring, half the plumes broken."
+      "prompt": "A Mexica feather headdress: a crown of long resplendent quetzal tail plumes: very long, narrow, flowing emerald-green feathers with a metallic blue-green sheen, smooth and tapering to a point, with no eye spots fixed upright in a band of gold and red cloth, half of the plumes snapped and drooping. Not peacock feathers, no eye spots."
     },
     {
       "kind": "item",
@@ -2213,14 +2213,14 @@
       "name": "奇亞籽水",
       "seed": 7315,
       "transparent": true,
-      "prompt": "A gourd cup of water with swollen chia seeds."
+      "prompt": "A round hollowed brown calabash gourd cup, seen from slightly above, filled with water in which many small swollen grey chia seeds float, each with a clear jelly-like coat. Natural gourd only: no glass, no vase."
     },
     {
       "kind": "item",
       "name": "湖底泥",
       "seed": 7316,
       "transparent": true,
-      "prompt": "A handful of dark wet lake-bottom mud."
+      "prompt": "A handful of soft, wet, glossy black-brown lake mud slumped in a shapeless heap, smeared and oozing, with bits of water weed and reed stuck in it. Soft wet mud, not a stone block, not a brick."
     },
     {
       "kind": "item",
@@ -2283,7 +2283,7 @@
       "name": "沒有被填平的水道",
       "seed": 7325,
       "transparent": true,
-      "prompt": "A small clay jar of clear lake water."
+      "prompt": "A small round unglazed reddish-brown Mexica clay jar with a wide mouth, filled to the brim with clear blue-green lake water, a drop running down its side. Fired clay only: not glass, not a glass jar."
     },
     {
       "kind": "item",
@@ -2325,21 +2325,21 @@
       "name": "新紙",
       "seed": 7331,
       "transparent": true,
-      "prompt": "A crisp sheet of white European paper."
+      "prompt": "A single sheet of bright white 16th-century European laid paper, floating and gently curling like a leaf in the air, thin and slightly translucent, faint parallel lines of the paper mould visible in it, crisp clean edges. Blank, white and empty; it is the whole picture."
     },
     {
       "kind": "item",
       "name": "沒有燒完的一頁",
       "seed": 7332,
       "transparent": true,
-      "prompt": "A small piece of bark paper with burnt edges and half a day-sign glyph; no readable text."
+      "prompt": "A small piece of rough beige amate bark paper with burnt blackened edges; on it, half of one Aztec calendar day-sign painted in the flat codex style: a stylized rabbit head in bold black outline filled with red, next to a row of small round dots. No Chinese characters, no calligraphy, no letters."
     },
     {
       "kind": "item",
       "name": "羽毛的聖像",
       "seed": 7333,
       "transparent": true,
-      "prompt": "A small feather mosaic image of a haloed figure made of iridescent feathers."
+      "prompt": "A small rectangular framed picture made in Mexica feather mosaic technique: a Christian saint in a long robe with a golden halo, standing upright and facing forward, the whole image built from tiny pieces of iridescent blue, green and turquoise feathers glued edge to edge like a mosaic, in a plain wooden frame. A flat picture of a human saint, not a bird."
     },
     {
       "kind": "item",
@@ -2360,7 +2360,7 @@
       "name": "香腸麵包",
       "seed": 7336,
       "transparent": true,
-      "prompt": "A dark rye bread roll with a thick sausage."
+      "prompt": "A long split dark German rye bread roll with a thick grilled brown sausage lying inside it, the sausage clearly visible poking out at both ends, on a scrap of brown paper."
     },
     {
       "kind": "item",
@@ -2381,7 +2381,7 @@
       "name": "電報紙條",
       "seed": 7339,
       "transparent": true,
-      "prompt": "A strip of paper tape with printed dots and dashes."
+      "prompt": "Seen from directly above: one long thin narrow strip of pale paper tape lying in loose loops and curls, printed along its length with small black dots and dashes. Only the paper tape, curling across empty space."
     },
     {
       "kind": "item",
@@ -2402,14 +2402,14 @@
       "name": "撕下來的動員令",
       "seed": 7342,
       "transparent": true,
-      "prompt": "Half of a torn official poster with a stamped seal; no readable text."
+      "prompt": "Seen from directly above: half of a torn printed paper poster lying flat, one side a ragged torn edge, with a heavy black printed border, a round official stamp and lines of faint blurred European typewriter or pen marks in the Latin alphabet, too small to read; no Chinese characters, no Japanese, no Asian script. Flat paper only."
     },
     {
       "kind": "item",
       "name": "沒有送出的電報",
       "seed": 7343,
       "transparent": true,
-      "prompt": "A telegram form strip with a few typed letters; text indistinct."
+      "prompt": "Seen from directly above: one thin strip of pale telegram paper tape lying flat and curling at the ends, with a few short words of faint blurred European typewriter or pen marks in the Latin alphabet, too small to read; no Chinese characters, no Japanese, no Asian script."
     },
     {
       "kind": "item",
@@ -2486,7 +2486,7 @@
       "name": "奧圖的地址",
       "seed": 7354,
       "transparent": true,
-      "prompt": "A small folded slip of paper with a handwritten address; text indistinct."
+      "prompt": "Seen from directly above: one small folded slip of paper lying flat and slightly opened, with two short lines of faint blurred European German pen handwriting marks in the Latin alphabet, too small to read; no Chinese characters, no Japanese, no Asian script."
     },
     {
       "kind": "item",
@@ -2528,7 +2528,7 @@
       "name": "踩過的泥",
       "seed": 7360,
       "transparent": true,
-      "prompt": "A clump of trench mud with a boot print."
+      "prompt": "A clump of wet dark grey-brown trench mud with two overlapping boot prints pressed into its top: the deep ridged sole tread of two different military boots, one with hobnail dots. Only mud and boot-tread patterns: no characters, no letters, no symbols."
     },
     {
       "kind": "item",
@@ -2626,7 +2626,7 @@
       "name": "停戰的電報",
       "seed": 7374,
       "transparent": true,
-      "prompt": "A small telegram form with indistinct handwriting; no readable text."
+      "prompt": "Seen from directly above: one small sheet of a printed 1918 telegram form lying flat, with ruled lines, a printed header bar and a few lines of faint blurred European pen or typewriter marks in the Latin alphabet, too small to read; no Chinese characters, no Japanese, no Asian script. Flat paper only: not a box, not a tin."
     },
     {
       "kind": "item",
@@ -2654,21 +2654,21 @@
       "name": "名冊的一頁",
       "seed": 7378,
       "transparent": true,
-      "prompt": "A single torn page from a ledger, lines of indistinct handwriting, slightly windblown; no readable text."
+      "prompt": "Seen from directly above: one single torn page from an old ledger lying flat with a slight curl, ruled columns and lines filled with faint blurred European pen or typewriter marks in the Latin alphabet, too small to read; no Chinese characters, no Japanese, no Asian script."
     },
     {
       "kind": "item",
       "name": "沒有射出的子彈",
       "seed": 7379,
       "transparent": true,
-      "prompt": "Five old brass rifle cartridges lying in an open palm-sized cloth."
+      "prompt": "Five old brass rifle cartridges with rounded copper-jacketed tips lying side by side on a small square of khaki cloth. Only the cartridges and the cloth: no hands, no fingers, no people."
     },
     {
       "kind": "item",
       "name": "無面書記的鉛筆",
       "seed": 7380,
       "transparent": true,
-      "prompt": "A short worn pencil stub with a flattened tip."
+      "prompt": "A short stubby wooden pencil of the early 20th century, about a finger long: a hexagonal painted wooden body worn and chewed, with a blunt, flattened grey graphite tip. Clearly a pencil."
     },
     {
       "kind": "item",

@@ -65,7 +65,7 @@
       "kind": "cg",
       "name": "兩架鐵鳥",
       "seed": 14404,
-      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: over the bay of Tsingtao, a Japanese seaplane with floats and a German monoplane with dove-shaped wings circle each other in the sky above a seaplane carrier ship and a crane; seen from the shore. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
+      "prompt": "Shandong and Tsingtao (Qingdao), China, autumn 1914: over the bay of Tsingtao, two flimsy 1914 aircraft of wood, wire and pale canvas circle each other in the sky: a Japanese Maurice Farman pusher biplane seaplane, an open box-kite frame of thin struts and wires with two long floats underneath and the propeller behind the pilot; and a German Rumpler Taube monoplane whose thin translucent wings are shaped like a dove's wings with curved-back tips and a bird-like fanned tail; no roundels, no red circles, no painted insignia, no enclosed cockpits, no WWII aircraft above a seaplane carrier ship and a crane; seen from the shore. Japanese soldiers in khaki uniforms with puttees, German marines in dark blue uniforms, Chinese villagers in padded cotton jackets and trousers. No gore, no readable text, no later symbols."
     },
     {
       "kind": "char",
@@ -209,7 +209,7 @@
       "kind": "char",
       "name": "湯米",
       "seed": 14207,
-      "prompt": "A young British infantry private of 1914, about 20 years old, friendly freckled face, wearing a khaki service uniform, soft khaki cap, woollen scarf and puttees, a brass button missing from his tunic, smiling shyly; full body, standing, Flanders winter. No readable text."
+      "prompt": "A young British infantry private of 1914, about 20 years old, friendly freckled face, wearing a khaki service uniform, soft khaki cap, woollen scarf and puttees, a brass button missing from his tunic, smiling shyly; head and shoulders bust portrait, framed from the chest up like the other character portraits, Flanders winter. No readable text."
     },
     {
       "kind": "enemy",
@@ -323,7 +323,7 @@
       "kind": "cg",
       "name": "修道院裡的鋼琴",
       "seed": 14408,
-      "prompt": "Night in a convent chapel turned field hospital, April 1915: a young English nurse in a white apron, hair pinned up, playing an old upright piano by candlelight, wounded soldiers on stretchers resting quietly around her, one soldier in a red fez listening; gentle and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
+      "prompt": "Night in a convent chapel turned field hospital, April 1915: a young English nurse in a white apron, hair pinned up, playing an old upright piano by candlelight, soldiers resting quietly on stretchers around her under grey wool blankets pulled up to their chests, only clean white bandages visible, no blood, one soldier in a red fez listening; gentle and sorrowful. Spring 1915. No modern objects, no readable text, no Nazi or later symbols, no gore."
     },
     {
       "kind": "bg",
