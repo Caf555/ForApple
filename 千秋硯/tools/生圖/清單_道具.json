@@ -7,7 +7,7 @@
     ]
   },
   "style": {
-    "item": "Still-life illustration of a single object in traditional Chinese ink wash with light watercolor tints, clean confident brushwork, soft washes, muted earthy palette with small accents of color, the object centered and filling about two thirds of the frame, seen from a slight three-quarter angle, single object only, isolated on a fully transparent background, no background, no shadow box, no frame, no text."
+    "item": "Still-life illustration of a single object in traditional Chinese ink wash with light watercolor tints, clean confident brushwork, soft washes, muted earthy palette with small accents of color, the object centered and filling about two thirds of the frame, seen from a slight three-quarter angle, single object only, isolated on a fully transparent background, no background, no frame, no text."
   },
   "items": [
     {
@@ -1534,14 +1534,14 @@
       "name": "一九五一年的合照",
       "seed": 7218,
       "transparent": true,
-      "prompt": "A small old black-and-white photograph of a teacher with schoolchildren in front of a wooden classroom; faces tiny and indistinct."
+      "prompt": "A small old black-and-white paper photograph with a white scalloped border, lying flat and slightly curled at one corner: it shows a young teacher standing with a row of schoolchildren in front of a wooden classroom, their faces tiny and indistinct; creased and faded. A flat paper print only: not attached to any object, not on a jar or box."
     },
     {
       "kind": "item",
       "name": "遺書的抄本",
       "seed": 7219,
       "transparent": true,
-      "prompt": "A notebook page with careful handwritten copying in ink; text indistinct."
+      "prompt": "A small notebook lying open, seen from a low side angle so the page is strongly foreshortened, the page covered with lines of tiny careful handwriting in ink that are blurred and too small to read. No readable characters, no legible words."
     },
     {
       "kind": "item",
@@ -1590,21 +1590,21 @@
       "name": "紙的描本",
       "seed": 7226,
       "transparent": true,
-      "prompt": "A modern notebook page with careful ink tracings of unfamiliar flowing script written right to left; marks indistinct."
+      "prompt": "A small modern notebook lying open, seen from a low side angle so the page is strongly foreshortened, the page filled with long flowing right-to-left lines of connected curving pen strokes with small dots above and below, like Arabic script but blurred and too small to read. No Chinese characters, no Latin letters, nothing legible."
     },
     {
       "kind": "item",
       "name": "第一張紙",
       "seed": 7227,
       "transparent": true,
-      "prompt": "A single thin sheet of handmade paper, translucent fibers visible against light."
+      "prompt": "One thin flat sheet of pale cream handmade paper floating at a slight tilt, glowing softly as light shines through it, so the fine tangled plant fibres inside the paper are visible like faint threads; soft, uneven, slightly wavy deckled edges. The whole picture is just this single thin sheet of paper."
     },
     {
       "kind": "item",
       "name": "撕掉的約",
       "seed": 7228,
       "transparent": true,
-      "prompt": "A document torn in two, the halves placed together showing the tear."
+      "prompt": "A single flat sheet of old handmade paper torn into two halves along a jagged tear, the two halves lying flat side by side, almost touching, so the zigzag torn edge is clearly visible; faint blurred ink lines on the paper. Only a flat torn sheet: not a book, not a binding."
     },
     {
       "kind": "item",
@@ -1625,7 +1625,7 @@
       "name": "馬奶",
       "seed": 7231,
       "transparent": true,
-      "prompt": "A leather flask of mare's milk with a wooden stopper."
+      "prompt": "A traditional steppe leather flask for mare's milk: a flat, rounded pouch-shaped bottle sewn from dark brown leather with visible stitching along its edges and simple stamped decoration, a short narrow neck plugged with a wooden stopper and a leather carrying strap; a few white drops of milk near the neck. Not glass, not ceramic."
     },
     {
       "kind": "item",
@@ -1646,7 +1646,7 @@
       "name": "兩面旗",
       "seed": 7234,
       "transparent": true,
-      "prompt": "A small triangular banner on a short pole, its two sides painted differently, no readable text."
+      "prompt": "A small ragged triangular cloth pennant of undyed tan wool on a short rough wooden stick stuck into the ground, twisted by the wind so both sides show: one side dyed dark indigo with a simple pale crescent-and-dots pattern, the other side rust-red with a pale zigzag border. Muted earthy natural dyes, frayed edges, an ancient steppe nomad pennant; only simple patterns, no writing."
     },
     {
       "kind": "item",
@@ -1660,7 +1660,7 @@
       "name": "杜環的一頁",
       "seed": 7236,
       "transparent": true,
-      "prompt": "A single page of handmade paper with water-blurred ink brush notes and a tiny sketched route map; marks indistinct."
+      "prompt": "One thin loose page of old yellowed handmade paper floating at a slight tilt, gently curling at one corner, one edge ragged where it was torn out; on the paper itself only faint water-blurred brush strokes and a tiny hand-drawn route map of a winding ink line linking small dots. The paper is the only object; nothing is drawn standing on it."
     },
     {
       "kind": "item",
@@ -1702,7 +1702,7 @@
       "name": "霓裳殘譜",
       "seed": 7242,
       "transparent": true,
-      "prompt": "Half of a torn sheet of an ancient Chinese music score with indistinct notation."
+      "prompt": "Half of a torn sheet of old handmade paper lying flat, with a jagged torn edge down one side, covered in columns of small faded blurred ink brush marks of an ancient Tang dynasty Chinese music score (gongche notation), too faint and small to read. No Western staff lines, no five-line staves, no musical notes, no treble clefs."
     },
     {
       "kind": "item",
@@ -1744,21 +1744,21 @@
       "name": "四門鑰",
       "seed": 7248,
       "transparent": true,
-      "prompt": "Four small bronze keys on a single ring, pointing in four directions."
+      "prompt": "Four small simple ancient bronze keys of the 8th century: each a short flat bronze bar with a few simple teeth at one end and a small ring at the other, dull green-brown patina, threaded together on one leather thong and fanned out pointing in four different directions. Not modern keys: no round ornate bows, no shaped steel bits."
     },
     {
       "kind": "item",
       "name": "歸心",
       "seed": 7249,
       "transparent": true,
-      "prompt": "A small clay ball painted with an arrow pointing one way."
+      "prompt": "A small hand-rolled ball of sun-dried clay, slightly uneven, about the size of a walnut, with a simple arrow painted on it in black ink, lying alone. Just the little ball: not a jar, not a pot, not a vessel."
     },
     {
       "kind": "item",
       "name": "圓城的設計圖",
       "seed": 7250,
       "transparent": true,
-      "prompt": "A sheet of handmade paper with an ink plan of a perfectly round city with two rings of walls and four gates; no readable text."
+      "prompt": "A single rectangular sheet of handmade paper lying flat, slightly curled at the corners, with a simple ink line drawing seen from directly above: a large perfect circle made of two concentric rings, four small gates spaced evenly around the rings, and a small square in the very centre. A flat top-down plan diagram only: no perspective, no 3D buildings, no landscape, no readable text."
     },
     {
       "kind": "item",
@@ -1793,35 +1793,35 @@
       "name": "再生紙",
       "seed": 7255,
       "transparent": true,
-      "prompt": "A sheet of recycled handmade paper with faint traces of old writing in its fibers; marks indistinct."
+      "prompt": "One thick sheet of coarse grey-cream handmade paper floating at a slight tilt, gently curling at one corner, deckled uneven edges; the paper is blank except for faint pale-grey blotchy shadows of old ink marks blurred deep inside its fibres, like a faded watermark. The paper is the only object; it is plain and flat, nothing else at all."
     },
     {
       "kind": "item",
       "name": "紙中字",
       "seed": 7256,
       "transparent": true,
-      "prompt": "A small sheet of paper held to light showing a faint thicker shape inside the paper; no readable text."
+      "prompt": "A small square sheet of thin handmade paper held up flat against a bright light, glowing; inside the paper a faint thicker abstract shape of denser pulp shows like a watermark, a simple soft-edged symbol. Nothing written on it, no ink, no readable text, no Chinese characters, no letters."
     },
     {
       "kind": "item",
       "name": "羊皮名冊",
       "seed": 7257,
       "transparent": true,
-      "prompt": "An old rolled parchment register partly open with columns of indistinct flowing script and one small ink character beside a line; no readable text."
+      "prompt": "An old roll of pale cream parchment partly unrolled on a table, with neat columns of tiny faded brown ink marks in flowing right-to-left lines like Arabic script, blurred and too small to read, and next to one line a tiny blurred ink mark. No Chinese characters, no Latin letters, no Western printing."
     },
     {
       "kind": "item",
       "name": "小竹簾",
       "seed": 7258,
       "transparent": true,
-      "prompt": "A tiny bamboo paper-making mould, palm-sized, with a few drops of white pulp."
+      "prompt": "A tiny palm-sized papermaking mould: a small rectangular screen woven from very thin parallel bamboo strips laced with thread, held in a thin wooden frame, a thin film of wet white pulp on its surface and a few white drops. Looks like a miniature sushi mat in a frame: not a book, not wooden boards."
     },
     {
       "kind": "item",
       "name": "栗子餅",
       "seed": 7259,
       "transparent": true,
-      "prompt": "A flat rustic chestnut-flour cake with rosemary on top, cut into squares."
+      "prompt": "A thin flat round Tuscan castagnaccio chestnut cake, only a finger thick, dark brown and slightly cracked on top, sprinkled with rosemary needles and a few pine nuts, one wedge cut out, on a plain wooden board. Thin and flat like a dense pancake, not a tall block."
     },
     {
       "kind": "item",
@@ -1849,7 +1849,7 @@
       "name": "松鼠毛筆",
       "seed": 7263,
       "transparent": true,
-      "prompt": "A fine Renaissance paintbrush made of squirrel hair bound to a quill and stick, a tiny C carved on the handle."
+      "prompt": "A slender Renaissance European painter's brush lying diagonally: a long thin round wooden handle, at its tip a small pointed tuft of reddish-brown squirrel hair bound inside a short section of white goose-feather quill tied with thread, a tiny letter C scratched near the end of the handle. No block, no Chinese brush."
     },
     {
       "kind": "item",
@@ -1891,7 +1891,7 @@
       "name": "炸甜餅",
       "seed": 7269,
       "transparent": true,
-      "prompt": "Strips of fried carnival dough dusted with powdered sugar."
+      "prompt": "A small heap of Italian carnival fritters (cenci): thin, flat, crisp ribbons of fried pastry dough with bubbly blistered surfaces and wavy cut edges, some tied in loose knots, heavily dusted with white powdered sugar, on a plain earthenware plate. Thin and flat like crisp pastry ribbons, not thick sticks, not Chinese fried dough."
     },
     {
       "kind": "item",
@@ -1905,14 +1905,14 @@
       "name": "碎鏡片",
       "seed": 7271,
       "transparent": true,
-      "prompt": "A shard of an old hand mirror reflecting a single eye."
+      "prompt": "One small jagged broken shard of an old silver-backed glass mirror, a sharp irregular triangle with no frame and no handle, lying flat at an angle; in its reflection a single human eye looks out."
     },
     {
       "kind": "item",
       "name": "琴弦",
       "seed": 7272,
       "transparent": true,
-      "prompt": "A coiled lute string of gut on a wooden peg."
+      "prompt": "A single coiled lute string of pale yellowish twisted gut, loosely coiled into a ring, one end tied around a small wooden tuning peg. Only the string and one peg: no instrument, no lute body, no erhu."
     },
     {
       "kind": "item",
@@ -1926,14 +1926,14 @@
       "name": "有影子的白衣",
       "seed": 7274,
       "transparent": true,
-      "prompt": "A small white child's tunic with a little smudge of dirt on the hem."
+      "prompt": "A small plain white linen child's tunic of 15th-century Italy, simple and long, with a round neckline, long loose sleeves and a small sewn red cloth cross on the chest, laid flat, a little smudge of grey ash on the hem. No buttons, no knot buttons, no mandarin collar, no Chinese shirt."
     },
     {
       "kind": "item",
       "name": "虛榮之物的清單",
       "seed": 7275,
       "transparent": true,
-      "prompt": "A folded paper list with many lines of careful handwriting; marks indistinct."
+      "prompt": "A single folded sheet of old European paper lying open, with many short lines of brown ink handwriting in a cramped heavy hand, blurred and too small to read. Western cursive pen strokes only: no Chinese characters, no brush calligraphy, nothing legible."
     },
     {
       "kind": "item",
@@ -1947,7 +1947,7 @@
       "name": "蜂蜜水",
       "seed": 7277,
       "transparent": true,
-      "prompt": "A clay cup of warm honey water with a honey dipper."
+      "prompt": "A simple glazed earthenware cup of warm golden honey water, a little steam rising, a few drops of honey on the rim. Just the cup."
     },
     {
       "kind": "item",
@@ -1961,7 +1961,7 @@
       "name": "亞麻畫布",
       "seed": 7279,
       "transparent": true,
-      "prompt": "A small square of raw linen canvas with frayed edges."
+      "prompt": "One thin flat square piece of raw undyed linen cloth floating at a slight tilt, gently curling at one corner, its coarse woven texture clearly visible, loose frayed threads along the edges. The cloth is the only object; it is soft, thin and flat."
     },
     {
       "kind": "item",
@@ -1982,7 +1982,7 @@
       "name": "半頁詩",
       "seed": 7282,
       "transparent": true,
-      "prompt": "Half a page of an old handwritten poem with burnt curled edges; text indistinct."
+      "prompt": "Half a page of old cream European paper floating at a slight tilt, gently curling, its torn edge burnt brown and curled; on it only a few lines of faded brown ink cursive handwriting, blurred and too small to read. The burnt paper is the only object; nothing is drawn on it except faint handwriting."
     },
     {
       "kind": "item",
@@ -2010,7 +2010,7 @@
       "name": "鐘銅屑",
       "seed": 7286,
       "transparent": true,
-      "prompt": "A few curls of bronze shavings scraped from a bell."
+      "prompt": "A small loose heap of tiny curly metal shavings, golden-brown bronze filings and thin spiral curls like pencil-sharpener shavings, a few flecks of green patina, scattered on nothing. Just a little pile of shavings."
     },
     {
       "kind": "item",
@@ -2066,7 +2066,7 @@
       "name": "原來的那一句",
       "seed": 7294,
       "transparent": true,
-      "prompt": "A small slip of paper with a single line of handwriting; text indistinct."
+      "prompt": "Seen from directly above, flat top-down view: one small narrow horizontal strip of old cream Italian paper lying perfectly flat, its ends slightly curled up, edges a little torn; on it one short line of faded brown ink Italian Renaissance cursive handwriting in the Latin alphabet, joined looping letters written with a quill, blurred so the words cannot be read. A thin flat paper strip and empty white space around it; no Chinese characters, no seal."
     },
     {
       "kind": "item",
@@ -2080,7 +2080,7 @@
       "name": "無面書記的羽毛筆",
       "seed": 7296,
       "transparent": true,
-      "prompt": "A long dark goose-feather quill with a dry ink-stained nib."
+      "prompt": "A long dark grey goose feather lying diagonally, its bare white hollow quill shaft at the lower end simply cut at an angle into a sharp point and stained black with dried ink, like a medieval scribe's quill. The tip is the feather's own pale shaft, ending in a cut point."
     },
     {
       "kind": "item",

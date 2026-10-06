@@ -186,7 +186,7 @@
       "kind": "enemy",
       "name": "募兵告示",
       "seed": 11305,
-      "prompt": "A huge paper recruitment notice torn from a wall, flapping like a great bird, its indistinct brush marks stretching into long black roads that reach out to grab people.",
+      "prompt": "A huge sheet of old torn paper ripped from a wall, flapping like a great bird with ragged edges, covered in blurred black ink brush smudges that cannot be read; from its lower edge long black ink strokes stream out like dirt tracks and grasping fingers reaching to grab people. Ink-wash style. No asphalt road, no painted lines, no highway, nothing modern.",
       "transparent": true
     },
     {
@@ -228,7 +228,7 @@
       "kind": "enemy",
       "name": "葛邏祿之變",
       "seed": 11311,
-      "prompt": "A spectral horseman in fur garments wheeling his horse around, carrying a banner whose two sides show different designs, a dark wind swirling at the hooves; no readable text.",
+      "prompt": "A spectral steppe horseman in fur garments wheeling his horse around, carrying a long pole with a cloth banner whose two sides show different plain patterns: one side a simple wolf-head silhouette, the other side plain stripes; a dark wind swirling at the hooves. The banner carries only pictures and colours: no Chinese characters, no letters, no writing of any kind.",
       "transparent": true
     },
     {

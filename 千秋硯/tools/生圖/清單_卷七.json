@@ -143,7 +143,7 @@
       "kind": "enemy",
       "name": "亞諾河",
       "seed": 12302,
-      "prompt": "A surge of green-brown river water rising in the shape of a figure carrying tiny shop roofs from a bridge on its shoulders.",
+      "prompt": "A surge of green-brown river water rising in the shape of a giant figure, carrying on its shoulders a broken section of the Ponte Vecchio in Florence: a stone arch bridge lined with small Italian Renaissance shops of ochre and yellow plaster with terracotta tile roofs, wooden shutters and little overhanging back rooms on wooden brackets. Tuscan architecture only: no East Asian roofs, no pagoda-style curved eaves.",
       "transparent": true
     },
     {
@@ -332,7 +332,7 @@
       "kind": "enemy",
       "name": "改過的供詞",
       "seed": 12329,
-      "prompt": "A long scroll of handwriting whose words crawl like insects and rearrange themselves, a wet quill hovering over it; text indistinct.",
+      "prompt": "A long sheet of old European paper half unrolled, covered with lines of brown ink handwriting whose tiny marks crawl off the page like black insects and rearrange themselves; above it hovers a wet white goose-feather quill pen with a split nib, dripping ink. A feather quill only: no Chinese brush. Text indistinct, nothing readable.",
       "transparent": true
     },
     {

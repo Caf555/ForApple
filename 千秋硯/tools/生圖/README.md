@@ -119,6 +119,10 @@
 - **文字**：只要描述裡出現「寫字」「筆記本上的字」，畫面就會出現文字。改寫成闔上的書、正在聽的動作。
 - **人物年紀與性別**：圖生圖（`ref`）會強烈保留原圖的臉，年紀很難改；少年容易被畫成女孩。請明寫臉型、髮型、服裝等特徵；需要長得「不一樣」的角色（例如女兒）就不要用 `ref`。
 - **要先對劇本**：道具、插圖的描述要跟劇本和 `js/data.js` 的說明一致（例如十七的骨哨是「一截羊骨，上面鑽了三個小洞」）。
+- **共用的時代說明會把人塞進每張圖**：在每張描述後面附同一段「衣著是……、學童穿褪色制服……」，模型就會在每張圖都畫出那些人，連寫了「no people」的空房間、牢房也一樣（中章的客廳、看守所都中過）。沒有人的場景，**不要附人物衣著的說明**，改成只寫建築與光線，並在最後寫「EMPTY ROOM: absolutely no people, no children, no figures」。
+- **非中文的古文字**：模型一看到「文字、刻字、字跡」就容易畫成中文或韓文。要寫出那種文字的**筆畫長相**，例如婆羅米文寫成「plus signs, small circles, vertical strokes with a tiny hook, right-angle brackets, dots」，象形文字寫成「small birds, eyes, reeds, water lines」，楔形文字寫成「tiny triangular wedge-shaped dents」，最後再補一句「no Chinese characters, no Korean hangul, no Latin letters」。只是背景裝飾的文字，寫「worn and blurred, cannot be read」。
+- **場景人數與性別**：多人的插圖容易多出人、少了人，或把男生畫成女生。請寫「exactly four people」，再逐一寫出每個人是誰、男或女、在畫面哪裡；只出現在畫裡、石片上的小人物，要寫「exist only as drawings on the flake, not as people in the scene」。
+- **頭像裡的手**：拿著小東西（筆、夾在耳朵上的筆）的手很常畫壞。頭像不一定要拿東西；畫不好時改成「head and shoulders, hands out of frame, nothing held」，用臉上的顏料、衣服等特徵表現身分（例如梅芮）。
 - 改了描述再重畫時，加上 `--seed-offset` 換一個種子，比較容易跳出原本的構圖。
 
 ## 四、指令一覽

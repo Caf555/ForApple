@@ -17,19 +17,19 @@
       "kind": "bg",
       "name": "沈家的客廳",
       "seed": 10103,
-      "prompt": "Tainan, Taiwan, in 1952 under martial law: a small modest living room of a schoolteacher's home at night: a treadle sewing machine in the corner, a low table with a book wrapped in newspaper and tea cups, a bare light bulb, a bedroom door slightly open, warm but fragile atmosphere. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+      "prompt": "Tainan, Taiwan, in 1952: interior of a small modest living room of a schoolteacher's home at night, seen from inside: plaster walls and a wooden floor, a treadle sewing machine in the corner, a low wooden table with a book wrapped in newspaper and two tea cups, a single bare light bulb hanging from a cord, a bedroom door slightly open, a window with wooden frames showing only darkness outside; warm but fragile atmosphere. Japanese-colonial-era wooden house interior. EMPTY ROOM: absolutely no people, no children, no figures, no faces anywhere in the picture. Muted, slightly faded colors like an old photograph. No readable text anywhere."
     },
     {
       "kind": "bg",
       "name": "沒有窗的房間",
       "seed": 10104,
-      "prompt": "Tainan, Taiwan, in 1952 under martial law: a small bare windowless room with grey walls, a single bare light bulb hanging from the ceiling always on, one wooden table with a stack of blank writing paper and a pen, one empty wooden chair; oppressive, still, no people. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+      "prompt": "Tainan, Taiwan, in 1952: interior of a small bare closed room with four plain grey plaster walls and no windows at all, no doors open, no view outside; a single bare light bulb hanging from the ceiling, always on; one plain wooden table with a stack of blank writing paper and a pen, one empty wooden chair; oppressive and still. EMPTY ROOM: absolutely no people, no children, no figures, no faces anywhere in the picture. Muted, slightly faded colors like an old photograph. No readable text anywhere."
     },
     {
       "kind": "bg",
       "name": "看守所",
       "seed": 10105,
-      "prompt": "Taipei, Taiwan, in 1953: a crowded old detention cell with straw mats on the floor, thin light through a high barred window, a small low wooden box used as a writing surface with a thin sheet of paper and a short pencil; quiet and sorrowful, no people visible. Clothing is simple 1950s Taiwanese everyday wear: white shirts and dark trousers, plain cotton dresses, school children barefoot in faded uniforms. Buildings are Japanese-colonial-era wooden structures and old Tainan brick shophouses. Muted, slightly faded colors like an old photograph. No readable text anywhere, no modern objects."
+      "prompt": "Taipei, Taiwan, in 1953: interior of an old detention cell seen from inside: bare concrete walls, worn straw mats laid across the floor, thin light falling from one small high barred window, a small low wooden box used as a writing surface with one thin sheet of paper and a short pencil on it; quiet and sorrowful. EMPTY ROOM: absolutely no people, no children, no figures, no faces anywhere in the picture. Muted, slightly faded colors like an old photograph. No readable text anywhere."
     },
     {
       "kind": "char",
@@ -117,7 +117,7 @@
       "kind": "cg",
       "name": "沒有寄出的信",
       "seed": 10403,
-      "prompt": "Taipei, Taiwan, in 1953: close-up of a thin sheet of paper with faint indistinct pencil handwriting being placed by a guard's hand into a brown manila case folder with a red stamp mark, a grey metal filing cabinet behind; quiet and devastating. Muted, slightly faded colors like an old photograph. No readable text anywhere."
+      "prompt": "Taipei, Taiwan, in 1953: extreme close-up on a desk: only one man's hand in a khaki uniform sleeve enters the frame from the left, placing a thin folded sheet of paper with faint, blurred pencil lines into an open brown manila case folder with a red stamp mark; a grey metal filing cabinet blurred in the background; no faces, no other people; quiet and devastating. Muted, slightly faded colors like an old photograph. No readable text anywhere."
     }
   ]
 }
