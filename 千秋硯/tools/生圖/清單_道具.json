@@ -2696,7 +2696,7 @@
       "name": "舊紙片",
       "seed": 7384,
       "transparent": true,
-      "prompt": "A small torn scrap of old paper with one indistinct handwritten mark."
+      "prompt": "Seen from directly above, flat top-down view: one small torn scrap of yellowed old paper lying flat, edges ragged, with a single faint blurred handwritten ink mark in its centre that cannot be read. Only the thin flat scrap of paper."
     },
     {
       "kind": "item",
@@ -2717,14 +2717,14 @@
       "name": "手縫的本子",
       "seed": 7387,
       "transparent": true,
-      "prompt": "A small hand-sewn notebook made of mismatched scraps of paper and labels."
+      "prompt": "A small hand-sewn notebook lying closed at a slight angle: its pages are mismatched scraps of coloured wrapping paper and the backs of product labels in different sizes, stitched together along the spine with visible thick thread; the cover is a plain scrap of patterned wrapping paper with no title. No writing visible anywhere, no characters, no letters."
     },
     {
       "kind": "item",
       "name": "裂縫裡的星星",
       "seed": 7388,
       "transparent": true,
-      "prompt": "A small white square patch with a tiny round hole, one star visible through it."
+      "prompt": "Seen from directly above, flat top-down view: one thin flat square of soft white fabric patch lying flat, with a small torn round hole in its centre; through the hole a tiny black patch of night sky with one bright white star. Thin and flat, like a piece of cloth."
     },
     {
       "kind": "item",
@@ -2738,7 +2738,7 @@
       "name": "同意書的一角",
       "seed": 7390,
       "transparent": true,
-      "prompt": "A torn corner of a glowing consent form with one indistinct character."
+      "prompt": "Seen from directly above, flat top-down view: one torn triangular corner of a thin glowing pale-blue translucent card, like a piece of a holographic screen, with faint glowing lines and one blurred glowing mark that cannot be read. Thin and flat."
     },
     {
       "kind": "item",
@@ -2752,7 +2752,7 @@
       "name": "哭和笑",
       "seed": 7392,
       "transparent": true,
-      "prompt": "Two small drops, one a tear and one a sparkle of laughter, joined by a single thread."
+      "prompt": "A small simple charm: one fine silver thread tied in a loose loop, with two small glass beads strung on it side by side, one a clear pale-blue teardrop-shaped bead and the other a little golden star-shaped bead that sparkles. The thread and the two beads are the whole object, lying on empty space."
     },
     {
       "kind": "item",
@@ -2780,7 +2780,7 @@
       "name": "上游的一滴水",
       "seed": 7396,
       "transparent": true,
-      "prompt": "A single glowing drop of water floating, a tiny backward current inside it."
+      "prompt": "Minimal ink-wash still life on empty white space: one single large round drop of clear water hanging alone in mid-air, glowing softly blue, with a tiny swirl of current flowing backwards inside it and a faint ripple of light around it. Only the floating drop: no stone, no rock, no surface beneath it, no shell, no container."
     },
     {
       "kind": "item",
@@ -2801,7 +2801,7 @@
       "name": "鏡片",
       "seed": 7399,
       "transparent": true,
-      "prompt": "A small thin shard of glowing mirror."
+      "prompt": "One small thin jagged shard of broken mirror glass, an irregular sharp-edged triangle, floating at a slight tilt and softly glowing with silver-white light. No frame, no stand, no decorations."
     },
     {
       "kind": "item",
@@ -2829,14 +2829,14 @@
       "name": "銀色的網",
       "seed": 7403,
       "transparent": true,
-      "prompt": "A small torn piece of glowing silver net."
+      "prompt": "One small flat torn piece of fine glowing silver mesh net, like a scrap of chain-mail fabric, floating at a slight tilt with frayed broken strands at its torn edge. Only the flat scrap of net; not wrapped around anything, no vase."
     },
     {
       "kind": "item",
       "name": "一撇",
       "seed": 7404,
       "transparent": true,
-      "prompt": "A single short slanted ink brushstroke glowing on a black slate."
+      "prompt": "Seen from directly above, flat top-down view: one small rectangle of matte black slate lying flat, and on its surface a single short slanted brush stroke of glowing white ink, like the first falling-left stroke of a Chinese character, thick at the top and tapering to a point at the lower left. Only the slate and the one stroke."
     },
     {
       "kind": "item",
@@ -2864,7 +2864,7 @@
       "name": "小雨撕下的一頁",
       "seed": 7408,
       "transparent": true,
-      "prompt": "A folded torn page from a hand-sewn notebook made of mismatched paper."
+      "prompt": "Seen from directly above, flat top-down view: one single page torn from a hand-sewn notebook, a scrap of patterned wrapping paper, folded in half and then in half again into a small square, lying flat, its torn edge with little stitch holes visible. Only the folded page; nothing written on the outside."
     },
     {
       "kind": "item",
@@ -2878,7 +2878,7 @@
       "name": "被拿走的字",
       "seed": 7410,
       "transparent": true,
-      "prompt": "A single sheet of old paper with faint fading writing, damp at the edges."
+      "prompt": "Seen from directly above, flat top-down view: one single sheet of old cream paper lying flat, damp and wavy at the edges, with a few rows of extremely faint, washed-out grey ink smudges that have almost faded away and cannot be read. Only the thin sheet."
     },
     {
       "kind": "item",
@@ -2899,7 +2899,7 @@
       "name": "找回來的調子",
       "seed": 7413,
       "transparent": true,
-      "prompt": "A small fragment of bark with a few musical-note-like marks, glowing softly."
+      "prompt": "A small curled fragment of brown bark floating in empty space, and rising from it a softly glowing golden wavy line like a thread of melody, gently rising and falling like a hill tune. No musical notes, no note symbols, no staff lines."
     },
     {
       "kind": "item",
@@ -2920,7 +2920,7 @@
       "name": "叫回來的名字",
       "seed": 7416,
       "transparent": true,
-      "prompt": "A small glowing slip of paper with an indistinct name, warm light around it."
+      "prompt": "Seen from directly above, flat top-down view: one small narrow slip of cream paper floating at a slight tilt, glowing with a warm golden light all around it, with one faint blurred brush mark on it that cannot be read. Only the glowing paper slip; no box, no block."
     },
     {
       "kind": "item",
@@ -2948,14 +2948,14 @@
       "name": "透光的字",
       "seed": 7420,
       "transparent": true,
-      "prompt": "A thin sheet of paper held to light revealing a faint watermark-like character, indistinct."
+      "prompt": "Seen from directly above, flat top-down view: one thin flat sheet of pale handmade paper, gently curling at one corner, glowing softly as if backlit, and inside the paper a faint blurred darker shadow shape like a watermark. A flat thin sheet only, like a leaf of paper; nothing three-dimensional."
     },
     {
       "kind": "item",
       "name": "燻黑的鏡子",
       "seed": 7421,
       "transparent": true,
-      "prompt": "A small round hand mirror blackened by smoke, partly wiped clean."
+      "prompt": "A small antique hand mirror the size of a palm, lying at a slight angle: a thin round disc of polished bronze set in a delicate carved wooden frame with a slender carved handle, its glass face darkened grey-black with soot, and one finger-wide wiped streak across the face reflecting bright silver light. A dainty vanity mirror, slender and decorative."
     },
     {
       "kind": "item",
@@ -2983,7 +2983,7 @@
       "name": "東邊第一顆星",
       "seed": 7425,
       "transparent": true,
-      "prompt": "A single bright morning star in a pale dawn sky, small and glowing."
+      "prompt": "A small four-pointed star carved from clear crystal, the size of a coin, glowing from within with soft white and pale-gold light, rays of light spreading from its points like the morning star. The crystal star alone, floating; no box, no stand, no cup."
     }
   ]
 }

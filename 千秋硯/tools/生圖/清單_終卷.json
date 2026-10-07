@@ -25,7 +25,7 @@
       "kind": "enemy",
       "name": "漂流字",
       "seed": 16303,
-      "prompt": "A single large drifting brush-written character made of ink, wandering lost on dark water; the character is abstract and unreadable.",
+      "prompt": "A wandering lost shape on dark still water made of loose, broken black ink brush strokes: dots, hooks and sweeping lines drifting apart from each other like the scattered pieces of a character that has come undone, none of them forming any real character. Abstract ink fragments only: no readable Chinese character, no letters.",
       "transparent": true
     },
     {
@@ -93,7 +93,7 @@
       "kind": "enemy",
       "name": "鑿子的回聲",
       "seed": 16311,
-      "prompt": "A giant hand formed from hundreds of copper and iron chisels, old and new, gripping one great chisel.",
+      "prompt": "A giant ghostly hand rising from dark water, its fingers and palm formed from hundreds of long narrow stonemason chisels bundled together, old copper ones and newer iron ones, each a slim straight metal bar with a flat sharpened tip; the hand grips one great chisel. Chisels only: no axes, no hatchets, no hammers, no creature body.",
       "transparent": true
     },
     {
@@ -113,7 +113,7 @@
       "kind": "cg",
       "name": "往上飄的雪",
       "seed": 16404,
-      "prompt": "Sheets of paper bearing ink handprints, simple drawings of a goat and a river, and a few names, rising upward from a black sea like snow falling in reverse, faint figures below reaching up, a young man holding an inkstone. The same ink-wash painting style with light colors; dreamlike, quiet and solemn; no readable text."
+      "prompt": "Sheets of paper bearing only ink handprints and simple little drawings of a goat and a winding river, rising upward from a black sea like snow falling in reverse, faint figures below reaching up their hands, a young man in the middle holding an inkstone and looking up. The same ink-wash painting style with light colors; dreamlike, quiet and solemn. The picture contains only images: the paper sheets carry handprints and drawings but no writing; the empty sky around is plain blank paper colour; there is no inscription, no calligraphy, no poem, no signature and no seal anywhere in the picture, including the corners."
     },
     {
       "kind": "enemy",
@@ -174,7 +174,7 @@
       "kind": "enemy",
       "name": "剝落的標語",
       "seed": 16320,
-      "prompt": "Large red painted characters peeling off a white wall in flakes, forming a jagged creature; characters indistinct.",
+      "prompt": "A jagged creature made of hundreds of curling flakes and chips of old red paint peeling off a cracked white plaster wall, the red flakes swirling together into the shape of a crouching beast with a ragged outline; the red paint is broken into small random chips and curls with no strokes and no structure. Absolutely no characters, no writing, no letters, no symbols.",
       "transparent": true
     },
     {

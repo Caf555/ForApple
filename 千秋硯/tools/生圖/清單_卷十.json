@@ -36,7 +36,7 @@
       "kind": "char",
       "name": "小雨",
       "seed": 15202,
-      "prompt": "A 13-year-old East Asian girl with short cropped hair, slightly worn simple clothes, no wristband, holding a small hand-sewn notebook made of mismatched paper, curious brave eyes.",
+      "prompt": "A 13-year-old East Asian GIRL, clearly a girl with a soft girlish face and long eyelashes, short cropped black bob haircut just below the ears with a small hair clip, slightly worn simple clothes, no wristband, holding a small hand-sewn notebook made of mismatched paper, curious brave eyes.",
       "transparent": true
     },
     {
@@ -99,7 +99,7 @@
       "kind": "cg",
       "name": "彎到頭頂上的城",
       "seed": 15401,
-      "prompt": "A wide view from the ground of a giant ring-shaped space city: the street and white houses curving up and up until the city arches overhead upside down, an artificial blue sky in the middle, a young man in white clothes and a translucent ink-haired girl looking up in awe. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
+      "prompt": "A wide view from the ground of a giant ring-shaped space city: a clean tidy street lined with small white dome-roofed houses, green trees and gardens, the whole landscape of white domes and green parks curving up and up until the city arches overhead upside down, an artificial blue sky in the middle, a young man in white clothes and a translucent ink-haired girl looking up in awe. Year 2318, a gentle hopeful science-fiction look in the same ink-wash painting style; no logos, no readable text."
     },
     {
       "kind": "cg",
