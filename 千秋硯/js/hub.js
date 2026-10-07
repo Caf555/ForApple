@@ -623,10 +623,59 @@ export class Hub {
       opt('環境聲', 'ambSound', [true, false], ['開', '關'], v => { if (!v) this.ctx.audio.stopAmbience(); else { this.ctx.audio.amb = null; this.ui.setAmbient(this.ui.curTheme); } });
       opt('震動', 'vibrate', [true, false], ['開', '關'], v => { if (v) this.ui.vibrate(30); });
       opt('限時抉擇', 'timedChoice', [true, false], ['開', '關']);
+      this.offlineRow(body, self);
       body.appendChild(el('p', { class: 'muted small' }, '閱讀方式——逐句點擊：每句都要點一下。整頁：一次跑完一頁（遇到選項或最多約六句），點一下再跑下一頁；打字中點一下可以立刻顯示整頁。自動播放：依字數停留後自動往下，打開選單時會暫停。'));
       body.appendChild(el('p', { class: 'muted small' }, '限時抉擇：少數緊張的時刻，選項會倒數計時；時間到了，會替你選「遲疑」的那一個。關掉就不會倒數。對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。環境聲：雨聲、風聲、火堆、鳥叫、蟬聲、戰壕遠方的砲聲。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
       body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥。難度不影響任何結局條件，隨時可以切換。朗讀使用手機內建的語音，效果依裝置而定。'));
     });
+  }
+
+  // 「離線圖片」：把所有圖片先下載到這台裝置，沒有網路時也看得到
+  // 只在透過網址（https）開啟、瀏覽器支援時出現；本機單機版本來就讀得到所有圖片
+  offlineRow(body, self) {
+    if (!('caches' in window) || location.protocol !== 'https:') return;
+    const st = this.offline || (this.offline = { busy: false, done: 0, total: 0, failed: 0 });
+    st.view = self; // 進度更新到「目前開著」的設定面板
+    const s = this.ctx.settings;
+    let label = '下載全部圖片（約 70 MB）', note = '下載以後，沒有網路也看得到所有圖片。建議連上 Wi-Fi 再按。';
+    if (st.busy) { label = `下載中…… ${st.done}／${st.total}`; note = '可以繼續玩，下載會在背景進行。關掉遊戲的話，下次再按一次，會從剛才的地方接著下載。'; }
+    else if (s.offlineImgs) { label = '重新檢查並補齊圖片'; note = `已經下載過（${s.offlineImgs}）。圖片更新以後，可以再按一次補齊。`; }
+    if (!st.busy && st.failed) note = `有 ${st.failed} 張沒有下載成功，請再按一次。`;
+    const row = el('div', { class: 'set-row' }, el('b', {}, '離線圖片'),
+      el('div', { class: 'chips' }, el('button', { class: 'chip', disabled: st.busy, onclick: () => this.downloadImages() }, label)));
+    body.appendChild(row);
+    body.appendChild(el('p', { class: 'muted small' }, note));
+  }
+
+  async downloadImages() {
+    const st = this.offline;
+    if (st.busy) return;
+    Object.assign(st, { busy: true, done: 0, total: 0, failed: 0 });
+    const refresh = () => { if (st.view && st.view.el.isConnected) st.view.rebuild(); };
+    try {
+      const cache = await caches.open('qqy-img');
+      const res = await fetch('img/manifest.json', { cache: 'no-cache' });
+      await cache.put(res.url, res.clone());
+      const m = await res.json();
+      const urls = [];
+      // 大圖只存 800 寬的版本（離線時 1600 寬會自動改用它），頭像、敵人、道具存原圖
+      for (const k of ['bg', 'cg']) for (const n of m[k] || []) urls.push(this.ui.imgSrc(k, n, 800));
+      for (const k of ['char', 'enemy', 'item']) for (const n of m[k] || []) urls.push(this.ui.imgSrc(k, n));
+      const have = new Set((await cache.keys()).map(r => r.url));
+      st.total = urls.length; refresh();
+      for (let i = 0; i < urls.length; i += 6) {
+        await Promise.all(urls.slice(i, i + 6).map(async u => {
+          const abs = new URL(u, location.href).href;
+          if (!have.has(abs)) {
+            try { const r = await fetch(abs, { cache: 'no-cache' }); if (r.ok) await cache.put(abs, r); else st.failed++; } catch (e) { st.failed++; }
+          }
+          st.done++;
+        }));
+        if (i % 60 === 0) refresh();
+      }
+      if (!st.failed) { const d = new Date(); this.ctx.settings.offlineImgs = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`; this.ctx.saveSettings(); }
+    } catch (e) { st.failed = st.failed || 1; }
+    st.busy = false; refresh();
   }
 
   about() {

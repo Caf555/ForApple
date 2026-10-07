@@ -1,5 +1,7 @@
 // 離線快取：加入主畫面後，沒有網路也能玩
-const CACHE = 'qqy-v3.2.0';
+const CACHE = 'qqy-v3.2.1';
+// 設定裡「下載全部圖片」存放的地方；版本更新時不刪，免得玩家要重新下載
+const IMG_CACHE = 'qqy-img';
 const FILES = [
   './', './index.html', './css/style.css', './manifest.webmanifest', './icon.svg',
   './js/main.js', './js/script.js', './js/state.js', './js/data.js', './js/ui.js', './js/audio.js',
@@ -12,7 +14,7 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE && k !== IMG_CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
 // 先試網路（取得最新內容），失敗再用快取
@@ -25,6 +27,15 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(e.request, copy));
       }
       return res;
-    }).catch(() => caches.match(e.request, { ignoreSearch: true }))
+    }).catch(async () => {
+      const hit = await caches.match(e.request, { ignoreSearch: true });
+      if (hit) return hit;
+      // 離線時只存了 800 寬的大圖；畫面要 1600 寬的話，改給 800 寬的那一張
+      if (/-1600\.webp$/.test(e.request.url)) {
+        const small = await caches.match(e.request.url.replace(/-1600\.webp$/, '-800.webp'));
+        if (small) return small;
+      }
+      return Response.error();
+    })
   );
 });

@@ -9,7 +9,7 @@ import { Debate, Translate } from './debate.js';
 import { Runner } from './runner.js';
 import { Hub } from './hub.js';
 
-export const VERSION = '完整版 v3.2.0';
+export const VERSION = '完整版 v3.2.1';
 const CONTENT = ['content/序卷.txt', 'content/卷一_大員.txt', 'content/卷二_牧野.txt', 'content/卷三_阿瑪納.txt', 'content/卷四_雅典.txt', 'content/卷五_羯陵伽.txt', 'content/中章_書房.txt', 'content/卷六_長安巴格達.txt', 'content/卷七_佛羅倫斯.txt', 'content/卷八_特諾奇提特蘭.txt', 'content/卷九_戰壕.txt', 'content/卷十_晴空.txt', 'content/終卷_歸墟.txt', 'content/夜話.txt'];
 
 const $ = id => document.getElementById(id);
@@ -175,7 +175,7 @@ async function boot() {
     await loadContent();
   } catch (e) {
     $('title').innerHTML = '';
-    $('title').append(el('h1', { class: 't-name' }, '千秋硯'), el('p', { class: 't-sub' }, '載入失敗：' + e.message), el('p', { class: 't-ver' }, '請透過網址（例如 GitHub Pages）開啟本遊戲，而不是直接開啟檔案。'));
+    $('title').append(el('h1', { class: 't-name' }, '千秋硯'), el('p', { class: 't-sub' }, '載入失敗：' + e.message), el('p', { class: 't-ver' }, '請透過網址（例如 GitHub Pages）開啟本遊戲，而不是直接開啟檔案。在電腦上單機玩的話，請雙擊遊戲資料夾裡的「單機啟動.bat」。'));
     $('title').classList.add('open');
     return;
   }
