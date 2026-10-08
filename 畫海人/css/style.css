@@ -206,6 +206,8 @@ button { font: inherit; color: inherit; }
 #battle { position: fixed; left: 0; right: 0; top: 0; bottom: 0; max-width: 720px; margin: 0 auto; overflow-y: auto; overscroll-behavior: contain; }
 #battle.open { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "foes" "log" "mine" "cmd"; grid-template-rows: auto auto auto auto 1fr; align-content: start; gap: 6px; }
 #battle .b-top { grid-area: top; } #battle .field.foes { grid-area: foes; } #battle .b-log { grid-area: log; } #battle .field.mine { grid-area: mine; }
+/* 手機：右欄的外框不存在，指令和紀錄直接排進格子裡 */
+#battle .b-side { display: contents; }
 #battle .b-cmd { grid-area: cmd; align-self: end; position: sticky; bottom: calc(-8px - env(safe-area-inset-bottom)); margin: 0 -10px calc(-8px - env(safe-area-inset-bottom)); padding: 8px 10px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 14px); z-index: 2; }
 /* 戰鬥紀錄：固定三行高，不會蓋到下面 */
 .b-log { min-height: 0; height: calc(3 * 1.55em + 8px); padding-top: 4px; padding-bottom: 4px; line-height: 1.55; overflow-y: auto; scrollbar-width: none; }
@@ -227,7 +229,10 @@ button { font: inherit; color: inherit; }
 @media (min-width: 860px) and (min-aspect-ratio: 1/1) {
   #app { max-width: 1180px; }
   #battle { max-width: 1180px; padding: 14px 18px; overflow: hidden; }
-  #battle.open { grid-template-columns: minmax(0, 1fr) 340px; grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "top top" "foes cmd" "mine log"; column-gap: 18px; row-gap: 10px; }
+  /* 右欄自成一欄：道具、技能清單再長，也不會把左邊的戰場往下擠 */
+  #battle.open { grid-template-columns: minmax(0, 1fr) 340px; grid-template-rows: auto auto auto minmax(0, 1fr); grid-template-areas: "top top" "foes side" "mine side" ". side"; column-gap: 18px; row-gap: 10px; }
+  #battle .b-side { grid-area: side; display: flex; flex-direction: column; gap: 10px; min-height: 0; max-height: 100%; overflow: hidden; }
+  #battle .b-side .b-cmd { flex: none; max-height: 70%; align-self: stretch; } #battle .b-side .b-log { flex: 0 1 auto; min-height: 6em; }
   #battle .field.mine { align-self: start; }
   #battle .b-cmd { position: static; margin: 0; padding: 12px; background: var(--panel); border-radius: 12px; align-self: start; max-height: 100%; overflow-y: auto; }
   .b-log { height: auto; max-height: 100%; min-height: 8em; align-self: start; }

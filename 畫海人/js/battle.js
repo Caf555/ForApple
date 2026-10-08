@@ -205,9 +205,11 @@ export class Battle {
   itemMenu(u) {
     const box = this.$cmd; box.innerHTML = '';
     box.append(el('div', { class: 'cmd-who' }, '道具'));
+    const list = el('div', { class: 'cmd-list' });
+    box.append(list);
     for (const [k, n] of Object.entries(this.g.supply)) {
       if (!ITEMS[k] || n <= 0) continue;
-      box.append(el('button', { class: 'cmd-row', onclick: () => this.pickAlly(u, a => ITEMS[k].revive ? !a.alive : a.alive, t => this.resolve({ type: 'item', item: k, target: t })) },
+      list.append(el('button', { class: 'cmd-row', onclick: () => this.pickAlly(u, a => ITEMS[k].revive ? !a.alive : a.alive, t => this.resolve({ type: 'item', item: k, target: t })) },
         el('b', {}, k), el('span', {}, '×' + n), el('small', {}, ITEMS[k].desc)));
     }
     box.append(el('button', { class: 'cmd back', onclick: () => this.menu(u) }, '← 返回'));
@@ -421,9 +423,8 @@ export class Battle {
     this.idle();
     r.append(top,
       el('div', { class: 'field foes' }, el('div', { class: 'rlabel' }, '敵方後排　近身打不到・受傷 −30%'), this.$foeBack, el('div', { class: 'rlabel front' }, '敵方前排　近身攻擊只能打這一排'), this.$foeFront),
-      this.$log,
       el('div', { class: 'field mine' }, el('div', { class: 'rlabel front' }, '我方前排　近身 +15%・敵人的近身攻擊只打這一排'), this.$allyFront, el('div', { class: 'rlabel' }, '我方後排　受傷 −30%・近身攻擊威力減半'), this.$allyBack),
-      this.$cmd);
+      el('div', { class: 'b-side' }, this.$cmd, this.$log));
     this.renderRows();
   }
 
