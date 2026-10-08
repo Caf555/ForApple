@@ -1,6 +1,7 @@
 // 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS } from './data.js';
-import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTER_END } from './islands.js';
+import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTER_END, CINEMA } from './islands.js';
+import { playCinema, loadPics } from './cinema.js';
 import { newGame, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
 import { UI, el, $ } from './ui.js';
 import { Audio } from './audio.js';
@@ -8,7 +9,7 @@ import { Battle } from './battle.js';
 import { Explore, newIsland, worldOf } from './explore.js';
 import { Port, statText } from './port.js';
 
-export const VERSION = 'M2 第一海域 v0.1';
+export const VERSION = 'M2 第一海域 v0.2';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -20,6 +21,15 @@ ctx.port = new Port(ctx);
 window.__hhr = ctx; // 方便測試
 
 document.addEventListener('pointerdown', () => ctx.audio.unlock(), { once: false });
+
+// 劇情動畫：播過的記在設定裡（設定 → 回顧劇情 可以重看）
+async function cinema(key) {
+  const s = ctx.settings;
+  s.seen = s.seen || [];
+  if (!s.seen.includes(key)) { s.seen.push(key); ctx.saveSettings(); }
+  await playCinema(ctx, CINEMA[key]);
+}
+ctx.cinema = cinema;
 
 // 隊伍裡有這個人才出現的台詞
 const has = k => ctx.g.party.some(h => h.key === k);
@@ -87,6 +97,7 @@ async function start(diff) {
   clearSave();
   ctx.g = newGame(diff);
   ctx.audio.music('標題');
+  if (!(ctx.settings.seen || []).includes('開場')) await cinema('開場');
   const picks = await ctx.ui.story(INTRO);
   ctx.g.attitude = picks[0];
   if (picks[0] === '大膽') ctx.g.morale += 8; else ctx.g.supply.燈油 += 2;
@@ -105,6 +116,8 @@ function resume(g) {
 ctx.sail = async id => {
   const g = ctx.g, def = ISLANDS[id];
   ctx.audio.music('港口');
+  // 第一次去這座島：先播這座島的故事
+  if (!worldOf(g, id).visits && CINEMA[id]) await cinema(id);
   const pool = [...SEA_EVENTS].sort(() => Math.random() - 0.5).slice(0, def.seaEvents);
   for (const ev of pool) {
     const i = await ctx.ui.choose(`航海・${ev.title}`, ev.text, ev.opts.map(o => ({ label: o.label, disabled: !ctx.explore.canPay(o.fx) })));
@@ -147,6 +160,7 @@ ctx.backToPort = async rep => {
   if (rep.first && rep.island === '沉船灣' && !g.flags.第一章) {
     g.flags.第一章 = 1; save(g);
     await ctx.ui.story(lines(CHAPTER_END));
+    await cinema('第一章完');
     return chapterEnd();
   }
   save(g);
@@ -252,9 +266,14 @@ function settingsSheet() {
     row('自動戰鬥', s.auto, [[false, '關'], [true, '開']], v => { s.auto = v; });
     if (ctx.g) row('難度', ctx.g.diff, ['悠閒', '標準', '困難'].map(k => [k, k]), v => { ctx.g.diff = v; save(ctx.g); });
     if (ctx.g) body.append(el('p', { class: 'muted small' }, DIFF[ctx.g.diff].label));
+    const seen = Object.keys(CINEMA).filter(k => (s.seen || []).includes(k));
+    body.append(el('div', { class: 'set-row' }, el('b', {}, '回顧劇情'), seen.length
+      ? el('div', { class: 'chips' }, ...seen.map(k => el('button', { class: 'chip btn-chip', onclick: () => { api.close(); playCinema(ctx, CINEMA[k]); } }, CINEMA[k].name.split('・')[0])))
+      : el('small', { class: 'muted' }, '看過的劇情動畫會出現在這裡')));
   });
 }
 
 // ───────── 啟動 ─────────
 title();
+loadPics();
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});

@@ -1,0 +1,203 @@
+{
+  "說明": "《畫海人》劇情動畫（開場、三座島的進場、第一章結尾）用的插圖。名稱要和 畫海人/js/islands.js 的 CINEMA 裡的 img 一樣。畫面是正方形，主體放中間，下方三分之一留給字幕。",
+  "nodes": {
+    "t2i": {
+      "size": "8",
+      "text": "18",
+      "seed": "20",
+      "save": "25"
+    },
+    "edit": {
+      "text": "18",
+      "seed": "20",
+      "save": "25",
+      "image": "260"
+    }
+  },
+  "sizes": {
+    "scene": [
+      1328,
+      1328
+    ]
+  },
+  "style": {
+    "scene": "Hand-drawn picture-book illustration, watercolor washes with fine ink pen linework on textured cold-press paper, cold mysterious palette of deep navy, slate blue, grey-green and misty white, only lamplight, candlelight and magical pen glow are warm gold, soft drifting fog, painterly storybook atmosphere, square composition with the main subject centered in the upper-middle, the bottom third darker and simple.",
+    "negative": "text, letters, words, readable writing, signature, watermark, logo, border, frame, photograph, photorealistic, 3D render, CGI, anime, chibi, manga panel, speech bubble, oversaturated neon colors, blurry, low quality, jpeg artifacts, deformed, bad anatomy, extra fingers, extra limbs, duplicate figures, collage, split image, gore, blood, modern objects, cars, electric lights"
+  },
+  "items": [
+    {
+      "kind": "scene",
+      "name": "幕_群島夜海",
+      "seed": 5101,
+      "prompt": "A vast night sea under a sky full of stars, no continent, dozens of tiny islands scattered to the horizon, each island with one small warm lamp glowing, thin mist on the water, calm and lonely, wide view from a high angle."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_白霧升起",
+      "seed": 5102,
+      "prompt": "At night, in the exact center of a dark ocean, an enormous column of pale white fog rising from the sea surface and spreading into the sky, faint teal light at its base, small black island silhouettes on both sides, ominous and quiet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_被忘記的島",
+      "seed": 5103,
+      "prompt": "A small fishing island with a few houses and lit windows, its outlines dissolving like watercolor washed away by water, white fog flowing over it and erasing the edges, the island half transparent, melancholy."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_畫海人",
+      "seed": 5104,
+      "prompt": "Interior of an old guild hall at night, a long wooden table covered in hand-drawn sea charts, many cartographers in dark coats bending over the maps, the tips of their pens glowing soft gold, oil lamps overhead, seen from the end of the table, faces in shadow."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_繪圖師公會",
+      "seed": 5105,
+      "prompt": "A tall hall whose walls are covered from floor to ceiling with framed parchment sea charts, a long navy banner hanging in the middle embroidered with a gold emblem of a pen whose nib is a star, rows of candles below, solemn and grand."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_空蕩的大廳",
+      "seed": 5106,
+      "prompt": "The same guild hall abandoned, empty chairs, lamps gone out with thin smoke, charts scattered on the floor, a large door at the back left open with white fog pouring in, a trail of footprints on the dusty floor leading into the fog, nobody present."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_變淡的海圖",
+      "seed": 5107,
+      "prompt": "Top-down view of an old parchment sea chart with a compass rose and many inked islands, the islands fading one by one from the edges toward the center as pale mist spreads across the paper, ink dissolving."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_鹽灣島",
+      "seed": 5108,
+      "prompt": "A small humble fishing island at dawn on the edge of a shallow sea, wooden houses with smoke rising from chimneys, a little pier with a rowboat, a thick wall of white fog creeping in from the left side and the sea, cold dawn light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_空白的書",
+      "seed": 5109,
+      "prompt": "Close-up of an opened old wooden chest in a dim room, inside lies a thick blank leather-bound book with empty pages and a slender pen whose tip glows warm gold, dust motes floating in the light, quiet and precious."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_碼頭的背影",
+      "seed": 5110,
+      "prompt": "Back view of a 17-year-old girl standing at the end of a wooden pier facing a wall of fog over the sea, short black hair with one streak of white hair on the right side, a deep-blue old sailor coat with many pockets, a leather satchel worn across the body, a faintly glowing pen tucked behind her ear, we only see her from behind, face not visible."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往低語礁",
+      "seed": 5111,
+      "prompt": "Top-down view of a parchment sea chart, a red ink route line being drawn by a glowing gold pen tip from a small home island toward a jagged black reef island with a tiny lighthouse symbol, compass rose in a corner."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_五十年前的燈塔",
+      "seed": 5112,
+      "prompt": "Fifty years ago at dusk, a rocky black reef island with a tall lighthouse shining warm golden beams, at its base two small silhouettes of an old lighthouse keeper and a little girl holding hands, gentle sea, warm and nostalgic among the cold blue."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_出海的小船",
+      "seed": 5113,
+      "prompt": "A tiny rowboat with one small figure rowing away from a reef with a lighthouse, a huge bank of white fog rolling across the sea and swallowing the horizon ahead of the boat, ominous, wide composition."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_一盞一盞的燈",
+      "seed": 5114,
+      "prompt": "Inside a lighthouse tower, a spiral staircase going up with a small oil lamp on every step, an old wrinkled hand holding a taper lighting one lamp after another, a round window at the top showing falling snow, the passage of many years."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_霧中的燈塔",
+      "seed": 5115,
+      "prompt": "Present day, a lighthouse on a black reef almost lost in thick fog, its lamp blinking faintly, layers of mist drifting in different directions, lonely and mysterious."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往晨忘島",
+      "seed": 5116,
+      "prompt": "Top-down view of a parchment sea chart, a red ink route line drawn by a glowing gold pen tip from a small home island to a round island with a tiny bell tower symbol in the middle, compass rose in a corner."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_熱鬧的漁村",
+      "seed": 5117,
+      "prompt": "Forty years ago, a lively fishing village at sunrise with a tall stone bell tower in the center ringing its bronze bell, many small fishing boats with sails heading out to sea together, warm windows, cheerful, seen from the sea."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_暴風雨的夜",
+      "seed": 5118,
+      "prompt": "A violent storm at night over the sea, huge dark waves, slanting rain, a flash of lightning, far away the small silhouette of a capsized boat, no people visible, no gore, dramatic but not graphic."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_找不到家的人",
+      "seed": 5119,
+      "prompt": "A quiet village lane on a cold misty morning, a row of wooden houses each with a door and a small name plaque, villagers standing in front of the doors looking at them in confusion as if they do not recognize their own homes, fog at their feet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_逆光的鐘樓",
+      "seed": 5120,
+      "prompt": "A tall stone bell tower in silhouette against a bright golden dawn sky, the huge bronze bell visible in the arch, faint rings of sound spreading through the mist, sea below, majestic and eerie."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往沉船灣",
+      "seed": 5121,
+      "prompt": "Top-down view of a parchment sea chart, a red ink route line drawn by a glowing gold pen tip from a small home island to a crescent-shaped bay with tiny mast symbols in it, compass rose in a corner."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_海燕號出港",
+      "seed": 5122,
+      "prompt": "Three years ago at dusk, a sturdy two-masted fishing ship with a lantern leaving a small wooden pier, a young boy standing at the end of the pier waving goodbye with one arm raised, seagulls, warm and bittersweet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_霧裡的一點光",
+      "seed": 5123,
+      "prompt": "A two-masted ship sailing into thick fog at night, following a single small warm golden light floating ahead in the mist like a guiding star, mysterious and tempting."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_桅杆的樹林",
+      "seed": 5124,
+      "prompt": "A misty bay filled with the masts of many sunken ships sticking out of the water at different angles, broken yards and hanging ropes, like a forest of dead trees, grey and silent."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_沒有沉的船",
+      "seed": 5125,
+      "prompt": "In the middle of a foggy bay among sunken masts, one two-masted ship floating perfectly intact, sails furled, the fog parting around it, a faint teal glow on its hull, uncanny stillness."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_日誌的星",
+      "seed": 5126,
+      "prompt": "Close-up of the last page of an old water-stained ship logbook, lines of faded handwriting (illegible, abstract strokes), and at the bottom a small hand-drawn symbol of a pen whose nib is a five-pointed star, glowing softly gold."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_駛進霧心",
+      "seed": 5127,
+      "prompt": "A small two-masted ship sailing toward a gigantic swirling vortex of white fog in the middle of the ocean, a tiny gold light leading it into the center, teal glow deep inside the vortex, awe and mystery."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_點滿燈的夜",
+      "seed": 5128,
+      "prompt": "A small fishing island port at night with every house and the pier lit by warm lanterns, strings of lanterns along the harbor, reflections shimmering on calm water, stars above, the fog pushed back to the horizon, hopeful."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_淺灘的地圖",
+      "seed": 5129,
+      "prompt": "An opened cartographer's book on a dark table, the left page shows three hand-inked islands (a jagged reef with a lighthouse, a round island with a bell tower, a crescent bay with masts), the right page is mostly blank with a pale swirl of fog and a faint compass rose in the center, a glowing gold pen resting across the pages."
+    }
+  ]
+}

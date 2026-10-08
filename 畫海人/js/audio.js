@@ -75,6 +75,8 @@ export class Audio {
     switch (name) {
       case '標題': sea(0.12); pad([110, 164.8], 0.02);
         loop(() => { idx = Math.max(0, Math.min(7, idx + [-1, 1, -2, 2, 0][Math.floor(Math.random() * 5)])); this.note(scale[idx] * 2, this.ac.currentTime, 2.4, 'sine', 0.02, bus); }, () => 1800 + Math.random() * 1600); break;
+      case '劇情': sea(0.07); pad([110, 164.8, 220], 0.016);
+        loop(() => { const t = this.ac.currentTime, m = [4, 3, 2, 0, 2, 3, 5, 4][beat++ % 8]; this.note(scale[m] * 2, t, 3.2, 'sine', 0.022, bus); if (beat % 2) this.note(scale[m], t + 0.6, 2.6, 'triangle', 0.01, bus); }, () => 1500); break;
       case '港口': sea(0.1); pad([130.8, 196], 0.018);
         loop(() => { idx = Math.max(0, Math.min(7, idx + [-1, 1, 0][Math.floor(Math.random() * 3)])); this.note(scale[idx] * 2, this.ac.currentTime, 1.4, 'triangle', 0.02, bus); }, () => 900 + Math.random() * 700); break;
       case '島': sea(0.08); pad([110, 116.5], 0.014);
