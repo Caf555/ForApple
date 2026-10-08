@@ -184,13 +184,17 @@ export class Explore {
   async fight(t, from, enemies, kind) {
     const g = this.g;
     const snap = g.party.map(h => [h.hp, h.mp]), morale = g.morale, supply = { ...g.supply };
+    let lost = 0;
     for (;;) {
       g.stats.battles++;
       const r = await this.ctx.battle.start({ enemies, terrain: this.terrainOf(t), lit: this.isl.lit, kind });
       this.ctx.audio.music('島');
       if (r === 'win') return true;
       if (r === 'flee') { this.isl.pos = from; return false; }
-      const i = await this.ctx.ui.choose('被霧吞沒了……', ['眼前的一切，慢慢變白。'], [{ label: '重新挑戰這場戰鬥' }, { label: '退回上一格（全隊只剩一點點體力）' }]);
+      lost++;
+      const weak = g.party.reduce((a, h) => a + snap[g.party.indexOf(h)][0] / heroStats(h).hp, 0) / g.party.length < 0.6;
+      const tip = lost >= 2 || weak ? ['重新挑戰的話，大家會回到「這場戰鬥開始前」的樣子' + (weak ? '——可是那時候大家就已經很累了。' : '。'), '打不贏的時候，可以先退回去：在營火休息、用藥草和海靈露，或回到登陸點先回港口，打造更好的裝備再來。'] : [];
+      const i = await this.ctx.ui.choose('被霧吞沒了……', ['眼前的一切，慢慢變白。', ...tip], [{ label: '重新挑戰這場戰鬥' }, { label: '退回上一格（全隊只剩一點點體力）' }]);
       if (i === 0) { g.party.forEach((h, k) => { if (snap[k]) [h.hp, h.mp] = snap[k]; }); g.morale = morale; g.supply = supply; continue; }
       g.party.forEach(h => { h.hp = Math.max(1, Math.round(heroStats(h).hp * 0.15)); });
       g.morale = Math.max(0, morale - 10);
