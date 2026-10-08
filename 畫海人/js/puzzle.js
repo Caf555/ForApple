@@ -6,6 +6,10 @@
 // 雙影嶼「對照」：登記冊上的圖和眼前的景色，找出不一樣的地方（找不同）
 // 珠母潟湖「潮閘」：撥動分岔口的閘門，把潮水引到乾掉的珊瑚（路線推理）
 // 帳房島「航線」：一筆畫連起所有浮標，每個只能經過一次（一筆畫）
+// 紅帆港「旗語」：照旗語表，把桅杆上的旗子讀出來（讀密碼）
+// 鐵喉礦坑「礦車」：推礦車，把每一台推到軌道終點的記號上（推箱子）
+// 鍛火嶼「鍛火」：看準爐溫剛好的時候敲下去（抓時機）
+// 紅岬「熔岩」：踩一塊石頭，它和上下左右的石頭會一起翻面，把全部踩成冷的（關燈遊戲）
 // 每個遊戲的外框上都掛著 solve()：只給自動試玩機器人用
 // 每個小遊戲都回傳 Promise<boolean>：過關是 true
 import { el, $ } from './ui.js';
@@ -30,7 +34,7 @@ function frame(title, help) {
   $('layer').append(box);
   return { box, stage, info, msg, btns };
 }
-export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線'];
+export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩'];
 
 // 遊戲結束：顯示結果，按下按鈕才關掉
 function finish(f, win, line, res) {
@@ -39,7 +43,7 @@ function finish(f, win, line, res) {
 }
 
 export function playPuzzle(ctx, kind, place) {
-  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route }[kind];
+  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava }[kind];
   return game(ctx, place);
 }
 
@@ -91,6 +95,7 @@ function lamps(ctx) {
       await wait(900);
       show();
     };
+    f.box.solve = async () => { let last = -1; while (round < lens.length) { if (input && round !== last) { last = round; for (const i of seq) { await press(i); await wait(60); } } await wait(40); } };
     show();
   });
 }
@@ -115,6 +120,7 @@ function doors(ctx) {
     grid.append(...nodes);
     f.stage.append(grid);
     status();
+    f.box.solve = async () => { for (const n of names) for (const side of ['名', '門']) { const k = cards.findIndex(c => c.n === n && c.side === side); while (busy) await wait(30); await flip(nodes[k], cards[k]); await wait(40); } };
     const flip = async (b, c) => {
       if (busy || b.classList.contains('up')) return;
       b.classList.add('up'); ctx.audio.sfx('tap');
@@ -184,6 +190,7 @@ function chart(ctx) {
     });
     const paint = i => { tiles[i].style.transform = `rotate(${rot[i] * 90}deg)`; tiles[i].classList.toggle('ok', rot[i] % 4 === 0); };
     tiles.forEach((_, i) => paint(i));
+    f.box.solve = async () => { for (let i = 0; i < rot.length; i++) while (rot[i] % 4 && !over) { turn(i); await wait(40); } };
     grid.append(...tiles);
     f.stage.append(grid);
     status();
@@ -525,6 +532,288 @@ function route(ctx) {
       line = [start]; draw();
       for (const p of out.slice(1)) { step(p); await wait(30); }
     };
+    setup();
+  });
+}
+
+
+// ═════════ 旗語：照旗語表讀出桅杆上的旗子 ═════════
+const FLAG_CHARS = ['紅', '帆', '回', '家', '火', '山', '名', '字', '海', '島'];
+const PHRASES = { 2: ['回家', '紅帆', '火山', '名字', '海島'], 4: ['紅帆回家', '海島名字', '火山回家', '紅帆海島', '回家名字'], 6: ['紅帆回家海島', '火山海島名字', '海島紅帆回家'] };
+// 每一面旗子的樣子（寬 40、高 28）
+function flagSvg(i, cls = 'pz-flag') {
+  const R = '#b0473a', W = '#efe6cf', G = '#d9a84a', T = '#3f8f8a', K = '#1c2a30';
+  const art = [
+    `<rect width="40" height="28" fill="${R}"/>`,
+    `<rect width="40" height="14" fill="${R}"/><rect y="14" width="40" height="14" fill="${W}"/>`,
+    `<rect width="40" height="28" fill="${W}"/><rect x="5" y="5" width="30" height="18" fill="none" stroke="${R}" stroke-width="4"/>`,
+    `<rect width="40" height="28" fill="${T}"/><rect x="17" width="6" height="28" fill="${W}"/><rect y="11" width="40" height="6" fill="${W}"/>`,
+    `<rect width="40" height="28" fill="${G}"/><path d="M0 28 L40 0 L40 28 Z" fill="${R}"/>`,
+    `<rect width="40" height="28" fill="${W}"/><path d="M8 24 L20 5 L32 24 Z" fill="${K}"/>`,
+    `<rect width="40" height="28" fill="${K}"/><circle cx="20" cy="14" r="6" fill="${W}"/>`,
+    `<rect width="20" height="28" fill="${G}"/><rect x="20" width="20" height="28" fill="${T}"/>`,
+    `<rect width="40" height="28" fill="${T}"/><path d="M0 7 q10 -4 20 0 t20 0 M0 14 q10 -4 20 0 t20 0 M0 21 q10 -4 20 0 t20 0" stroke="${W}" stroke-width="2.4" fill="none"/>`,
+    `<rect width="40" height="28" fill="${W}"/><circle cx="20" cy="14" r="8" fill="${T}"/>`,
+  ][i];
+  return `<svg class="${cls}" viewBox="0 0 40 28" aria-hidden="true"><rect width="40" height="28" fill="#000" opacity=".2"/>${art}<rect width="40" height="28" fill="none" stroke="#1c2a30" stroke-width="1"/></svg>`;
+}
+function flags(ctx) {
+  return new Promise(res => {
+    const lens = byDiff(ctx, [[2, 4], [2, 4, 4], [4, 4, 6]]);
+    let chances = byDiff(ctx, [4, 3, 2]);
+    const f = frame('旗語', '桅杆上掛著一串旗子。照下面的旗語表，從上到下一面一面讀出來：點表上對應的字。');
+    const mast = el('div', { class: 'pz-mast' });
+    const ans = el('div', { class: 'pz-answer' });
+    const table = el('div', { class: 'pz-flagtable' });
+    f.stage.append(el('div', { class: 'pz-flagwrap' }, mast, ans), el('small', { class: 'muted' }, '旗語表（點一下，就是讀出這個字）'), table);
+    let round = 0, msg = [], got = 0, busy = false;
+    const keys = FLAG_CHARS.map((c, i) => {
+      const b = el('button', { class: 'pz-flagkey', 'aria-label': c, onclick: () => pick(i) });
+      b.innerHTML = flagSvg(i); b.append(el('b', {}, c));
+      return b;
+    });
+    table.append(...keys);
+    const status = () => { f.info.textContent = `第 ${round + 1}／${lens.length} 串旗子　還可以讀錯 ${chances - 1} 次`; };
+    const setup = () => {
+      const pool = PHRASES[lens[round]];
+      msg = [...pool[rnd(pool.length)]].map(c => FLAG_CHARS.indexOf(c));
+      got = 0; mast.innerHTML = ''; ans.innerHTML = '';
+      msg.forEach((i, k) => { const d = el('div', { class: 'pz-mflag' + (k === 0 ? ' now' : '') }); d.innerHTML = flagSvg(i); mast.append(d); ans.append(el('span', { class: 'pz-slotc' }, '？')); });
+      status();
+    };
+    const pick = async i => {
+      if (busy) return;
+      if (i === msg[got]) {
+        ctx.audio.sfx('tap');
+        ans.children[got].textContent = FLAG_CHARS[i]; ans.children[got].classList.add('ok');
+        mast.children[got].classList.remove('now'); mast.children[got].classList.add('read');
+        got++;
+        if (got < msg.length) { mast.children[got].classList.add('now'); return; }
+        busy = true; ctx.audio.sfx('item');
+        f.msg.textContent = `讀出來了：「${msg.map(k => FLAG_CHARS[k]).join('')}」`;
+        await wait(1000);
+        round++;
+        if (round >= lens.length) { ctx.audio.sfx('win'); return finish(f, true, '最後一串旗子讀完的時候，桅杆上所有的旗子，一起被風吹了起來。', res); }
+        busy = false; f.msg.textContent = '下一串旗子升上來了。'; setup(); return;
+      }
+      chances--; ctx.audio.sfx('fail');
+      keys[i].classList.add('bad'); setTimeout(() => keys[i].classList.remove('bad'), 500);
+      status();
+      if (chances <= 0) { busy = true; return finish(f, false, '旗子被風吹亂了，再也看不清楚。', res); }
+      f.msg.textContent = '不是這個字。看清楚旗子的顏色和花紋。';
+    };
+    f.box.solve = async () => { while (got < msg.length && !busy) { pick(msg[got]); await wait(60); } };
+    setup();
+  });
+}
+
+// ═════════ 礦車：把礦車推到記號上（推箱子） ═════════
+// # 石壁　. 記號　$ 礦車　@ 礦工　* 停在記號上的礦車
+const CART_LEVELS = {
+  easy: [['#######', '#     #', '# $@. #', '#     #', '#######'], ['######', '#.   #', '# $$ #', '#. @ #', '######'], ['#######', '#.  ..#', '# $$$ #', '#  @  #', '#######']],
+  hard: [['#######', '#. #  #', '# $   #', '#  #$.#', '# @   #', '#######'], ['######', '#    #', '#.##@#', '# $  #', '# $#.#', '#    #', '######'], ['#######', '#.    #', '#.#$# #', '#  $  #', '# #@# #', '#     #', '#######']],
+};
+function parseLevel(rows) {
+  const H = rows.length, W = Math.max(...rows.map(r => r.length));
+  const wall = new Set(), goals = new Set(), carts = []; let me = 0;
+  rows.forEach((r, y) => [...r.padEnd(W, '#')].forEach((ch, x) => {
+    const k = y * W + x;
+    if (ch === '#') wall.add(k);
+    if ('.*+'.includes(ch)) goals.add(k);
+    if ('$*'.includes(ch)) carts.push(k);
+    if ('@+'.includes(ch)) me = k;
+  }));
+  return { W, H, wall, goals, me, carts };
+}
+// 找最少步數的推法（給機器人用，也用來決定步數上限）
+function solveCarts(L, me, carts) {
+  const { W, wall, goals } = L, D = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  const key = (m, c) => m + '|' + [...c].sort((a, b) => a - b).join(',');
+  const q = [[me, carts, []]], seen = new Set([key(me, carts)]);
+  while (q.length) {
+    const [m, c, path] = q.shift();
+    if (c.every(k => goals.has(k))) return path;
+    for (const [dx, dy] of D) {
+      const t = m + dx + dy * W;
+      if (wall.has(t)) continue;
+      let nc = c;
+      if (c.includes(t)) { const b = t + dx + dy * W; if (wall.has(b) || c.includes(b)) continue; nc = c.map(k => k === t ? b : k); }
+      const kk = key(t, nc); if (seen.has(kk)) continue; seen.add(kk);
+      q.push([t, nc, [...path, [dx, dy]]]);
+    }
+  }
+  return null;
+}
+function carts(ctx) {
+  return new Promise(res => {
+    const plan = byDiff(ctx, [['easy', 'easy'], ['easy', 'hard'], ['easy', 'hard', 'hard']]);
+    let tries = byDiff(ctx, [4, 3, 2]);
+    const f = frame('礦車', '用下面的方向鍵（或點礦工旁邊的格子）走路。走到礦車後面就會推它往前；礦車只能推，不能拉。把每一台礦車都推到白色記號上。');
+    const grid = el('div', { class: 'pz-mine' });
+    const pad = el('div', { class: 'pz-pad' });
+    f.stage.append(grid, pad);
+    const used = { easy: [], hard: [] };
+    let round = 0, L = null, me = 0, cs = [], hist = [], moves = 0, limit = 0, busy = false;
+    const redo = el('button', { class: 'btn', onclick: () => { if (!busy && hist.length) lose('重新來過。'); } }, '重來');
+    const undo = el('button', { class: 'btn', onclick: () => { if (busy || !hist.length) return; [me, cs] = hist.pop(); ctx.audio.sfx('tap'); draw(); } }, '退一步');
+    f.btns.append(undo, redo);
+    const status = () => { f.info.textContent = `第 ${round + 1}／${plan.length} 段軌道　走了 ${moves}／${limit} 步　還可以重來 ${tries - 1} 次`; };
+    const setup = () => {
+      const pool = CART_LEVELS[plan[round]].map((_, i) => i).filter(i => !used[plan[round]].includes(i));
+      const pickI = pool[rnd(pool.length)]; used[plan[round]].push(pickI);
+      L = parseLevel(CART_LEVELS[plan[round]][pickI]);
+      reset();
+    };
+    const reset = () => {
+      me = L.me; cs = [...L.carts]; hist = []; moves = 0;
+      limit = solveCarts(L, me, cs).length * 2 + 10;
+      grid.style.gridTemplateColumns = `repeat(${L.W}, 1fr)`;
+      draw();
+    };
+    const draw = () => {
+      grid.innerHTML = '';
+      for (let k = 0; k < L.W * L.H; k++) {
+        const c = el('div', { class: 'pz-mc' + (L.wall.has(k) ? ' wall' : '') + (L.goals.has(k) ? ' goal' : '') + (cs.includes(k) ? ' cart' + (L.goals.has(k) ? ' in' : '') : '') + (k === me ? ' me' : '') });
+        const d = k - me;
+        if (!L.wall.has(k) && [1, -1, L.W, -L.W].includes(d) && !(Math.abs(d) === 1 && Math.floor(k / L.W) !== Math.floor(me / L.W))) c.addEventListener('click', () => step(d === 1 || d === -1 ? d : 0, d === L.W ? 1 : d === -L.W ? -1 : 0));
+        grid.append(c);
+      }
+      status();
+    };
+    const step = async (dx, dy) => {
+      if (busy) return;
+      const t = me + dx + dy * L.W;
+      if (L.wall.has(t)) return;
+      const prev = [me, [...cs]];
+      if (cs.includes(t)) {
+        const b = t + dx + dy * L.W;
+        if (L.wall.has(b) || cs.includes(b)) return;
+        cs = cs.map(k => k === t ? b : k); ctx.audio.sfx('step');
+      } else ctx.audio.sfx('tap');
+      hist.push(prev); me = t; moves++;
+      draw();
+      if (cs.every(k => L.goals.has(k))) {
+        busy = true; ctx.audio.sfx('item');
+        round++;
+        if (round >= plan.length) { undo.remove(); redo.remove(); ctx.audio.sfx('win'); return finish(f, true, '最後一台礦車停在記號上的時候，軌道盡頭的石壁，喀的一聲，裂開了一道縫。', res); }
+        f.msg.textContent = '礦車都到了！下一段軌道。';
+        await wait(900); busy = false; setup(); return;
+      }
+      if (moves >= limit) lose('力氣用完了，礦車推不動了。');
+    };
+    const lose = async why => {
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { busy = true; undo.remove(); redo.remove(); status(); return finish(f, false, '礦車卡在軌道上，怎麼推都推不動了。', res); }
+      busy = true; f.msg.textContent = why + '礦車回到了原來的地方。';
+      await wait(700); busy = false; reset();
+    };
+    const dir = (label, dx, dy, area) => el('button', { class: 'btn pz-dir', style: { gridArea: area }, 'aria-label': label, onclick: () => step(dx, dy) }, label);
+    pad.append(dir('↑', 0, -1, 'u'), dir('←', -1, 0, 'l'), dir('→', 1, 0, 'r'), dir('↓', 0, 1, 'd'));
+    f.box.solve = async () => { const p = solveCarts(L, me, cs); for (const [dx, dy] of p || []) { await step(dx, dy); await wait(40); } };
+    setup();
+  });
+}
+
+// ═════════ 鍛火：看準爐溫敲下去 ═════════
+function forge(ctx) {
+  return new Promise(res => {
+    const need = byDiff(ctx, [3, 4, 5]);
+    let misses = byDiff(ctx, [3, 2, 2]);
+    const w0 = byDiff(ctx, [0.28, 0.22, 0.17]), sp0 = byDiff(ctx, [0.5, 0.65, 0.8]);
+    const f = frame('鍛火', '爐溫會一直上上下下。看準指針走到金色那一段（溫度剛好）的時候，按「敲！」。');
+    const bar = el('div', { class: 'pz-heat' });
+    const zone = el('div', { class: 'pz-zone' });
+    const needle = el('div', { class: 'pz-needle' });
+    bar.append(zone, needle);
+    const iron = el('div', { class: 'pz-iron' });
+    const hit = el('button', { class: 'btn primary pz-hit', onclick: () => strike() }, '敲！');
+    f.stage.append(iron, bar, hit);
+    let hits = 0, width = w0, speed = sp0, center = 0.5, t0 = performance.now(), pos = 0, busy = false, over = false, raf = 0;
+    const status = () => { f.info.textContent = `敲好了 ${hits}／${need} 下　還可以敲歪 ${misses - 1} 次`; iron.style.setProperty('--done', hits / need); };
+    const place = () => { center = width / 2 + 0.04 + Math.random() * (1 - width - 0.08); zone.style.left = `${(center - width / 2) * 100}%`; zone.style.width = `${width * 100}%`; };
+    const tick = now => {
+      if (over) return;
+      const ph = ((now - t0) / 1000 * speed) % 2;
+      pos = ph < 1 ? ph : 2 - ph;
+      needle.style.left = `${pos * 100}%`;
+      raf = requestAnimationFrame(tick);
+    };
+    const strike = async () => {
+      if (busy || over) return;
+      busy = true;
+      const ok = Math.abs(pos - center) <= width / 2;
+      needle.classList.add(ok ? 'good' : 'bad');
+      if (ok) {
+        hits++; ctx.audio.sfx('hit'); iron.classList.remove('ring'); void iron.offsetWidth; iron.classList.add('ring');
+        status();
+        if (hits >= need) { over = true; cancelAnimationFrame(raf); hit.remove(); ctx.audio.sfx('win'); return finish(f, true, '最後一鎚落下，鐵發出很清很清的聲音。冷掉的鐵砧上，浮出了一行字。', res); }
+        width = Math.max(0.08, width * 0.82); speed *= 1.12;
+        f.msg.textContent = '敲得好！爐溫越來越難抓了。';
+      } else {
+        misses--; ctx.audio.sfx('fail'); status();
+        if (misses <= 0) { over = true; cancelAnimationFrame(raf); hit.remove(); return finish(f, false, '鐵敲歪了，冷掉了。再也打不回原來的形狀。', res); }
+        f.msg.textContent = pos < center ? '太冷了！等指針走到金色那一段。' : '太燙了！等指針走到金色那一段。';
+      }
+      await wait(450);
+      needle.classList.remove('good', 'bad');
+      place(); busy = false;
+    };
+    f.box.solve = async () => { while (!over) { if (!busy && Math.abs(pos - center) <= width / 3) await strike(); await wait(8); } };
+    status(); place(); raf = requestAnimationFrame(tick);
+  });
+}
+
+// ═════════ 熔岩：踩成冷的（關燈遊戲） ═════════
+function lava(ctx) {
+  return new Promise(res => {
+    const plan = byDiff(ctx, [[3, 3], [3, 4], [4, 4]]);
+    let tries = byDiff(ctx, [4, 3, 2]);
+    const f = frame('熔岩', '紅色的石頭還很燙。踩一塊石頭，它和上下左右的石頭會一起翻面（燙的變冷、冷的變燙）。把全部的石頭都變成冷的（黑色）。');
+    const grid = el('div', { class: 'pz-lava' });
+    f.stage.append(grid);
+    const redo = el('button', { class: 'btn', onclick: () => { if (!busy && steps) lose('重新來過。'); } }, '重來');
+    f.btns.append(redo);
+    let round = 0, N = 3, hot = [], start = [], gen = [], mine = [], steps = 0, limit = 0, busy = false;
+    const flip = (b, i) => { const x = i % N, y = Math.floor(i / N); for (const [dx, dy] of [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]]) { const a = x + dx, c = y + dy; if (a >= 0 && c >= 0 && a < N && c < N) b[c * N + a] ^= 1; } };
+    const status = () => { f.info.textContent = `第 ${round + 1}／${plan.length} 片熔岩田　踩了 ${steps}／${limit} 步　還可以重來 ${tries - 1} 次`; };
+    const setup = () => {
+      N = plan[round];
+      const k = N === 3 ? 3 : 4 + rnd(2);
+      gen = Array(N * N).fill(0);
+      for (const i of shuffle([...Array(N * N).keys()]).slice(0, k)) gen[i] = 1;
+      start = Array(N * N).fill(0);
+      gen.forEach((v, i) => { if (v) flip(start, i); });
+      limit = k * 3 + 6;
+      reset();
+    };
+    const reset = () => { hot = [...start]; mine = Array(N * N).fill(0); steps = 0; draw(); };
+    const draw = () => {
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
+      hot.forEach((v, i) => grid.append(el('button', { class: 'pz-stone' + (v ? ' hot' : ''), 'aria-label': v ? '燙的石頭' : '冷的石頭', onclick: () => press(i) })));
+      status();
+    };
+    const press = async i => {
+      if (busy) return;
+      flip(hot, i); mine[i] ^= 1; steps++; ctx.audio.sfx('step');
+      draw();
+      if (hot.every(v => !v)) {
+        busy = true; ctx.audio.sfx('item');
+        round++;
+        if (round >= plan.length) { redo.remove(); ctx.audio.sfx('win'); return finish(f, true, '最後一塊石頭冷下來的時候，熔岩田的正中間，慢慢露出了一塊石碑。', res); }
+        f.msg.textContent = '全部冷下來了！下一片熔岩田。';
+        await wait(900); busy = false; setup(); return;
+      }
+      if (steps >= limit) lose('腳底太燙了，只好退回去。');
+    };
+    const lose = async why => {
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { busy = true; redo.remove(); status(); return finish(f, false, '熔岩田又燙了起來，走不過去了。', res); }
+      busy = true; f.msg.textContent = why + '石頭回到了一開始的樣子。';
+      await wait(700); busy = false; reset();
+    };
+    // 解法：一開始產生熔岩田時踩過的格子，再扣掉玩家已經踩過的（踩兩次等於沒踩）
+    f.box.solve = async () => { const sol = gen.map((v, i) => v ^ mine[i]); for (let i = 0; i < sol.length; i++) if (sol[i]) { await press(i); await wait(50); } };
     setup();
   });
 }

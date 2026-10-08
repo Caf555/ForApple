@@ -16,6 +16,8 @@ export function newGame(diff = '標準') {
     ship: { 貨艙: 0, 船帆: 0, 船首像: 0 },
     party: ['墨里', '阿潮', '蓮笙'].map((k, i) => makeHero(k, i)),
     morale: 50, flags: {}, island: null, phase: 'intro',
+    // 勢力聲望（第三章開始）
+    rep: { 商會: 0, 紅帆: 0 },
     // 每座島留下來的紀錄：完成了沒、最好的結局、測繪過的格子
     world: {},
     // 酒館：接下的委託（id → 進度）、完成過的委託
@@ -25,7 +27,7 @@ export function newGame(diff = '標準') {
 }
 
 export function makeHero(key, i, lv = 1) {
-  const h = { key, lv, exp: 0, row: key === '阿潮' ? 'front' : 'back', slot: i, eq: {} };
+  const h = { key, lv, exp: 0, row: key === '阿潮' || key === '葛蘿' ? 'front' : 'back', slot: i, eq: {} };
   const s = heroStats(h); h.hp = s.hp; h.mp = s.mp;
   return h;
 }
@@ -76,6 +78,7 @@ function migrate(d) {
   }
   // 新版本加的「一開始就會」的圖紙（例如費米的弓），舊存檔也補上
   for (const k of Object.keys(EQUIPS)) if (EQUIPS[k].start && !d.bps.includes(k)) d.bps.push(k);
+  if (!d.rep) d.rep = { 商會: 0, 紅帆: 0 };
   return d;
 }
 

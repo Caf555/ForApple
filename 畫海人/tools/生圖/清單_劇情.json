@@ -366,6 +366,174 @@
       "name": "幕_環礁的地圖",
       "seed": 5157,
       "prompt": "An opened cartographer's book on a dark table, the left page shows three small inked islands, the right page newly inked with a coral atoll ring, two mirrored islands, a round lagoon and a tower island, the very center still blank with a pale swirl of fog, a glowing gold pen resting across."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_南方的煙",
+      "seed": 5158,
+      "prompt": "From a hilltop observatory at night, an old brass telescope points south across a dark sea toward a distant chain of small volcanic islands with thin columns of smoke and a faint red glow on the horizon, stars above."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_星圖上的紅島",
+      "seed": 5159,
+      "prompt": "An antique star chart on dark paper, a chain of small islands marked as glowing red dots connected by faint lines, the southernmost island's label smudged out with ink, warm candlelight on the paper."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_海上的紅帆",
+      "seed": 5160,
+      "prompt": "Dozens of small sailing ships with deep red sails scattered across a dusky sea, volcanic islands faintly smoking in the distance, free and wild atmosphere."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_帆上的刺繡",
+      "seed": 5161,
+      "prompt": "Close-up of a weathered red sailcloth with a single embroidered character-like symbol stitched in white thread (abstract, unreadable), a needle and thread hanging from it, warm light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往紅帆港",
+      "seed": 5162,
+      "prompt": "An old parchment sea chart with a glowing gold pen line drawing a route toward a small chain of volcanic islands with a curl of smoke, compass rose in the corner."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_火山口的港",
+      "seed": 5163,
+      "prompt": "A circular harbor inside a dead volcano crater flooded by the sea, packed with ships with red sails, lanterns on the decks, dark crater walls around under an ember-colored sky."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_不敢靠近的商船",
+      "seed": 5164,
+      "prompt": "Two pale-sailed merchant ships waiting far outside a smoking volcanic island at dusk, keeping their distance, a faint dotted line on the water between them and the island."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_帆房",
+      "seed": 5165,
+      "prompt": "Inside a large wooden sail loft, dozens of red sails hanging from the ceiling beams like a forest of red cloth, each with a small white stitched mark in a corner, warm lantern light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_沒有字的帆",
+      "seed": 5166,
+      "prompt": "In the deepest dark corner of a sail loft, one faded red sail floating by itself in windless air, wrapped in pale fog, two pirate silhouettes watching uneasily from the foreground."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_山的喉嚨",
+      "seed": 5167,
+      "prompt": "A bare dark mountain at night with a huge mine entrance on its side shaped like an open throat, a faint lamp glow inside, rails leading into it, ember-red sky."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_坑口的名牌",
+      "seed": 5168,
+      "prompt": "A wooden board at a mine entrance covered with rows of small brass name tags hanging on nails, one full row of empty nails, miners' silhouettes in the foreground, lamplight."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_塌掉的坑道",
+      "seed": 5169,
+      "prompt": "A collapsed mine tunnel, wooden supports broken, a pile of fallen rocks blocking the way, dust falling in the light of a single lamp on the ground."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_石壁的震動",
+      "seed": 5170,
+      "prompt": "A dark rough rock wall inside a mine, concentric rings of faint golden light rippling outward from one spot as if something is knocking from the other side."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_貼著石壁的礦工",
+      "seed": 5171,
+      "prompt": "An old miner pressing his ear against a rock wall in a dark tunnel, his face pale in the light of a small oil lamp on the ground, listening anxiously."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_黑色的島",
+      "seed": 5172,
+      "prompt": "A small black volcanic island at night with a single bright forge fire glowing at its center, white steam rising from vents in the ground, stars and dark sea around."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_一排發光的筆",
+      "seed": 5173,
+      "prompt": "A row of slender metal pens laid on a wooden bench in an old smithy, each pen tip glowing softly gold, warm forge light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_背對爐火的鐵匠",
+      "seed": 5174,
+      "prompt": "A very old blacksmith sitting with his back to a roaring furnace, hands resting idle on his knees, an anvil nearby, the room lit red-orange."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_排隊加煤",
+      "seed": 5175,
+      "prompt": "Villagers in a line carrying buckets of coal toward a glowing furnace building on a dark volcanic island, ember-colored sky, smoke."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_火裡的筆",
+      "seed": 5176,
+      "prompt": "Swirling flames in a furnace, and within the fire the dark silhouette of a long pen, its tip shining with gold light, mysterious."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_紅色的島",
+      "seed": 5177,
+      "prompt": "An island of red volcanic rock rising from the sea at dawn, a cold silent volcano peak at its center, red cliffs shining wet with waves."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_漆著七的要塞",
+      "seed": 5178,
+      "prompt": "A grey stone fortress with battlements on a misty shore, a huge painted numeral seven on its wall (simple bold shape), two lit watch lamps, gloomy."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_別著號碼牌的人",
+      "seed": 5179,
+      "prompt": "A line of villagers in plain clothes waiting at a fortress gate, each wearing a small metal number plate pinned to the chest, misty grey day, expressionless."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冷掉的火山口",
+      "seed": 5180,
+      "prompt": "A cold volcanic crater at night with no smoke, an iron pole driven into its center holding a large metal plate, stars above, bleak and silent."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_按著舊旗的手",
+      "seed": 5181,
+      "prompt": "Close-up of a single weathered hand pressing on an old red flag that shows a simple smoking mountain emblem, warm dim light, the person's other arm absent from view."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_重新冒煙的火山",
+      "seed": 5182,
+      "prompt": "A red volcanic island at dawn, a fresh white plume of smoke rising again from the crater, small red flowers scattered on the slopes, hopeful light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_開進霧裡的船隊",
+      "seed": 5183,
+      "prompt": "A fleet of old sailing ships with pale sails marked with a small pen symbol, sailing in a line northward into a thick wall of white fog, sombre, fifty years ago."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_划回來的小船",
+      "seed": 5184,
+      "prompt": "A single small rowboat emerging from thick fog, two figures in it, one rowing, a faint warm lantern glow, grey sea, quiet and sad."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_三片海的地圖",
+      "seed": 5185,
+      "prompt": "An opened cartographer's book on a dark table, older islands faintly inked on the left, newly drawn volcanic islands on the right with a red dashed route leading north into a pale swirl of fog, a glowing gold pen resting across."
     }
   ]
 }
