@@ -2,7 +2,7 @@
 import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS } from './islands.js';
 import { cargoUsed, save } from './state.js';
-import { worldOf } from './explore.js';
+import { worldOf, surveyMax } from './explore.js';
 import { el, $ } from './ui.js';
 
 export const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, 醒神香: 20 };
@@ -62,7 +62,7 @@ export class Port {
       el('div', { class: 'p-isles' }, ...ISLAND_ORDER.filter(id => this.seas.includes(ISLANDS[id].sea)).map(id => {
         const r = worldOf(g, id), on = this.unlocked(id);
         return el('div', { class: 'isle' + (r.cleared ? ' done' : '') + (on ? '' : ' locked') },
-          el('b', {}, on ? id : '？？？'), el('small', {}, !on ? '還沒畫進海圖' : r.cleared ? `${r.good ? '★★' : '★'}　測繪 ${r.best}%` : '未完成'));
+          el('b', {}, on ? id : '？？？'), el('small', {}, !on ? '還沒畫進海圖' : r.cleared ? `${r.good ? '★★' : '★'}　測繪 ${r.best}%${r.best >= surveyMax(id) ? '・已畫滿' : ''}` : '未完成'));
       })));
   }
 
@@ -95,7 +95,7 @@ export class Port {
         if (ISLAND_ORDER.find(k => ISLANDS[k].sea === d.sea) === id) body.append(el('h3', { class: 'sub-h' }, d.sea));
         body.append(el('button', { class: 'btn wide chart-row', disabled: !on, onclick: () => { api.close(); this.sail(id); } },
           el('b', {}, on ? `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}` : '？？？'),
-          el('small', {}, on ? `${d.sub}・${d.cols}×${d.rows} 格・大約要 ${d.food} 份糧・航海事件 ${d.seaEvents} 個` + (r.visits ? `・最好的測繪度 ${r.best}%` : '') : this.lockText(id))));
+          el('small', {}, on ? `${d.sub}・${d.cols}×${d.rows} 格・大約要 ${d.food} 份糧・航海事件 ${d.seaEvents} 個` + (r.visits ? `・最好的測繪度 ${r.best}%（最高 ${surveyMax(id)}%${r.best >= surveyMax(id) ? '，已畫滿' : ''}）` : `・測繪度最高 ${surveyMax(id)}%`) : this.lockText(id))));
       }
     });
   }

@@ -6,10 +6,10 @@ import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loa
 import { UI, el, $ } from './ui.js';
 import { Audio } from './audio.js';
 import { Battle } from './battle.js';
-import { Explore, newIsland, worldOf } from './explore.js';
+import { Explore, newIsland, worldOf, surveyMax } from './explore.js';
 import { Port, statText } from './port.js';
 
-export const VERSION = 'M3 第二海域 v0.1';
+export const VERSION = 'M3 第二海域 v0.2';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -165,7 +165,7 @@ ctx.backToPort = async rep => {
   const mats = Object.entries(t.mats).map(([k, n]) => `${k} ${n}`).join('、');
   const ready = Object.keys(g.jobs).filter(id => ctx.port.jobState(COMMISSIONS.find(c => c.id === id)).ready).length;
   await ctx.ui.alert(rep.ending ? def.endings[rep.ending].title : `回到鹽灣島`, [
-    `${rep.island}的測繪度：${rep.pct}%（最好 ${worldOf(g, rep.island).best}%）`,
+    `${rep.island}的測繪度：${rep.pct}%（最好 ${worldOf(g, rep.island).best}%，這座島最高 ${surveyMax(rep.island)}%）`,
     `這趟賺到的銀貝：${Math.max(0, g.silver - t.silver)}`,
     mats ? `帶回來的素材：${mats}` : '這趟沒有帶回素材。',
     t.bps.length ? `找到的圖紙：${t.bps.join('、')}` : '',
@@ -235,7 +235,7 @@ function help() {
   ctx.ui.alert('怎麼玩', [
     '・港口：在「碼頭」買補給，在「海圖」選一座島出航。完成島嶼以後，酒館、鐵匠、船塢會陸續開放。',
     '・島上：點和你相鄰的格子前進。每走一格吃掉 1 份糧。霧裡看不見的格子，走過去才知道是什麼。點燈可以看得更遠，但會用掉燈油。',
-    '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。描得越準，畫進書裡的範圍越大。測繪過的格子，霧就吞不回去，下次再來也會留著；上次畫得不夠準的測繪點，下次來可以重畫補上。',
+    '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。描得越準，畫進書裡的範圍越大。測繪過的格子，霧就吞不回去，下次再來也會留著；上次畫得不夠準的測繪點，下次來可以重畫補上。每座島能畫的範圍有上限（測繪點周圍兩圈），畫滿以後測繪點就不會再出現；島上畫面下方會寫出這座島最高能畫到多少，畫滿了狀態列會顯示「測繪滿」。',
     '・目標：找到「霧眼」，打倒守門的東西拿到鑰匙，再打倒島上的首領。之後回到登陸點就能返航；測繪度 60% 以上，結局會不一樣。還沒打倒首領也可以先回港。',
     '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
     '・隊伍：一次最多 4 個人出戰，其他人在船上待命。在「隊伍」裡點「出戰／待命」換人（{名}一定要出戰）。',
