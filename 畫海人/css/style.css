@@ -1,11 +1,22 @@
 /* 《畫海人》：冷冷的霧色，只有燈火是暖的 */
 :root {
-  --bg: #0f1a24; --bg2: #16232f; --panel: #1c2b38; --panel2: #223444; --line: #2f4354;
-  --ink: #dfe6ea; --muted: #8fa1ae; --accent: #e8b86a; --accent2: #f2cf8e;
-  --hp: #d9665b; --mp: #6c9fd6; --exp: #c9a45c; --foe: #6b4f5c;
-  --paper: #e9dcc0; --paper-ink: #3a2e22;
+  /* 深海：越往下越暗，只有燈火與筆光是暖的；冷光的青綠是霧裡看得見的東西 */
+  --bg: #06111a; --bg2: #0a1a26; --panel: #0d202d; --panel2: #132c3b; --line: #1f4152;
+  --ink: #dce8ea; --muted: #86a2ac; --accent: #dcb46a; --accent2: #f0d49a;
+  --glow: #78d0c8; --glow2: #9fe3dc; --abyss: #030a10;
+  --hp: #d6675b; --mp: #6aa6d8; --exp: #c9a45c; --foe: #5a4258;
+  --paper: #e6dbc0; --paper-ink: #34291e;
+  --orn: rgba(120, 208, 200, .32); --orn2: rgba(220, 180, 106, .45);
   --serif: 'Noto Serif TC', 'Songti TC', 'PMingLiU', serif;
   --sans: system-ui, -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  /* 紋路：海圖的等深線（波紋）、羅盤方位線、四角的細框 */
+  --pat-waves: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='48'%3E%3Cg fill='none' stroke='%2378d0c8'%3E%3Cpath d='M0 14 C20 4 40 4 60 14 S100 24 120 14 S150 6 160 14' stroke-opacity='.07'/%3E%3Cpath d='M0 38 C20 30 40 30 60 38 S100 46 120 38 S150 32 160 38' stroke-opacity='.045'/%3E%3C/g%3E%3C/svg%3E");
+  --pat-rose: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'%3E%3Cg fill='none' stroke='%2378d0c8' stroke-opacity='.10' stroke-width='.4'%3E%3Ccircle r='96'/%3E%3Ccircle r='90' stroke-dasharray='1 3'/%3E%3Ccircle r='60'/%3E%3Ccircle r='30' stroke-dasharray='2 2'/%3E%3Cpath d='M0-100V100M-100 0H100M-71-71L71 71M-71 71L71-71M-38-92L38 92M-92-38L92 38M-38 92L38-92M-92 38L92-38'/%3E%3C/g%3E%3Cg fill='%2378d0c8' fill-opacity='.08'%3E%3Cpath d='M0-80L7-7L80 0L7 7L0 80L-7 7L-80 0L-7-7Z'/%3E%3C/g%3E%3C/svg%3E");
+  --corners:
+    linear-gradient(var(--orn), var(--orn)) left 5px top 5px / 14px 1px no-repeat, linear-gradient(var(--orn), var(--orn)) left 5px top 5px / 1px 14px no-repeat,
+    linear-gradient(var(--orn), var(--orn)) right 5px top 5px / 14px 1px no-repeat, linear-gradient(var(--orn), var(--orn)) right 5px top 5px / 1px 14px no-repeat,
+    linear-gradient(var(--orn), var(--orn)) left 5px bottom 5px / 14px 1px no-repeat, linear-gradient(var(--orn), var(--orn)) left 5px bottom 5px / 1px 14px no-repeat,
+    linear-gradient(var(--orn), var(--orn)) right 5px bottom 5px / 14px 1px no-repeat, linear-gradient(var(--orn), var(--orn)) right 5px bottom 5px / 1px 14px no-repeat;
   color-scheme: dark;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -252,3 +263,105 @@ button { font: inherit; color: inherit; }
   #screen.island .info { grid-area: info; } #screen.island .partybar { grid-area: party; grid-template-columns: 1fr; align-self: start; }
   #screen.port, #screen.result, #screen.title { padding-left: max(16px, calc(50% - 360px)); padding-right: max(16px, calc(50% - 360px)); }
 }
+
+/* ═════════ M2：港口、委託、鐵匠、裝備 ═════════ */
+.p-tip { font-family: var(--serif); color: var(--accent2); margin: 4px 0 8px; }
+.facs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0; }
+.fac { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; padding: 14px 14px 12px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink); cursor: pointer;
+  background: var(--corners), var(--pat-waves), linear-gradient(160deg, var(--panel2), var(--panel)); transition: border-color .2s, transform .1s; }
+.fac b { font-family: var(--serif); font-size: 1.12em; letter-spacing: .2em; }
+.fac small { color: var(--muted); font-size: 12px; }
+.fac:active { transform: scale(.98); }
+.fac:hover:not(:disabled) { border-color: var(--orn); }
+.fac.locked { opacity: .45; cursor: default; }
+.p-isles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px; }
+.isle { text-align: center; padding: 8px 4px; border-radius: 10px; border: 1px dashed var(--line); font-family: var(--serif); }
+.isle b { display: block; } .isle small { color: var(--muted); font-size: 11px; font-family: var(--sans); }
+.isle.done { border-style: solid; border-color: var(--orn); } .isle.done small { color: var(--accent2); }
+.isle.locked { opacity: .45; }
+.sub-h { font-family: var(--serif); font-size: 13px; letter-spacing: .3em; color: var(--glow2); margin: 14px 0 6px; display: flex; align-items: center; gap: 10px; }
+.sub-h::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--orn), transparent); }
+.job { padding: 10px 12px; margin-bottom: 8px; border-radius: 10px; border: 1px solid var(--line); background: var(--corners), var(--panel2); }
+.job b { font-family: var(--serif); } .job > small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.job p { margin: 4px 0 0; } .job .btns { margin-top: 6px; }
+.job.ready { border-color: var(--accent); box-shadow: 0 0 12px rgba(220, 180, 106, .18); }
+.matbox { padding: 8px 10px; border-radius: 10px; background: rgba(0, 0, 0, .18); margin-bottom: 6px; display: flex; flex-direction: column; gap: 6px; }
+.shop-row small.cost { color: var(--glow2); } .shop-row small.cost.short { color: #c98a80; }
+.eq { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0; }
+.eq-slot { display: flex; flex-direction: column; align-items: flex-start; gap: 0; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: rgba(0, 0, 0, .2); cursor: pointer; text-align: left; min-width: 0; }
+.eq-slot small { font-size: 10px; color: var(--muted); letter-spacing: .2em; } .eq-slot b { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.hero .stats { color: var(--muted); margin: 0 0 2px; }
+.partybar.four { grid-template-columns: repeat(4, 1fr); }
+.partybar.four .pm { font-size: 12px; padding: 4px 6px; }
+
+/* ═════════ 海洋與神祕：背景、面板、按鈕的紋路 ═════════ */
+body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, transparent 60%), radial-gradient(ellipse 80% 50% at 50% 110%, #04222a 0%, transparent 70%), var(--pat-waves), var(--abyss); background-attachment: fixed; }
+/* 整個畫面後面，一張很淡的羅盤，慢慢地轉 */
+#app::before { content: ""; position: fixed; left: 50%; top: 50%; width: 150vmax; height: 150vmax; margin: -75vmax 0 0 -75vmax; background: var(--pat-rose) center / contain no-repeat; pointer-events: none; opacity: .7; animation: rose 240s linear infinite; z-index: 0; }
+@keyframes rose { to { transform: rotate(360deg); } }
+#screen { position: relative; z-index: 1; }
+/* 漂浮的光點：霧裡的冷光 */
+#app::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(2px 2px at 12% 22%, rgba(159, 227, 220, .5), transparent), radial-gradient(1.5px 1.5px at 78% 14%, rgba(159, 227, 220, .4), transparent), radial-gradient(2px 2px at 64% 72%, rgba(240, 212, 154, .35), transparent), radial-gradient(1.5px 1.5px at 30% 84%, rgba(159, 227, 220, .35), transparent), radial-gradient(1px 1px at 88% 58%, rgba(159, 227, 220, .5), transparent);
+  animation: motes 14s ease-in-out infinite alternate; }
+@keyframes motes { to { transform: translateY(-14px); opacity: .55; } }
+
+/* 按鈕：內側一圈細線，像羅盤的框 */
+.btn { background: linear-gradient(180deg, rgba(159, 227, 220, .05), rgba(0, 0, 0, .12)), var(--panel2); border-color: var(--line); box-shadow: inset 0 0 0 3px var(--panel2), inset 0 0 0 4px rgba(120, 208, 200, .14); letter-spacing: .05em; }
+.btn:hover:not(:disabled) { border-color: rgba(120, 208, 200, .45); }
+.btn.primary { background: linear-gradient(180deg, #ecca88, #c99c50); border-color: #e8c27c; color: #1b1206; box-shadow: inset 0 0 0 3px #e2bb76, inset 0 0 0 4px rgba(60, 38, 10, .35), 0 0 18px rgba(220, 180, 106, .18); }
+.btn.on, .btn-chip.on { background: linear-gradient(180deg, #ecca88, #c99c50); }
+.btn.wide { background: var(--corners), var(--pat-waves), linear-gradient(180deg, rgba(159, 227, 220, .05), rgba(0, 0, 0, .12)), var(--panel2); }
+.btn.wide.primary { background: linear-gradient(180deg, #ecca88, #c99c50); }
+.chip { background: rgba(0, 0, 0, .22); border-color: var(--line); }
+.cmd, .cmd-row { background: linear-gradient(180deg, rgba(159, 227, 220, .05), rgba(0, 0, 0, .1)), var(--panel2); box-shadow: inset 0 0 0 3px var(--panel2), inset 0 0 0 4px rgba(120, 208, 200, .12); }
+.cmd.accent { box-shadow: inset 0 0 0 3px var(--panel2), inset 0 0 0 4px rgba(220, 180, 106, .35); }
+
+/* 面板：上緣一條海平線，中間一顆小菱形；四角細框；底紋是等深線 */
+.sheet { background: var(--pat-waves), linear-gradient(180deg, #10283a 0%, var(--panel) 40%); border-top: 1px solid var(--orn); }
+.sheet::before { content: ""; position: absolute; left: 50%; top: -5px; width: 9px; height: 9px; margin-left: -4.5px; transform: rotate(45deg); background: var(--bg); border: 1px solid var(--orn2); }
+.sheet-head { border-bottom: 0; position: relative; }
+.sheet-head::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--orn) 20%, var(--orn2) 50%, var(--orn) 80%, transparent); }
+.sheet-head h2 { display: flex; align-items: center; gap: 10px; color: #eaf2f2; }
+.sheet-head h2::before { content: ""; width: 7px; height: 7px; transform: rotate(45deg); border: 1px solid var(--orn2); flex: none; }
+.info, .hero, .st, .pm { background: var(--corners), linear-gradient(160deg, var(--panel2), var(--panel)); border: 1px solid rgba(31, 65, 82, .8); }
+.st, .pm { background: linear-gradient(160deg, var(--panel2), var(--panel)); }
+
+/* 標題：羅盤玫瑰在字的後面，筆光一樣的金色 */
+.t-box { position: relative; }
+.t-rose { position: absolute; left: 50%; top: -70px; width: 300px; height: 300px; margin-left: -150px; pointer-events: none; opacity: .9;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'%3E%3Cg fill='none' stroke='%23dcb46a' stroke-opacity='.35' stroke-width='.5'%3E%3Ccircle r='92'/%3E%3Ccircle r='86' stroke-dasharray='.6 2.4'/%3E%3Ccircle r='58' stroke-opacity='.2'/%3E%3C/g%3E%3Cg stroke='%2378d0c8' stroke-opacity='.22' stroke-width='.4'%3E%3Cpath d='M0-98V98M-98 0H98M-69-69L69 69M-69 69L69-69'/%3E%3C/g%3E%3Cpath d='M0-84L9-9L84 0L9 9L0 84L-9 9L-84 0L-9-9Z' fill='%23dcb46a' fill-opacity='.10' stroke='%23dcb46a' stroke-opacity='.4' stroke-width='.5'/%3E%3Cpath d='M0-50L4-4L50 0L4 4L0 50L-4 4L-50 0L-4-4Z' fill='%2378d0c8' fill-opacity='.10' stroke='%2378d0c8' stroke-opacity='.35' stroke-width='.4' transform='rotate(45)'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: rose 180s linear infinite reverse; }
+.t-box h1 { position: relative; color: #f0f5f4; text-shadow: 0 0 24px rgba(120, 208, 200, .35), 0 0 60px rgba(220, 180, 106, .25); }
+.t-sub { position: relative; }
+.t-sub::after { content: ""; display: block; width: 160px; height: 1px; margin: 14px auto 0; background: linear-gradient(90deg, transparent, var(--orn2), transparent); }
+#screen.title, #screen.result { background: radial-gradient(ellipse at 50% 35%, rgba(20, 60, 80, .55) 0%, transparent 65%); }
+
+/* 港口與島嶼的標題列下方：一條細細的海岸線 */
+.p-head, .isl-head { position: relative; padding-bottom: 6px; }
+.p-head::after, .isl-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='6'%3E%3Cpath d='M0 3 Q7.5 0 15 3 T30 3 T45 3 T60 3' fill='none' stroke='%2378d0c8' stroke-opacity='.35'/%3E%3C/svg%3E") repeat-x; }
+
+/* 地圖：像一張舊海圖，有經緯線 */
+.mapwrap { background: repeating-linear-gradient(0deg, transparent 0 47px, rgba(120, 208, 200, .07) 47px 48px), repeating-linear-gradient(90deg, transparent 0 47px, rgba(120, 208, 200, .07) 47px 48px), radial-gradient(ellipse at 50% 50%, #17384a 0%, #08161f 100%); border: 1px solid var(--line); box-shadow: inset 0 0 40px rgba(0, 0, 0, .7), inset 0 0 0 4px rgba(6, 17, 26, .6), inset 0 0 0 5px var(--orn); }
+.hex.fog polygon { fill: #6f8a95; fill-opacity: .42; }
+.hex.can polygon { stroke: var(--glow); }
+
+/* 劇情與戰鬥：深海的底紋 */
+.story { background: var(--pat-waves), radial-gradient(ellipse at 50% 30%, #173447 0%, #050c12 75%); }
+.story[data-bg="night"] { background: var(--pat-waves), radial-gradient(ellipse at 50% 20%, #12263a 0%, #03070b 80%); }
+.story[data-bg="home"] { background: var(--pat-waves), radial-gradient(ellipse at 40% 30%, #33301f 0%, #0c0b08 80%); }
+.story[data-bg="port"] { background: var(--pat-waves), radial-gradient(ellipse at 50% 30%, #1d4152 0%, #061016 80%); }
+.story[data-bg="fog"] { background: var(--pat-waves), radial-gradient(ellipse at 50% 40%, #5e7883 0%, #111d24 85%); }
+.story .line.say b { color: var(--accent2); }
+.story-lines { padding-top: 14px; }
+.story-lines::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--orn), transparent); }
+#battle { background: var(--pat-waves), radial-gradient(ellipse at 50% 15%, #1e2a3c 0%, #050c12 75%); }
+.unit { background: linear-gradient(160deg, var(--panel2), var(--panel)); border-color: rgba(31, 65, 82, .9); }
+.unit.foe { background: linear-gradient(160deg, #2a2133, #170f1d); }
+.b-log { background: rgba(0, 0, 0, .3); border: 1px solid rgba(31, 65, 82, .7); }
+.survey { background: var(--pat-waves), rgba(4, 10, 16, .95); }
+.toast { background: rgba(10, 26, 36, .95); border-color: var(--orn); }
+.dim { background: rgba(2, 8, 12, .62); backdrop-filter: blur(2px); }
+
+@media (min-width: 560px) { .facs { grid-template-columns: repeat(3, 1fr); } }
+.shop-row > .btn { flex: none; white-space: nowrap; }
