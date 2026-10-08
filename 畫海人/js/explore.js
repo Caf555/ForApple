@@ -46,7 +46,8 @@ export function newIsland(g, id) {
   const isl = { id, tiles, pos: [...def.start], steps: 0, lit: false, food: 0, events: shuffle(def.events.map((_, i) => i)), boss: false, key: false };
   // 已經完成過的島：首領不在了，門也開著；測繪過的測繪點不用再畫
   if (rec.cleared) { isl.boss = true; isl.key = true; const b = tiles.find(t => t.kind === '王'); b.done = true; }
-  for (const t of tiles) if (t.kind === '測' && t.surveyed) t.done = true;
+  // 測繪點：周圍兩圈都已經畫進書裡，才算畫完；上次畫得不夠準的，這次可以重畫
+  for (const t of tiles) if (t.kind === '測' && pointDone(tiles, t)) t.done = true;
   reveal(isl, def.start, g.ship && g.ship.船首像 ? 2 : 1);
   // 首領的位置，從一開始就看得見：這是這座島的終點
   tiles.find(t => t.kind === '王').seen = true;
@@ -54,6 +55,7 @@ export function newIsland(g, id) {
   return isl;
 }
 
+export function pointDone(tiles, t) { return tiles.every(x => x.surveyed || dist([x.c, x.r], [t.c, t.r]) > 2); }
 function tileAt(isl, c, r) { return isl.tiles[r * ISLANDS[isl.id].cols + c]; }
 function reveal(isl, p, rad) { for (const t of isl.tiles) if (dist([t.c, t.r], p) <= rad) t.seen = true; }
 export function surveyPct(isl) { return Math.round(isl.tiles.filter(t => t.surveyed).length * 100 / isl.tiles.length); }
@@ -126,8 +128,9 @@ export class Explore {
     this.$lamp.textContent = isl.lit ? '熄燈' : '點燈';
     this.$lamp.classList.toggle('on', isl.lit);
     this.$party.innerHTML = '';
-    this.$party.classList.toggle('four', g.party.length > 3);
-    for (const h of g.party) {
+    const team = g.party.filter(h => !h.bench);
+    this.$party.classList.toggle('four', team.length > 3);
+    for (const h of team) {
       const st = heroStats(h);
       this.$party.append(el('div', { class: 'pm' + (h.hp <= 0 ? ' down' : '') }, el('b', {}, this.ctx.ui.fmt(h.key === '墨里' ? '{名}' : h.key), el('small', {}, ` Lv${h.lv}`)), this.ctx.ui.bar(h.hp, st.hp, 'hp'), this.ctx.ui.bar(h.mp, st.mp, 'mp')));
     }
@@ -262,7 +265,7 @@ export class Explore {
           for (const h of g.party) { const st = heroStats(h); h.hp = Math.max(h.hp, Math.min(st.hp, h.hp + Math.round(st.hp * 0.6))); h.mp = Math.min(st.mp, h.mp + Math.round(st.mp * 0.6)); }
           g.morale = Math.min(100, g.morale + 10);
           this.ctx.audio.sfx('heal');
-          const has = k => g.party.some(h => h.key === k);
+          const has = k => g.party.some(h => h.key === k && !h.bench);
           const talks = def.camp.map(c => Array.isArray(c) ? { lines: c } : c).filter(c => !c.need || has(c.need));
           await ui.alert('營火', [...pick(talks).lines, '（全隊回復了 60%，士氣 +10）']);
           t.done = true;
@@ -285,7 +288,8 @@ export class Explore {
       }
       case '測': {
         if (g.supply.墨水 < 2) { await ui.alert('測繪點', ['這裡看得見很長的一段海岸線。', '可是測繪要用 2 份墨水，你們的墨水不夠。（寶箱、事件、村子可能找得到）']); break; }
-        const i = await ui.choose('測繪點', ['這裡看得見很長的一段海岸線。', '要在這裡測繪嗎？（墨水 2）測繪過的格子，霧就吞不回去，下次再來也會留著。'], [{ label: '測繪' }, { label: '先不要' }]);
+        const again = t.surveyed ? ['上次在這裡畫得不夠準，周圍還有沒畫進書裡的地方。這次可以重畫，畫得更準就能補上。'] : [];
+        const i = await ui.choose('測繪點', ['這裡看得見很長的一段海岸線。', ...again, '要在這裡測繪嗎？（墨水 2）測繪過的格子，霧就吞不回去，下次再來也會留著。'], [{ label: '測繪' }, { label: '先不要' }]);
         if (i !== 0) break;
         g.supply.墨水 -= 2;
         const score = await survey(this.ctx, isl.id);
@@ -305,7 +309,8 @@ export class Explore {
         await ui.story(B.intro.map(text => ({ text })));
         if (await this.fight(t, from, B.foes, '首領')) {
           t.done = true; isl.boss = true; isl.bossNow = true;
-          await ui.story(B.down.map(text => ({ text })));
+          const picks = await ui.story(B.down.map(L => typeof L === 'string' ? { text: L } : L));
+          if (B.pick && picks.length) g.flags[B.pick] = picks[0];
           const bp = this.ctx.newBlueprint(def.bps);
           await ui.alert(B.place, [bp ? `（得到圖紙「${bp}」。回港以後，可以請鐵匠打造）` : '', '這座島的首領倒下了。', `現在可以繼續探索、測繪，回到登陸點（「起」）就能返航。目前測繪度 ${surveyPct(isl)}%：60% 以上，結局會不一樣。`].filter(Boolean));
         }
@@ -337,7 +342,7 @@ export class Explore {
     if (isl.bossNow || (isl.boss && !rec.good && pct >= 60)) {
       const good = pct >= 60;
       ending = good ? 'good' : 'plain';
-      await ui.story(def.endings[ending].lines.map(text => ({ text })));
+      await ui.story(this.ctx.storyLines(def.endings[ending].lines));
       const first = !rec.cleared;
       rec.cleared = true;
       if (good) rec.good = true;
@@ -352,14 +357,10 @@ export class Explore {
     if (!t.met) {
       t.met = true;
       await ui.alert(V.title, V.text);
-      if (V.recruit && !g.party.some(h => h.key === V.recruit) && g.party.length < PARTY_MAX) {
+      if (V.recruit && !g.party.some(h => h.key === V.recruit)) {
         await ui.story(V.recruitStory);
-        const lv = Math.max(1, Math.round(g.party.reduce((a, h) => a + h.lv, 0) / g.party.length));
-        const h = makeHero(V.recruit, g.party.length, lv);
-        if (EQUIPS.貝殼琴) h.eq.武器 = '貝殼琴'; // 她自己的琴
-        const s = heroStats(h); h.hp = s.hp; h.mp = s.mp;
-        g.party.push(h);
-        save(g); this.draw();
+        await this.ctx.recruit(V.recruit);
+        this.draw();
       }
     }
     ui.sheet('村子的小店', (body, api) => {

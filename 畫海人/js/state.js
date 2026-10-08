@@ -74,6 +74,8 @@ function migrate(d) {
     if (d.phase === 'done') d.phase = 'port';
     d.v = 2;
   }
+  // 新版本加的「一開始就會」的圖紙（例如費米的弓），舊存檔也補上
+  for (const k of Object.keys(EQUIPS)) if (EQUIPS[k].start && !d.bps.includes(k)) d.bps.push(k);
   return d;
 }
 

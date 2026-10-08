@@ -28,7 +28,7 @@ export class Battle {
   async run() {
     const g = this.g, diff = DIFF[g.diff] || DIFF.標準;
     this.round = 0; this.over = null; this.logLines = [];
-    this.allies = g.party.map((h, i) => {
+    this.allies = g.party.filter(h => !h.bench).map((h, i) => {
       const s = heroStats(h);
       return { side: 'ally', id: 'a' + i, key: h.key, name: this.ctx.ui.fmt(h.key === '墨里' ? '{名}' : h.key), ref: h, el: HEROES[h.key].element,
         st: s, maxhp: s.hp, hp: Math.min(h.hp, s.hp), maxmp: s.mp, mp: Math.min(h.mp, s.mp), row: h.row, alive: h.hp > 0, status: {}, fx: {} };
@@ -147,7 +147,7 @@ export class Battle {
     const foes = this.foes.filter(f => f.alive);
     const charging = foes.find(f => f.charging);
     const tgt = charging || foes.sort((a, b) => a.hp - b.hp)[0];
-    const dmg = sk.filter(s => ['phy', 'mag'].includes(SKILLS[s].type) && SKILLS[s].target === 'enemy');
+    const dmg = sk.filter(s => ['phy', 'rng', 'mag'].includes(SKILLS[s].type) && SKILLS[s].target === 'enemy');
     if (dmg.length && Math.random() < 0.6) {
       const best = dmg.map(s => ({ s, m: elementMult(SKILLS[s].element, tgt.el) })).sort((a, b) => b.m - a.m)[0].s;
       const t = SKILLS[best].type === 'phy' ? this.meleeTargets('foe').includes(tgt) ? tgt : this.meleeTargets('foe')[0] : tgt;
@@ -299,7 +299,8 @@ export class Battle {
     await this.pause(0.35);
     for (const t of targets) {
       if (!t) continue;
-      if (sk.type === 'phy' || sk.type === 'mag') this.hit(u, t, sk, !!act.big);
+      if (sk.type === 'phy' || sk.type === 'rng' || sk.type === 'mag') this.hit(u, t, sk, !!act.big);
+      if (sk.loot && t.side === 'foe') { t.loot = true; this.float(t, '清點', 'st'); this.log(`${t.name} 身上的東西，都被記下來了。`); }
       if (sk.type === 'heal') { const amt = Math.round(sk.power + (u.st.mag || 0) * 1.1); this.heal(t, amt); if (sk.cure) { t.status = {}; this.log(`${t.name} 身上的異常消失了。`); } this.ctx.audio.sfx('heal'); }
       if (sk.mark) { t.fx.mark = sk.mark; this.float(t, '標記', 'st'); this.log(`${t.name} 被畫上了記號。弱點是「${weaknessOf(t.el)}」。`); }
       if (sk.ward) { t.fx.ward = sk.ward; this.float(t, '結界', 'buff'); }
@@ -313,10 +314,10 @@ export class Battle {
   }
 
   hit(u, t, sk, big) {
-    const fogMiss = this.opt.terrain === '霧中' && !this.opt.lit ? 0.18 : 0.04;
+    const fogMiss = sk.aim ? 0 : this.opt.terrain === '霧中' && !this.opt.lit ? 0.18 : 0.04;
     if (Math.random() < fogMiss) { this.log(`${t.name} 閃開了。`); this.float(t, '落空', 'miss'); return; }
     const element = sk.element || (u.side === 'foe' ? u.el : null);
-    let dmg = sk.type === 'phy' ? (u.st.atk * 2 - t.st.def) * sk.power : u.st.mag * 1.6 + sk.power - t.st.def * 0.6;
+    let dmg = sk.type === 'phy' || sk.type === 'rng' ? (u.st.atk * 2 - t.st.def) * sk.power : u.st.mag * 1.6 + sk.power - t.st.def * 0.6;
     if (u.side === 'foe') dmg *= 0.85;
     dmg = Math.max(dmg, 2);
     if (sk.type === 'phy' && u.row === 'back') dmg *= 0.5;
@@ -403,7 +404,7 @@ export class Battle {
     const drops = {};
     for (const f of this.foes) {
       this.ctx.onKill && this.ctx.onKill(f.key);
-      for (const [m, p, n = 1] of f.def.drop || []) if (Math.random() < p) drops[m] = (drops[m] || 0) + n;
+      for (const [m, p, n = 1] of f.def.drop || []) if (f.loot || Math.random() < p) drops[m] = (drops[m] || 0) + n + (f.loot ? 1 : 0);
     }
     for (const m in drops) this.ctx.gainMat(m, drops[m]);
     g.morale = Math.min(100, g.morale + ({ 首領: 15, 精英: 12 }[this.opt.kind] || 6));

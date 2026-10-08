@@ -1,6 +1,7 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
 import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS } from '../js/data.js';
-import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, INTRO, CINEMA } from '../js/islands.js';
+import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, INTRO, CINEMA, SEAS } from '../js/islands.js';
+import { PUZZLES } from '../js/puzzle.js';
 import { ART_KEYS } from '../js/cinema.js';
 import { readFileSync } from 'node:fs';
 
@@ -30,6 +31,7 @@ for (const [k, d] of Object.entries(SHIP)) for (const l of d.levels) for (const 
 
 // 每張圖紙都要拿得到：一開始就會、島上的寶箱或首領、委託報酬
 const bpFrom = new Set(Object.keys(EQUIPS).filter(k => EQUIPS[k].start));
+for (const h of Object.values(HEROES)) if (h.weapon) { if (!EQUIPS[h.weapon]) bad(`隊友自己的武器「${h.weapon}」不存在`); bpFrom.add(h.weapon); }
 for (const d of Object.values(ISLANDS)) for (const b of d.bps) bpFrom.add(b);
 for (const c of COMMISSIONS) if (c.reward.圖紙) bpFrom.add(c.reward.圖紙);
 for (const k of Object.keys(EQUIPS)) if (!bpFrom.has(k)) bad(`裝備 ${k} 的圖紙沒有地方拿得到`);
@@ -62,7 +64,10 @@ for (const [id, d] of Object.entries(ISLANDS)) {
   for (const k of [...Object.values(d.fixed), ...Object.keys(d.pool)]) if (!TILE_INFO[k]) bad(`${id}：格子種類「${k}」不存在`);
   for (const key of [...fixed, d.start.join(',')]) { const [c, r] = key.split(',').map(Number); if (c < 0 || r < 0 || c >= d.cols || r >= d.rows) bad(`${id}：座標 ${key} 超出地圖`); }
   if (fixed.includes(d.start.join(','))) bad(`${id}：登陸點和固定格子重疊`);
-  if (d.unlock && !ISLANDS[d.unlock]) bad(`${id}：解鎖條件「${d.unlock}」不存在`);
+  for (const u of [].concat(d.unlock || [])) if (!ISLANDS[u]) bad(`${id}：解鎖條件「${u}」不存在`);
+  if (!SEAS.includes(d.sea)) bad(`${id}：海域「${d.sea}」不存在`);
+  if (SEA_EVENTS.filter(e => (e.sea || '淺灘') === d.sea).length < d.seaEvents) bad(`${id}：${d.sea}的航海事件不夠`);
+  if (d.boss.pick && !d.boss.down.some(L => L.choice)) bad(`${id}：首領戰後要選擇，可是沒有選項`);
   for (const grp of [...d.encounters, d.elite.foes, d.boss.foes]) for (const e of grp) if (!ENEMIES[e]) bad(`${id}：敵人「${e}」不存在`);
   if (!ENEMIES[d.boss.foes[0]] || ENEMIES[d.boss.foes[0]].rank !== '首領') bad(`${id}：首領戰的第一個敵人要是首領`);
   if (d.encounters.length < 5) bad(`${id}：一般戰鬥的組合太少`);
@@ -76,21 +81,29 @@ for (const [id, d] of Object.entries(ISLANDS)) {
   if (w && (w.boss !== d.boss.foes[0] || (w.element && !ELEMENTS.includes(w.element)) || (w.who && !HEROES[w.who]))) bad(`${id}：遺跡的弱點設定不對`);
   const G = d.ruin.game;
   if (G) {
-    if (!['燈號', '門牌', '航海圖'].includes(G.kind)) bad(`${id}：遺跡小遊戲「${G.kind}」不存在`);
+    if (!PUZZLES.includes(G.kind)) bad(`${id}：遺跡小遊戲「${G.kind}」不存在`);
     for (const k in G.reward) if (!FX_OK(k)) bad(`${id}：遺跡小遊戲的獎勵「${k}」不認得`);
   }
   if (!d.endings.good || !d.endings.plain) bad(`${id}：缺少結局`);
 }
 for (const k in PORT_SCENES) if (!ISLANDS[k]) bad(`回港劇情「${k}」對應的島不存在`);
-for (const L of [...INTRO, ...CHAPTER_END, ...Object.values(PORT_SCENES).flat()]) if (L.need && !HEROES[L.need]) bad(`劇情台詞的 need「${L.need}」不存在`);
+const allLines = [...INTRO, ...CHAPTER_END, ...CHAPTER2_END, ...OBSERVATORY, ...Object.values(PORT_SCENES).flat(), ...Object.values(LATE_RECRUIT).flatMap(r => r.lines), ...Object.values(ISLANDS).flatMap(d => [...d.arrive, ...d.endings.good.lines, ...d.endings.plain.lines].filter(L => typeof L === 'object'))];
+for (const L of allLines) if (L.need && !HEROES[L.need]) bad(`劇情台詞的 need「${L.need}」不存在`);
+// flag 寫成「殘頁=父親」的，要有首領戰的選項能選到
+const picks = {};
+for (const d of Object.values(ISLANDS)) if (d.boss.pick) picks[d.boss.pick] = d.boss.down.filter(L => L.choice).flatMap(L => L.choice.map(c => c[1]));
+for (const L of allLines) if (L.flag && L.flag.includes('=')) { const [k, v] = L.flag.split('='); if (!picks[k] || !picks[k].includes(v)) bad(`劇情台詞的 flag「${L.flag}」沒有選項選得到`); }
+for (const [k, r] of Object.entries(LATE_RECRUIT)) { if (!ISLANDS[k]) bad(`補加入的島「${k}」不存在`); if (!HEROES[r.key]) bad(`補加入的隊友「${r.key}」不存在`); }
+for (const c of CHAPTERS) { if (!ISLANDS[c.last]) bad(`章節「${c.title}」的最後一座島不存在`); if (!CINEMA[c.cine]) bad(`章節「${c.title}」的結尾動畫不存在`); for (const i of c.isles) if (!ISLANDS[i]) bad(`章節「${c.title}」的島「${i}」不存在`); }
 
 // 劇情動畫：場景要畫得出來；插圖名稱要在生圖清單裡，而且不能重複
 const picList = JSON.parse(readFileSync(new URL('./生圖/清單_劇情.json', import.meta.url), 'utf8')).items.map(it => it.name);
 for (const n of new Set(picList)) if (picList.filter(x => x === n).length > 1) bad(`生圖清單裡的「${n}」重複了`);
 const usedPics = [];
-for (const k of ['開場', ...Object.keys(ISLANDS), '第一章完']) if (!CINEMA[k]) bad(`缺少劇情動畫「${k}」`);
+const EXTRA_CINE = ['開場', '第一章完', '第二章', '第二章完'];
+for (const k of [...EXTRA_CINE, ...Object.keys(ISLANDS)]) if (!CINEMA[k]) bad(`缺少劇情動畫「${k}」`);
 for (const [k, c] of Object.entries(CINEMA)) {
-  if (k !== '開場' && k !== '第一章完' && !ISLANDS[k]) bad(`劇情動畫「${k}」對應的島不存在`);
+  if (!EXTRA_CINE.includes(k) && !ISLANDS[k]) bad(`劇情動畫「${k}」對應的島不存在`);
   for (const F of c.frames) {
     if (!ART_KEYS.includes(F.art)) bad(`劇情動畫「${k}」的場景「${F.art}」不存在`);
     if (!F.text) bad(`劇情動畫「${k}」有一張圖沒有文字`);
