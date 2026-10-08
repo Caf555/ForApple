@@ -6,7 +6,7 @@ import { Audio } from './audio.js';
 import { Battle } from './battle.js';
 import { Explore, newIsland, surveyPct } from './explore.js';
 
-export const VERSION = 'M1 雛形 v0.2';
+export const VERSION = 'M1 雛形 v0.3';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
