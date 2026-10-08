@@ -50,6 +50,13 @@ export class Audio {
     }
   }
 
+  // 小遊戲的音階：第 i 個音（五聲音階）
+  tone(i) {
+    if (!this.on || !this.ac) return;
+    const f = 440 * 2 ** ([0, 2, 4, 7, 9, 12, 14][i % 7] / 12);
+    this.note(f, this.ac.currentTime, 0.4, 'sine', 0.08);
+  }
+
   music(name, force) {
     this.want = name;
     if (!this.ac) return;

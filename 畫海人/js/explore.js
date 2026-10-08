@@ -3,6 +3,7 @@ import { ISLANDS, TILE_INFO } from './islands.js';
 import { EQUIPS, MATS, PARTY_MAX } from './data.js';
 import { heroStats, makeHero, DIFF, save } from './state.js';
 import { survey } from './survey.js';
+import { playPuzzle } from './puzzle.js';
 import { el, $ } from './ui.js';
 
 const NS = 'http://www.w3.org/2000/svg';
@@ -269,10 +270,19 @@ export class Explore {
         break;
       }
       case '村': await this.village(); break;
-      case '遺':
-        await ui.alert(def.ruin.title, [...def.ruin.text, def.ruin.line]);
+      case '遺': {
+        // 遺跡小遊戲：解開了多拿獎勵；解不開也看得到字（首領弱點不會卡關）。解開過的，之後直接看字
+        const R = def.ruin, G = R.game;
+        if (G && !g.flags['謎:' + isl.id]) {
+          const i = await ui.choose(R.title, [...G.intro, '解開的話，可以多拿到一些東西。解不開也沒關係，還是看得到字。'], [{ label: '試試看' }, { label: '先不要' }]);
+          if (i !== 0) break;
+          const win = await playPuzzle(this.ctx, G.kind, isl.id);
+          if (win) { g.flags['謎:' + isl.id] = 1; this.ctx.applyFx(G.reward); }
+          await ui.alert(R.title, [...R.text, R.line, win ? '解開了遺跡的謎題！' + this.ctx.fxText(G.reward) : '謎題沒有解開，沒拿到獎勵。字還是勉強看得出來。下次再來這座島，可以再試一次。']);
+        } else await ui.alert(R.title, [...R.text, R.line]);
         g.flags['遺跡:' + isl.id] = 1; t.done = true;
         break;
+      }
       case '測': {
         if (g.supply.墨水 < 2) { await ui.alert('測繪點', ['這裡看得見很長的一段海岸線。', '可是測繪要用 2 份墨水，你們的墨水不夠。（寶箱、事件、村子可能找得到）']); break; }
         const i = await ui.choose('測繪點', ['這裡看得見很長的一段海岸線。', '要在這裡測繪嗎？（墨水 2）測繪過的格子，霧就吞不回去，下次再來也會留著。'], [{ label: '測繪' }, { label: '先不要' }]);

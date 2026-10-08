@@ -72,6 +72,11 @@ for (const [id, d] of Object.entries(ISLANDS)) {
   if (d.village && d.village.recruit && !HEROES[d.village.recruit]) bad(`${id}：加入的隊友不存在`);
   const w = d.ruin.weak;
   if (w && (w.boss !== d.boss.foes[0] || (w.element && !ELEMENTS.includes(w.element)) || (w.who && !HEROES[w.who]))) bad(`${id}：遺跡的弱點設定不對`);
+  const G = d.ruin.game;
+  if (G) {
+    if (!['燈號', '門牌', '航海圖'].includes(G.kind)) bad(`${id}：遺跡小遊戲「${G.kind}」不存在`);
+    for (const k in G.reward) if (!FX_OK(k)) bad(`${id}：遺跡小遊戲的獎勵「${k}」不認得`);
+  }
   if (!d.endings.good || !d.endings.plain) bad(`${id}：缺少結局`);
 }
 for (const k in PORT_SCENES) if (!ISLANDS[k]) bad(`回港劇情「${k}」對應的島不存在`);
