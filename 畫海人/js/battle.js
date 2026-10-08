@@ -50,6 +50,16 @@ export class Battle {
     this.log(boss ? '燈塔的光，熄了一下。' : this.opt.kind === '精英' ? '霧最濃的地方，有東西睜開了眼睛。' : '霧裡有東西撲了過來！');
     if (this.opt.terrain && TERRAIN[this.opt.terrain] && !(this.opt.terrain === '霧中' && this.opt.lit)) this.log('（' + TERRAIN[this.opt.terrain] + '）');
     if (this.opt.terrain === '霧中' && this.opt.lit) this.log('（燈火照亮了霧：命中不受影響）');
+    if (!this.ctx.settings.tutRows) {
+      this.ctx.settings.tutRows = true; this.ctx.saveSettings();
+      await this.ctx.ui.alert('前排與後排', [
+        '戰場分成前排和後排，站的位置會大大影響戰鬥：',
+        '・前排：近身攻擊威力 +15%。可是敵人的近身攻擊，只打得到前排。',
+        '・後排：只要前排還有人，受到的傷害 −30%，近身攻擊也打不到你；但你自己的近身攻擊威力減半。法術不受影響。',
+        '・所以：耐打的阿潮站前排擋著，墨里和蓮笙在後排用法術。敵人也一樣——後排的鹽靈、燈蛾，要用法術去打。',
+        '・輪到自己時可以「換位」；漲潮時前排會被海水打到，可以先退到後排。',
+      ], '開始戰鬥');
+    }
     const ambush = this.opt.terrain === '林' && Math.random() < 0.35;
     if (ambush) this.log('偷襲！敵人先動手了。');
 
@@ -206,6 +216,7 @@ export class Battle {
       this.$cmd.innerHTML = '';
       this.$cmd.append(el('div', { class: 'cmd-who' }, sk.type === 'phy' ? '選一個前排的敵人' : '選一個敵人'), el('button', { class: 'cmd back', onclick: () => { this.clearTarget(); this.menu(u); } }, '← 返回'));
       for (const t of pool) { const n = this.nodes[t.id]; n.classList.add('pickable'); n.onclick = () => { this.ctx.audio.sfx('tap'); this.resolve({ type: 'skill', skill, target: t }); }; }
+      for (const f of this.foes) if (f.alive && !pool.includes(f)) this.nodes[f.id].classList.add('nohit');
     } else if (sk.target === 'ally') this.pickAlly(u, a => a.alive, t => this.resolve({ type: 'skill', skill, target: t }));
     else this.resolve({ type: 'skill', skill });
   }
@@ -218,7 +229,7 @@ export class Battle {
     for (const t of pool) { const n = this.nodes[t.id]; n.classList.add('pickable'); n.onclick = () => { this.ctx.audio.sfx('tap'); cb(t); }; }
   }
 
-  clearTarget() { for (const id in this.nodes) { this.nodes[id].classList.remove('pickable'); this.nodes[id].onclick = null; } }
+  clearTarget() { for (const id in this.nodes) { this.nodes[id].classList.remove('pickable', 'nohit'); this.nodes[id].onclick = null; } }
 
   // ───────── 執行 ─────────
   async exec(u, act) {
@@ -234,6 +245,7 @@ export class Battle {
       g.supply[act.item]--;
       if (it.revive && !t.alive) { t.alive = true; t.hp = Math.round(t.maxhp * it.revive); this.float(t, '醒來', 'heal'); }
       else if (it.heal) this.heal(t, Math.round(t.maxhp * it.heal));
+      if (it.mp && t.alive) { const b = t.mp; t.mp = Math.min(t.maxmp, t.mp + it.mp); this.float(t, '+' + (t.mp - b) + ' 靈', 'mp'); }
       this.log(`${u.name} 用了${act.item}。`);
       this.ctx.audio.sfx('heal'); this.renderRows(); await this.pause(); return;
     }
@@ -254,7 +266,8 @@ export class Battle {
       case 'enemy': {
         if (u.side === 'foe') {
           const taunt = this.allies.find(a => a.alive && a.fx.taunt);
-          const pool = sk.type === 'phy' ? this.meleeTargets('ally') : this.allies.filter(a => a.alive);
+          const alive = this.allies.filter(a => a.alive), front = this.meleeTargets('ally');
+          const pool = sk.type === 'phy' || Math.random() < 0.6 ? front : alive;
           targets = [taunt && (sk.type !== 'phy' || pool.includes(taunt)) ? taunt : pick(pool)];
         } else {
           let t = act.target && act.target.alive ? act.target : null;
@@ -299,6 +312,11 @@ export class Battle {
     if (t.fx.mark) dmg *= 1.3;
     if (t.fx.ward && t.row === 'front') dmg *= 0.6;
     if (t.defending) dmg *= 0.5;
+    // 後排：有前排擋著的時候，受到的傷害 −30%
+    const sheltered = t.row === 'back' && (t.side === 'ally' ? this.allies : this.foes).some(x => x.alive && x.row === 'front');
+    if (sheltered) dmg *= 0.7;
+    // 前排：近身攻擊 +15%（站在最前面，揮得最用力）
+    if (sk.type === 'phy' && u.row === 'front') dmg *= 1.15;
     if (big) dmg *= 1.5;
     if (u.side === 'ally' && sk.type === 'mag' && this.opt.terrain === '高地') dmg *= 1.25;
     // 遺跡讀到的線索：星屬性會讓燈守想起一些事
@@ -310,7 +328,7 @@ export class Battle {
     if (crit) dmg *= 1.5;
     dmg = Math.max(1, Math.round(dmg));
     t.hp = Math.max(0, t.hp - dmg);
-    const note = mult >= 1.5 ? '（剋制！）' : mult > 1 ? '（星影相衝！）' : mult < 0.8 ? '（被剋……）' : '';
+    const note = (mult >= 1.5 ? '（剋制！）' : mult > 1 ? '（星影相衝！）' : mult < 0.8 ? '（被剋……）' : '') + (sheltered ? '（後排 −30%）' : '') + (sk.type === 'phy' && u.row === 'back' ? '（後排近身，威力減半）' : '');
     this.log(`${crit ? '爆擊！' : ''}${t.name} 受到 ${dmg} 點傷害${note}`);
     this.float(t, String(dmg), crit ? 'crit' : mult >= 1.3 ? 'weak' : 'dmg');
     this.shake(t);
@@ -396,9 +414,9 @@ export class Battle {
     this.$log = el('div', { class: 'b-log' });
     this.$cmd = el('div', { class: 'b-cmd' });
     r.append(top,
-      el('div', { class: 'field' }, el('div', { class: 'rlabel' }, '後排'), this.$foeBack, el('div', { class: 'rlabel' }, '前排'), this.$foeFront),
+      el('div', { class: 'field' }, el('div', { class: 'rlabel' }, '敵方後排　近身打不到・受傷 −30%'), this.$foeBack, el('div', { class: 'rlabel front' }, '敵方前排　近身攻擊只能打這一排'), this.$foeFront),
       this.$log,
-      el('div', { class: 'field mine' }, el('div', { class: 'rlabel' }, '前排'), this.$allyFront, el('div', { class: 'rlabel' }, '後排'), this.$allyBack),
+      el('div', { class: 'field mine' }, el('div', { class: 'rlabel front' }, '我方前排　近身 +15%・敵人的近身攻擊只打這一排'), this.$allyFront, el('div', { class: 'rlabel' }, '我方後排　受傷 −30%・近身攻擊威力減半'), this.$allyBack),
       this.$cmd);
     this.renderRows();
   }

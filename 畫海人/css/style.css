@@ -151,8 +151,15 @@ button { font: inherit; color: inherit; }
 .b-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .b-top b { font-family: var(--serif); }
 .chip.t { border-color: #5a7186; }
-.field { display: grid; grid-template-columns: 2.4em 1fr; gap: 4px 6px; align-items: center; }
-.rlabel { font-size: 11px; color: var(--muted); writing-mode: vertical-rl; text-align: center; letter-spacing: .2em; }
+.field { display: flex; flex-direction: column; gap: 3px; }
+.rlabel { font-size: 11px; color: var(--muted); padding-left: 4px; }
+.rlabel.front { color: #c9a77a; }
+.row.back { padding-left: 14px; opacity: .97; }
+.row.back .unit { background-image: linear-gradient(90deg, rgba(108, 159, 214, .08), transparent); }
+.unit.nohit { opacity: .4; }
+.unit.nohit::after { content: "打不到"; position: absolute; right: 8px; top: 6px; font-size: 11px; color: #f0a49c; }
+.float.mp { color: #9cc8ff; font-size: 14px; }
+.info .goal { color: var(--accent2); font-size: 14px; }
 .row { display: flex; gap: 6px; min-height: 62px; }
 .row .empty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--line); border: 1px dashed var(--line); border-radius: 10px; }
 .unit { position: relative; flex: 1; min-width: 0; display: flex; gap: 6px; align-items: center; padding: 6px 7px; border-radius: 10px; background: var(--panel); border: 1.5px solid transparent; transition: border-color .15s, opacity .3s; }

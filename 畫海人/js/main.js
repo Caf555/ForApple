@@ -6,7 +6,7 @@ import { Audio } from './audio.js';
 import { Battle } from './battle.js';
 import { Explore, newIsland, surveyPct } from './explore.js';
 
-export const VERSION = 'M1 雛形 v0.1';
+export const VERSION = 'M1 雛形 v0.2';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -18,8 +18,8 @@ window.__hhr = ctx; // 方便測試
 
 document.addEventListener('pointerdown', () => ctx.audio.unlock(), { once: false });
 
-const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 醒神香: 20 };
-const SUPPLY_TIP = { 糧: '每走一格吃 1 份。吃光了會又餓又累。', 燈油: '點燈時每走一格用 1 份：看得更遠，霧中不會打偏。', 墨水: '測繪要用 2 份。測繪過的地方，霧吞不回去。', 藥草: ITEMS.藥草.desc, 醒神香: ITEMS.醒神香.desc };
+const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, 醒神香: 20 };
+const SUPPLY_TIP = { 糧: '每走一格吃 1 份。吃光了會又餓又累。', 燈油: '點燈時每走一格用 1 份：看得更遠，霧中不會打偏。', 墨水: '測繪要用 2 份。測繪過的地方，霧吞不回去。', 藥草: ITEMS.藥草.desc, 海靈露: ITEMS.海靈露.desc, 醒神香: ITEMS.醒神香.desc };
 
 // 效果：糧、燈油、墨水、銀貝、藥草、醒神香（數量）；hp（全隊比例）；士氣
 ctx.applyFx = fx => {
@@ -90,11 +90,11 @@ function port() {
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${used} / ${g.cargo}`), ctx.ui.bar(used, g.cargo, 'cargo')));
     for (const k of Object.keys(PRICES)) {
       s.append(el('div', { class: 'shop-row big' },
-        el('div', {}, el('b', {}, `${k}　×${g.supply[k]}`), el('small', {}, SUPPLY_TIP[k])),
+        el('div', {}, el('b', {}, `${k}　×${g.supply[k] || 0}`), el('small', {}, SUPPLY_TIP[k])),
         el('div', { class: 'qty' },
-          el('button', { class: 'btn small', disabled: g.supply[k] <= 0, onclick: () => { g.supply[k]--; g.silver += PRICES[k]; draw(); } }, '−'),
+          el('button', { class: 'btn small', disabled: !(g.supply[k] > 0), onclick: () => { g.supply[k]--; g.silver += PRICES[k]; draw(); } }, '−'),
           el('span', {}, `${PRICES[k]} 銀貝`),
-          el('button', { class: 'btn small', disabled: g.silver < PRICES[k] || used >= g.cargo, onclick: () => { g.supply[k]++; g.silver -= PRICES[k]; ctx.audio.sfx('tap'); draw(); } }, '＋'))));
+          el('button', { class: 'btn small', disabled: g.silver < PRICES[k] || used >= g.cargo, onclick: () => { g.supply[k] = (g.supply[k] || 0) + 1; g.silver -= PRICES[k]; ctx.audio.sfx('tap'); draw(); } }, '＋'))));
     }
     s.append(el('div', { class: 'btns' }, el('button', { class: 'btn primary', onclick: () => sail() }, '出航：前往低語礁')));
   };
@@ -158,7 +158,9 @@ function help() {
     '・點地圖上和你相鄰的格子前進。每走一格吃掉 1 份糧。',
     '・霧裡看不見的格子，走過去才知道是什麼。點燈可以看得更遠，但會用掉燈油。',
     '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。測繪過的格子，霧就吞不回去；走太久，沒測繪的地方會被霧吞回去。',
-    '・戰鬥分前後兩排：近身攻擊只打得到前排，站在後排的同伴近身攻擊威力減半，但比較安全。',
+    '・目標：找到「霧眼」，打倒守門的東西拿到燈塔的鑰匙，再打倒燈塔裡的燈守。之後可以繼續探索，回到登陸點就能返航。',
+    '・戰鬥分前後兩排。前排：近身攻擊 +15%，但敵人的近身攻擊只打前排。後排：前排還有人時受傷 −30%，近身攻擊威力減半，法術不受影響。',
+    '・技能要花「靈」。防禦會回復一點靈；海靈露可以回復 15 點；營地休息也會回復。',
     '・元素：潮剋焰、焰剋風、風剋石、石剋潮；星與影互剋。',
     '・燈塔裡是這座島的首領。測繪度越高，結局會不一樣。',
   ], '知道了');
@@ -177,9 +179,14 @@ ctx.partySheet = () => {
           el('button', { class: 'btn small', onclick: () => { h.row = h.row === 'front' ? 'back' : 'front'; if (g.party.filter(x => x.row === h.row).length > 3) h.row = h.row === 'front' ? 'back' : 'front'; save(g); api.rebuild(); } }, h.row === 'front' ? '前排' : '後排')),
         el('div', { class: 'h-bars' }, ctx.ui.bar(h.hp, st.hp, 'hp'), el('small', {}, `體 ${h.hp}/${st.hp}`), ctx.ui.bar(h.mp, st.mp, 'mp'), el('small', {}, `靈 ${h.mp}/${st.mp}`), ctx.ui.bar(h.exp, expNeed(h.lv), 'exp'), el('small', {}, `經驗 ${h.exp}/${expNeed(h.lv)}`)),
         el('p', { class: 'muted small' }, ctx.ui.fmt(d.desc)),
-        el('p', { class: 'small' }, '技能：' + d.skills.join('、'))));
+        el('p', { class: 'small' }, '技能：' + d.skills.join('、')),
+        el('div', { class: 'chips' }, ...['藥草', '海靈露'].map(k => el('button', { class: 'chip btn-chip', disabled: !(g.supply[k] > 0) || h.hp <= 0 || (k === '藥草' ? h.hp >= st.hp : h.mp >= st.mp), onclick: () => {
+          g.supply[k]--;
+          if (k === '藥草') h.hp = Math.min(st.hp, h.hp + Math.round(st.hp * ITEMS.藥草.heal)); else h.mp = Math.min(st.mp, h.mp + ITEMS.海靈露.mp);
+          ctx.audio.sfx('heal'); save(g); api.rebuild(); if (g.phase === 'island') ctx.explore.draw();
+        } }, `用${k}（剩 ${g.supply[k] || 0}）`)))));
     }
-    body.append(el('p', { class: 'muted small' }, '點「前排／後排」可以調整站位。'));
+    body.append(el('p', { class: 'muted small' }, '點「前排／後排」可以調整站位。前排近身 +15%、會被近身攻擊；後排受傷 −30%、近身攻擊減半。'));
   });
 };
 
