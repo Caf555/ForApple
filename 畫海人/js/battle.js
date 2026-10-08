@@ -69,7 +69,7 @@ export class Battle {
       this.round++;
       this.$round.textContent = `第 ${this.round} 回合`;
       const units = [...this.allies, ...this.foes].filter(u => u.alive);
-      units.forEach(u => { u.order = u.st.spd * rnd(0.85, 1.15) + (ambush && this.round === 1 && u.side === 'foe' ? 1000 : 0); u.acted = false; });
+      units.forEach(u => { u.order = u.st.spd * (u.fx.haste ? 1.4 : 1) * rnd(0.85, 1.15) + (ambush && this.round === 1 && u.side === 'foe' ? 1000 : 0); u.acted = false; });
       units.sort((a, b) => b.order - a.order);
       for (const u of units) {
         if (this.over) break;
@@ -142,6 +142,8 @@ export class Battle {
     const hurt = this.allies.filter(a => a.alive && a.hp < a.maxhp * 0.45);
     const song = sk.find(s => SKILLS[s].morale);
     if (song && this.g.morale < 65 && Math.random() < 0.5) return { type: 'skill', skill: song };
+    const cover = sk.find(s => SKILLS[s].cover);
+    if (cover && !u.fx.cover && this.allies.some(a => a.alive && a.row === 'back' && a.hp < a.maxhp * 0.6) && Math.random() < 0.5) return { type: 'skill', skill: cover };
     const heal = sk.find(s => SKILLS[s].type === 'heal');
     if (hurt.length && heal) return { type: 'skill', skill: heal, target: hurt.sort((a, b) => a.hp / a.maxhp - b.hp / b.maxhp)[0] };
     const foes = this.foes.filter(f => f.alive);
@@ -280,7 +282,11 @@ export class Battle {
           const taunt = this.allies.find(a => a.alive && a.fx.taunt);
           const alive = this.allies.filter(a => a.alive), front = this.meleeTargets('ally');
           const pool = sk.type === 'phy' || Math.random() < 0.6 ? front : alive;
-          targets = [taunt && (sk.type !== 'phy' || pool.includes(taunt)) ? taunt : pick(pool)];
+          let t = taunt && (sk.type !== 'phy' || pool.includes(taunt)) ? taunt : pick(pool);
+          // 護舷：打向後排的攻擊，由擋在前面的人接下來
+          const cover = t && t.row === 'back' && this.allies.find(a => a.alive && a.fx.cover && a !== t);
+          if (cover) { this.log(`${cover.name} 擋在 ${t.name} 前面！`); t = cover; t.covering = true; }
+          targets = [t];
         } else {
           let t = act.target && act.target.alive ? act.target : null;
           const pool = sk.type === 'phy' ? this.meleeTargets('foe') : this.foes.filter(f => f.alive);
@@ -293,6 +299,7 @@ export class Battle {
       case 'allies': targets = (sk.type === 'heal' ? friends : foesOf).filter(x => x.alive); break;
       case 'ally': targets = [act.target && act.target.alive ? act.target : u]; break;
       case 'front': targets = friends.filter(x => x.alive && x.row === 'front'); break;
+      case 'team': targets = friends.filter(x => x.alive); break;
       default: targets = [u];
     }
     if (act.skill === '攻擊') this.log(`${u.name} 攻擊！`);
@@ -305,6 +312,8 @@ export class Battle {
       if (sk.mark) { t.fx.mark = sk.mark; this.float(t, '標記', 'st'); this.log(`${t.name} 被畫上了記號。弱點是「${weaknessOf(t.el)}」。`); }
       if (sk.ward) { t.fx.ward = sk.ward; this.float(t, '結界', 'buff'); }
       if (sk.taunt) { t.fx.taunt = sk.taunt; this.float(t, '挑釁', 'buff'); }
+      if (sk.cover) { t.fx.cover = sk.cover; this.float(t, '護舷', 'buff'); this.log(`${t.name} 擋在後排的同伴前面。`); }
+      if (sk.haste) { t.fx.haste = sk.haste; this.float(t, '加速', 'buff'); }
       if (sk.def) { t.st.def = Math.round(t.st.def * 1.3); this.float(t, '硬化', 'buff'); }
       if (sk.morale) { g.morale = Math.min(100, g.morale + sk.morale); this.float(t, '士氣 +' + sk.morale, 'buff'); this.log(`歌聲傳遍了全隊。士氣 ${g.morale}。`); }
       if (sk.status && t.alive && Math.random() < (sk.chance ?? 1) * (t.def && t.def.rank ? 0.5 : 1)) { t.status[sk.status] = 2; this.float(t, sk.status, 'st'); this.log(`${t.name} 陷入「${sk.status}」。`); }
@@ -326,6 +335,7 @@ export class Battle {
     if (t.fx.mark) dmg *= 1.3;
     if (t.fx.ward && t.row === 'front') dmg *= 0.6;
     if (t.defending) dmg *= 0.5;
+    if (t.covering) { dmg *= 0.7; t.covering = false; }
     // 後排：有前排擋著的時候，受到的傷害 −30%
     const sheltered = t.row === 'back' && (t.side === 'ally' ? this.allies : this.foes).some(x => x.alive && x.row === 'front');
     if (sheltered) dmg *= 0.7;
@@ -335,7 +345,7 @@ export class Battle {
     if (u.side === 'ally' && sk.type === 'mag' && this.opt.terrain === '高地') dmg *= 1.25;
     // 遺跡讀到的線索：某種屬性（或某個人）的攻擊，會讓首領想起一些事
     const isl = this.g.island, weak = isl && ISLANDS[isl.id].ruin.weak;
-    const remember = !!(u.side === 'ally' && weak && t.key === weak.boss && this.g.flags['遺跡:' + isl.id] && (weak.who ? u.key === weak.who : element === weak.element));
+    const remember = !!(u.side === 'ally' && weak && t.key === weak.boss && this.g.flags['遺跡:' + isl.id] && ((weak.who && u.key === weak.who) || (weak.element && element === weak.element)));
     if (remember) dmg *= 1.4;
     const m = this.g.morale;
     dmg *= u.side === 'ally' ? 1 + (m - 50) / 250 : 1 - (m - 50) / 400;
@@ -354,6 +364,8 @@ export class Battle {
       this.float(t, '打斷', 'warn');
     }
     if (t.side === 'foe' && t.def.rank === '首領' && !t.phase2 && t.hp > 0 && t.hp <= t.maxhp / 2) t.phaseDue = true;
+    // 有第三階段的首領：剩四分之一的時候再變一次
+    if (t.side === 'foe' && t.def.phase3 && t.phase2 && !t.phase3 && t.hp > 0 && t.hp <= t.maxhp / 4) t.phaseDue = true;
     if (t.hp <= 0) {
       t.alive = false; t.status = {}; t.fx = {}; t.charging = false;
       this.log(`${t.name} ${t.side === 'foe' ? '消散在霧裡。' : '倒下了！'}`);
@@ -370,8 +382,9 @@ export class Battle {
   async phaseCheck() {
     for (const f of this.foes) {
       if (!f.phaseDue || !f.alive) continue;
-      f.phaseDue = false; f.phase2 = true;
-      const p = f.def.phase2;
+      f.phaseDue = false;
+      const p = f.phase2 ? f.def.phase3 : f.def.phase2;
+      if (f.phase2) f.phase3 = true; else f.phase2 = true;
       this.flash(); this.quake(); this.ctx.audio.sfx('boss');
       this.log(p.line);
       if (p.element) { f.el = p.element; this.log(`${f.name} 的屬性變成了「${p.element}」！`); }
@@ -471,7 +484,7 @@ export class Battle {
       n.querySelector('.elem').textContent = u.el; n.querySelector('.elem').className = 'elem e-' + u.el;
       const hp = n.querySelector('.u-hp'); hp.innerHTML = ''; hp.append(this.ctx.ui.bar(u.hp, u.maxhp, 'hp'), el('small', {}, `${u.hp}/${u.maxhp}`));
       const mp = n.querySelector('.u-mp'); if (mp) { mp.innerHTML = ''; mp.append(this.ctx.ui.bar(u.mp, u.maxmp, 'mp'), el('small', {}, `靈 ${u.mp}`)); }
-      const tags = [...Object.keys(u.status), u.fx.mark ? '記號' : '', u.fx.ward ? '結界' : '', u.fx.taunt ? '挑釁' : '', u.defending ? '防禦' : ''].filter(Boolean);
+      const tags = [...Object.keys(u.status), u.fx.mark ? '記號' : '', u.fx.ward ? '結界' : '', u.fx.taunt ? '挑釁' : '', u.fx.cover ? '護舷' : '', u.fx.haste ? '加速' : '', u.defending ? '防禦' : ''].filter(Boolean);
       n.querySelector('.u-st').textContent = tags.join(' ');
     }
   }

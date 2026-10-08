@@ -23,8 +23,14 @@ export function dist(a, b) { const [x1, y1, z1] = cube(...a), [x2, y2, z2] = cub
 // 這座島留下來的紀錄（跨航行保存）
 export function worldOf(g, id) { return g.world[id] || (g.world[id] = { cleared: false, good: false, best: 0, surveyed: [], visits: 0 }); }
 
+// 這次上島的路線（紅岬：強攻或正門），沒有的話是 null
+export function routeOf(g, id) { const R = ISLANDS[id].routes; return R && g.flags[R.key] ? R.opts[g.flags[R.key]] : null; }
+// 看得見的範圍：礦坑很暗，少一格
+export function sight(def, lit) { return Math.max(0, (lit ? 2 : 1) - (def.dark ? 1 : 0)); }
+
 export function newIsland(g, id) {
-  const def = ISLANDS[id], rec = worldOf(g, id);
+  const def = ISLANDS[id], rec = worldOf(g, id), route = routeOf(g, id);
+  const start = route ? route.start : def.start;
   const tiles = [];
   const free = [];
   const kept = new Set(rec.surveyed);
@@ -32,7 +38,7 @@ export function newIsland(g, id) {
     const edge = r === 0 || c === 0 || r === def.rows - 1 || c === def.cols - 1;
     const t = { c, r, kind: '空', land: edge ? '灘' : '林', seen: false, done: false, surveyed: false };
     const key = `${c},${r}`;
-    if (c === def.start[0] && r === def.start[1]) { t.kind = '起'; t.done = true; }
+    if (c === start[0] && r === start[1]) { t.kind = '起'; t.done = true; }
     else if (def.fixed[key]) t.kind = def.fixed[key];
     else free.push(t);
     // 以前測繪過的地方，霧吞不回去
@@ -40,15 +46,22 @@ export function newIsland(g, id) {
     tiles.push(t);
   }
   shuffle(tiles.filter(t => t.land === '林')).slice(0, def.rocks || 3).forEach(t => { t.land = '岩'; });
-  const bag = [];
-  for (const k in def.pool) for (let i = 0; i < def.pool[k]; i++) bag.push(k);
+  const bag = [], pool = { ...def.pool };
+  for (const k in (route && route.pool) || {}) pool[k] = Math.max(0, (pool[k] || 0) + route.pool[k]);
+  for (const k in pool) for (let i = 0; i < pool[k]; i++) bag.push(k);
   shuffle(free).forEach((t, i) => { t.kind = bag[i] || '空'; if (t.kind === '空') t.done = true; });
-  const isl = { id, tiles, pos: [...def.start], steps: 0, lit: false, food: 0, events: shuffle(def.events.map((_, i) => i)), boss: false, key: false };
+  // 火山的地形：熱地（走上去會受傷）、噴氣口（每走三步噴一次）。登陸點、首領、村子、營地、測繪點不會是
+  const open = shuffle(tiles.filter(t => !['起', '王', '村', '火', '測'].includes(t.kind) && dist([t.c, t.r], start) > 1));
+  open.slice(0, def.hot || 0).forEach(t => { t.land = '熱'; });
+  open.slice(def.hot || 0, (def.hot || 0) + (def.vents || 0)).forEach(t => { t.land = '噴'; });
+  const isl = { id, tiles, pos: [...start], start: [...start], steps: 0, lit: false, food: 0, events: shuffle(def.events.map((_, i) => i)), boss: false, key: false };
   // 已經完成過的島：首領不在了，門也開著；測繪過的測繪點不用再畫
   if (rec.cleared) { isl.boss = true; isl.key = true; const b = tiles.find(t => t.kind === '王'); b.done = true; }
   // 測繪點：周圍兩圈都已經畫進書裡，才算畫完；上次畫得不夠準的，這次可以重畫
   for (const t of tiles) if (t.kind === '測' && pointDone(tiles, t)) t.done = true;
-  reveal(isl, def.start, g.ship && g.ship.船首像 ? 2 : 1);
+  reveal(isl, start, Math.max(0, (g.ship && g.ship.船首像 ? 2 : 1) - (def.dark ? 1 : 0)));
+  // 從正門進去：巡邏兵（妖物）在哪裡，一開始就看得到
+  if (route && route.see) for (const t of tiles) if (t.kind === route.see) t.seen = true;
   // 首領的位置，從一開始就看得見：這是這座島的終點
   tiles.find(t => t.kind === '王').seen = true;
   rec.visits++;
@@ -97,7 +110,7 @@ export class Explore {
     if (!isl.lit && this.g.supply.燈油 <= 0) { this.ctx.ui.toast('沒有燈油了。'); return; }
     isl.lit = !isl.lit;
     this.ctx.audio.sfx('tap');
-    if (isl.lit) reveal(isl, isl.pos, 2);
+    if (isl.lit) reveal(isl, isl.pos, sight(this.def, true));
     this.draw();
   }
 
@@ -120,8 +133,11 @@ export class Explore {
       const grp = document.createElementNS(NS, 'g');
       grp.setAttribute('class', 'hex' + (t.seen ? ' seen land-' + t.land : ' fog') + (t.surveyed ? ' surveyed' : '') + (here ? ' here' : '') + (can ? ' can' : ''));
       const poly = document.createElementNS(NS, 'polygon'); poly.setAttribute('points', pts); grp.append(poly);
-      const label = here ? '' : !t.seen ? '' : t.kind === '王' ? def.boss.label[isl.key ? 1 : 0] : t.done && t.kind !== '村' && t.kind !== '起' ? '·' : t.kind === '空' ? '' : t.kind;
+      const vent = t.seen && t.land === '噴' && !here && (t.done || t.kind === '空') && t.kind !== '起' && t.kind !== '村';
+      const label = here || vent ? '' : !t.seen ? '' : t.kind === '王' ? def.boss.label[isl.key ? 1 : 0] : t.done && t.kind !== '村' && t.kind !== '起' ? '·' : t.kind === '空' ? '' : t.kind;
       if (label) { const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', x); tx.setAttribute('y', y + 7); tx.setAttribute('class', 'k k-' + t.kind + (t.done ? ' done' : '')); tx.textContent = label; grp.append(tx); }
+      if (vent) { const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', x); tx.setAttribute('y', y + 5); tx.setAttribute('class', 'vent'); tx.textContent = (isl.steps + 1) % 3 === 0 ? '噴！' : '煙'; grp.append(tx); }
+      if (t.land === '噴' && (isl.steps + 1) % 3 === 0) grp.classList.add('erupt');
       if (here) { const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 15); c.setAttribute('class', 'me'); grp.append(c); const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', x); tx.setAttribute('y', y + 6); tx.setAttribute('class', 'me-t'); tx.textContent = this.ctx.ui.fmt('{名}').slice(0, 1); grp.append(tx); }
       grp.setAttribute('data-c', t.c); grp.setAttribute('data-r', t.r);
       if (can) grp.addEventListener('click', () => this.move(t));
@@ -149,7 +165,8 @@ export class Explore {
     this.$info.append(el('p', { class: 'goal' }, goal),
       el('p', {}, cur.kind === '起' ? '船停在登陸點。點旁邊的格子前進；每走一格吃掉 1 份糧。' : info.name ? `${info.name}：${cur.done ? '已經處理過了。' : info.tip}` : '霧裡什麼都沒有。點旁邊的格子繼續前進。'),
       el('p', { class: 'muted' }, full ? `測繪度 ${pct}%：這座島已經畫滿了（最高就是 ${max}%），測繪點不會再出現。` : `測繪度 ${pct}%，這座島最高可以畫到 ${max}%。`),
-      el('p', { class: 'muted' }, isl.lit ? '燈亮著：看得更遠、霧中不會打偏；每走一格用掉 1 份燈油。' : '點燈可以看得更遠（每走一格用 1 份燈油）。'));
+      el('p', { class: 'muted' }, (isl.lit ? '燈亮著：看得更遠、霧中不會打偏；每走一格用掉 1 份燈油。' : '點燈可以看得更遠（每走一格用 1 份燈油）。') + (def.dark ? '這裡很暗，看得見的範圍比較小。' : '')),
+      def.hot || def.vents ? el('p', { class: 'muted' }, (def.hot ? '發紅的格子是熱地：走上去，全隊會掉一點體力。' : '') + (def.vents ? `噴氣口每走三步噴一次火：寫著「噴！」的時候，下一步不要踩上去。` : '')) : null);
     if (cur.kind === '村') this.$info.append(el('button', { class: 'btn small', onclick: () => this.village() }, '進村子'));
     if (cur.kind === '起') this.$info.append(el('button', { class: 'btn small' + (isl.boss ? ' primary' : ''), onclick: () => this.sailHome(!isl.boss) }, isl.boss ? '返航' : '先回港口'));
   }
@@ -176,7 +193,14 @@ export class Explore {
     // 燈油
     if (isl.lit) { g.supply.燈油--; if (g.supply.燈油 <= 0) { g.supply.燈油 = 0; isl.lit = false; this.ctx.ui.toast('燈油用完了，燈熄了。'); } }
     const wasSeen = t.seen;
-    reveal(isl, isl.pos, isl.lit ? 2 : 1);
+    reveal(isl, isl.pos, sight(this.def, isl.lit));
+    // 火山的地形
+    const burn = t.land === '熱' ? 0.06 : t.land === '噴' && isl.steps % 3 === 0 ? 0.15 : 0;
+    if (burn) {
+      for (const h of g.party) { const st = heroStats(h); if (h.hp > 0) h.hp = Math.max(1, h.hp - Math.round(st.hp * burn)); }
+      this.ctx.ui.toast(t.land === '熱' ? '腳底下的石頭好燙！全隊受了一點傷。' : '噴氣口噴出了火！全隊被燙傷了。');
+      this.ctx.audio.sfx('hit');
+    }
     if (!wasSeen) this.ctx.audio.sfx('pen');
     // 霧會回來
     if (diff.fogBack && isl.steps % (g.diff === '困難' ? 5 : 7) === 0) {
@@ -239,7 +263,7 @@ export class Explore {
     const g = this.g, ui = this.ctx.ui, isl = this.isl, def = this.def;
     switch (t.kind) {
       case '怪': {
-        const depth = dist([t.c, t.r], def.start), E = def.encounters;
+        const depth = dist([t.c, t.r], isl.start || def.start), E = def.encounters;
         const pool = E.slice(Math.min(E.length - 4, Math.max(0, (depth - 1) * 2)), Math.min(E.length, depth * 3 + 2));
         if (await this.fight(t, from, pick(pool), '一般')) t.done = true;
         break;

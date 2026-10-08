@@ -1,6 +1,6 @@
-// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完
-import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX } from './data.js';
-import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, CINEMA } from './islands.js';
+// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完
+import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel } from './data.js';
+import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, CINEMA } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
 import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
 import { UI, el, $ } from './ui.js';
@@ -9,7 +9,7 @@ import { Battle } from './battle.js';
 import { Explore, newIsland, worldOf, surveyMax } from './explore.js';
 import { Port, statText } from './port.js';
 
-export const VERSION = 'M3 第二海域 v0.2';
+export const VERSION = 'M3 第三海域 v0.1';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -58,6 +58,7 @@ ctx.applyFx = fx => {
   const g = ctx.g;
   for (const [k, v] of Object.entries(fx || {})) {
     if (k === '銀貝') g.silver = Math.max(0, g.silver + v);
+    else if (FACTIONS.includes(k)) ctx.addRep(k, v);
     else if (k === '士氣') g.morale = Math.max(0, Math.min(100, g.morale + v));
     else if (k === 'hp') for (const h of g.party) { const st = heroStats(h); if (h.hp > 0) h.hp = Math.max(1, Math.min(st.hp, h.hp + Math.round(st.hp * v))); }
     else if (MATS[k]) { if (v > 0) ctx.gainMat(k, v); else g.mats[k] = Math.max(0, (g.mats[k] || 0) + v); }
@@ -65,8 +66,18 @@ ctx.applyFx = fx => {
   }
 };
 ctx.fxText = fx => {
-  const parts = Object.entries(fx || {}).map(([k, v]) => k === 'hp' ? `全隊體力 ${v > 0 ? '+' : ''}${Math.round(v * 100)}%` : `${k} ${v > 0 ? '+' : ''}${v}`);
+  const parts = Object.entries(fx || {}).filter(([k]) => !FACTIONS.includes(k) || ctx.g.flags.焰).map(([k, v]) => k === 'hp' ? `全隊體力 ${v > 0 ? '+' : ''}${Math.round(v * 100)}%` : `${k}${FACTIONS.includes(k) ? '聲望' : ''} ${v > 0 ? '+' : ''}${v}`);
   return parts.length ? `（${parts.join('　')}）` : '';
+};
+// 勢力聲望：0～100，每 20 一級；升級或降級的時候提醒一下（第三章以前不算）
+ctx.addRep = (k, v) => {
+  const g = ctx.g;
+  if (!g.flags.焰) return;
+  g.rep = g.rep || { 商會: 0, 紅帆: 0 };
+  const before = repLevel(g.rep[k]);
+  g.rep[k] = Math.max(0, Math.min(100, (g.rep[k] || 0) + v));
+  const after = repLevel(g.rep[k]);
+  if (after !== before) ctx.ui.toast(`${k}對你們的態度變成「${REP_LEVELS[after]}」了。`);
 };
 ctx.gainMat = (k, n) => {
   const g = ctx.g;
@@ -145,6 +156,18 @@ ctx.sail = async id => {
     ctx.applyFx(fx);
     await ctx.ui.alert(ev.title, [o.line, ctx.fxText(fx), g.ship.船帆 && JSON.stringify(fx) !== JSON.stringify(o.fx) ? '（補好的船帆，讓損失少了一半）' : ''].filter(Boolean));
   }
+  // 攻上島以前要選邊（紅岬）：選了就不能改
+  const R = def.routes;
+  if (R && !g.flags[R.key]) {
+    const keys = Object.keys(R.opts);
+    const ask = lines(R.ask).map(L => L.text);
+    const i = await ctx.ui.choose(id, ask, keys.map(k => ({ label: R.opts[k].label })));
+    const o = R.opts[keys[i]];
+    g.flags[R.key] = keys[i];
+    ctx.applyFx(o.fx);
+    for (const [k, v] of Object.entries(o.rep || {})) ctx.addRep(k, v);
+    await ctx.ui.alert(id, [...o.line, ctx.fxText({ ...o.fx, ...o.rep })].filter(Boolean));
+  }
   await ctx.ui.story(lines(def.arrive));
   g.island = newIsland(g, id);
   g.phase = 'island';
@@ -188,15 +211,22 @@ ctx.backToPort = async rep => {
   ctx.port.show();
 };
 
-// 天文台：第一次去，播第二章的開場，海圖多一頁
+// 天文台：每一章完成以後第一次去，播下一章的開場，海圖多一頁
 ctx.observatory = async () => {
   const g = ctx.g;
   if (!g.flags.環礁) {
     await cinema('第二章');
     await ctx.ui.story(lines(OBSERVATORY));
     g.flags.環礁 = 1; save(g);
+  } else if (g.flags.第二章 && !g.flags.焰) {
+    await cinema('第三章');
+    // 聲望從這裡開始算：殘頁交給會長的話，商會比較記得你們
+    g.rep = { 商會: g.flags.殘頁 === '父親' ? 30 : 20, 紅帆: 20 };
+    await ctx.ui.story(lines(OBSERVATORY3));
+    g.flags.焰 = 1; save(g);
   } else {
-    await ctx.ui.alert('天文台', ['老人在擦望遠鏡。', '「往霧心的路，還很長。」他說，「先把環礁的每一座島，都好好畫進書裡吧。」'], '回到港口');
+    const where = g.flags.焰 ? '焰之群島' : '環礁';
+    await ctx.ui.alert('天文台', ['老人在擦望遠鏡。', `「往霧心的路，還很長。」他說，「先把${where}的每一座島，都好好畫進書裡吧。」`], '回到港口');
   }
   ctx.port.show();
 };
@@ -243,6 +273,8 @@ function help() {
     '・戰鬥分前後兩排。前排：近身攻擊 +15%，但敵人的近身攻擊只打前排。後排：前排還有人時受傷 −30%，近身攻擊威力減半，法術不受影響。',
     '・技能要花「靈」。防禦會回復一點靈；海靈露可以回復 15 點；營地休息、回港也會回復。',
     '・元素：潮剋焰、焰剋風、風剋石、石剋潮；星與影互剋。遺跡裡的文字，常常藏著首領的弱點。',
+    '・焰之群島：發紅的格子是熱地，走上去全隊會掉一點血；礦坑很暗，看得見的範圍比較小；噴氣口每走三步噴一次火，發亮的時候不要踩上去。',
+    '・聲望（第三章開始）：商會和紅帆會記得你們幫過誰。勢力委託、島上的選擇都會改變聲望；紅帆的聲望越高，「黑市」賣的東西越好，商會的聲望越高，「市場」收素材的價錢越好。',
   ], '知道了');
 }
 

@@ -32,12 +32,15 @@ export const HEROES = {
     desc: '把冒險編成歌的流浪歌手。她在找一首被霧吃掉一半的古歌。', skills: ['戰歌', '回聲', '搖籃曲'] },
   費米: { title: '射手', job: '射手', element: '焰', color: '#d98a5f', hp: 84, mp: 18, atk: 14, def: 7, mag: 6, spd: 14, weapon: '帳房短弓',
     desc: '銀貝商會會長的兒子。帳算得很快，箭射得很準，嘴巴有點壞。', skills: ['穿霧箭', '火藥箭', '清點'] },
+  葛蘿: { title: '守衛', job: '守衛', element: '石', color: '#c0604a', hp: 132, mp: 16, atk: 14, def: 14, mag: 4, spd: 8, weapon: '紅帆短斧',
+    desc: '紅帆海盜的前船長，只有一隻手臂。話很少，一開口，海盜們都會安靜下來。', skills: ['護舷', '落錨', '升帆'] },
 };
 export const PARTY_MAX = 4; // 一次最多 4 人出戰，其他人在船上待命
 
 // type：phy 近身（後排出手威力減半，只能打前排）／rng 遠程（用攻擊力，可以打後排，站後排也不減半）／mag 法術／heal 回復／buff 增益／debuff 減益
 // aim：不會因為霧而落空；loot：打倒時素材一定掉，而且多一份
-// target：enemy 一名敵人／enemyFront 敵方前排／allies 對方全體（heal 時是自己人全體）／ally 一名同伴／front 我方前排／self 自己
+// target：enemy 一名敵人／enemyFront 敵方前排／allies 對方全體（heal 時是自己人全體）／ally 一名同伴／front 我方前排／team 我方全體／self 自己
+// cover：替後排擋攻擊（回合數）；haste：速度變快（回合數）
 export const SKILLS = {
   攻擊: { cost: 0, type: 'phy', target: 'enemy', power: 1, desc: '普通攻擊。' },
   標記: { cost: 3, type: 'debuff', target: 'enemy', mark: 3, desc: '在敵人身上畫一個記號：三回合內受到的傷害 +30%，並看穿它的弱點。' },
@@ -55,6 +58,9 @@ export const SKILLS = {
   穿霧箭: { cost: 3, type: 'rng', target: 'enemy', power: 1.25, aim: true, desc: '看準了才放的箭：不會因為霧而落空，可以打後排。' },
   火藥箭: { cost: 5, type: 'rng', target: 'enemy', power: 1.2, element: '焰', desc: '箭頭綁著商會的火藥。焰屬性，可以打後排。' },
   清點: { cost: 2, type: 'debuff', target: 'enemy', loot: true, desc: '一眼看穿敵人身上帶了什麼：打倒它的時候，素材一定拿得到，而且多一份。' },
+  護舷: { cost: 3, type: 'buff', target: 'self', cover: 2, desc: '用身體當船舷：兩回合內，敵人打向後排同伴的攻擊，都由自己擋下來（擋的時候受傷 −30%）。' },
+  落錨: { cost: 5, type: 'phy', target: 'enemy', power: 1.4, element: '石', status: '定身', chance: 0.3, desc: '把整個人的重量砸下去。石屬性的重擊，有機會讓敵人動不了。' },
+  升帆: { cost: 5, type: 'buff', target: 'team', haste: 2, desc: '吼一聲海盜的號子：兩回合內，全隊的速度變快，比較容易先出手。' },
   // 敵人的招式
   鉗擊: { cost: 0, type: 'phy', target: 'enemy', power: 1.3, desc: '' },
   鹽霧: { cost: 0, type: 'mag', target: 'allies', power: 9, element: '潮', desc: '' },
@@ -103,6 +109,26 @@ export const SKILLS = {
   登記: { cost: 0, type: 'debuff', target: 'enemy', status: '定身', chance: 0.55, desc: '' },
   抹白: { cost: 0, type: 'mag', target: 'allies', power: 25, element: '星', desc: '' },
   全海圖: { cost: 0, type: 'mag', target: 'allies', power: 44, element: '星', status: '迷惘', chance: 0.3, desc: '' },
+  // 第三海域
+  劫掠: { cost: 0, type: 'phy', target: 'enemy', power: 1.4, desc: '' },
+  火藥桶: { cost: 0, type: 'mag', target: 'allies', power: 24, element: '焰', desc: '' },
+  帆影纏身: { cost: 0, type: 'phy', target: 'enemy', power: 1.1, status: '定身', chance: 0.4, desc: '' },
+  無名之風: { cost: 0, type: 'mag', target: 'allies', power: 26, element: '風', status: '迷惘', chance: 0.3, desc: '' },
+  褪色: { cost: 0, type: 'heal', target: 'self', power: 70, desc: '' },
+  帆落: { cost: 0, type: 'mag', target: 'allies', power: 46, element: '風', desc: '' },
+  敲壁: { cost: 0, type: 'phy', target: 'enemy', power: 1.35, status: '迷惘', chance: 0.3, desc: '' },
+  落石: { cost: 0, type: 'phy', target: 'enemyFront', power: 1.0, element: '石', desc: '' },
+  硫磺霧: { cost: 0, type: 'mag', target: 'allies', power: 24, element: '影', desc: '' },
+  礦燈: { cost: 0, type: 'mag', target: 'enemy', power: 24, element: '星', desc: '' },
+  坍方: { cost: 0, type: 'mag', target: 'allies', power: 48, element: '石', status: '定身', chance: 0.25, desc: '' },
+  鍛打: { cost: 0, type: 'phy', target: 'enemy', power: 1.7, desc: '' },
+  火花: { cost: 0, type: 'mag', target: 'enemy', power: 25, element: '焰', desc: '' },
+  熔流: { cost: 0, type: 'mag', target: 'allies', power: 27, element: '焰', desc: '' },
+  添煤: { cost: 0, type: 'heal', target: 'self', power: 75, desc: '' },
+  熔爐: { cost: 0, type: 'mag', target: 'allies', power: 50, element: '焰', desc: '' },
+  編號: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.6, desc: '' },
+  噴發: { cost: 0, type: 'mag', target: 'allies', power: 29, element: '焰', desc: '' },
+  火山甦醒: { cost: 0, type: 'mag', target: 'allies', power: 52, element: '焰', status: '迷惘', chance: 0.25, desc: '' },
 };
 
 // row：'front' 前排／'back' 後排；drop：[素材, 機率, 數量]
@@ -173,6 +199,44 @@ export const ENEMIES = {
   金庫鎖: { element: '石', row: 'front', rank: '精英', hp: 594, atk: 32, def: 24, mag: 20, spd: 9, exp: 120, silver: 90, skills: [['印章', 2], ['硬化', 1], ['典當', 1]], drop: [['白珊瑚', 1, 3], ['夜光珠', 1]], desc: '帳房塔的大鎖。它吃過七把鑰匙，第八把就在它肚子裡。' },
   白頁: { element: '星', row: 'front', rank: '首領', hp: 1144, atk: 31, def: 19, mag: 35, spd: 11, exp: 420, silver: 240, skills: [['抹白', 2], ['登記', 1], ['印章', 1], ['攻擊', 1]], big: '全海圖', drop: [['白珊瑚', 1, 3], ['夜光珠', 1, 2]],
     phase2: { element: '影', line: '白頁翻了過來。背面不是白的——密密麻麻，畫滿了整片海。' }, desc: '一頁從公會長的「全海圖」上撕下來的紙。被它畫過的地方，霧進不來，可是什麼都不會再長。' },
+  // ═════ 第三海域：焰之群島 ═════
+  // 紅帆港
+  灰鴉: { element: '風', row: 'back', hp: 104, atk: 31, def: 13, mag: 14, spd: 20, exp: 30, silver: 18, skills: [['群啄', 2], ['攻擊', 2]], drop: [['紅赭土', 0.4]], desc: '火山灰染黑的烏鴉。牠們會把亮晶晶的東西叼回帆房。' },
+  帆影: { element: '影', row: 'front', hp: 156, atk: 32, def: 19, mag: 22, spd: 13, exp: 32, silver: 19, skills: [['帆影纏身', 2], ['攻擊', 2]], drop: [['舊帆布', 0.5]], desc: '一面帆的影子，掉在甲板上，自己站了起來。' },
+  火藥蟹: { element: '焰', row: 'front', hp: 160, atk: 33, def: 23, mag: 16, spd: 9, exp: 32, silver: 20, skills: [['鉗擊', 2], ['火藥桶', 1], ['攻擊', 1]], drop: [['火藥', 0.5]], desc: '把火藥桶當殼背的螃蟹。千萬不要讓牠靠近營火。' },
+  繩結蛇: { element: '石', row: 'front', hp: 150, atk: 31, def: 21, mag: 8, spd: 12, exp: 31, silver: 18, skills: [['纏繞', 2], ['攻擊', 2]], drop: [['舊帆布', 0.35], ['紅赭土', 0.3]], desc: '一條打了一百個結的纜繩。每個結，都是一個海盜的故事。' },
+  舊旗鬼: { element: '風', row: 'back', hp: 98, atk: 9, def: 13, mag: 31, spd: 15, exp: 31, silver: 19, skills: [['無名之風', 1], ['鱗粉', 2], ['低語', 1]], drop: [['舊帆布', 0.5]], desc: '一面褪色的旗子。上面的字被風吹掉了，它一直在找。' },
+  桅頂守望: { element: '風', row: 'front', rank: '精英', hp: 660, atk: 35, def: 23, mag: 24, spd: 15, exp: 135, silver: 95, skills: [['劫掠', 2], ['群啄', 1], ['攻擊', 2]], drop: [['舊帆布', 1, 3], ['夜光珠', 1]], desc: '在桅杆頂上守了二十年的瞭望手。他早就看不見海了，可是他還記得帆房的鑰匙放在哪裡。' },
+  無名帆: { element: '風', row: 'front', rank: '首領', hp: 1260, atk: 33, def: 20, mag: 37, spd: 13, exp: 470, silver: 260, skills: [['無名之風', 2], ['帆影纏身', 1], ['攻擊', 1], ['褪色', 1]], big: '帆落', drop: [['舊帆布', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '紅色從帆上褪掉了。底下的布，是霧的顏色。' }, desc: '帆房最深處，一面沒有字的紅帆。沒有風的時候，它自己飄起來。' },
+  // 鐵喉礦坑
+  礦燈蟲: { element: '星', row: 'back', hp: 100, atk: 8, def: 14, mag: 32, spd: 14, exp: 31, silver: 18, skills: [['礦燈', 2], ['晨露', 1]], drop: [['礦工牌', 0.4]], desc: '吃礦工燈油長大的蟲。牠的光，只照得到牠自己。' },
+  坑道的手: { element: '影', row: 'front', hp: 162, atk: 33, def: 20, mag: 24, spd: 11, exp: 33, silver: 19, skills: [['敲壁', 2], ['拖入水底', 1], ['攻擊', 1]], drop: [['礦工牌', 0.35], ['鐵礦', 0.3]], desc: '從石壁裡伸出來的手。它不抓人，只是想被看見。' },
+  碎岩: { element: '石', row: 'front', hp: 178, atk: 34, def: 26, mag: 6, spd: 7, exp: 33, silver: 20, skills: [['落石', 1], ['硬化', 1], ['攻擊', 2]], drop: [['鐵礦', 0.5]], desc: '一塊會走路的礦石。敲下來的碎片，可以拿去煉鐵。' },
+  鐵喉鼠: { element: '風', row: 'front', hp: 132, atk: 33, def: 15, mag: 6, spd: 21, exp: 30, silver: 17, skills: [['啃咬', 3], ['攻擊', 1]], drop: [['炭', 0.4]], desc: '礦坑裡的老鼠。牠們最先知道哪裡要塌。' },
+  硫磺精: { element: '焰', row: 'back', hp: 104, atk: 9, def: 13, mag: 33, spd: 13, exp: 32, silver: 19, skills: [['硫磺霧', 2], ['火花', 1]], drop: [['硫磺', 0.5]], desc: '從礦坑深處冒出來的黃色煙。聞起來像壞掉的蛋。' },
+  失控的礦車: { element: '石', row: 'front', rank: '精英', hp: 720, atk: 37, def: 27, mag: 14, spd: 12, exp: 140, silver: 100, skills: [['落石', 2], ['錨擊', 1], ['攻擊', 2]], drop: [['鐵礦', 1, 3], ['夜光珠', 1]], desc: '三十年前那天，最後一台開出坑道的礦車。它一直在軌道上來回跑，車斗裡放著坑道的鑰匙。' },
+  敲壁的人: { element: '石', row: 'front', rank: '首領', hp: 1380, atk: 35, def: 23, mag: 34, spd: 9, exp: 500, silver: 280, skills: [['敲壁', 2], ['落石', 1], ['硫磺霧', 1], ['回收', 1]], big: '坍方', drop: [['礦工牌', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '石壁上的敲擊聲，一下子變成了幾十個。每一下，都是一個沒有名字的人。' }, desc: '礦坑最深處，一直在敲石壁的人。他的身上，掛滿了沒有刻字的礦工牌。' },
+  // 鍛火嶼
+  炭蜥: { element: '焰', row: 'front', hp: 166, atk: 34, def: 21, mag: 18, spd: 12, exp: 33, silver: 19, skills: [['撕咬', 2], ['火花', 1], ['攻擊', 1]], drop: [['炭', 0.5]], desc: '背上的鱗片燒得通紅。牠趴過的石頭，三天都是燙的。' },
+  鐵砧龜: { element: '石', row: 'front', hp: 190, atk: 33, def: 28, mag: 8, spd: 6, exp: 34, silver: 21, skills: [['鍛打', 1], ['硬化', 1], ['攻擊', 2]], drop: [['鐵礦', 0.5]], desc: '殼是一塊鐵砧。老鐵匠說，牠是自己爬進鍛鋪的。' },
+  風箱鬼: { element: '風', row: 'back', hp: 102, atk: 10, def: 13, mag: 33, spd: 16, exp: 32, silver: 19, skills: [['改畫', 1], ['鱗粉', 2], ['攻擊', 1]], drop: [['熔岩玻璃', 0.35], ['炭', 0.3]], desc: '一個破掉的風箱。它一呼一吸，爐火就跟著一明一滅。' },
+  熔渣魚: { element: '潮', row: 'front', hp: 158, atk: 34, def: 19, mag: 20, spd: 13, exp: 33, silver: 19, skills: [['撕咬', 2], ['浪湧', 1]], drop: [['熔岩玻璃', 0.5]], desc: '游在冷掉的熔岩裡的魚。鱗片是一片一片的黑玻璃。' },
+  火花精: { element: '焰', row: 'back', hp: 98, atk: 8, def: 12, mag: 34, spd: 17, exp: 32, silver: 19, skills: [['火花', 2], ['熔流', 1]], drop: [['硫磺', 0.35], ['炭', 0.3]], desc: '從鐵砧上濺出來的一粒火花，忘了要熄掉。' },
+  燒紅的鐵鉗: { element: '焰', row: 'front', rank: '精英', hp: 740, atk: 38, def: 25, mag: 26, spd: 11, exp: 145, silver: 105, skills: [['鍛打', 2], ['熔流', 1], ['攻擊', 2]], drop: [['熔岩玻璃', 1, 3], ['夜光珠', 1]], desc: '老鐵匠的鐵鉗。五十年來一直夾著同一把鑰匙，從來沒有放下。' },
+  爐心: { element: '焰', row: 'front', rank: '首領', hp: 1440, atk: 36, def: 22, mag: 39, spd: 11, exp: 520, silver: 290, skills: [['熔流', 2], ['鍛打', 1], ['火花', 1], ['添煤', 1]], big: '熔爐', drop: [['熔岩玻璃', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '爐火裡的筆，轉過來看著你們。火光底下，是一個很老的人的臉。' }, desc: '鍛火嶼五十年沒熄過的爐火。它替老鐵匠記得一件他不想記得的事。' },
+  // 紅岬
+  號碼兵: { element: '石', row: 'front', hp: 184, atk: 35, def: 25, mag: 10, spd: 9, exp: 35, silver: 22, skills: [['印章', 2], ['編號', 1], ['攻擊', 1]], drop: [['礦工牌', 0.4], ['鐵礦', 0.3]], desc: '胸口釘著一塊號碼牌的士兵。問他叫什麼名字，他會唸出一串數字。' },
+  紅岩蠍: { element: '焰', row: 'front', hp: 170, atk: 36, def: 22, mag: 18, spd: 14, exp: 35, silver: 21, skills: [['螫刺', 1], ['撕咬', 2], ['攻擊', 1]], drop: [['紅赭土', 0.5]], desc: '紅岬的紅色岩石裡爬出來的蠍子。牠的尾巴，指著火山的方向。' },
+  冷灰: { element: '影', row: 'back', hp: 108, atk: 9, def: 14, mag: 35, spd: 14, exp: 34, silver: 21, skills: [['冷霧', 2], ['編號', 1]], drop: [['硫磺', 0.35], ['紅赭土', 0.3]], desc: '火山口冷掉以後，積在地上的灰。它記得火的溫度。' },
+  熔岩精: { element: '焰', row: 'back', hp: 106, atk: 9, def: 13, mag: 36, spd: 15, exp: 34, silver: 21, skills: [['噴發', 1], ['火花', 2]], drop: [['熔岩玻璃', 0.4], ['硫磺', 0.3]], desc: '睡著的火山，在夢裡流出來的一小團熔岩。' },
+  鎖鏈犬: { element: '風', row: 'front', hp: 164, atk: 36, def: 20, mag: 8, spd: 18, exp: 34, silver: 21, skills: [['撕咬', 2], ['纏繞', 1], ['攻擊', 1]], drop: [['鐵礦', 0.4]], desc: '要塞養的狗，脖子上的鏈子比牠還重。牠不會叫，只會追。' },
+  第七號的門: { element: '石', row: 'front', rank: '精英', hp: 800, atk: 38, def: 28, mag: 24, spd: 9, exp: 155, silver: 110, skills: [['印章', 2], ['硬化', 1], ['編號', 1], ['攻擊', 1]], drop: [['礦工牌', 1, 3], ['夜光珠', 1]], desc: '要塞的大門，漆著一個大大的「七」。它把鑰匙吞進了門閂裡。' },
+  第七號: { element: '石', row: 'front', rank: '首領', hp: 1720, atk: 37, def: 24, mag: 40, spd: 10, exp: 620, silver: 340, skills: [['噴發', 2], ['編號', 1], ['落石', 1], ['添煤', 1]], big: '火山甦醒', drop: [['紅赭土', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '焰', line: '號碼牌一塊一塊熔掉了。底下的岩石，是燒紅的。睡了二十年的火山，翻了一個身。' },
+    phase3: { element: '影', line: '火山的影子站了起來。它還是想不起自己的名字。「我是……第七號……」' }, desc: '被商會改成號碼的島。它忘了自己的名字，火山也跟著睡著了。' },
 };
 
 export const ITEMS = {
@@ -202,6 +266,15 @@ export const MATS = {
   珍珠: '珠母潟湖的珍珠。貼在耳朵上，聽得見很小的哭聲。',
   閘石: '潮閘上的石頭。泡了三十年的水，還是不肯讓水過去。',
   白珊瑚: '褪成白色的珊瑚。很輕，很硬，很安靜。',
+  // 第三海域
+  紅赭土: '焰之群島的紅色泥土。紅帆的帆，就是用它染的。',
+  舊帆布: '海盜退下來的舊帆。上面繡著一個島的名字。',
+  火藥: '紅帆自己調的火藥。用的時候要離營火遠一點。',
+  鐵礦: '鐵喉礦坑挖出來的礦石。很重，敲起來聲音很悶。',
+  礦工牌: '刻著名字的銅牌。礦工下坑前掛在門口，出來再拿走。',
+  炭: '鍛火嶼的炭。燒起來沒有煙，只有很穩很穩的火。',
+  硫磺: '黃色的石頭。聞起來很臭，可是能讓火燒得更旺。',
+  熔岩玻璃: '熔岩冷掉以後結成的黑玻璃。對著光看，裡面有火在動。',
 };
 
 // ───────── 裝備：在鐵匠用素材打造。who：只有誰能用（不寫就是大家都能用） ─────────
@@ -243,6 +316,26 @@ export const EQUIPS = {
   墨魚墨瓶: { slot: '飾品', stats: { mp: 10, mag: 3 }, cost: { 銀貝: 110, 墨魚墨: 3 }, desc: '一小瓶墨。{名}說，這是畫海人最好的護身符。' },
   珍珠墜: { slot: '飾品', stats: { hp: 30, def: 4 }, cost: { 銀貝: 120, 珍珠: 2, 帳紙: 2 }, desc: '一顆珍珠墜子。貼在胸口，聽得見很小很小的歌聲。' },
   白珊瑚戒: { slot: '飾品', stats: { hp: 20, atk: 4, mag: 4 }, cost: { 銀貝: 170, 白珊瑚: 2, 夜光珠: 1 }, desc: '白珊瑚磨成的戒指。戴著它，會想起很久以前的海。' },
+  // 第三海域
+  紅帆短斧: { slot: '武器', who: '葛蘿', stats: { atk: 8 }, cost: { 銀貝: 60, 鏽鐵: 2, 船帆布: 1 }, desc: '葛蘿用了二十年的短斧。斧柄上纏著一條紅布。' },
+  錨鏈斧: { slot: '武器', who: '葛蘿', stats: { atk: 16, def: 2 }, cost: { 銀貝: 200, 鐵礦: 4, 舊帆布: 2 }, desc: '斧頭後面拖著一段錨鏈。揮出去的時候，像船在下錨。' },
+  熔岩斧: { slot: '武器', who: '葛蘿', stats: { atk: 23, def: 3, spd: -1 }, cost: { 銀貝: 280, 熔岩玻璃: 3, 鐵礦: 3, 夜光珠: 1 }, desc: '斧刃是一整片熔岩玻璃。砍下去的地方，會留下一道紅光。' },
+  熔岩玻璃筆: { slot: '武器', who: '墨里', stats: { mag: 23, mp: 10 }, cost: { 銀貝: 260, 熔岩玻璃: 3, 炭: 2 }, desc: '黑玻璃磨成的筆。畫出來的線，像剛冷掉的熔岩。' },
+  鍛火刀: { slot: '武器', who: '阿潮', stats: { atk: 26 }, cost: { 銀貝: 260, 鐵礦: 4, 炭: 3 }, desc: '鍛火嶼的爐火打出來的刀。阿潮說，終於有一把配得上他的刀了。' },
+  硫磺鈴杖: { slot: '武器', who: '蓮笙', stats: { mag: 18, mp: 12 }, cost: { 銀貝: 230, 硫磺: 3, 礦工牌: 2 }, desc: '杖頭的鈴是用礦工牌熔的。搖起來，像有人在遠處應答。' },
+  紅帆琴: { slot: '武器', who: '小鈴', stats: { mag: 18, spd: 4 }, cost: { 銀貝: 230, 舊帆布: 3, 紅赭土: 2 }, desc: '琴身蒙著紅帆布。彈起來，有海盜唱歌的聲音。' },
+  火藥長弓: { slot: '武器', who: '費米', stats: { atk: 21, spd: 2 }, cost: { 銀貝: 240, 火藥: 3, 鐵礦: 2 }, desc: '紅帆的長弓，箭袋裡裝著火藥箭。費米說，這是他第一次用海盜的東西。' },
+  舊帆布外套: { slot: '防具', stats: { def: 13, hp: 44, spd: 1 }, cost: { 銀貝: 200, 舊帆布: 4, 紅赭土: 1 }, desc: '用退下來的紅帆縫的外套。穿上以後，背上有一個島的名字。' },
+  礦工皮甲: { slot: '防具', stats: { def: 15, hp: 50 }, cost: { 銀貝: 230, 礦工牌: 3, 鐵礦: 2 }, desc: '礦工的皮甲，胸口縫著一塊銅牌。擋得住落石。' },
+  熔岩鱗甲: { slot: '防具', stats: { def: 18, hp: 60, spd: -1 }, cost: { 銀貝: 300, 熔岩玻璃: 3, 炭: 2, 夜光珠: 1 }, desc: '一片一片黑玻璃串起來的甲。在暗的地方，會透出一點紅光。' },
+  鐵喉大盾: { slot: '防具', who: '葛蘿', stats: { def: 22, hp: 70, spd: -2 }, cost: { 銀貝: 280, 鐵礦: 5, 礦工牌: 2 }, desc: '用礦車的車斗打成的盾。葛蘿一隻手就舉得起來。' },
+  紅赭護符: { slot: '飾品', stats: { atk: 4, spd: 4 }, cost: { 銀貝: 160, 紅赭土: 3 }, desc: '一小包紅色的泥土。海盜出海前，會在額頭上點一下。' },
+  礦工牌項鍊: { slot: '飾品', stats: { hp: 36, def: 5 }, cost: { 銀貝: 180, 礦工牌: 3 }, desc: '一串刻著名字的礦工牌。戴著它，就有人記得你從哪裡來。' },
+  硫磺香囊: { slot: '飾品', stats: { mp: 14, mag: 5 }, cost: { 銀貝: 180, 硫磺: 3, 舊帆布: 1 }, desc: '很臭的香囊。可是戴著它，腦袋會變得很清楚。' },
+  炭火戒: { slot: '飾品', stats: { atk: 6, mag: 6 }, cost: { 銀貝: 220, 炭: 3, 熔岩玻璃: 1 }, desc: '戒面嵌著一小塊不會熄的炭。冬天的時候很好用。' },
+  // 黑市才買得到的圖紙
+  紅帆旗披風: { slot: '防具', stats: { def: 16, hp: 52, spd: 3 }, cost: { 銀貝: 320, 舊帆布: 4, 紅赭土: 3 }, desc: '一整面紅帆旗改成的披風。紅帆的人看見它，都會讓路。' },
+  海盜望遠鏡: { slot: '飾品', stats: { spd: 6, atk: 4, mag: 4 }, cost: { 銀貝: 280, 熔岩玻璃: 2, 鐵礦: 2 }, desc: '鏡片是熔岩玻璃磨的。看得見霧後面的東西——偶爾。' },
 };
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
@@ -250,7 +343,8 @@ export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '�
 export const SHIP = {
   貨艙: { desc: '補給的上限', levels: [
     { label: '加大貨艙', cost: { 銀貝: 60, 漂流木: 5 }, note: '貨艙 40 → 55' },
-    { label: '雙層貨艙', cost: { 銀貝: 130, 鏽鐵: 3, 船帆布: 2 }, note: '貨艙 55 → 70' }] },
+    { label: '雙層貨艙', cost: { 銀貝: 130, 鏽鐵: 3, 船帆布: 2 }, note: '貨艙 55 → 70' },
+    { label: '鐵骨貨艙', cost: { 銀貝: 260, 鐵礦: 4, 舊帆布: 3 }, note: '貨艙 70 → 85' }] },
   船帆: { desc: '航海事件的損失', levels: [
     { label: '補好船帆', cost: { 銀貝: 50, 船帆布: 2, 褪色羽: 2 }, note: '航海事件的損失減半' }] },
   船首像: { desc: '登島時看得更遠', levels: [
@@ -258,9 +352,27 @@ export const SHIP = {
 };
 export const cargoMax = g => 40 + 15 * ((g.ship && g.ship.貨艙) || 0);
 
+// ───────── 勢力聲望（第三章開始）：0～100，每 20 一級 ─────────
+export const FACTIONS = ['商會', '紅帆'];
+export const REP_LEVELS = ['冷淡', '認識', '信任', '夥伴', '至交'];
+export const repLevel = n => Math.max(0, Math.min(4, Math.floor((n || 0) / 20)));
+
+// ───────── 黑市：紅帆聲望越高，賣的東西越好。need 是要到的聲望等級 ─────────
+export const BLACK_MARKET = [
+  { name: '火藥', kind: 'mat', n: 2, price: 30, need: 0 },
+  { name: '醒神香', kind: 'supply', n: 1, price: 16, need: 0 },
+  { name: '舊帆布', kind: 'mat', n: 2, price: 34, need: 1 },
+  { name: '圖紙：紅赭護符', kind: 'bp', bp: '紅赭護符', price: 120, need: 1 },
+  { name: '夜光珠', kind: 'mat', n: 1, price: 60, need: 2 },
+  { name: '圖紙：紅帆旗披風', kind: 'bp', bp: '紅帆旗披風', price: 220, need: 2 },
+  { name: '圖紙：海盜望遠鏡', kind: 'bp', bp: '海盜望遠鏡', price: 260, need: 3 },
+  { name: '熔岩玻璃', kind: 'mat', n: 2, price: 70, need: 3 },
+];
+
 // ───────── 酒館的委託 ─────────
 // kind：kill 擊退指定的敵人／bring 把素材交到酒館／survey 某座島的測繪度達到多少
 // island：這座島開放以後，告示板上才會出現（bring 的話，是素材出產的島）
+// side：勢力委託。完成時這個勢力的聲望 +rep，另一個勢力 −5
 export const COMMISSIONS = [
   { id: '網', title: '咬破漁網的礁鼠', from: '漁市的老周', kind: 'kill', target: '礁鼠', n: 4, island: '低語礁', reward: { 銀貝: 35, 漂流木: 2 }, text: '漁網每天晚上都被咬破。聽說是低語礁那邊游過來的礁鼠。' },
   { id: '燈', title: '燈塔需要的燈芯', from: '燈塔港的守燈人', kind: 'bring', target: '燈芯', n: 3, island: '低語礁', reward: { 銀貝: 30, 圖紙: '燈芯鈴杖' }, text: '鹽灣島的燈快沒芯了。燈蛾的翅膀粉，捻起來就是最好的燈芯。' },
@@ -288,4 +400,18 @@ export const COMMISSIONS = [
   { id: '印', title: '亂蓋章的兵', from: '帳房島的老書記', kind: 'kill', target: '印章兵', n: 4, island: '帳房島', reward: { 銀貝: 150, 閘石: 2 }, text: '那些印章兵，連海鷗都蓋了章。海鷗現在是商會的財產了。' },
   { id: '白', title: '白色的珊瑚', from: '鐵匠的石伯', kind: 'bring', target: '白珊瑚', n: 3, island: '帳房島', reward: { 銀貝: 140, 圖紙: '白珊瑚戒' }, text: '那種白珊瑚，我只在書上看過。帶幾枝回來，讓我這把老骨頭開開眼界。' },
   { id: '圖七', title: '帳房島的真正地圖', from: '天文台的老人', kind: 'survey', island: '帳房島', n: 60, reward: { 銀貝: 200, 圖紙: '白頁筆' }, text: '商會的地圖上，帳房島只有一座塔。我想看看，塔以外的地方長什麼樣子。' },
+  // 第三海域
+  { id: '鴉', title: '偷東西的灰鴉', from: '紅帆港的帆匠', kind: 'kill', target: '灰鴉', n: 4, island: '紅帆港', side: '紅帆', rep: 10, reward: { 銀貝: 170, 紅赭土: 2 }, text: '那些灰鴉把我的針全叼走了。沒有針，帆補不起來。' },
+  { id: '旗', title: '舊帆的名字', from: '紅帆港的帆匠', kind: 'bring', target: '舊帆布', n: 4, island: '紅帆港', side: '紅帆', rep: 10, reward: { 銀貝: 160, 圖紙: '舊帆布外套' }, text: '退下來的帆，我要一面一面拆開來，把上面的名字縫到新帆上。' },
+  { id: '圖八', title: '紅帆港的水道', from: '酒館的鹽姨', kind: 'survey', island: '紅帆港', n: 60, reward: { 銀貝: 220, 圖紙: '錨鏈斧' }, text: '火山口裡的水道彎彎曲曲。紅帆的人說，他們從來不畫地圖。……可是他們偷偷問我，有沒有人畫過。' },
+  { id: '查', title: '商會的查帳', from: '商會的巡查員', kind: 'kill', target: '火藥蟹', n: 4, island: '紅帆港', side: '商會', rep: 10, reward: { 銀貝: 180, 火藥: 2 }, text: '紅帆私藏火藥，商會要查。那些背著火藥桶的螃蟹，先處理掉。' },
+  { id: '牌', title: '沒有拿回來的牌子', from: '鐵喉礦坑的老礦工', kind: 'bring', target: '礦工牌', n: 4, island: '鐵喉礦坑', reward: { 銀貝: 180, 圖紙: '礦工牌項鍊' }, text: '坑口的牌子，少了二十三塊。那是三十年前那天，沒有出來的人。' },
+  { id: '鼠', title: '知道哪裡會塌的老鼠', from: '鐵喉礦坑的工頭', kind: 'kill', target: '鐵喉鼠', n: 4, island: '鐵喉礦坑', side: '商會', rep: 10, reward: { 銀貝: 190, 鐵礦: 2 }, text: '商會的礦場要開新坑道。那些老鼠一直在咬支架。' },
+  { id: '圖九', title: '鐵喉礦坑的坑道圖', from: '天文台的老人', kind: 'survey', island: '鐵喉礦坑', n: 60, reward: { 銀貝: 230, 圖紙: '礦工皮甲' }, text: '坑道圖在商會手上，可是他們只畫了有礦的地方。沒有礦的坑道，就沒有人記得。' },
+  { id: '炭', title: '不冒煙的炭', from: '鐵匠的石伯', kind: 'bring', target: '炭', n: 4, island: '鍛火嶼', reward: { 銀貝: 170, 圖紙: '炭火戒' }, text: '鍛火嶼的炭，聽說燒起來一點煙都沒有。我打了一輩子鐵，還沒用過。' },
+  { id: '花', title: '濺出來的火花', from: '鍛火嶼的顧爐人', kind: 'kill', target: '火花精', n: 4, island: '鍛火嶼', side: '紅帆', rep: 10, reward: { 銀貝: 190, 硫磺: 2 }, text: '火花一直往外跑，燒掉了紅帆寄放在這裡的帆。幫我們抓回來。' },
+  { id: '圖十', title: '鍛火嶼的地圖', from: '酒館的鹽姨', kind: 'survey', island: '鍛火嶼', n: 60, reward: { 銀貝: 240, 圖紙: '熔岩鱗甲' }, text: '島上的人輪流顧爐，可是沒有人畫過爐以外的地方。' },
+  { id: '號', title: '要塞的巡邏', from: '紅帆的老水手', kind: 'kill', target: '號碼兵', n: 4, island: '紅岬', side: '紅帆', rep: 10, reward: { 銀貝: 220, 礦工牌: 2 }, text: '那些號碼兵每天晚上沿著海岸巡邏。他們以前，都是紅岬的人。' },
+  { id: '赭', title: '紅色的土', from: '商會的染坊', kind: 'bring', target: '紅赭土', n: 5, island: '紅帆港', side: '商會', rep: 10, reward: { 銀貝: 200, 圖紙: '紅帆琴' }, text: '商會想做紅帆布來賣。……不要跟海盜說是我們買的。' },
+  { id: '圖十一', title: '紅岬的舊名字', from: '葛蘿', kind: 'survey', island: '紅岬', n: 60, reward: { 銀貝: 300, 圖紙: '熔岩斧' }, text: '把紅岬畫進書裡。不是商會的第七號——是我們的島。' },
 ];

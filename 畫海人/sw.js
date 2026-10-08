@@ -1,5 +1,5 @@
 // 離線快取：加入主畫面後，沒有網路也能玩
-const CACHE = 'hhr-m3-0.2';
+const CACHE = 'hhr-m3-0.3';
 const FILES = ['./', './index.html', './css/style.css', './manifest.webmanifest', './icon.svg',
   './js/main.js', './js/data.js', './js/state.js', './js/ui.js', './js/audio.js', './js/battle.js', './js/explore.js', './js/survey.js', './js/puzzle.js', './js/islands.js', './js/port.js', './js/cinema.js'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(encodeURI(f), { cache: 'reload' })))).then(() => self.skipWaiting())); });

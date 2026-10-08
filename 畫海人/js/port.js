@@ -1,5 +1,5 @@
-// 港口：碼頭（補給）、酒館（委託）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（賣素材）
-import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax } from './data.js';
+// 港口：碼頭（補給）、酒館（委託）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（賣素材）、黑市（第三章）
+import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, BLACK_MARKET } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS } from './islands.js';
 import { cargoUsed, save } from './state.js';
 import { worldOf, surveyMax } from './explore.js';
@@ -9,7 +9,8 @@ export const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, �
 const SUPPLY_TIP = { 糧: '每走一格吃 1 份。吃光了會又餓又累。', 燈油: '點燈時每走一格用 1 份：看得更遠，霧中不會打偏。', 墨水: '測繪要用 2 份。測繪過的地方，霧吞不回去。', 藥草: ITEMS.藥草.desc, 海靈露: ITEMS.海靈露.desc, 醒神香: ITEMS.醒神香.desc };
 const JOBS_MAX = 2;
 // 市場收購素材的價錢（銀貝）
-const MAT_PRICE = { 漂流木: 3, 霧苔: 3, 鹽晶: 4, 燈芯: 4, 珊瑚枝: 5, 鐘銅: 6, 褪色羽: 6, 鏽鐵: 7, 船帆布: 7, 夜光珠: 20, 銀貝殼: 8, 帳紙: 8, 鏡砂: 9, 測繩: 9, 墨魚墨: 9, 珍珠: 12, 閘石: 10, 白珊瑚: 12 };
+const MAT_PRICE = { 漂流木: 3, 霧苔: 3, 鹽晶: 4, 燈芯: 4, 珊瑚枝: 5, 鐘銅: 6, 褪色羽: 6, 鏽鐵: 7, 船帆布: 7, 夜光珠: 20, 銀貝殼: 8, 帳紙: 8, 鏡砂: 9, 測繩: 9, 墨魚墨: 9, 珍珠: 12, 閘石: 10, 白珊瑚: 12,
+  紅赭土: 10, 舊帆布: 11, 火藥: 13, 鐵礦: 12, 礦工牌: 14, 炭: 11, 硫磺: 13, 熔岩玻璃: 18 };
 
 export const statText = st => Object.entries(st).map(([k, v]) => `${STAT_NAME[k]}${v > 0 ? '+' : ''}${v}`).join(' ');
 export const costText = c => Object.entries(c).map(([k, v]) => `${k} ${v}`).join('・');
@@ -26,6 +27,10 @@ export class Port {
   get hasTavern() { return worldOf(this.g, '低語礁').cleared; }
   get hasYard() { return worldOf(this.g, '晨忘島').cleared; }
   get hasMarket() { return worldOf(this.g, '千帆市').cleared; }
+  get hasBlack() { return worldOf(this.g, '紅帆港').cleared; }
+  // 商會的聲望越高，市場收素材的價錢越好（每一級 +5%）
+  get priceRate() { const g = this.g; return g.flags.焰 ? 1 + 0.05 * repLevel((g.rep || {}).商會 || 0) : 1; }
+  rep(k) { return ((this.g.rep || {})[k]) || 0; }
 
   // 付得起嗎？（銀貝與素材）
   canAfford(cost) { const g = this.g; return Object.entries(cost).every(([k, v]) => k === '銀貝' ? g.silver >= v : (g.mats[k] || 0) >= v); }
@@ -38,6 +43,8 @@ export class Port {
     const next = ISLAND_ORDER.find(id => this.unlocked(id) && !worldOf(g, id).cleared);
     const tip = next ? `下一個目的地：${next}（${ISLANDS[next].sub}）`
       : g.flags.第一章 && !g.flags.環礁 ? '淺灘的三座島都畫進書裡了。山丘上的「天文台」，門好像開了。'
+      : g.flags.第二章 && !g.flags.焰 ? '環礁的四座島都畫進書裡了。天文台的老人說，往南看得到煙的地方，有下一片海。'
+      : g.flags.第三章 ? '焰之群島的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : g.flags.第二章 ? '環礁的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : '可以回去補完測繪、接委託、打造裝備。';
     const fac = (name, sub, fn, on = true, lockText) => el('button', { class: 'fac' + (on ? '' : ' locked'), disabled: !on, onclick: () => { ctx.audio.sfx('tap'); fn(); } },
@@ -51,14 +58,16 @@ export class Port {
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => ctx.menu() }, '☰')),
       el('p', { class: 'p-tip' }, tip),
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`), ctx.ui.bar(cargoUsed(g), cargoMax(g), 'cargo')),
+      g.flags.焰 ? el('div', { class: 'p-rep' }, ...FACTIONS.map(f => el('span', {}, el('b', {}, f), `　${REP_LEVELS[repLevel(this.rep(f))]}`, ctx.ui.bar(this.rep(f), 100, 'rep')))) : null,
       el('div', { class: 'facs' },
         fac('碼頭', '買補給：糧、燈油、墨水、藥', () => this.dock()),
         fac('海圖', '選一座島，出航', () => this.chart()),
         fac('酒館', ready ? `有 ${ready} 個委託可以回報！` : `委託告示板（進行中 ${jobsN}/${JOBS_MAX}）`, () => this.tavern(), this.hasTavern, '完成低語礁以後開放'),
         fac('鐵匠', `用素材打造裝備（素材 ${matN} 個）`, () => this.smith(), this.hasTavern, '完成低語礁以後開放'),
         fac('船塢', '加大貨艙、補船帆、裝船首像', () => this.yard(), this.hasYard, '完成晨忘島以後開放'),
-        g.flags.第一章 ? fac('天文台', g.flags.環礁 ? '星圖與往霧心的路' : '門開了！進去看看', () => ctx.observatory()) : null,
-        g.flags.第一章 ? fac('市場', '把素材賣成銀貝', () => this.market(), this.hasMarket, '完成千帆市以後開放') : null),
+        g.flags.第一章 ? fac('天文台', !g.flags.環礁 || (g.flags.第二章 && !g.flags.焰) ? '門開了！進去看看' : '星圖與往霧心的路', () => ctx.observatory()) : null,
+        g.flags.第一章 ? fac('市場', '把素材賣成銀貝', () => this.market(), this.hasMarket, '完成千帆市以後開放') : null,
+        g.flags.焰 ? fac('黑市', '紅帆的地下交易：火藥、稀有圖紙', () => this.blackMarket(), this.hasBlack, '完成紅帆港以後開放') : null),
       el('div', { class: 'p-isles' }, ...ISLAND_ORDER.filter(id => this.seas.includes(ISLANDS[id].sea)).map(id => {
         const r = worldOf(g, id), on = this.unlocked(id);
         return el('div', { class: 'isle' + (r.cleared ? ' done' : '') + (on ? '' : ' locked') },
@@ -117,7 +126,8 @@ export class Port {
     const best = worldOf(g, c.island).best; return { text: `${c.island}的測繪度：${best}%/${c.n}%`, ready: best >= c.n };
   }
 
-  rewardText(r) { return Object.entries(r).map(([k, v]) => k === '圖紙' ? `圖紙「${v}」` : `${k} ${v}`).join('、'); }
+  rewardText(r, c) { return Object.entries(r).map(([k, v]) => k === '圖紙' ? `圖紙「${v}」` : `${k} ${v}`).concat(c && c.side ? [`${c.side}聲望 +${c.rep}（${FACTIONS.find(f => f !== c.side)} −5）`] : []).join('、'); }
+  jobTitle(c) { return c.side ? `【${c.side}】${c.title}` : c.title; }
 
   tavern() {
     const g = this.g, ctx = this.ctx;
@@ -128,7 +138,7 @@ export class Port {
       for (const c of taken) {
         const st = this.jobState(c);
         body.append(el('div', { class: 'job on' + (st.ready ? ' ready' : '') },
-          el('b', {}, c.title), el('small', {}, `${c.from}：${c.text}`), el('p', { class: 'small' }, st.text), el('p', { class: 'small muted' }, `報酬：${this.rewardText(c.reward)}`),
+          el('b', {}, this.jobTitle(c)), el('small', {}, `${c.from}：${c.text}`), el('p', { class: 'small' }, st.text), el('p', { class: 'small muted' }, `報酬：${this.rewardText(c.reward, c)}`),
           el('div', { class: 'btns' },
             el('button', { class: 'btn small', onclick: () => { delete g.jobs[c.id]; save(g); api.rebuild(); } }, '放棄'),
             el('button', { class: 'btn small primary', disabled: !st.ready, onclick: () => { this.finishJob(c); api.rebuild(); } }, c.kind === 'bring' ? '交出素材' : '回報'))));
@@ -138,7 +148,7 @@ export class Port {
       if (!open.length) body.append(el('p', { class: 'muted' }, '告示板上暫時沒有新的委託了。'));
       for (const c of open) {
         body.append(el('div', { class: 'job' },
-          el('b', {}, c.title), el('small', {}, `${c.from}：${c.text}`), el('p', { class: 'small' }, this.jobState(c).text), el('p', { class: 'small muted' }, `報酬：${this.rewardText(c.reward)}`),
+          el('b', {}, this.jobTitle(c)), el('small', {}, `${c.from}：${c.text}`), el('p', { class: 'small' }, this.jobState(c).text), el('p', { class: 'small muted' }, `報酬：${this.rewardText(c.reward, c)}`),
           el('div', { class: 'btns' }, el('button', { class: 'btn small', disabled: taken.length >= JOBS_MAX, onclick: () => { g.jobs[c.id] = 0; ctx.audio.sfx('tap'); save(g); api.rebuild(); } }, taken.length >= JOBS_MAX ? '接滿了' : '接下'))));
       }
     }, { onClose: () => this.show() });
@@ -153,6 +163,10 @@ export class Port {
       if (k === '銀貝') { g.silver += v; got.push(`銀貝 ${v}`); }
       else if (k === '圖紙') { if (g.bps.includes(v)) { g.silver += 30; got.push('銀貝 30（圖紙已經有了）'); } else { g.bps.push(v); got.push(`圖紙「${v}」`); } }
       else { g.mats[k] = (g.mats[k] || 0) + v; got.push(`${k} ${v}`); }
+    }
+    if (c.side) {
+      ctx.addRep(c.side, c.rep); got.push(`${c.side}聲望 +${c.rep}`);
+      const other = FACTIONS.find(f => f !== c.side); ctx.addRep(other, -5); got.push(`${other}聲望 −5`);
     }
     g.morale = Math.min(100, g.morale + 5);
     ctx.audio.sfx('item'); save(g);
@@ -185,13 +199,36 @@ export class Port {
     const g = this.g, ctx = this.ctx;
     ctx.ui.sheet('市場・收購', (body, api) => {
       body.append(el('p', { class: 'muted' }, '費米：「素材拿來，我照千帆市的價錢收。……打造要用的，自己記得留著喔。」'));
-      body.append(el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`)));
+      body.append(el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), this.priceRate > 1 ? el('span', {}, `商會「${REP_LEVELS[repLevel(this.rep('商會'))]}」：收購價 +${Math.round((this.priceRate - 1) * 100)}%`) : null));
       const mats = Object.entries(g.mats).filter(([, n]) => n > 0);
       if (!mats.length) body.append(el('p', { class: 'para' }, '手上沒有素材。'));
       for (const [k, n] of mats) {
-        const price = MAT_PRICE[k] || 5;
+        const price = Math.round((MAT_PRICE[k] || 5) * this.priceRate);
         body.append(el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, `${k}　×${n}`), el('small', {}, MATS[k])),
           el('button', { class: 'btn small', onclick: () => { g.mats[k]--; g.silver += price; ctx.audio.sfx('item'); save(g); api.rebuild(); } }, `賣 ${price} 銀貝`)));
+      }
+    }, { onClose: () => this.show() });
+  }
+
+  // ───────── 黑市（紅帆港完成後）：紅帆的聲望越高，賣的東西越好 ─────────
+  blackMarket() {
+    const g = this.g, ctx = this.ctx;
+    ctx.ui.sheet('黑市', (body, api) => {
+      const lv = repLevel(this.rep('紅帆'));
+      body.append(el('p', { class: 'muted' }, '葛蘿：「這裡不看銀貝，看你是誰。紅帆越信你，櫃子後面的東西就拿得越多。」'),
+        el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `紅帆「${REP_LEVELS[lv]}」`)));
+      for (const it of BLACK_MARKET) {
+        const locked = lv < it.need, owned = it.kind === 'bp' && g.bps.includes(it.bp);
+        const sub = it.kind === 'bp' ? `${EQUIPS[it.bp].slot}・${statText(EQUIPS[it.bp].stats)}` : it.kind === 'mat' ? `${MATS[it.name]}　×${it.n}` : `${ITEMS[it.name].desc}　×${it.n}`;
+        body.append(el('div', { class: 'shop-row' + (locked ? ' locked' : '') },
+          el('div', {}, el('b', {}, locked ? '？？？' : it.name), el('small', {}, locked ? `紅帆的聲望到「${REP_LEVELS[it.need]}」才拿得出來` : sub)),
+          el('button', { class: 'btn small', disabled: locked || owned || g.silver < it.price, onclick: () => {
+            g.silver -= it.price;
+            if (it.kind === 'bp') g.bps.push(it.bp);
+            else if (it.kind === 'mat') g.mats[it.name] = (g.mats[it.name] || 0) + it.n;
+            else g.supply[it.name] = (g.supply[it.name] || 0) + it.n;
+            ctx.audio.sfx('item'); save(g); ctx.ui.toast(`買到了「${it.name}」。`); api.rebuild();
+          } }, owned ? '已經有了' : `${it.price} 銀貝`)));
       }
     }, { onClose: () => this.show() });
   }
