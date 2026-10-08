@@ -59,6 +59,13 @@ export function pointDone(tiles, t) { return tiles.every(x => x.surveyed || dist
 function tileAt(isl, c, r) { return isl.tiles[r * ISLANDS[isl.id].cols + c]; }
 function reveal(isl, p, rad) { for (const t of isl.tiles) if (dist([t.c, t.r], p) <= rad) t.seen = true; }
 export function surveyPct(isl) { return Math.round(isl.tiles.filter(t => t.surveyed).length * 100 / isl.tiles.length); }
+// 這座島最多畫得到多少：每個測繪點都畫到最準（周圍兩圈）的時候
+export function surveyMax(id) {
+  const def = ISLANDS[id], pts = Object.keys(def.fixed).filter(k => def.fixed[k] === '測').map(k => k.split(',').map(Number));
+  let n = 0;
+  for (let r = 0; r < def.rows; r++) for (let c = 0; c < def.cols; c++) if (pts.some(p => dist([c, r], p) <= 2)) n++;
+  return Math.round(n * 100 / (def.cols * def.rows));
+}
 
 export class Explore {
   constructor(ctx) { this.ctx = ctx; }
@@ -123,7 +130,7 @@ export class Explore {
     // 狀態列
     const s = g.supply;
     this.$status.innerHTML = '';
-    this.$status.append(...[['糧', s.糧], ['燈油', s.燈油], ['墨水', s.墨水], ['銀貝', g.silver], ['士氣', g.morale], ['測繪', surveyPct(isl) + '%']].map(([k, v]) =>
+    this.$status.append(...[['糧', s.糧], ['燈油', s.燈油], ['墨水', s.墨水], ['銀貝', g.silver], ['士氣', g.morale], [surveyPct(isl) >= surveyMax(isl.id) ? '測繪滿' : '測繪', surveyPct(isl) + '%']].map(([k, v]) =>
       el('span', { class: 'st' + (k === '糧' && v <= 3 ? ' low' : '') }, el('small', {}, k), el('b', {}, String(v)))));
     this.$lamp.textContent = isl.lit ? '熄燈' : '點燈';
     this.$lamp.classList.toggle('on', isl.lit);
@@ -137,9 +144,11 @@ export class Explore {
     const cur = tileAt(isl, ...isl.pos);
     const info = this.tileInfo(cur);
     this.$info.innerHTML = '';
-    const goal = isl.boss ? (worldOf(g, isl.id).cleared && !isl.bossNow ? `這座島已經完成了。可以繼續測繪、找素材，回到登陸點就能返航。` : def.goal.done) : isl.key ? def.goal.key : def.goal.none;
+    const pct = surveyPct(isl), max = surveyMax(isl.id), full = pct >= max;
+    const goal = isl.boss ? (worldOf(g, isl.id).cleared && !isl.bossNow ? `這座島已經完成了。${full ? '' : '可以繼續測繪、'}找素材，回到登陸點就能返航。` : def.goal.done) : isl.key ? def.goal.key : def.goal.none;
     this.$info.append(el('p', { class: 'goal' }, goal),
       el('p', {}, cur.kind === '起' ? '船停在登陸點。點旁邊的格子前進；每走一格吃掉 1 份糧。' : info.name ? `${info.name}：${cur.done ? '已經處理過了。' : info.tip}` : '霧裡什麼都沒有。點旁邊的格子繼續前進。'),
+      el('p', { class: 'muted' }, full ? `測繪度 ${pct}%：這座島已經畫滿了（最高就是 ${max}%），測繪點不會再出現。` : `測繪度 ${pct}%，這座島最高可以畫到 ${max}%。`),
       el('p', { class: 'muted' }, isl.lit ? '燈亮著：看得更遠、霧中不會打偏；每走一格用掉 1 份燈油。' : '點燈可以看得更遠（每走一格用 1 份燈油）。'));
     if (cur.kind === '村') this.$info.append(el('button', { class: 'btn small', onclick: () => this.village() }, '進村子'));
     if (cur.kind === '起') this.$info.append(el('button', { class: 'btn small' + (isl.boss ? ' primary' : ''), onclick: () => this.sailHome(!isl.boss) }, isl.boss ? '返航' : '先回港口'));
@@ -298,7 +307,7 @@ export class Explore {
         if (score >= 70) reveal(isl, [t.c, t.r], 2);
         t.done = true;
         this.record();
-        await ui.alert('測繪完成', [`測繪得分：${score}`, score >= 85 ? '畫得非常準！周圍兩圈的土地，都被畫進了書裡。' : score >= 50 ? '周圍一圈的土地，被畫進了書裡。' : '畫得有點歪……只有這一格留在書裡。', `目前測繪度：${surveyPct(isl)}%`]);
+        await ui.alert('測繪完成', [`測繪得分：${score}`, score >= 85 ? '畫得非常準！周圍兩圈的土地，都被畫進了書裡。' : score >= 50 ? '周圍一圈的土地，被畫進了書裡。' : '畫得有點歪……只有這一格留在書裡。', `目前測繪度：${surveyPct(isl)}%`, surveyPct(isl) >= surveyMax(isl.id) ? `這座島已經畫到最完整了（最高 ${surveyMax(isl.id)}%），不用再測繪。` : `這座島最高可以畫到 ${surveyMax(isl.id)}%。`]);
         break;
       }
       case '王': {
