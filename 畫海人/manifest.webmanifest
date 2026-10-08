@@ -1,0 +1,15 @@
+{
+  "name": "畫海人",
+  "short_name": "畫海人",
+  "description": "世界被霧吞沒，只有被畫進地圖的地方才會留下來。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1a24",
+  "theme_color": "#0f1a24",
+  "lang": "zh-TW",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
