@@ -11,7 +11,7 @@ export function newGame(diff = '標準') {
   return {
     v: 1, diff, name: '墨里', attitude: null,
     silver: 100, cargo: 40,
-    supply: { 糧: 10, 燈油: 0, 墨水: 0, 藥草: 1, 醒神香: 0 },
+    supply: { 糧: 10, 燈油: 0, 墨水: 0, 藥草: 1, 海靈露: 1, 醒神香: 0 },
     party: ['墨里', '阿潮', '蓮笙'].map((k, i) => makeHero(k, i)),
     morale: 50, flags: {}, island: null, phase: 'intro',
     stats: { steps: 0, battles: 0, kills: 0, start: Date.now() },
