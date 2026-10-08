@@ -199,3 +199,51 @@ button { font: inherit; color: inherit; }
 
 @media (min-width: 560px) { .status { gap: 6px; } .unit .face { width: 36px; height: 36px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01s !important; transition-duration: .01s !important; } }
+
+/* ───────── 自適應：戰鬥畫面 ─────────
+   手機（直式）：由上往下排，整個畫面可以捲動，行動選項固定貼在最下面
+   寬螢幕（電腦、平板橫放）：左邊是戰場，右邊是行動選項與戰鬥紀錄 */
+#battle { position: fixed; left: 0; right: 0; top: 0; bottom: 0; max-width: 720px; margin: 0 auto; overflow-y: auto; overscroll-behavior: contain; }
+#battle.open { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "foes" "log" "mine" "cmd"; grid-template-rows: auto auto auto auto 1fr; align-content: start; gap: 6px; }
+#battle .b-top { grid-area: top; } #battle .field.foes { grid-area: foes; } #battle .b-log { grid-area: log; } #battle .field.mine { grid-area: mine; }
+#battle .b-cmd { grid-area: cmd; align-self: end; position: sticky; bottom: calc(-8px - env(safe-area-inset-bottom)); margin: 0 -10px calc(-8px - env(safe-area-inset-bottom)); padding: 8px 10px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 14px); z-index: 2; }
+/* 戰鬥紀錄：固定三行高，不會蓋到下面 */
+.b-log { min-height: 0; height: calc(3 * 1.55em + 8px); padding-top: 4px; padding-bottom: 4px; line-height: 1.55; overflow-y: auto; scrollbar-width: none; }
+.b-log::-webkit-scrollbar { display: none; }
+.b-log div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmd-wait { text-align: center; color: var(--muted); font-size: 13px; padding: 14px 0; }
+.cmd-list { max-height: 34vh; }
+
+/* 矮的畫面：卡片縮小 */
+@media (max-height: 760px) {
+  .row { min-height: 48px; }
+  .unit { padding: 4px 6px; }
+  .unit .face { width: 26px; height: 26px; font-size: 12px; }
+  .u-st:empty { display: none; }
+  .cmd { padding: 8px 4px; }
+}
+
+/* 寬螢幕：兩欄 */
+@media (min-width: 860px) and (min-aspect-ratio: 1/1) {
+  #app { max-width: 1180px; }
+  #battle { max-width: 1180px; padding: 14px 18px; overflow: hidden; }
+  #battle.open { grid-template-columns: minmax(0, 1fr) 340px; grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "top top" "foes cmd" "mine log"; column-gap: 18px; row-gap: 10px; }
+  #battle .field.mine { align-self: start; }
+  #battle .b-cmd { position: static; margin: 0; padding: 12px; background: var(--panel); border-radius: 12px; align-self: start; max-height: 100%; overflow-y: auto; }
+  .b-log { height: auto; max-height: 100%; min-height: 8em; align-self: start; }
+  .b-log div { white-space: normal; }
+  .cmd-list { max-height: 52vh; }
+  .row { min-height: 70px; }
+  .unit { max-width: 360px; }
+  .row.foe .unit { max-width: 320px; }
+}
+
+/* 寬螢幕：島嶼也改成兩欄（左邊地圖，右邊狀態與說明） */
+@media (min-width: 860px) and (min-aspect-ratio: 1/1) {
+  #screen.island { display: grid; grid-template-columns: minmax(0, 1fr) 360px; grid-template-rows: auto auto auto 1fr; grid-template-areas: "head head" "map status" "map info" "map party"; column-gap: 18px; row-gap: 10px; align-content: start; }
+  #screen.island .isl-head { grid-area: head; } #screen.island .status { grid-area: status; grid-template-columns: repeat(3, 1fr); }
+  #screen.island .mapwrap { grid-area: map; align-self: start; max-height: calc(100vh - 90px); display: flex; justify-content: center; }
+  #screen.island .hexmap { max-height: calc(100vh - 110px); width: auto; max-width: 100%; }
+  #screen.island .info { grid-area: info; } #screen.island .partybar { grid-area: party; grid-template-columns: 1fr; align-self: start; }
+  #screen.port, #screen.result, #screen.title { padding-left: max(16px, calc(50% - 360px)); padding-right: max(16px, calc(50% - 360px)); }
+}

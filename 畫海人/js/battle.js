@@ -162,7 +162,7 @@ export class Battle {
   // ───────── 玩家選指令 ─────────
   choose(u) {
     return new Promise(res => {
-      this.resolve = act => { this.resolve = null; this.clearTarget(); this.$cmd.innerHTML = ''; res(act); };
+      this.resolve = act => { this.resolve = null; this.clearTarget(); this.idle(); res(act); };
       this.menu(u);
     });
   }
@@ -178,6 +178,11 @@ export class Battle {
         b('防禦', () => this.resolve({ type: 'defend' })),
         b('道具', () => this.itemMenu(u), { disabled: !Object.entries(this.g.supply).some(([k, n]) => ITEMS[k] && n > 0) }),
         b('撤退', () => this.resolve({ type: 'flee' }), { disabled: this.opt.kind !== '一般' })));
+  }
+
+  idle() {
+    this.$cmd.innerHTML = '';
+    this.$cmd.append(el('div', { class: 'cmd-wait' }, this.ctx.settings.auto ? '自動戰鬥中……（右上角可以關掉）' : '……'));
   }
 
   canMove(u) {
@@ -411,10 +416,11 @@ export class Battle {
     this.$allyFront = el('div', { class: 'row ally front' }); this.$allyBack = el('div', { class: 'row ally back' });
     for (const f of this.foes) this.nodes[f.id] = this.card(f);
     for (const a of this.allies) this.nodes[a.id] = this.card(a);
-    this.$log = el('div', { class: 'b-log' });
+    this.$log = el('div', { class: 'b-log', 'aria-live': 'polite' });
     this.$cmd = el('div', { class: 'b-cmd' });
+    this.idle();
     r.append(top,
-      el('div', { class: 'field' }, el('div', { class: 'rlabel' }, '敵方後排　近身打不到・受傷 −30%'), this.$foeBack, el('div', { class: 'rlabel front' }, '敵方前排　近身攻擊只能打這一排'), this.$foeFront),
+      el('div', { class: 'field foes' }, el('div', { class: 'rlabel' }, '敵方後排　近身打不到・受傷 −30%'), this.$foeBack, el('div', { class: 'rlabel front' }, '敵方前排　近身攻擊只能打這一排'), this.$foeFront),
       this.$log,
       el('div', { class: 'field mine' }, el('div', { class: 'rlabel front' }, '我方前排　近身 +15%・敵人的近身攻擊只打這一排'), this.$allyFront, el('div', { class: 'rlabel' }, '我方後排　受傷 −30%・近身攻擊威力減半'), this.$allyBack),
       this.$cmd);
@@ -458,7 +464,8 @@ export class Battle {
 
   log(msg) {
     this.$log.append(el('div', {}, msg));
-    while (this.$log.children.length > 3) this.$log.firstChild.remove();
+    while (this.$log.children.length > 12) this.$log.firstChild.remove();
+    this.$log.scrollTop = this.$log.scrollHeight;
   }
 
   float(u, text, kind) {
