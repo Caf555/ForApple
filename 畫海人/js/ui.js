@@ -54,6 +54,10 @@ export class UI {
     });
   }
 
+  confirm(title, text, yes = '確定', no = '取消') {
+    return this.choose(title, [text], [{ label: yes }, { label: no }]).then(i => i === 0);
+  }
+
   toast(msg) {
     const t = el('div', { class: 'toast' }, this.fmt(msg));
     $('toasts').append(t);

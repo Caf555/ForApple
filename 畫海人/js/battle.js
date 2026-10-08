@@ -1,5 +1,6 @@
 // 戰鬥：前後兩排、換位、元素、地形、士氣、首領蓄力與第二階段
 import { HEROES, SKILLS, ENEMIES, ITEMS, elementMult, weaknessOf } from './data.js';
+import { ISLANDS } from './islands.js';
 import { heroStats, gainExp, DIFF } from './state.js';
 import { el, $ } from './ui.js';
 
@@ -47,7 +48,8 @@ export class Battle {
     const boss = this.opt.kind === '首領';
     this.ctx.audio.music(boss ? '首領' : '戰鬥');
     if (boss) { this.ctx.audio.sfx('boss'); this.quake(); }
-    this.log(boss ? '燈塔的光，熄了一下。' : this.opt.kind === '精英' ? '霧最濃的地方，有東西睜開了眼睛。' : '霧裡有東西撲了過來！');
+    const isl = this.g.island && ISLANDS[this.g.island.id];
+    this.log(boss ? (isl ? isl.boss.log : '首領出現了。') : this.opt.kind === '精英' ? '霧最濃的地方，有東西睜開了眼睛。' : '霧裡有東西撲了過來！');
     if (this.opt.terrain && TERRAIN[this.opt.terrain] && !(this.opt.terrain === '霧中' && this.opt.lit)) this.log('（' + TERRAIN[this.opt.terrain] + '）');
     if (this.opt.terrain === '霧中' && this.opt.lit) this.log('（燈火照亮了霧：命中不受影響）');
     if (!this.ctx.settings.tutRows) {
@@ -56,7 +58,7 @@ export class Battle {
         '戰場分成前排和後排，站的位置會大大影響戰鬥：',
         '・前排：近身攻擊威力 +15%。可是敵人的近身攻擊，只打得到前排。',
         '・後排：只要前排還有人，受到的傷害 −30%，近身攻擊也打不到你；但你自己的近身攻擊威力減半。法術不受影響。',
-        '・所以：耐打的阿潮站前排擋著，墨里和蓮笙在後排用法術。敵人也一樣——後排的鹽靈、燈蛾，要用法術去打。',
+        '・所以：耐打的阿潮站前排擋著，{名}和蓮笙在後排用法術。敵人也一樣——後排的敵人，要用法術去打。',
         '・輪到自己時可以「換位」；漲潮時前排會被海水打到，可以先退到後排。',
       ], '開始戰鬥');
     }
@@ -130,13 +132,16 @@ export class Battle {
     const tot = d.skills.reduce((s, [, w]) => s + w, 0);
     let r = Math.random() * tot, name = '攻擊';
     for (const [n, w] of d.skills) { r -= w; if (r <= 0) { name = n; break; } }
-    if (name === '守夜' && u.hp > u.maxhp * 0.6) name = '攻擊';
+    const hs = SKILLS[name];
+    if (hs.type === 'heal' && (hs.target === 'self' ? u.hp > u.maxhp * 0.6 : !this.foes.some(f => f.alive && f.hp < f.maxhp * 0.6))) name = '攻擊';
     return { type: 'skill', skill: name };
   }
 
   allyAI(u) {
     const sk = HEROES[u.key].skills.filter(s => SKILLS[s].cost <= u.mp);
     const hurt = this.allies.filter(a => a.alive && a.hp < a.maxhp * 0.45);
+    const song = sk.find(s => SKILLS[s].morale);
+    if (song && this.g.morale < 65 && Math.random() < 0.5) return { type: 'skill', skill: song };
     const heal = sk.find(s => SKILLS[s].type === 'heal');
     if (hurt.length && heal) return { type: 'skill', skill: heal, target: hurt.sort((a, b) => a.hp / a.maxhp - b.hp / b.maxhp)[0] };
     const foes = this.foes.filter(f => f.alive);
@@ -300,6 +305,7 @@ export class Battle {
       if (sk.ward) { t.fx.ward = sk.ward; this.float(t, '結界', 'buff'); }
       if (sk.taunt) { t.fx.taunt = sk.taunt; this.float(t, '挑釁', 'buff'); }
       if (sk.def) { t.st.def = Math.round(t.st.def * 1.3); this.float(t, '硬化', 'buff'); }
+      if (sk.morale) { g.morale = Math.min(100, g.morale + sk.morale); this.float(t, '士氣 +' + sk.morale, 'buff'); this.log(`歌聲傳遍了全隊。士氣 ${g.morale}。`); }
       if (sk.status && t.alive && Math.random() < (sk.chance ?? 1) * (t.def && t.def.rank ? 0.5 : 1)) { t.status[sk.status] = 2; this.float(t, sk.status, 'st'); this.log(`${t.name} 陷入「${sk.status}」。`); }
     }
     this.renderAll();
@@ -326,8 +332,9 @@ export class Battle {
     if (sk.type === 'phy' && u.row === 'front') dmg *= 1.15;
     if (big) dmg *= 1.5;
     if (u.side === 'ally' && sk.type === 'mag' && this.opt.terrain === '高地') dmg *= 1.25;
-    // 遺跡讀到的線索：星屬性會讓燈守想起一些事
-    const remember = u.side === 'ally' && element === '星' && t.key === '燈守' && this.g.flags.遺跡;
+    // 遺跡讀到的線索：某種屬性（或某個人）的攻擊，會讓首領想起一些事
+    const isl = this.g.island, weak = isl && ISLANDS[isl.id].ruin.weak;
+    const remember = !!(u.side === 'ally' && weak && t.key === weak.boss && this.g.flags['遺跡:' + isl.id] && (weak.who ? u.key === weak.who : element === weak.element));
     if (remember) dmg *= 1.4;
     const m = this.g.morale;
     dmg *= u.side === 'ally' ? 1 + (m - 50) / 250 : 1 - (m - 50) / 400;
@@ -342,7 +349,7 @@ export class Battle {
     this.ctx.audio.sfx(crit ? 'crit' : sk.type === 'mag' ? 'magic' : 'hit');
     if (t.charging && t.alive && (mult >= 1.3 || crit || remember)) {
       t.charging = false; t.status.定身 = 1;
-      this.log(remember ? '燈守愣住了。「……星星？她最喜歡……」蓄力被打斷了！' : `「${t.def.big}」被打斷了！`);
+      this.log(remember ? weak.line : `「${t.def.big}」被打斷了！`);
       this.float(t, '打斷', 'warn');
     }
     if (t.side === 'foe' && t.def.rank === '首領' && !t.phase2 && t.hp > 0 && t.hp <= t.maxhp / 2) t.phaseDue = true;
@@ -393,13 +400,20 @@ export class Battle {
     for (const f of this.foes) { exp += f.def.exp; silver += f.def.silver; }
     g.silver += silver;
     g.stats.kills += this.foes.length;
+    const drops = {};
+    for (const f of this.foes) {
+      this.ctx.onKill && this.ctx.onKill(f.key);
+      for (const [m, p, n = 1] of f.def.drop || []) if (Math.random() < p) drops[m] = (drops[m] || 0) + n;
+    }
+    for (const m in drops) this.ctx.gainMat(m, drops[m]);
     g.morale = Math.min(100, g.morale + ({ 首領: 15, 精英: 12 }[this.opt.kind] || 6));
     const msgs = [];
     for (const a of this.allies) msgs.push(...gainExp(a.ref, a.alive ? exp : Math.floor(exp / 2)));
     for (const a of this.allies) if (a.ref.hp <= 0) a.ref.hp = 1;
     this.ctx.audio.music(null);
     this.ctx.audio.sfx(msgs.length ? 'level' : 'win');
-    await this.ctx.ui.alert('戰鬥勝利', [`經驗 ${exp}　銀貝 ${silver}　士氣 ${g.morale}`, ...msgs]);
+    const dl = Object.entries(drops).map(([m, n]) => `${m} ${n}`).join('、');
+    await this.ctx.ui.alert('戰鬥勝利', [`經驗 ${exp}　銀貝 ${silver}　士氣 ${g.morale}`, dl ? `素材：${dl}` : '', ...msgs].filter(Boolean));
   }
 
   // ───────── 畫面 ─────────
