@@ -1,6 +1,8 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
 import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS } from '../js/data.js';
-import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, INTRO } from '../js/islands.js';
+import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, INTRO, CINEMA } from '../js/islands.js';
+import { ART_KEYS } from '../js/cinema.js';
+import { readFileSync } from 'node:fs';
 
 const errs = [];
 const bad = m => errs.push(m);
@@ -82,5 +84,22 @@ for (const [id, d] of Object.entries(ISLANDS)) {
 for (const k in PORT_SCENES) if (!ISLANDS[k]) bad(`回港劇情「${k}」對應的島不存在`);
 for (const L of [...INTRO, ...CHAPTER_END, ...Object.values(PORT_SCENES).flat()]) if (L.need && !HEROES[L.need]) bad(`劇情台詞的 need「${L.need}」不存在`);
 
+// 劇情動畫：場景要畫得出來；插圖名稱要在生圖清單裡，而且不能重複
+const picList = JSON.parse(readFileSync(new URL('./生圖/清單_劇情.json', import.meta.url), 'utf8')).items.map(it => it.name);
+for (const n of new Set(picList)) if (picList.filter(x => x === n).length > 1) bad(`生圖清單裡的「${n}」重複了`);
+const usedPics = [];
+for (const k of ['開場', ...Object.keys(ISLANDS), '第一章完']) if (!CINEMA[k]) bad(`缺少劇情動畫「${k}」`);
+for (const [k, c] of Object.entries(CINEMA)) {
+  if (k !== '開場' && k !== '第一章完' && !ISLANDS[k]) bad(`劇情動畫「${k}」對應的島不存在`);
+  for (const F of c.frames) {
+    if (!ART_KEYS.includes(F.art)) bad(`劇情動畫「${k}」的場景「${F.art}」不存在`);
+    if (!F.text) bad(`劇情動畫「${k}」有一張圖沒有文字`);
+    if (!picList.includes(F.img)) bad(`劇情動畫「${k}」的插圖「${F.img}」不在生圖清單裡`);
+    if (usedPics.includes(F.img)) bad(`劇情動畫的插圖「${F.img}」用了兩次`);
+    usedPics.push(F.img);
+  }
+}
+for (const n of picList) if (!usedPics.includes(n)) bad(`生圖清單裡的「${n}」沒有用到`);
+
 if (errs.length) { console.log('發現問題：\n' + errs.map(e => '・' + e).join('\n')); process.exit(1); }
-console.log(`《畫海人》檢查通過：${Object.keys(ISLANDS).length} 座島、${Object.keys(ENEMIES).length} 種敵人、${Object.keys(EQUIPS).length} 件裝備、${COMMISSIONS.length} 個委託。`);
+console.log(`《畫海人》檢查通過：${Object.keys(ISLANDS).length} 座島、${Object.keys(ENEMIES).length} 種敵人、${Object.keys(EQUIPS).length} 件裝備、${COMMISSIONS.length} 個委託、${Object.keys(CINEMA).length} 段劇情動畫（${usedPics.length} 張圖）。`);

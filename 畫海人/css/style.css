@@ -392,3 +392,58 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 
 @media (min-width: 560px) { .facs { grid-template-columns: repeat(3, 1fr); } }
 .shop-row > .btn { flex: none; white-space: nowrap; }
+
+/* ───────── 劇情動畫（開場、登島、章末） ───────── */
+.cine { --cine-h: min(76%, calc(min(100vw, 720px) * 1.4)); position: fixed; inset: 0; max-width: 720px; margin: 0 auto; z-index: 60; background: #000; overflow: hidden; cursor: pointer; animation: fadein .6s ease both; user-select: none; -webkit-user-select: none; }
+.cine.out { opacity: 0; transition: opacity .6s; }
+.cine-stage { position: absolute; left: 0; right: 0; top: 0; height: var(--cine-h); overflow: hidden; }
+.cine-stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 38%; background: linear-gradient(transparent, #000); pointer-events: none; }
+.cine-shot { position: absolute; inset: 0; animation-name: fadein, cam-in; animation-timing-function: ease, linear; animation-fill-mode: both; will-change: transform, opacity; }
+.cine-shot svg, .cine-shot img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.cine-shot.cam-out { animation-name: fadein, cam-out; } .cine-shot.cam-l { animation-name: fadein, cam-l; }
+.cine-shot.cam-r { animation-name: fadein, cam-r; } .cine-shot.cam-up { animation-name: fadein, cam-up; }
+@keyframes cam-in { from { transform: scale(1.02); } to { transform: scale(1.14); } }
+@keyframes cam-out { from { transform: scale(1.16); } to { transform: scale(1.03); } }
+@keyframes cam-l { from { transform: scale(1.12) translateX(3.5%); } to { transform: scale(1.12) translateX(-3.5%); } }
+@keyframes cam-r { from { transform: scale(1.12) translateX(-3.5%); } to { transform: scale(1.12) translateX(3.5%); } }
+@keyframes cam-up { from { transform: scale(1.12) translateY(4%); } to { transform: scale(1.12) translateY(-3%); } }
+.cine-low { position: absolute; left: 0; right: 0; bottom: 0; top: calc(var(--cine-h) - 64px); display: flex; align-items: flex-start; justify-content: center; padding: 18px 26px calc(40px + env(safe-area-inset-bottom)); }
+.cine-text { margin: 0; max-width: 30em; font-family: var(--serif); font-size: clamp(16px, 4.4vw, 20px); line-height: 2; letter-spacing: .06em; color: #e8f0f0; text-align: center; text-shadow: 0 0 12px rgba(0, 0, 0, .9); }
+.cine-text span { opacity: 0; animation: cine-ch .5s ease forwards; }
+.cine-text.all span { animation: none; opacity: 1; }
+@keyframes cine-ch { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: none; } }
+.cine-title { position: absolute; left: 0; right: 0; top: calc(var(--cine-h) * .34); white-space: nowrap; text-align: center; font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 11vw, 64px); letter-spacing: .4em; text-indent: .4em; color: var(--accent2); text-shadow: 0 0 24px rgba(220, 180, 106, .55), 0 0 4px #000; opacity: 0; pointer-events: none; }
+.cine-title.long { font-size: clamp(24px, 7.4vw, 42px); letter-spacing: .16em; text-indent: .16em; }
+.cine-title.long.on { letter-spacing: .22em; }
+.cine-title.on { opacity: 1; transition: opacity 2.2s ease, letter-spacing 2.6s ease; letter-spacing: .5em; }
+.cine-skip { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 12px; z-index: 2; padding: 8px 14px; min-height: 40px; border-radius: 20px; border: 1px solid rgba(220, 232, 234, .3); background: rgba(3, 10, 16, .55); color: #dce8ea; font-size: 13px; letter-spacing: .1em; cursor: pointer; }
+.cine-bar { position: absolute; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 6px; }
+.cine-bar i { width: 18px; height: 2px; background: rgba(220, 232, 234, .2); }
+.cine-bar i.done { background: rgba(220, 232, 234, .55); } .cine-bar i.on { background: var(--accent); }
+/* 場景裡的小動畫 */
+.cine svg [class^="c-"] { transform-box: fill-box; transform-origin: center; }
+.c-tw { animation: c-tw 4s ease-in-out infinite; } @keyframes c-tw { 50% { opacity: .15; } }
+.c-fl { animation: c-fl 2.6s ease-in-out infinite; } @keyframes c-fl { 50% { opacity: .72; } }
+.c-blink { animation: c-blink 3.2s ease-in-out infinite; } @keyframes c-blink { 0%, 100% { opacity: 1; } 45%, 60% { opacity: .1; } }
+.c-beam { animation: c-blink 3.2s ease-in-out infinite; }
+.c-drift { animation: c-drift 14s ease-in-out infinite alternate; } @keyframes c-drift { to { transform: translateX(9%); } }
+.c-drift2 { animation: c-drift2 16s ease-in-out infinite alternate; } @keyframes c-drift2 { to { transform: translateX(-9%); } }
+.c-wave { animation: c-drift 6s ease-in-out infinite alternate; }
+.c-rise { transform-origin: 50% 100% !important; animation: c-rise 8s ease-out both; } @keyframes c-rise { from { transform: scale(.4, .2); opacity: .2; } }
+.c-fade { animation: c-fade 5.5s ease-in 1s both; } @keyframes c-fade { to { opacity: .04; filter: blur(2px); } }
+.c-creep { animation: c-creep 9s ease-out both; } @keyframes c-creep { from { transform: translateX(-30%); } }
+.c-chase { animation: c-chase 8s ease-out both; } @keyframes c-chase { from { transform: translateX(45%); } to { transform: translateX(-12%); } }
+.c-smoke { animation: c-smoke 5s ease-in-out infinite; } @keyframes c-smoke { 50% { transform: translateY(-6px) scaleX(1.3); opacity: .5; } }
+.c-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: c-draw 2.6s ease-in-out .3s forwards; } @keyframes c-draw { to { stroke-dashoffset: 0; } }
+.c-pen { opacity: 0; animation: c-show 1s ease 2.6s forwards; } @keyframes c-show { to { opacity: 1; } }
+.c-lit { opacity: 0; animation: c-show 1.2s ease forwards; }
+.c-fall { animation: c-fall 6s linear infinite; } @keyframes c-fall { to { transform: translateY(14px); } }
+.c-sail { animation: c-sail 10s linear both; } @keyframes c-sail { to { transform: translateX(7%); } }
+.c-lead { animation: c-lead 8s ease-in-out infinite alternate; } @keyframes c-lead { to { transform: translate(14px, -6px); opacity: .6; } }
+.c-bird { animation: c-bird 1.4s ease-in-out infinite alternate; } @keyframes c-bird { to { transform: scaleY(.5) translateY(-3px); } }
+.c-ring { animation: c-ring 3.6s ease-out infinite; } @keyframes c-ring { from { transform: scale(1); opacity: .7; } to { transform: scale(6); opacity: 0; } }
+.c-flash { opacity: 0; animation: c-flash 5s linear 1.2s infinite; } @keyframes c-flash { 0%, 100% { opacity: 0; } 2% { opacity: .5; } 4% { opacity: 0; } 6% { opacity: .3; } 9% { opacity: 0; } }
+.c-rain { animation: c-rain .6s linear infinite; } @keyframes c-rain { to { transform: translate(-10px, 26px); } }
+.c-spin { transform-box: view-box !important; transform-origin: 200px 200px !important; animation: c-spin 40s linear infinite; } @keyframes c-spin { to { transform: rotate(360deg); } }
+.c-part { animation: c-part 9s ease-out both; } @keyframes c-part { to { transform: scaleX(1.6); opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .cine-shot { animation-name: fadein !important; } .cine svg * { animation-duration: 0s !important; animation-iteration-count: 1 !important; } }

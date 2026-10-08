@@ -312,5 +312,49 @@ export const CHAPTER_END = [
   { who: '小鈴', need: '小鈴', text: '那就需要一首很長很長的歌了。' },
   { text: '{名}翻開繪圖師之書。淺灘的三座島，已經畫在上面了。' },
   { text: '第一頁上，母親的字，好像比以前更清楚了一點：「畫下你看見的。」' },
-  { bg: 'night', text: '——第一章・淺灘　完' },
 ];
+
+// ───────── 劇情動畫（像遊戲開頭的動畫：一張圖配一兩句字，自動播放，可以略過） ─────────
+// art：程式畫的剪影場景（js/cinema.js）；img：生圖清單裡的插圖名稱，圖做好以後會自動換上
+// cam：鏡頭（in 推近、out 拉遠、l 往左、r 往右、up 往上）；title：最後浮現的大字
+export const CINEMA = {
+  開場: { name: '序幕・霧之群島', frames: [
+    { art: 'stars', img: '幕_群島夜海', cam: 'in', text: '這片海，沒有大陸。只有上百座島，靠著船、星星和地圖，找到彼此。' },
+    { art: 'fogrise', img: '幕_白霧升起', cam: 'up', sfx: 'whisper', text: '三百年前，海的中心，升起了白霧。' },
+    { art: 'fadeisle', img: '幕_被忘記的島', cam: 'in', text: '霧不是把島遮住，而是讓島被忘記。連住在那裡的人，也會忘記自己的家。' },
+    { art: 'guild', img: '幕_畫海人', cam: 'r', sfx: 'pen', text: '後來，有一群人發現：被正確畫進地圖的地方，霧就進不來。人們叫他們「畫海人」。' },
+    { art: 'maps', img: '幕_繪圖師公會', cam: 'out', text: '他們成立了繪圖師公會，守護群島兩百年。' },
+    { art: 'emptyhall', img: '幕_空蕩的大廳', cam: 'in', text: '五十年前，公會在一夜之間消失了。沒有人知道，他們去了哪裡。' },
+    { art: 'chartfade', img: '幕_變淡的海圖', cam: 'in', sfx: 'whisper', text: '從那天起，霧又開始往外長。' },
+    { art: 'village', img: '幕_鹽灣島', cam: 'l', text: '淺灘的邊緣，有一座快被霧吃掉的小漁島，叫鹽灣島。' },
+    { art: 'chest', img: '幕_空白的書', cam: 'in', text: '公會最後一位學徒，在這裡留下了一個孩子、一本空白的書，和一支會發光的筆。' },
+    { art: 'girl', img: '幕_碼頭的背影', cam: 'up', text: '她叫{名}。她的左眼，看得見霧裡的東西。', title: '畫海人' },
+  ] },
+  低語礁: { name: '低語礁・燈塔守了五十年', frames: [
+    { art: 'chart', arg: 'reef', img: '幕_往低語礁', cam: 'in', sfx: 'pen', text: '淺灘的第一座島：低語礁。' },
+    { art: 'lhwarm', img: '幕_五十年前的燈塔', cam: 'out', text: '五十年前，礁島上住著一位燈塔守，和他的家人。' },
+    { art: 'boatfog', img: '幕_出海的小船', cam: 'l', sfx: 'whisper', text: '有一天，一艘小船出了海。霧，比它先回到了岸邊。' },
+    { art: 'lamps', img: '幕_一盞一盞的燈', cam: 'up', text: '從那天起，燈塔每天晚上都亮著。人們說，他在等一個人。' },
+    { art: 'lhfog', img: '幕_霧中的燈塔', cam: 'in', text: '後來，沒有人記得他在等誰。連他自己，也忘了。' },
+  ] },
+  晨忘島: { name: '晨忘島・每個早上，都忘了昨天', frames: [
+    { art: 'chart', arg: 'bell', img: '幕_往晨忘島', cam: 'in', sfx: 'pen', text: '第二座島：晨忘島。' },
+    { art: 'bellvillage', img: '幕_熱鬧的漁村', cam: 'r', text: '從前，這是淺灘最熱鬧的漁村。每天早上鐘聲一響，船就出海。' },
+    { art: 'storm', img: '幕_暴風雨的夜', cam: 'in', sfx: 'tide', text: '後來發生了一件事。村子裡，沒有一個人說得出是什麼事。' },
+    { art: 'doors', img: '幕_找不到家的人', cam: 'l', text: '現在，村人每天早上醒來，都不記得昨天。他們每天重新認識鄰居，每天重新找自己的家。' },
+    { art: 'belltower', img: '幕_逆光的鐘樓', cam: 'up', text: '只有鐘樓的鐘，每天早上準時響起。' },
+  ] },
+  沉船灣: { name: '沉船灣・阿潮的父親，最後去的地方', frames: [
+    { art: 'chart', arg: 'bay', img: '幕_往沉船灣', cam: 'in', sfx: 'pen', text: '第三座島，其實是一片海灣。' },
+    { art: 'pier', img: '幕_海燕號出港', cam: 'r', text: '三年前，阿潮的父親開著「海燕號」出海。他說，三天就回來。' },
+    { art: 'followlight', img: '幕_霧裡的一點光', cam: 'in', sfx: 'whisper', text: '最後看見海燕號的漁夫說，它在跟著霧裡的一點光走。' },
+    { art: 'masts', img: '幕_桅杆的樹林', cam: 'l', text: '從那以後，往這個方向開的船，一艘也沒有回來。' },
+    { art: 'ship', img: '幕_沒有沉的船', cam: 'in', text: '只有一艘船，沒有沉。' },
+  ] },
+  第一章完: { name: '第一章・淺灘', frames: [
+    { art: 'logbook', img: '幕_日誌的星', cam: 'in', sfx: 'pen', text: '航海日誌的最後一頁，畫著一顆星。那是母親的記號。' },
+    { art: 'intofog', img: '幕_駛進霧心', cam: 'in', sfx: 'whisper', text: '三年前，海燕號跟著那道筆光，往霧的最深處去了。' },
+    { art: 'lanterns', img: '幕_點滿燈的夜', cam: 'out', text: '淺灘的燈，一盞一盞亮了回來。' },
+    { art: 'bookmap', img: '幕_淺灘的地圖', cam: 'in', text: '繪圖師之書上，淺灘的三座島已經畫好了。書的正中間——霧心，還是一片空白。', title: '第一章・淺灘　完' },
+  ] },
+};
