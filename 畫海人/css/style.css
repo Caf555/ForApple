@@ -134,6 +134,7 @@ button { font: inherit; color: inherit; }
 .pm { background: var(--panel); border-radius: 8px; padding: 4px 8px; display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
 .pm.down { opacity: .45; }
 .hero { background: var(--panel2); border-radius: 12px; padding: 10px 12px; margin-bottom: 10px; }
+.hero.bench { opacity: .62; }
 .h-top { display: flex; align-items: center; gap: 10px; }
 .h-bars { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; margin: 8px 0 4px; }
 .h-bars small { font-size: 11px; color: var(--muted); }
@@ -445,5 +446,41 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .c-flash { opacity: 0; animation: c-flash 5s linear 1.2s infinite; } @keyframes c-flash { 0%, 100% { opacity: 0; } 2% { opacity: .5; } 4% { opacity: 0; } 6% { opacity: .3; } 9% { opacity: 0; } }
 .c-rain { animation: c-rain .6s linear infinite; } @keyframes c-rain { to { transform: translate(-10px, 26px); } }
 .c-spin { transform-box: view-box !important; transform-origin: 200px 200px !important; animation: c-spin 40s linear infinite; } @keyframes c-spin { to { transform: rotate(360deg); } }
+.c-tilt { transform-box: view-box; transform-origin: 200px 119px; animation: c-tilt 3.6s ease-in-out infinite alternate; } @keyframes c-tilt { from { transform: rotate(-7deg); } to { transform: rotate(5deg); } }
 .c-part { animation: c-part 9s ease-out both; } @keyframes c-part { to { transform: scaleX(1.6); opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .cine-shot { animation-name: fadein !important; } .cine svg * { animation-duration: 0s !important; animation-iteration-count: 1 !important; } }
+
+/* 第二海域的遺跡小遊戲 */
+.pz-scale { width: 100%; max-width: 360px; }
+.pz-post { fill: #8a6a3a; } .pz-string { stroke: #8a6a3a; stroke-width: 1.2; fill: none; } .pz-pan { fill: #b8862e; }
+.pz-item { fill: #c9a878; stroke: #7a5a34; } .pz-q { font: 700 15px var(--serif); fill: #2a1e12; text-anchor: middle; }
+.pz-beam { transform-box: view-box; transform-origin: 150px 41px; transition: transform .45s ease; }
+.pz-beam > g { transform-box: view-box; transition: transform .45s ease; }
+.pz-beam > g:nth-of-type(1) { transform-origin: 60px 44px; } .pz-beam > g:nth-of-type(2) { transform-origin: 240px 44px; }
+.pz-weights { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.pz-weight { min-width: 52px; height: 52px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel2); color: var(--ink); font: 700 18px var(--serif); cursor: pointer; }
+.pz-weight.on { background: linear-gradient(180deg, #ecca88, #c99c50); color: #1d1408; border-color: var(--accent); }
+.pz-compare { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+.pz-compare small { color: var(--muted); letter-spacing: .2em; }
+.pz-view { width: 100%; border-radius: 6px; cursor: crosshair; display: block; }
+.pz-view .pz-bg { fill: #6f8a96; } .pz-view .pz-water { fill: #2b4a5a; }
+.pz-view.ink .pz-bg { fill: var(--paper); } .pz-view.ink .pz-water { fill: #c9b994; }
+.pz-thing .a { fill: #1c2a30; } .pz-thing .b { fill: #e6eef0; } .pz-thing .red { fill: #b0473a; } .pz-thing .lit { fill: #f0d49a; }
+.pz-thing .line { fill: none; stroke: #1c2a30; stroke-width: 2; stroke-linecap: round; }
+.pz-thing.ink .a, .pz-thing.ink .b, .pz-thing.ink .red, .pz-thing.ink .lit { fill: none; stroke: #4a3a26; stroke-width: 1.4; }
+.pz-thing.ink .lit, .pz-thing.ink .red { fill: #4a3a26; } .pz-thing.ink .line { stroke: #4a3a26; stroke-width: 1.4; }
+.pz-found { fill: none; stroke: #f0d49a; stroke-width: 3; }
+.pz-miss { stroke: var(--hp); stroke-width: 3; }
+.pz-sluice { width: 100%; max-width: 340px; }
+.pz-sluice .pz-bg { fill: #0f2230; } .pz-slot { fill: #18323f; stroke: #2c4c5a; }
+.pz-cell.gate { cursor: pointer; } .pz-cell.gate .pz-slot { fill: #23404e; stroke: #5d8c96; }
+.pz-arrow { stroke: #f0d49a; stroke-width: 3; fill: none; stroke-linecap: round; } .pz-pipe { stroke: #5d8c96; stroke-width: 5; stroke-linecap: round; }
+.pz-inlet { fill: #78d0c8; } .pz-fog { fill: #9fb4ba; opacity: .35; }
+.pz-coral { stroke: #b9a48a; stroke-width: 4; fill: none; stroke-linecap: round; } .pz-coral.wet { stroke: #e0705c; }
+.pz-water-line { fill: none; stroke: #78d0c8; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: c-draw 1.1s ease-in forwards; opacity: .85; }
+.pz-route { position: relative; display: grid; gap: 0; width: 100%; max-width: 340px; touch-action: none; background: #10283a; border-radius: 10px; padding: 4px; }
+.pz-buoy { position: relative; z-index: 1; margin: 18%; border-radius: 50%; border: 2px solid #5d8c96; background: #18323f; cursor: pointer; padding: 0; touch-action: none; }
+.pz-buoy.reef { border-color: transparent; background: #3a3226; border-radius: 30%; opacity: .55; cursor: default; }
+.pz-buoy.on { background: #78d0c8; border-color: #c9f2ec; } .pz-buoy.start { box-shadow: 0 0 14px #f0d49a; background: #f0d49a; } .pz-buoy.head { box-shadow: 0 0 0 3px #f0d49a; }
+.pz-route-lines { position: absolute; inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); pointer-events: none; z-index: 0; }
+.pz-route-line { fill: none; stroke: #f0d49a; stroke-width: .12; stroke-linecap: round; stroke-linejoin: round; }

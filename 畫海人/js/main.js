@@ -1,15 +1,15 @@
-// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完
-import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS } from './data.js';
-import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTER_END, CINEMA } from './islands.js';
+// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完
+import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX } from './data.js';
+import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, CINEMA } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
-import { newGame, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
+import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
 import { UI, el, $ } from './ui.js';
 import { Audio } from './audio.js';
 import { Battle } from './battle.js';
 import { Explore, newIsland, worldOf } from './explore.js';
 import { Port, statText } from './port.js';
 
-export const VERSION = 'M2 第一海域 v0.2';
+export const VERSION = 'M3 第二海域 v0.1';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -31,9 +31,26 @@ async function cinema(key) {
 }
 ctx.cinema = cinema;
 
-// 隊伍裡有這個人才出現的台詞
+// 劇情台詞：need 隊伍裡有這個人才出現；flag「殘頁=父親」這種寫法，要選過那個選項才出現
 const has = k => ctx.g.party.some(h => h.key === k);
-const lines = arr => arr.filter(L => !L.need || has(L.need));
+const flagOk = f => { const [k, v] = f.split('='); return v === undefined ? !!ctx.g.flags[k] : ctx.g.flags[k] === v; };
+const lines = arr => arr.map(L => typeof L === 'string' ? { text: L } : L).filter(L => (!L.need || has(L.need)) && (!L.flag || flagOk(L.flag)));
+ctx.storyLines = lines;
+
+// 新隊友加入：等級跟大家差不多，帶著自己的武器；出戰滿 4 人的話，先在船上待命
+ctx.recruit = async key => {
+  const g = ctx.g;
+  if (g.party.some(h => h.key === key)) return;
+  const lv = Math.max(1, Math.round(g.party.reduce((a, h) => a + h.lv, 0) / g.party.length));
+  const h = makeHero(key, g.party.length, lv);
+  const w = HEROES[key].weapon || (key === '小鈴' ? '貝殼琴' : null);
+  if (w && EQUIPS[w]) { h.eq.武器 = w; if (!g.bps.includes(w)) g.bps.push(w); }
+  const s = heroStats(h); h.hp = s.hp; h.mp = s.mp;
+  if (g.party.filter(x => !x.bench).length >= PARTY_MAX) h.bench = true;
+  g.party.push(h);
+  save(g);
+  if (h.bench) await ctx.ui.alert('隊伍', [`出戰的人已經有 ${PARTY_MAX} 個了，${key}先在船上待命。`, '打開「隊伍」，點「出戰／待命」就可以換人。']);
+};
 
 // ───────── 共用：效果、素材、圖紙、委託 ─────────
 // 效果：糧、燈油、墨水、藥草…（數量）；素材（數量）；銀貝；hp（全隊比例）；士氣
@@ -118,7 +135,7 @@ ctx.sail = async id => {
   ctx.audio.music('港口');
   // 第一次去這座島：先播這座島的故事
   if (!worldOf(g, id).visits && CINEMA[id]) await cinema(id);
-  const pool = [...SEA_EVENTS].sort(() => Math.random() - 0.5).slice(0, def.seaEvents);
+  const pool = SEA_EVENTS.filter(e => (e.sea || '淺灘') === def.sea).sort(() => Math.random() - 0.5).slice(0, def.seaEvents);
   for (const ev of pool) {
     const i = await ctx.ui.choose(`航海・${ev.title}`, ev.text, ev.opts.map(o => ({ label: o.label, disabled: !ctx.explore.canPay(o.fx) })));
     const o = ev.opts[i];
@@ -156,32 +173,49 @@ ctx.backToPort = async rep => {
     '（回到家，全隊的體力和靈都恢復了）',
   ].filter(Boolean), '回到港口');
   g.trip = null;
+  // 沒在村子遇到的隊友，回港的時候追上來
+  const late = rep.first && LATE_RECRUIT[rep.island];
+  if (late && !has(late.key)) { await ctx.ui.story(lines(late.lines)); await ctx.recruit(late.key); }
   if (rep.first && PORT_SCENES[rep.island]) await ctx.ui.story(lines(PORT_SCENES[rep.island]));
-  if (rep.first && rep.island === '沉船灣' && !g.flags.第一章) {
-    g.flags.第一章 = 1; save(g);
-    await ctx.ui.story(lines(CHAPTER_END));
-    await cinema('第一章完');
-    return chapterEnd();
+  const ch = CHAPTERS.find(c => c.last === rep.island);
+  if (rep.first && ch && !g.flags[ch.flag]) {
+    g.flags[ch.flag] = 1; save(g);
+    await ctx.ui.story(lines(ch.end));
+    await cinema(ch.cine);
+    return chapterEnd(ch);
   }
   save(g);
   ctx.port.show();
 };
 
-function chapterEnd() {
+// 天文台：第一次去，播第二章的開場，海圖多一頁
+ctx.observatory = async () => {
+  const g = ctx.g;
+  if (!g.flags.環礁) {
+    await cinema('第二章');
+    await ctx.ui.story(lines(OBSERVATORY));
+    g.flags.環礁 = 1; save(g);
+  } else {
+    await ctx.ui.alert('天文台', ['老人在擦望遠鏡。', '「往霧心的路，還很長。」他說，「先把環礁的每一座島，都好好畫進書裡吧。」'], '回到港口');
+  }
+  ctx.port.show();
+};
+
+function chapterEnd(ch = CHAPTERS[0]) {
   const g = ctx.g;
   const min = Math.max(1, Math.round((Date.now() - g.stats.start) / 60000));
-  const stars = Object.values(g.world).reduce((a, r) => a + (r.cleared ? 1 : 0) + (r.good ? 1 : 0), 0);
+  const stars = ch.isles.reduce((a, id) => { const r = worldOf(g, id); return a + (r.cleared ? 1 : 0) + (r.good ? 1 : 0); }, 0);
   ctx.audio.music('標題');
   const s = $('screen'); s.innerHTML = ''; s.className = 'result';
   s.append(el('div', { class: 't-box' },
-    el('h2', {}, '第一章・淺灘　完'),
-    el('div', { class: 'stars' }, '★'.repeat(stars) + '☆'.repeat(Math.max(0, 6 - stars))),
+    el('h2', {}, ch.title),
+    el('div', { class: 'stars' }, '★'.repeat(stars) + '☆'.repeat(Math.max(0, ch.isles.length * 2 - stars))),
     el('ul', { class: 'res' },
-      ...['低語礁', '晨忘島', '沉船灣'].map(id => { const r = worldOf(g, id); return el('li', {}, `${id}：測繪 ${r.best}%${r.good ? '・最好的結局' : '（測繪 60% 以上再去一次，會有不一樣的結局）'}`); }),
+      ...ch.isles.map(id => { const r = worldOf(g, id); return el('li', {}, `${id}：測繪 ${r.best}%${r.good ? '・最好的結局' : '（測繪 60% 以上再去一次，會有不一樣的結局）'}`); }),
       el('li', {}, `走了 ${g.stats.steps} 格・戰鬥 ${g.stats.battles} 場・擊退 ${g.stats.kills} 隻`),
       el('li', {}, `委託完成 ${g.jobsDone.length} 個・圖紙 ${g.bps.length}/${Object.keys(EQUIPS).length} 張`),
       el('li', {}, `用時：約 ${min} 分鐘`)),
-    el('p', { class: 'muted' }, '第二章「珊瑚環礁」製作中。現在可以回港口，繼續接委託、打造裝備、把三座島畫完整。'),
+    el('p', { class: 'muted' }, ch.next),
     el('div', { class: 'col' }, el('button', { class: 'btn primary', onclick: () => ctx.port.show() }, '回到港口'))));
 }
 
@@ -201,9 +235,10 @@ function help() {
   ctx.ui.alert('怎麼玩', [
     '・港口：在「碼頭」買補給，在「海圖」選一座島出航。完成島嶼以後，酒館、鐵匠、船塢會陸續開放。',
     '・島上：點和你相鄰的格子前進。每走一格吃掉 1 份糧。霧裡看不見的格子，走過去才知道是什麼。點燈可以看得更遠，但會用掉燈油。',
-    '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。測繪過的格子，霧就吞不回去，下次再來也會留著。',
+    '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。描得越準，畫進書裡的範圍越大。測繪過的格子，霧就吞不回去，下次再來也會留著；上次畫得不夠準的測繪點，下次來可以重畫補上。',
     '・目標：找到「霧眼」，打倒守門的東西拿到鑰匙，再打倒島上的首領。之後回到登陸點就能返航；測繪度 60% 以上，結局會不一樣。還沒打倒首領也可以先回港。',
-    '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。',
+    '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
+    '・隊伍：一次最多 4 個人出戰，其他人在船上待命。在「隊伍」裡點「出戰／待命」換人（{名}一定要出戰）。',
     '・委託：在酒館接下（最多 2 個），完成以後回酒館回報，拿報酬。',
     '・戰鬥分前後兩排。前排：近身攻擊 +15%，但敵人的近身攻擊只打前排。後排：前排還有人時受傷 −30%，近身攻擊威力減半，法術不受影響。',
     '・技能要花「靈」。防禦會回復一點靈；海靈露可以回復 15 點；營地休息、回港也會回復。',
@@ -216,13 +251,16 @@ ctx.partySheet = () => {
   const refresh = () => { save(g); if (g.phase === 'island') ctx.explore.draw(); };
   ctx.ui.sheet('隊伍與裝備', (body, api) => {
     body.append(el('p', { class: 'muted' }, `士氣 ${g.morale}：越高，攻擊越痛、受到的傷害越少。打贏、在營地休息會提高；有人倒下、斷糧會降低。`));
+    const out = g.party.filter(x => !x.bench).length;
+    if (g.party.length > PARTY_MAX) body.append(el('p', { class: 'muted' }, `出戰 ${out}/${PARTY_MAX} 人。待命的人不會上場，也拿不到經驗；可以隨時換人。`));
     for (const h of g.party) {
       const d = HEROES[h.key], st = heroStats(h), name = ctx.ui.fmt(h.key === '墨里' ? '{名}' : h.key);
-      body.append(el('div', { class: 'hero' },
+      body.append(el('div', { class: 'hero' + (h.bench ? ' bench' : '') },
         el('div', { class: 'h-top' }, el('span', { class: 'face', style: { background: d.color } }, name.slice(0, 1)),
           el('div', {}, el('b', {}, name), el('small', {}, `　${d.job}・Lv${h.lv}・${d.element}屬性`)),
           el('span', { class: 'grow' }),
-          el('button', { class: 'btn small', onclick: () => { h.row = h.row === 'front' ? 'back' : 'front'; if (g.party.filter(x => x.row === h.row).length > 3) h.row = h.row === 'front' ? 'back' : 'front'; refresh(); api.rebuild(); } }, h.row === 'front' ? '前排' : '後排')),
+          g.party.length > PARTY_MAX && h.key !== '墨里' ? el('button', { class: 'btn small' + (h.bench ? '' : ' on'), disabled: h.bench && out >= PARTY_MAX, onclick: () => { h.bench = !h.bench; refresh(); api.rebuild(); } }, h.bench ? '待命' : '出戰') : null,
+          h.bench ? null : el('button', { class: 'btn small', onclick: () => { h.row = h.row === 'front' ? 'back' : 'front'; if (g.party.filter(x => !x.bench && x.row === h.row).length > 3) h.row = h.row === 'front' ? 'back' : 'front'; refresh(); api.rebuild(); } }, h.row === 'front' ? '前排' : '後排')),
         el('div', { class: 'h-bars' }, ctx.ui.bar(h.hp, st.hp, 'hp'), el('small', {}, `體 ${h.hp}/${st.hp}`), ctx.ui.bar(h.mp, st.mp, 'mp'), el('small', {}, `靈 ${h.mp}/${st.mp}`), ctx.ui.bar(h.exp, expNeed(h.lv), 'exp'), el('small', {}, `經驗 ${h.exp}/${expNeed(h.lv)}`)),
         el('p', { class: 'small stats' }, `攻 ${st.atk}・防 ${st.def}・法 ${st.mag}・速 ${st.spd}`),
         el('div', { class: 'eq' }, ...SLOTS.map(slot => el('button', { class: 'eq-slot', onclick: () => equipSheet(h, slot, api) },

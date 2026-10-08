@@ -1,5 +1,5 @@
 {
-  "說明": "《畫海人》劇情動畫（開場、三座島的進場、第一章結尾）用的插圖。名稱要和 畫海人/js/islands.js 的 CINEMA 裡的 img 一樣。畫面是正方形，主體放中間，下方三分之一留給字幕。",
+  "說明": "《畫海人》劇情動畫（開場、各島的進場、各章結尾）用的插圖。名稱要和 畫海人/js/islands.js 的 CINEMA 裡的 img 一樣。畫面是正方形，主體放中間，下方三分之一留給字幕。",
   "nodes": {
     "t2i": {
       "size": "8",
@@ -198,6 +198,174 @@
       "name": "幕_淺灘的地圖",
       "seed": 5129,
       "prompt": "An opened cartographer's book on a dark table, the left page shows three hand-inked islands (a jagged reef with a lighthouse, a round island with a bell tower, a crescent bay with masts), the right page is mostly blank with a pale swirl of fog and a faint compass rose in the center, a glowing gold pen resting across the pages."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_天文台",
+      "seed": 5130,
+      "prompt": "An old stone observatory with a domed roof on top of a hill on a small fishing island at night, a brass telescope poking out of the open dome toward a sky full of stars, one warm lit doorway, the sea below in deep blue."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_星圖上的環礁",
+      "seed": 5131,
+      "prompt": "An antique star chart on dark navy paper, constellations connected by thin pale lines, and below them a hand-inked ring-shaped coral atoll glowing faintly gold, a faded compass rose around it."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_千帆市的燈火",
+      "seed": 5132,
+      "prompt": "A distant floating city made of hundreds of ships tied together on the sea at dusk, countless masts like a forest, thousands of warm paper lanterns glowing along the decks, reflections on the water, a little fog low on the horizon."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_厚厚的登記冊",
+      "seed": 5133,
+      "prompt": "A huge thick leather-bound ledger lying open on a desk in a dim room, pages crammed with tiny handwritten columns and silver shell seals, rows of more ledgers on the shelves behind, a single candle."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往千帆市",
+      "seed": 5134,
+      "prompt": "An old parchment sea chart, a glowing gold pen drawing a red route line from a small island toward a ring-shaped coral atoll, inked compass rose, faded depth lines."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_水上市集",
+      "seed": 5135,
+      "prompt": "A bustling floating market at night, many small boats tied side by side forming streets of water, strings of red and gold lanterns between masts, silhouettes of merchants and buyers, crates of goods, glowing water."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_秤盤上的銀貝",
+      "seed": 5136,
+      "prompt": "Close-up of an old brass merchant's balance scale in a dim shop, a weathered hand placing shiny silver seashell coins onto one pan, warm lamplight, dust in the air."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_巷底的當鋪",
+      "seed": 5137,
+      "prompt": "A narrow dark alley between tall wooden ship hulls, at the very end a tiny pawnshop with a single red paper lantern glowing, the lantern marked with a simple abstract symbol, fog creeping along the ground."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_空白的臉",
+      "seed": 5138,
+      "prompt": "A line of townspeople walking out of a small pawnshop doorway into foggy daylight, holding small pouches of coins, their faces pale and expressionless as if something was taken from them, muted colors."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_畫了兩次的島",
+      "seed": 5139,
+      "prompt": "An old parchment register map showing the same island drawn twice, once in solid ink lines and once slightly shifted in faint dashed lines, surveyor's notes and measuring marks around it."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_趕路的測量員",
+      "seed": 5140,
+      "prompt": "A young surveyor in an old merchant guild uniform sitting at the bow of a small boat, hurriedly sketching an island on a board while the sun sets red behind it, measuring rope coiled at his feet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_被霧蓋住的一半",
+      "seed": 5141,
+      "prompt": "A small island village seen from the sea, the left half clear with lit houses, the right half swallowed by a wall of thick white fog with only faint outlines of rooftops, eerie and quiet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_海峽兩邊的村子",
+      "seed": 5142,
+      "prompt": "Two identical small fishing villages facing each other across a narrow strait at dawn, mirrored houses and boats, a lone villager on each shore looking at the other, a thin line of mist over the water between them."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_霧裡的測量員",
+      "seed": 5143,
+      "prompt": "A tall faint figure in thick fog holding a long measuring rod and a pen, standing over a half-drawn map on the ground, his face hidden, lines of measuring rope fading into the mist, a tiny warm glow at the pen tip."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_安靜的湖",
+      "seed": 5144,
+      "prompt": "A perfectly still circular turquoise lagoon in the middle of a ring of coral islands, seen from above at dawn, the water flat like a mirror, no waves, a stone sluice gate closing the narrow mouth to the open sea."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_湖口的潮閘",
+      "seed": 5145,
+      "prompt": "Workers in merchant uniforms building a massive stone tidal gate across the mouth of a lagoon, the gate's heavy doors closing, a sign post with a seal, overcast sky, the sea on one side and the calm lagoon on the other."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_撈起的珍珠",
+      "seed": 5146,
+      "prompt": "Close-up of cupped hands lifting many glowing pearls out of dark water, cold silver-blue light from the pearls, water droplets falling like tears."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_湖面的哭聲",
+      "seed": 5147,
+      "prompt": "A dark lagoon at night under stars, concentric ripples spreading from a single glowing pearl floating on the surface, a faint silhouette of stilt houses on the shore, lonely and sad."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_湖底的珊瑚",
+      "seed": 5148,
+      "prompt": "Underwater view of the lagoon bottom, a large coral reef shaped like a woman lying on her side and holding many pearls in her arms, soft blue light from above, tiny particles floating, melancholy and mysterious."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_白色的高塔",
+      "seed": 5149,
+      "prompt": "A tall clean white tower with perfectly regular rows of windows rising from a tidy island, identical low houses in straight rows around it, calm sea, pale morning light, eerily orderly."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_一整面牆的冊子",
+      "seed": 5150,
+      "prompt": "Inside a tall white tower, a whole wall of identical ledgers stacked from floor to ceiling, a rolling ladder, a lone clerk writing at a desk below, soft dusty light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_白線圍起的島",
+      "seed": 5151,
+      "prompt": "An old parchment chart of a coral atoll where every island is outlined by a thin glowing white line, like a fence drawn around it, compass rose, neat surveyor's handwriting in the margins."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_灰白的珊瑚",
+      "seed": 5152,
+      "prompt": "An underwater reef where all the coral has turned pale grey and white, no fish, still water, a single faded red ribbon tied around one coral branch, cold and silent."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_塔頂的白紙",
+      "seed": 5153,
+      "prompt": "A small round room at the top of a white tower, a single blank sheet of paper floating above a desk and glowing with cold white light, the light flooding the room, a well-dressed middle-aged man standing in silhouette."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_白紙背面的字",
+      "seed": 5154,
+      "prompt": "A sheet of old paper on a dark desk, its back covered with a single line of faint elegant handwriting (illegible), and a small drawing of a pen with a star at its tip, warm candlelight."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_紅回來的珊瑚",
+      "seed": 5155,
+      "prompt": "An underwater reef of pale white coral where the tips of the branches have started to turn red again, small colorful fish returning, warm light filtering from the surface, hopeful."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_南方的紅帆",
+      "seed": 5156,
+      "prompt": "A ship with red sails sailing away into the night toward the south, a column of dark smoke and a faint red glow of fire on the far horizon, stars above, calm dark sea."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_環礁的地圖",
+      "seed": 5157,
+      "prompt": "An opened cartographer's book on a dark table, the left page shows three small inked islands, the right page newly inked with a coral atoll ring, two mirrored islands, a round lagoon and a tower island, the very center still blank with a pale swirl of fog, a glowing gold pen resting across."
     }
   ]
 }
