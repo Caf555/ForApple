@@ -43,6 +43,8 @@ function frame(title, help) {
   $('layer').append(box);
   return { box, stage, info, msg, btns };
 }
+// 小遊戲間（通關後）用：每種小遊戲的一句話說明
+export const PUZZLE_TIPS = { 燈號: '記住燈亮的順序', 門牌: '翻牌配對', 航海圖: '把碎片轉正', 天秤: '放砝碼讓秤平', 對照: '找不同', 潮閘: '撥閘門引水', 航線: '一筆畫', 旗語: '讀旗語密碼', 礦車: '推箱子', 鍛火: '抓時機', 熔岩: '關燈遊戲', 低語: '找出說謊的聲音', 冰滑: '滑行解謎', 密碼鎖: '猜數字', 光路: '轉稜鏡折光', 褪色的畫: '滑塊拼圖', 數織: '照數字塗格子', 搬鐘: '河內塔', 墨線: '連連看', 四色地圖: '四色著色' };
 export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路', '褪色的畫', '數織', '搬鐘', '墨線', '四色地圖'];
 
 // 遊戲結束：顯示結果，按下按鈕才關掉
@@ -53,7 +55,12 @@ function finish(f, win, line, res) {
 
 export function playPuzzle(ctx, kind, place) {
   const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath, 褪色的畫: fadedPicture, 數織: nonogram, 搬鐘: bells, 墨線: inkLines, 四色地圖: fourColor }[kind];
-  return game(ctx, place);
+  const p = game(ctx, place);
+  if (!ctx.practice) return p;
+  // 小遊戲間：右上角多一個「✕」，可以中途不玩
+  const box = [...$('layer').querySelectorAll('.puzzle')].pop();
+  const quit = new Promise(res => box.append(el('button', { class: 'icon pz-quit', 'aria-label': '不玩了', onclick: () => { box.remove(); res(false); } }, '✕')));
+  return Promise.race([p, quit]);
 }
 
 // ═════════ 燈號：照順序點亮燈 ═════════
@@ -741,7 +748,7 @@ function forge(ctx) {
     const status = () => { f.info.textContent = `敲好了 ${hits}／${need} 下　還可以敲歪 ${misses - 1} 次`; iron.style.setProperty('--done', hits / need); };
     const place = () => { center = width / 2 + 0.04 + Math.random() * (1 - width - 0.08); zone.style.left = `${(center - width / 2) * 100}%`; zone.style.width = `${width * 100}%`; };
     const tick = now => {
-      if (over) return;
+      if (over || !f.box.isConnected) return;
       const ph = ((now - t0) / 1000 * speed) % 2;
       pos = ph < 1 ? ph : 2 - ph;
       needle.style.left = `${pos * 100}%`;
