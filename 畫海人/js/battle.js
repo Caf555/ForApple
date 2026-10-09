@@ -38,7 +38,9 @@ export class Battle {
     this.foes = this.opt.enemies.map((k, i) => {
       const d = ENEMIES[k]; count[k] = (count[k] || 0) + 1;
       const dup = this.opt.enemies.filter(x => x === k).length > 1;
-      const hp = Math.round(d.hp * diff.foe);
+      // 祈願塔的鐘停了以後：前四片海的霧眼（精英）變弱一些
+      const calm = d.rank === '精英' && (g.world.祈願塔 || {}).cleared && g.island && ISLANDS[g.island.id].sea !== '霧心' ? 0.85 : 1;
+      const hp = Math.round(d.hp * diff.foe * calm);
       return { side: 'foe', id: 'f' + i, key: k, name: k + (dup ? ' ' + '甲乙丙'[count[k] - 1] : ''), def: d, el: d.element,
         st: { atk: Math.round(d.atk * diff.foe), def: d.def, mag: Math.round(d.mag * diff.foe), spd: d.spd },
         maxhp: hp, hp, row: d.row, alive: true, status: {}, fx: {} };
@@ -156,6 +158,16 @@ export class Battle {
     const ruler = sk.find(s => SKILLS[s].ruler);
     const mate = this.allies.filter(a => a.alive && a !== u && !a.fx.ruler && a.st.atk >= a.st.mag).sort((a, b) => b.st.atk - a.st.atk)[0];
     if (ruler && mate && Math.random() < 0.35) return { type: 'skill', skill: ruler, target: mate };
+    // 霧子：有敵人在蓄力，就用斷筆打斷；同伴快撐不住的時候，留下替身
+    const cut = sk.find(s => SKILLS[s].interrupt), chargingFoe = this.foes.find(f => f.alive && f.charging);
+    if (cut && chargingFoe) return { type: 'skill', skill: cut, target: chargingFoe };
+    const decoy = sk.find(s => SKILLS[s].dodge);
+    if (decoy && !u.fx.dodge && this.allies.some(a => a.alive && a !== u && a.hp < a.maxhp * 0.5) && Math.random() < 0.4) return { type: 'skill', skill: decoy };
+    // 嘎嘎：大家都受了傷就縮殼；自己快倒了就潛水
+    const shell = sk.find(s => SKILLS[s].shell);
+    if (shell && !u.fx.shell && this.allies.filter(a => a.alive && a.hp < a.maxhp * 0.75).length >= 2 && Math.random() < 0.45) return { type: 'skill', skill: shell };
+    const dive = sk.find(s => SKILLS[s].dive);
+    if (dive && u.hp < u.maxhp * 0.3 && Math.random() < 0.5) return { type: 'skill', skill: dive };
     const heal = sk.find(s => SKILLS[s].type === 'heal');
     if (hurt.length && heal) return { type: 'skill', skill: heal, target: hurt.sort((a, b) => a.hp / a.maxhp - b.hp / b.maxhp)[0] };
     const foes = this.foes.filter(f => f.alive);
@@ -320,7 +332,7 @@ export class Battle {
       if (!t) continue;
       if (sk.type === 'phy' || sk.type === 'rng' || sk.type === 'mag') this.hit(u, t, sk, !!act.big);
       if (sk.loot && t.side === 'foe') { t.loot = true; this.float(t, '清點', 'st'); this.log(`${t.name} 身上的東西，都被記下來了。`); }
-      if (sk.type === 'heal') { const amt = Math.round(sk.power + (u.st.mag || 0) * 1.1); this.heal(t, amt); if (sk.cure) { t.status = {}; this.log(`${t.name} 身上的異常消失了。`); } this.ctx.audio.sfx('heal'); }
+      if (sk.type === 'heal') { const amt = Math.round(sk.power + (u.st.mag || 0) * 1.1); this.heal(t, amt); if (sk.cure) { t.status = {}; this.log(`${t.name} 身上的異常消失了。`); } if (sk.mpGain && t.maxmp) t.mp = Math.min(t.maxmp, t.mp + sk.mpGain); this.ctx.audio.sfx('heal'); }
       if (sk.chart) { t.fx.chart = sk.chart; this.float(t, '看穿', 'st'); this.log(`${t.name} 的弱點是「${weaknessOf(t.el)}」。`); }
       if (sk.ruler) { t.fx.ruler = sk.ruler; this.float(t, '量尺', 'buff'); this.log(`${t.name} 的下一擊，一定會打中要害。`); }
       if (sk.mark) { t.fx.mark = sk.mark; this.float(t, '標記', 'st'); this.log(`${t.name} 被畫上了記號。弱點是「${weaknessOf(t.el)}」。`); }
@@ -328,6 +340,9 @@ export class Battle {
       if (sk.taunt) { t.fx.taunt = sk.taunt; this.float(t, '挑釁', 'buff'); }
       if (sk.cover) { t.fx.cover = sk.cover; this.float(t, '護舷', 'buff'); this.log(`${t.name} 擋在後排的同伴前面。`); }
       if (sk.haste) { t.fx.haste = sk.haste; this.float(t, '加速', 'buff'); }
+      if (sk.dodge) { t.fx.dodge = sk.dodge; this.float(t, '替身', 'buff'); this.log(`${t.name} 的身邊，多了一個影子。`); }
+      if (sk.shell) { t.fx.shell = sk.shell; this.float(t, '龜殼', 'buff'); }
+      if (sk.dive) { t.fx.dive = sk.dive; this.float(t, '潛水', 'buff'); this.log(`${t.name} 縮進殼裡，潛到了水底。`); }
       if (sk.def) { t.st.def = Math.round(t.st.def * 1.3); this.float(t, '硬化', 'buff'); }
       if (sk.morale) { g.morale = Math.min(100, g.morale + sk.morale); this.float(t, '士氣 +' + sk.morale, 'buff'); this.log(`歌聲傳遍了全隊。士氣 ${g.morale}。`); }
       if (sk.status && t.alive && Math.random() < (sk.chance ?? 1) * (t.def && t.def.rank ? 0.5 : 1)) { t.status[sk.status] = 2; this.float(t, sk.status, 'st'); this.log(`${t.name} 陷入「${sk.status}」。`); }
@@ -342,6 +357,9 @@ export class Battle {
     if (ruler) delete u.fx.ruler;
     const fogMiss = sk.aim || ruler || t.fx.chart ? 0 : this.opt.terrain === '霧中' && !this.opt.lit ? 0.18 : 0.04;
     if (Math.random() < fogMiss) { this.log(`${t.name} 閃開了。`); this.float(t, '落空', 'miss'); return; }
+    // 嘎嘎潛到水底：這一回合打不到；霧子的替身：一半的機會打到影子
+    if (t.fx.dive) { this.log(`${t.name} 在水底，打不到。`); this.float(t, '落空', 'miss'); return; }
+    if (t.fx.dodge && Math.random() < 0.5) { this.log(`打中的是 ${t.name} 的影子。`); this.float(t, '替身', 'miss'); return; }
     const element = sk.element || (u.side === 'foe' ? u.el : null);
     let dmg = sk.type === 'phy' || sk.type === 'rng' ? (u.st.atk * 2 - t.st.def) * sk.power : u.st.mag * 1.6 + sk.power - t.st.def * 0.6;
     if (u.side === 'foe') dmg *= 0.85;
@@ -349,7 +367,8 @@ export class Battle {
     if (sk.type === 'phy' && u.row === 'back') dmg *= 0.5;
     const mult = elementMult(element, t.el);
     dmg *= mult * rnd(0.9, 1.1);
-    if (t.fx.mark) dmg *= 1.3;
+    if (t.fx.mark) dmg *= 1.3 * (sk.marked || 1);
+    if (t.fx.shell) dmg *= 0.75;
     if (t.fx.ward && t.row === 'front') dmg *= 0.6;
     if (t.defending) dmg *= 0.5;
     if (t.covering) { dmg *= 0.7; t.covering = false; }
@@ -375,7 +394,7 @@ export class Battle {
     this.float(t, String(dmg), crit ? 'crit' : mult >= 1.3 ? 'weak' : 'dmg');
     this.shake(t);
     this.ctx.audio.sfx(crit ? 'crit' : sk.type === 'mag' ? 'magic' : 'hit');
-    if (t.charging && t.alive && (mult >= 1.3 || crit || remember)) {
+    if (t.charging && t.alive && (mult >= 1.3 || crit || remember || sk.interrupt)) {
       t.charging = false; t.status.定身 = 1;
       this.log(remember ? weak.line : `「${t.def.big}」被打斷了！`);
       this.float(t, '打斷', 'warn');
@@ -503,7 +522,7 @@ export class Battle {
       n.querySelector('.elem').textContent = u.el; n.querySelector('.elem').className = 'elem e-' + u.el;
       const hp = n.querySelector('.u-hp'); hp.innerHTML = ''; hp.append(this.ctx.ui.bar(u.hp, u.maxhp, 'hp'), el('small', {}, `${u.hp}/${u.maxhp}`));
       const mp = n.querySelector('.u-mp'); if (mp) { mp.innerHTML = ''; mp.append(this.ctx.ui.bar(u.mp, u.maxmp, 'mp'), el('small', {}, `靈 ${u.mp}`)); }
-      const tags = [...Object.keys(u.status), u.fx.mark ? '記號' : '', u.fx.chart ? '看穿' : '', u.fx.ruler ? '量尺' : '', u.fx.ward ? '結界' : '', u.fx.taunt ? '挑釁' : '', u.fx.cover ? '護舷' : '', u.fx.haste ? '加速' : '', u.defending ? '防禦' : ''].filter(Boolean);
+      const tags = [...Object.keys(u.status), u.fx.mark ? '記號' : '', u.fx.chart ? '看穿' : '', u.fx.ruler ? '量尺' : '', u.fx.ward ? '結界' : '', u.fx.taunt ? '挑釁' : '', u.fx.cover ? '護舷' : '', u.fx.haste ? '加速' : '', u.fx.dodge ? '替身' : '', u.fx.shell ? '龜殼' : '', u.fx.dive ? '潛水' : '', u.defending ? '防禦' : ''].filter(Boolean);
       n.querySelector('.u-st').textContent = tags.join(' ');
     }
   }

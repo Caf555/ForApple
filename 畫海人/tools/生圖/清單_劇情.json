@@ -708,6 +708,120 @@
       "name": "幕_往回走的腳印",
       "seed": 5214,
       "prompt": "On the far side of an ice gate, a fresh line of footprints in the snow leading back toward the viewer, soft hopeful light behind the fog."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_醒來的劍客",
+      "seed": 5215,
+      "prompt": "A young female swordswoman with frost-white short hair waking up on a small cot inside an old observatory, looking out of a round window at drifting fog, an old sword leaning against the bed, morning light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_發光的劍柄",
+      "seed": 5216,
+      "prompt": "Close-up of a hand gripping an old sword hilt engraved with a pen and a star, the engraving glowing warm gold, a second golden pen tip glowing nearby in the dim room."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_空白的第五頁",
+      "seed": 5217,
+      "prompt": "An old man's hands turning to a completely blank page of a large antique sea chart book on a wooden desk in an observatory, star charts on the walls, the blank page softly glowing."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_開向冰門的船",
+      "seed": 5218,
+      "prompt": "A girl with a satchel standing at the bow of a small sailing ship heading north through cold mist toward a distant towering gate made of ice, a faint gold light at the tip of her pen."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_門後的港口",
+      "seed": 5219,
+      "prompt": "Through a parting wall of fog, a small harbor town appears with wooden piers, a tavern and a hill with an observatory, everything pale and quiet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_褪色的鹽灣島",
+      "seed": 5220,
+      "prompt": "A small fishing harbor town where all colors are washed out to grey and faded blue, like an old watercolor left in the rain, laundry and nets hanging still."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_碼頭上等船的人",
+      "seed": 5221,
+      "prompt": "A long wooden pier lined with seated people seen from behind, all looking out at an empty foggy sea, waiting for a ship."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_模糊的臉",
+      "seed": 5222,
+      "prompt": "A quiet villager turning around on a pier, his face soft and blurred like smudged watercolor, other waiting figures behind him in the mist."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_港裡的海燕號",
+      "seed": 5223,
+      "prompt": "At the far end of a misty harbor, an old fishing sailboat with its sails furled, a small lamp at its stern, a lone fisherman in a raincoat mending a net on deck."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_只有輪廓的島",
+      "seed": 5224,
+      "prompt": "A small island in thick fog drawn only in faint ink outlines with no color, like an unfinished sketch, half of it sunk in calm water."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_門開著的屋子",
+      "seed": 5225,
+      "prompt": "Inside a half-flooded stone cottage, the door left open, bowls still set neatly on the wooden table, calm water covering the floor."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_白花樹",
+      "seed": 5226,
+      "prompt": "A large old tree covered in white blossoms standing in the middle of a quiet grey village, petals drifting slowly in the fog."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_樹下數星星",
+      "seed": 5227,
+      "prompt": "A small girl lying under a tree full of white blossoms at night, pointing up at the stars through the branches, a gentle lantern beside her."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_刮掉的名字",
+      "seed": 5228,
+      "prompt": "Close-up of rough tree bark where carved letters have been scraped away, only one small carved character mark left, white petals around it."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_霧裡的白塔",
+      "seed": 5229,
+      "prompt": "A very tall white stone tower rising out of the fog, a huge bronze bell visible at its top, ancient ruined city below."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_牆上的水線",
+      "seed": 5230,
+      "prompt": "An ancient city wall with a clear dark watermark line far above human height, a small traveler standing below looking up."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_跪著的石像們",
+      "seed": 5231,
+      "prompt": "Rows of stone statues of people kneeling in an ancient ruined plaza, all looking up toward a distant white tower in the fog."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_塔頂的大鐘",
+      "seed": 5232,
+      "prompt": "A huge ancient bronze bell at the top of a white tower, its surface covered with thousands of tiny engraved marks, mist swirling around it."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_鐘響時消失的島",
+      "seed": 5233,
+      "prompt": "Seen from a high tower, a distant small island on the misty sea fading into fog as rings of sound ripple out from a great bell."
     }
   ]
 }

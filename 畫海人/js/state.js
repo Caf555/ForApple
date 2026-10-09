@@ -27,7 +27,7 @@ export function newGame(diff = '標準') {
 }
 
 export function makeHero(key, i, lv = 1) {
-  const h = { key, lv, exp: 0, row: key === '阿潮' || key === '葛蘿' ? 'front' : 'back', slot: i, eq: {} };
+  const h = { key, lv, exp: 0, row: ['阿潮', '葛蘿', '霧子', '嘎嘎'].includes(key) ? 'front' : 'back', slot: i, eq: {} };
   const s = heroStats(h); h.hp = s.hp; h.mp = s.mp;
   return h;
 }

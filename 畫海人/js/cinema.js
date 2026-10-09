@@ -762,6 +762,117 @@ const SCENES = {
     for (let i = 0; i < 12; i++) { const t = i / 11; s += `<g class="c-fade" style="animation-delay:${f1(2.6 - t * 2.4)}s;animation-direction:reverse"><ellipse cx="${f1(200 + (i % 2 ? 9 : -9) * (1 - t * .6))}" cy="${f1(390 - t * 300)}" rx="${f1(7 - t * 4)}" ry="${f1(3.6 - t * 2)}" fill="#5a7480" opacity=".8"/></g>`; }
     return s + fog(80, 4, .6) + vig();
   },
+  // ═════ 第五海域：霧心 ═════
+  kirikowake() {
+    let s = sky('room') + `<circle cx="290" cy="130" r="62" fill="#c8d8e0" opacity=".85"/><circle cx="290" cy="130" r="62" fill="none" stroke="${INK}" stroke-width="8"/>` + fog(130, 4, .7, 'c-drift', 30);
+    s += `<rect x="40" y="270" width="230" height="22" fill="#2a2016"/><rect x="40" y="292" width="10" height="60" fill="${INK}"/><rect x="260" y="292" width="10" height="60" fill="${INK}"/>`;
+    s += `<path d="M70 268 Q120 236 170 252 L250 262 L250 270 L70 270 Z" fill="#c9ccc6" opacity=".7"/>` + person(110, 268, 70, '#120d08');
+    s += `<line x1="300" y1="350" x2="320" y2="230" stroke="#9fb4ba" stroke-width="4"/><line x1="296" y1="248" x2="324" y2="252" stroke="${INK}" stroke-width="4"/>`;
+    return s + glow(290, 130, 80, false, 'c-fl') + vig();
+  },
+  hiltglow() {
+    let s = '<rect width="400" height="400" fill="#0c0906"/>';
+    s += `<path d="M60 320 L250 150" stroke="#9fb4ba" stroke-width="12" stroke-linecap="round"/><path d="M200 150 L250 200" stroke="${INK2}" stroke-width="14"/><path d="M250 150 L330 70" stroke="#3a2c1c" stroke-width="16" stroke-linecap="round"/>`;
+    s += starPen(290, 120, .9) + glow(290, 110, 50, true, 'c-fl') + pen(90, 390, 70, -60, 34);
+    return s + vig();
+  },
+  blankchart() {
+    let s = sky('room') + `<path d="M40 110 L196 120 L196 330 L44 320 Z" fill="url(#k-paper)"/><path d="M204 120 L360 110 L356 320 L204 330 Z" fill="#efe6cf"/><path d="M196 120 Q200 116 204 120 L204 330 Q200 334 196 330 Z" fill="#6a5636"/>`;
+    s += `<g fill="#bfa77c" stroke="#3a2c1c" stroke-width="1" opacity=".6">${SHAPES.north(90, 200)}${SHAPES.north(150, 260)}${SHAPES.north(110, 290)}</g>`;
+    return s + glow(280, 220, 110, true, 'c-fl') + `<path d="M330 360 Q350 330 370 340" stroke="#120d08" stroke-width="10" fill="none"/>` + vig();
+  },
+  bowtogate() {
+    let s = sky('cold') + stars(30, 140) + sea(280) + `<path d="M260 280 L260 140 Q300 90 340 140 L340 280 Z" fill="#9fc4d0" opacity=".55"/>` + fog(260, 6, .8);
+    s += `<path d="M0 400 L0 330 L150 300 L210 290 L190 330 L160 400 Z" fill="${INK}"/>` + person(120, 312, 80, INK) + glow(146, 262, 18, true, 'c-fl');
+    return s + vig();
+  },
+  fadeport() {
+    let s = sky('fog') + sea(280, false) + `<g opacity=".65">${isle(200, 282, 380, 60, '#5a6a72')}${house(90, 262, 30, 26, false)}${house(140, 250, 40, 30, true)}${house(250, 256, 30, 26, false)}${tower(320, 236, 50, false)}</g>`;
+    s += `<rect x="150" y="282" width="140" height="6" fill="#3a4a52"/>` + `<g class="c-rise">${fog(220, 5, .9, '', 60)}</g>`;
+    return s + fog(150, 6, .9, 'c-drift', 80) + vig();
+  },
+  washedport() {
+    let s = '<rect width="400" height="400" fill="#b8c4c8"/>' + `<rect y="270" width="400" height="130" fill="#9aa8ae"/>`;
+    for (let i = 0; i < 5; i++) s += house(30 + i * 74, 270, 50, 40 + (i % 2) * 14, false);
+    s += `<line x1="0" y1="200" x2="400" y2="210" stroke="#7a8a90"/>` + [60, 120, 200, 280, 340].map(x => `<rect x="${x}" y="203" width="14" height="22" fill="#d6dee0" opacity=".8"/>`).join('');
+    return s + `<rect width="400" height="400" fill="#e6eef0" opacity=".25"/>` + vig();
+  },
+  waitingdock() {
+    let s = sky('fog') + sea(270, false) + `<path d="M0 300 L400 270 L400 284 L0 318 Z" fill="#2a3a42"/>`;
+    for (let i = 0; i < 8; i++) { const x = 30 + i * 46, y = 304 - i * 4; s += person(x, y, 40 - i * 1.5, '#16242a'); }
+    return s + fog(240, 6, .9, 'c-drift', 50) + vig();
+  },
+  blurface() {
+    let s = sky('fog') + `<rect y="300" width="400" height="100" fill="#2a3a42"/>` + person(200, 330, 200, '#1a2a32');
+    s += `<ellipse cx="200" cy="152" rx="24" ry="24" fill="#c8d4d8" opacity=".6"/><ellipse cx="200" cy="152" rx="30" ry="30" fill="url(#k-fg)"/>`;
+    for (let i = 0; i < 5; i++) s += person(40 + i * 80, 320, 50, '#3a4a52');
+    return s + fog(260, 5, .8) + vig();
+  },
+  swallowship() {
+    let s = sky('fog') + sea(280) + boat(220, 282, 2.2, { sail: false, lamp: true }) + person(170, 270, 34, INK);
+    return s + fog(250, 5, .7) + vig();
+  },
+  outlineisle() {
+    let s = '<rect width="400" height="400" fill="#c8d4d8"/>' + `<rect y="240" width="400" height="160" fill="#9fb4ba" opacity=".6"/>`;
+    s += `<g fill="none" stroke="#3a4a52" stroke-width="1.6"><path class="c-draw" pathLength="1" d="${coast(200, 230, 130, 14, .3)}"/>`;
+    for (let i = 0; i < 4; i++) s += `<path class="c-draw" pathLength="1" style="animation-delay:${.6 + i * .3}s" d="M${130 + i * 40} 230 v-22 l14 -12 l14 12 v22"/>`;
+    return s + '</g>' + fog(220, 6, .8) + vig();
+  },
+  openhouses() {
+    let s = sky('room') + `<rect y="280" width="400" height="120" fill="#4a6470" opacity=".7"/>` + `<rect x="60" y="80" width="280" height="200" fill="none" stroke="${INK}" stroke-width="10"/>`;
+    s += `<rect x="130" y="236" width="140" height="10" fill="#3a2c1c"/><rect x="140" y="246" width="8" height="40" fill="#3a2c1c"/><rect x="252" y="246" width="8" height="40" fill="#3a2c1c"/>`;
+    s += [160, 200, 240].map(x => `<path d="M${x - 12} 230 q12 10 24 0 z" fill="#c9ccc6"/>`).join('');
+    return s + `<rect y="276" width="400" height="6" fill="#dbe8ee" opacity=".4"/>` + vig();
+  },
+  whitetree() {
+    let s = sky('fog') + `<rect y="300" width="400" height="100" fill="#4a5a62"/>` + `<path d="M196 300 L192 200 Q170 170 150 160 M194 220 Q220 180 250 170 M193 250 Q160 230 140 236" stroke="${INK}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+    for (let i = 0; i < 70; i++) s += `<circle cx="${f1(200 + rr(-110, 110))}" cy="${f1(170 + rr(-70, 50))}" r="${f1(rr(3, 7))}" fill="#f4f6f2" opacity="${f1(rr(.5, .95))}"/>`;
+    for (let i = 0; i < 12; i++) s += `<circle class="c-rise" style="animation-delay:-${f1(rr(0, 4))}s" cx="${f1(rr(60, 340))}" cy="${f1(rr(220, 320))}" r="2.4" fill="#f4f6f2" opacity=".7"/>`;
+    return s + house(40, 300, 40, 34, false) + house(320, 300, 40, 34, true) + vig();
+  },
+  starcount() {
+    let s = sky('night') + stars(90, 240);
+    s += `<path d="M300 400 L296 220 Q260 180 220 170 M298 260 Q340 220 380 210" stroke="${INK}" stroke-width="10" fill="none"/>`;
+    for (let i = 0; i < 40; i++) s += `<circle cx="${f1(300 + rr(-100, 90))}" cy="${f1(190 + rr(-50, 40))}" r="${f1(rr(2, 5))}" fill="#f4f6f2" opacity=".6"/>`;
+    s += `<rect y="330" width="400" height="70" fill="#0a161c"/><path d="M120 330 Q150 318 200 326 L206 334 L118 336 Z" fill="${INK}"/><circle cx="110" cy="326" r="10" fill="${INK}"/><line x1="200" y1="324" x2="230" y2="290" stroke="${INK}" stroke-width="3"/>`;
+    return s + glow(60, 320, 30, true, 'c-fl') + vig();
+  },
+  scrapedname() {
+    let s = '<rect width="400" height="400" fill="#3a2e24"/>';
+    for (let i = 0; i < 18; i++) s += `<path d="M${f1(rr(0, 400))} 0 q${f1(rr(-20, 20))} 200 ${f1(rr(-10, 10))} 400" stroke="#2a2018" stroke-width="${f1(rr(3, 9))}" fill="none"/>`;
+    for (let i = 0; i < 9; i++) s += `<line x1="${f1(140 + i * 14)}" y1="${f1(150 + rr(-6, 6))}" x2="${f1(150 + i * 14)}" y2="${f1(230 + rr(-6, 6))}" stroke="#8a7a62" stroke-width="3" opacity=".7"/>`;
+    s += `<text x="200" y="300" font-size="44" text-anchor="middle" fill="#c9b48a" opacity=".85">蓮</text>`;
+    for (let i = 0; i < 8; i++) s += `<circle cx="${f1(rr(40, 360))}" cy="${f1(rr(40, 380))}" r="4" fill="#f4f6f2" opacity=".7"/>`;
+    return s + vig();
+  },
+  whitetower() {
+    let s = sky('fog') + `<path d="M180 400 L188 90 L212 90 L220 400 Z" fill="#e6eef0" opacity=".9"/><path d="M176 92 L200 52 L224 92 Z" fill="#c8d4d8"/>`;
+    s += `<path d="M190 82 Q200 64 210 82 L212 92 L188 92 Z" fill="#8a6a3a"/>` + glow(200, 80, 40, true, 'c-fl');
+    for (let i = 0; i < 9; i++) s += house(10 + i * 44, 400, 30, 30 + (i % 3) * 16, false);
+    return s + fog(300, 7, .9) + fog(180, 4, .6, 'c-drift2') + vig();
+  },
+  waterline() {
+    let s = '<rect width="400" height="400" fill="#6a7a80"/>';
+    for (let r = 0; r < 10; r++) for (let c = 0; c < 8; c++) s += `<rect x="${c * 52 + (r % 2) * 26 - 20}" y="${r * 40}" width="50" height="38" fill="#7a8a90" opacity=".6"/>`;
+    s += `<rect y="160" width="400" height="240" fill="#2e4048" opacity=".45"/><line x1="0" y1="160" x2="400" y2="158" stroke="#0a161c" stroke-width="4"/>`;
+    return s + person(200, 390, 110, INK) + vig();
+  },
+  kneelstatues() {
+    let s = sky('fog') + `<path d="M330 300 L334 40 L346 40 L350 300 Z" fill="#e6eef0" opacity=".6"/><rect y="300" width="400" height="100" fill="#6a7478"/>`;
+    for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) { const x = 20 + c * 44 + r * 12, y = 300 + r * 34, h = 34 + r * 8; s += `<g transform="rotate(-18 ${x} ${y})">${person(x, y, h, '#9aa4a8')}</g>`; }
+    return s + fog(260, 5, .8) + vig();
+  },
+  bigbell() {
+    let s = sky('fog') + `<path d="M120 300 Q120 120 200 100 Q280 120 280 300 L300 320 L100 320 Z" fill="#7a5a32"/><path d="M130 300 Q130 130 200 112 Q270 130 270 300 Z" fill="#8a6a3a"/>`;
+    for (let i = 0; i < 60; i++) s += `<rect x="${f1(rr(140, 260))}" y="${f1(rr(140, 300))}" width="${f1(rr(4, 10))}" height="1.4" fill="#3a2a16" opacity=".6"/>`;
+    s += rings(200, 210, 3) + `<rect x="190" y="80" width="20" height="24" fill="${INK}"/>`;
+    return s + fog(340, 6, .8) + vig();
+  },
+  bellfade() {
+    let s = sky('fog') + sea(260) + `<g class="c-fade">${isle(260, 262, 120, 30)}${house(250, 244, 16, 14, true)}</g>`;
+    s += `<path d="M0 400 L0 120 L90 120 L90 400 Z" fill="#e6eef0" opacity=".8"/>` + rings(120, 220, 4);
+    return s + fog(250, 6, .9) + vig();
+  },
 };
 export const ART_KEYS = Object.keys(SCENES);
 

@@ -36,6 +36,21 @@ export const HEROES = {
     desc: '紅帆海盜的前船長，只有一隻手臂。話很少，一開口，海盜們都會安靜下來。', skills: ['護舷', '落錨', '升帆'] },
   老洛: { title: '製圖師', job: '製圖師', element: '影', color: '#8fa3ad', hp: 80, mp: 26, atk: 8, def: 7, mag: 15, spd: 10, weapon: '舊量尺',
     desc: '畫海人公會的第二位製圖師，少了一隻眼睛。五十年來，一張圖都沒有畫過。', skills: ['舊圖', '畫錯', '量尺'] },
+  霧子: { title: '劍士', job: '劍士', element: '影', color: '#6f7f9a', hp: 96, mp: 18, atk: 17, def: 8, mag: 6, spd: 15, weapon: '無名劍',
+    desc: '從霧門的門縫裡倒出來的劍客，什麼都不記得。劍柄上刻著一支筆，是公會長的記號。', skills: ['影斬', '替身', '斷筆'] },
+  嘎嘎: { title: '守衛', job: '守衛（馴獸）', element: '潮', color: '#6a9a7a', hp: 150, mp: 18, atk: 11, def: 16, mag: 9, spd: 6, weapon: '老海草繩',
+    desc: '會說話的老海龜。他說自己以前是人，可是沒有人記得他的名字，連他自己也忘了。', skills: ['龜殼', '老海的歌', '潛水'] },
+};
+// 隊友的心願（第五章開始，在「隊伍」裡看得到）：isle 這座島拿到好結局就算完成；isle 是 null 的，在第五章的最後揭曉
+export const WISHES = {
+  阿潮: { text: '讓父親回家', isle: '忘人港' },
+  蓮笙: { text: '想起家鄉的名字', isle: '無名島' },
+  小鈴: { text: '唱完被霧吃掉一半的古歌', isle: '晨忘島' },
+  費米: { text: '在父親和良心之間，做出自己的選擇', isle: '帳房島' },
+  葛蘿: { text: '奪回家鄉的島', isle: '紅岬' },
+  老洛: { text: '面對五十年前的那一夜', isle: '斷桅灣' },
+  嘎嘎: { text: '找回自己的名字', isle: null },
+  霧子: { text: '知道自己是誰', isle: null },
 };
 export const PARTY_MAX = 4; // 一次最多 4 人出戰，其他人在船上待命
 
@@ -68,6 +83,12 @@ export const SKILLS = {
   舊圖: { cost: 4, type: 'debuff', target: 'allies', chart: 3, desc: '攤開五十年前的地圖：三回合內，看穿全部敵人的弱點；打它們不會落空，也比較容易爆擊。' },
   畫錯: { cost: 5, type: 'mag', target: 'enemy', power: 18, element: '影', status: '畫錯', chance: 0.5, desc: '故意把敵人畫錯。影屬性法術，可以打後排；被畫錯的敵人，有時候會打到自己人。' },
   量尺: { cost: 4, type: 'buff', target: 'ally', ruler: 2, desc: '用獨眼對準：指定一名同伴，他的下一次攻擊一定命中，而且一定爆擊。' },
+  影斬: { cost: 4, type: 'phy', target: 'enemy', power: 1.5, element: '影', marked: 1.25, desc: '影屬性的重斬。打被「標記」的敵人，傷害再多 25%。' },
+  替身: { cost: 4, type: 'buff', target: 'self', taunt: 2, dodge: 2, desc: '留下一個影子當替身：兩回合內，敵人都會衝著自己來，可是有一半的機會打到影子（閃開）。' },
+  斷筆: { cost: 7, type: 'rng', target: 'enemy', power: 1.1, interrupt: true, desc: '一道很細的劍氣，可以打後排：一定能打斷敵人的蓄力。' },
+  龜殼: { cost: 5, type: 'buff', target: 'team', shell: 2, desc: '把大家護在殼底下：兩回合內，全隊受到的傷害 −25%。' },
+  老海的歌: { cost: 6, type: 'heal', target: 'allies', power: 12, mpGain: 4, desc: '一首很老很老的海的歌：全隊回復一點體力，也回復 4 點靈。' },
+  潛水: { cost: 3, type: 'buff', target: 'self', dive: 2, desc: '縮進殼裡、潛到水底：到下一回合結束以前，都不會被打中。' },
   // 敵人的招式
   鉗擊: { cost: 0, type: 'phy', target: 'enemy', power: 1.3, desc: '' },
   鹽霧: { cost: 0, type: 'mag', target: 'allies', power: 9, element: '潮', desc: '' },
@@ -157,6 +178,25 @@ export const SKILLS = {
   霜光: { cost: 0, type: 'mag', target: 'allies', power: 31, element: '星', desc: '' },
   回到門後: { cost: 0, type: 'heal', target: 'self', power: 95, desc: '' },
   霧門開啟: { cost: 0, type: 'mag', target: 'allies', power: 60, element: '風', status: '迷惘', chance: 0.25, desc: '' },
+  // 第五海域
+  等待: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.6, desc: '' },
+  船票: { cost: 0, type: 'mag', target: 'enemy', power: 31, element: '風', desc: '' },
+  褪色: { cost: 0, type: 'mag', target: 'allies', power: 33, element: '影', desc: '' },
+  收票: { cost: 0, type: 'phy', target: 'enemy', power: 1.5, desc: '' },
+  再等一天: { cost: 0, type: 'heal', target: 'self', power: 98, desc: '' },
+  船不會來: { cost: 0, type: 'mag', target: 'allies', power: 62, element: '潮', status: '迷惘', chance: 0.25, desc: '' },
+  刮名: { cost: 0, type: 'phy', target: 'enemy', power: 1.45, status: '迷惘', chance: 0.3, desc: '' },
+  白花雨: { cost: 0, type: 'mag', target: 'allies', power: 34, element: '風', desc: '' },
+  大浪: { cost: 0, type: 'mag', target: 'allies', power: 34, element: '潮', desc: '' },
+  根纏: { cost: 0, type: 'phy', target: 'enemy', power: 1.2, status: '定身', chance: 0.4, desc: '' },
+  沉回霧裡: { cost: 0, type: 'heal', target: 'self', power: 102, desc: '' },
+  被忘掉: { cost: 0, type: 'mag', target: 'allies', power: 64, element: '風', status: '迷惘', chance: 0.25, desc: '' },
+  鐘鳴: { cost: 0, type: 'mag', target: 'allies', power: 35, element: '星', desc: '' },
+  安魂: { cost: 0, type: 'debuff', target: 'allies', status: '定身', chance: 0.3, desc: '' },
+  石跪: { cost: 0, type: 'phy', target: 'enemy', power: 1.55, element: '石', desc: '' },
+  漲水: { cost: 0, type: 'mag', target: 'enemy', power: 33, element: '潮', desc: '' },
+  再祈禱一次: { cost: 0, type: 'heal', target: 'self', power: 106, desc: '' },
+  鐘響: { cost: 0, type: 'mag', target: 'allies', power: 66, element: '星', status: '定身', chance: 0.25, desc: '' },
 };
 
 // row：'front' 前排／'back' 後排；drop：[素材, 機率, 數量]
@@ -303,6 +343,34 @@ export const ENEMIES = {
   守門人: { element: '風', row: 'front', rank: '首領', hp: 2400, atk: 44, def: 28, mag: 46, spd: 12, exp: 820, silver: 450, skills: [['霜光', 2], ['門扉', 1], ['忘卻', 1], ['回到門後', 1]], big: '霧門開啟', drop: [['古銅片', 1, 3], ['夜光珠', 1, 3]],
     phase2: { element: '星', line: '守門人摘下冰做的面具。面具底下的眼睛，是星星的顏色。「……還有人記得，門後面是什麼嗎？」' },
     phase3: { element: '影', line: '門後的霧湧了出來，纏在守門人身上。「不要過去。過去了，就要把那份痛，全部想起來。」' }, desc: '霧門的守門人。他自願留在門口三百年，不讓任何人進去。' },
+  // ═════ 第五海域：霧心 ═════
+  // 忘人港
+  等船的影子: { element: '影', row: 'front', hp: 226, atk: 45, def: 25, mag: 34, spd: 12, exp: 45, silver: 27, skills: [['等待', 1], ['冷霧', 1], ['攻擊', 2]], drop: [['褪色布', 0.4]], desc: '坐在碼頭邊的影子。它在等一艘船，可是想不起來是哪一艘。' },
+  褪色的漁夫: { element: '潮', row: 'front', hp: 238, atk: 46, def: 27, mag: 20, spd: 10, exp: 45, silver: 27, skills: [['寒潮', 1], ['硬化', 1], ['攻擊', 2]], drop: [['褪色布', 0.5]], desc: '衣服、漁網、連臉都褪成了灰色的漁夫。他每天都在補同一張網。' },
+  沒有臉的貓: { element: '風', row: 'front', hp: 200, atk: 47, def: 22, mag: 10, spd: 23, exp: 44, silver: 26, skills: [['撕咬', 3], ['攻擊', 1]], drop: [['舊船票', 0.35]], desc: '港口的貓。牠的主人忘了牠，牠就慢慢忘了自己長什麼樣子。' },
+  舊船票: { element: '風', row: 'back', hp: 132, atk: 11, def: 17, mag: 44, spd: 17, exp: 45, silver: 27, skills: [['船票', 2], ['鱗粉', 1]], drop: [['舊船票', 0.5]], desc: '一張很舊的船票，在風裡飛來飛去。上面的日期，是五十年前。' },
+  碼頭的燈: { element: '星', row: 'back', hp: 130, atk: 10, def: 17, mag: 45, spd: 14, exp: 45, silver: 27, skills: [['灰光', 2], ['晨露', 1], ['褪色', 1]], drop: [['褪色布', 0.3], ['舊船票', 0.3]], desc: '碼頭盡頭的燈。它每天晚上都亮著，等一艘不會來的船。' },
+  收票的人: { element: '石', row: 'front', rank: '精英', hp: 1120, atk: 47, def: 31, mag: 30, spd: 10, exp: 205, silver: 145, skills: [['收票', 2], ['硬化', 1], ['等待', 1], ['攻擊', 1]], drop: [['舊船票', 1, 3], ['夜光珠', 1]], desc: '站在棧橋口收票的人。沒有票的人不能上船。他的口袋裡，有棧橋盡頭的鑰匙。' },
+  等船的人: { element: '潮', row: 'front', rank: '首領', hp: 2520, atk: 46, def: 28, mag: 47, spd: 11, exp: 860, silver: 470, skills: [['寒潮', 2], ['等待', 1], ['褪色', 1], ['再等一天', 1]], big: '船不會來', drop: [['褪色布', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '影', line: '碼頭上所有等船的人，一起轉過頭來。他們的臉都是模糊的。「船……什麼時候來？」' }, desc: '碼頭上所有等船的人，疊在一起的樣子。他們等得太久，忘了自己在等什麼。' },
+  // 無名島
+  刮掉的名字: { element: '影', row: 'front', hp: 232, atk: 47, def: 26, mag: 34, spd: 12, exp: 46, silver: 28, skills: [['刮名', 2], ['攻擊', 1]], drop: [['白花瓣', 0.3]], desc: '從門牌上被刮下來的名字。它到處找可以貼上去的地方。' },
+  半沉的屋子: { element: '石', row: 'front', hp: 262, atk: 46, def: 34, mag: 8, spd: 7, exp: 47, silver: 28, skills: [['斷桅', 1], ['硬化', 1], ['攻擊', 2]], drop: [['潮痕石', 0.5]], desc: '沉了一半的石屋。門還開著，桌上還擺著碗。' },
+  潮痕: { element: '潮', row: 'front', hp: 240, atk: 47, def: 27, mag: 26, spd: 10, exp: 46, silver: 28, skills: [['大浪', 1], ['撕咬', 2]], drop: [['潮痕石', 0.4]], desc: '那一晚的大浪，在牆上留下的痕跡。它到現在還在往上爬。' },
+  白花精: { element: '風', row: 'back', hp: 134, atk: 11, def: 17, mag: 46, spd: 18, exp: 46, silver: 28, skills: [['白花雨', 1], ['鱗粉', 2]], drop: [['白花瓣', 0.5]], desc: '白花樹的花瓣，被風吹成一個小小的人形。它會唱島上的童謠，只唱一半。' },
+  灰鷺: { element: '風', row: 'back', hp: 128, atk: 40, def: 16, mag: 14, spd: 21, exp: 46, silver: 28, skills: [['群啄', 2], ['攻擊', 2]], drop: [['白花瓣', 0.3]], desc: '站在半沉的屋頂上的灰鷺。牠記得島以前的樣子，所以一直不肯飛走。' },
+  白花樹的根: { element: '石', row: 'front', rank: '精英', hp: 1180, atk: 48, def: 32, mag: 32, spd: 9, exp: 212, silver: 150, skills: [['根纏', 2], ['白花雨', 1], ['硬化', 1], ['攻擊', 1]], drop: [['白花瓣', 1, 3], ['夜光珠', 1]], desc: '白花樹伸出來的根，把整條路纏住了。根的中間，纏著一把小小的木鑰匙。' },
+  被忘掉的島: { element: '風', row: 'front', rank: '首領', hp: 2640, atk: 47, def: 28, mag: 48, spd: 12, exp: 900, silver: 490, skills: [['白花雨', 2], ['刮名', 1], ['大浪', 1], ['沉回霧裡', 1]], big: '被忘掉', drop: [['白花瓣', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '影', line: '島的影子站了起來。它的身上，貼滿了寄給霧的信。每一封的開頭都是：「請讓我忘掉那座島。」' }, desc: '被自己的人，寫信求霧忘掉的島。它還在，只是沒有人叫得出它的名字。' },
+  // 祈願塔
+  跪著的石像: { element: '石', row: 'front', hp: 270, atk: 48, def: 35, mag: 10, spd: 7, exp: 47, silver: 28, skills: [['石跪', 1], ['硬化', 1], ['攻擊', 2]], drop: [['石像灰', 0.5]], desc: '塔下的石像，全都跪著，抬頭看著塔頂。它們以前是人。' },
+  水線: { element: '潮', row: 'front', hp: 244, atk: 47, def: 27, mag: 34, spd: 11, exp: 47, silver: 28, skills: [['漲水', 2], ['攻擊', 1]], drop: [['潮痕石', 0.4]], desc: '三百年前的海嘯，在城牆上留下的一條線。比人還高。' },
+  塔的影子: { element: '影', row: 'front', hp: 238, atk: 48, def: 26, mag: 36, spd: 13, exp: 47, silver: 28, skills: [['忘卻', 1], ['冷霧', 1], ['攻擊', 2]], drop: [['祈願銅', 0.3]], desc: '白塔的影子。太陽怎麼轉，它都指著同一個方向：海。' },
+  鐘聲: { element: '風', row: 'back', hp: 136, atk: 11, def: 18, mag: 47, spd: 16, exp: 47, silver: 28, skills: [['鐘鳴', 1], ['鱗粉', 2]], drop: [['祈願銅', 0.4]], desc: '塔頂的鐘聲，掉下來變成了一團會動的聲音。聽見它的人，會想不起一件小事。' },
+  安魂的合唱: { element: '星', row: 'back', hp: 134, atk: 10, def: 18, mag: 46, spd: 15, exp: 47, silver: 28, skills: [['安魂', 1], ['灰光', 2], ['晨露', 1]], drop: [['石像灰', 0.3]], desc: '很多很輕的聲音，一起唱一首很慢的歌。只會唱前半首。' },
+  守鐘人: { element: '星', row: 'front', rank: '精英', hp: 1240, atk: 49, def: 33, mag: 36, spd: 10, exp: 220, silver: 155, skills: [['鐘鳴', 2], ['石跪', 1], ['硬化', 1], ['攻擊', 1]], drop: [['祈願銅', 1, 3], ['夜光珠', 1]], desc: '塔門口敲鐘的人，敲了三百年。他的腰上，掛著塔頂的鑰匙。' },
+  最初的祈禱: { element: '星', row: 'front', rank: '首領', hp: 2760, atk: 48, def: 29, mag: 50, spd: 12, exp: 940, silver: 510, skills: [['鐘鳴', 2], ['安魂', 1], ['漲水', 1], ['再祈禱一次', 1]], big: '鐘響', drop: [['祈願銅', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '影', line: '鐘裡傳出全城的聲音：「讓痛苦的地方，消失吧。」三百年來，這句話一次都沒有停過。' }, desc: '三百年前，全城的人一起說出口的那句話。它住在塔頂的鐘裡。' },
 };
 
 export const ITEMS = {
@@ -350,6 +418,13 @@ export const MATS = {
   鯨油: '北霧海的漁夫最珍貴的東西。點了以後，霧會往後退一步。',
   凍木: '凍在冰裡五十年的船板。敲起來像石頭，聞起來還是海。',
   古銅片: '三百年前的銅片，刻著看不懂的字。',
+  // 第五海域
+  褪色布: '忘人港的布。顏色褪光了，可是摸起來還是暖的。',
+  舊船票: '一張五十年前的船票。上面的目的地，被霧吃掉了。',
+  白花瓣: '無名島白花樹的花瓣。放在耳邊，聽得見有人在叫一個名字。',
+  潮痕石: '被大浪泡過的石頭，上面有一條洗不掉的線。',
+  祈願銅: '祈願塔的鐘掉下來的銅片。敲一下，會聽見很多人一起嘆氣。',
+  石像灰: '跪著的石像身上落下來的灰。抹在手上，手會變得很穩。',
 };
 
 // ───────── 裝備：在鐵匠用素材打造。who：只有誰能用（不寫就是大家都能用） ─────────
@@ -430,6 +505,22 @@ export const EQUIPS = {
   灰燈籠飾: { slot: '飾品', stats: { hp: 44, def: 6, mag: 4 }, cost: { 銀貝: 270, 灰燈油: 2, 霜晶: 2 }, desc: '掛在腰上的小灰燈。它不照路，只照你自己。' },
   古銅羅盤: { slot: '飾品', stats: { atk: 7, mag: 7, spd: 3 }, cost: { 銀貝: 320, 古銅片: 2, 鯨油: 2 }, desc: '指針不指北，指著霧的中心。' },
   霜晶戒: { slot: '飾品', stats: { hp: 30, atk: 5, mag: 5, mp: 8 }, cost: { 銀貝: 300, 霜晶: 3, 夜光珠: 1 }, desc: '霜晶磨成的戒指，一年四季都不會融。' },
+  // 第五海域
+  無名劍: { slot: '武器', who: '霧子', stats: { atk: 30 }, cost: { 銀貝: 220, 褪色布: 2, 古銅片: 2 }, desc: '霧子一直握著的劍。劍柄上刻著一支筆和一顆星，劍身上卻沒有名字。' },
+  霧影劍: { slot: '武器', who: '霧子', stats: { atk: 37, spd: 3 }, cost: { 銀貝: 400, 祈願銅: 3, 石像灰: 2, 夜光珠: 1 }, desc: '揮起來沒有聲音的劍。霧子說，握著它的時候，好像想起了一點點什麼。' },
+  老海草繩: { slot: '武器', who: '嘎嘎', stats: { atk: 20, def: 6 }, cost: { 銀貝: 180, 漂流木: 3, 霧苔: 3 }, desc: '嘎嘎用嘴叼著甩的海草繩。他說，以前他用手拿的時候，比現在帥。' },
+  潮痕殼: { slot: '武器', who: '嘎嘎', stats: { atk: 26, def: 10 }, cost: { 銀貝: 360, 潮痕石: 4, 白花瓣: 1 }, desc: '綁在殼上的潮痕石。撞過去的時候，像一整道浪。' },
+  海燕刀: { slot: '武器', who: '阿潮', stats: { atk: 36 }, cost: { 銀貝: 380, 褪色布: 3, 潮痕石: 2, 夜光珠: 1 }, desc: '用海燕號的舊桅杆鐵箍打的刀。阿潮說，這次換他替爸爸開路。' },
+  白花杖: { slot: '武器', who: '蓮笙', stats: { mag: 30, mp: 17 }, cost: { 銀貝: 360, 白花瓣: 4, 舊船票: 1 }, desc: '杖頭開著一朵不會謝的白花。蓮笙拿著它的時候，會小聲地叫一個名字。' },
+  安魂琴: { slot: '武器', who: '小鈴', stats: { mag: 30, spd: 6 }, cost: { 銀貝: 370, 祈願銅: 3, 白花瓣: 2 }, desc: '琴身嵌著祈願塔的銅。彈出來的每一個音，都很慢、很溫柔。' },
+  船票弓: { slot: '武器', who: '費米', stats: { atk: 31, spd: 4 }, cost: { 銀貝: 360, 舊船票: 3, 褪色布: 2 }, desc: '弓臂上貼滿了舊船票。費米說，這是他第一次覺得船票比錢重要。' },
+  潮痕斧: { slot: '武器', who: '葛蘿', stats: { atk: 33, def: 5, spd: -1 }, cost: { 銀貝: 390, 潮痕石: 4, 石像灰: 1 }, desc: '斧刃上有一條洗不掉的水線。葛蘿說，記得浪打到哪裡，才知道要站多高。' },
+  白頁量尺: { slot: '武器', who: '老洛', stats: { mag: 31, mp: 16 }, cost: { 銀貝: 380, 舊船票: 2, 祈願銅: 2, 夜光珠: 1 }, desc: '一把沒有刻度的量尺。老洛說，有些距離，不用量。' },
+  褪色布斗篷: { slot: '防具', stats: { def: 22, hp: 72, spd: 2 }, cost: { 銀貝: 360, 褪色布: 4, 舊船票: 1 }, desc: '褪成灰色的斗篷。穿著它走在忘人港，沒有人會多看你一眼。' },
+  潮痕甲: { slot: '防具', stats: { def: 27, hp: 86, spd: -1 }, cost: { 銀貝: 420, 潮痕石: 4, 石像灰: 2, 夜光珠: 1 }, desc: '潮痕石一片一片串起來的甲。浪再大，也只打得到那條線。' },
+  白花冠: { slot: '飾品', stats: { hp: 40, mag: 8, mp: 10 }, cost: { 銀貝: 320, 白花瓣: 3 }, desc: '白花瓣編的花冠。戴著它，霧裡的聲音會變得很溫柔。' },
+  船票護符: { slot: '飾品', stats: { spd: 8, atk: 6 }, cost: { 銀貝: 310, 舊船票: 3 }, desc: '三張綁在一起的船票。戴著它，總覺得一定趕得上下一班船。' },
+  祈願銅戒: { slot: '飾品', stats: { atk: 8, mag: 8, spd: 3 }, cost: { 銀貝: 360, 祈願銅: 2, 石像灰: 2 }, desc: '祈願銅打的戒指。戴久了，會聽見一句很老的祈禱，變得越來越小聲。' },
 };
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
@@ -528,4 +619,14 @@ export const COMMISSIONS = [
   { id: '圖十四', title: '斷桅灣的海圖', from: '天文台的老人', kind: 'survey', island: '斷桅灣', n: 60, reward: { 銀貝: 320, 圖紙: '古銅羅盤' }, text: '那支船隊停在哪裡，五十年來沒有人知道。畫下來吧。……我想看看，那天晚上我沒有跟去的地方。' },
   { id: '像', title: '門前的冰像', from: '紅帆的老水手', kind: 'kill', target: '冰像', n: 4, island: '霧門', side: '紅帆', against: '守霧人', rep: 10, reward: { 銀貝: 300, 火藥: 2 }, text: '要往門那邊走，冰像擋在路上。紅帆的規矩：擋路的，就打碎。' },
   { id: '圖十五', title: '霧門前的路', from: '灰燈渡的守霧人', kind: 'survey', island: '霧門', n: 60, reward: { 銀貝: 360, 圖紙: '古銅筆' }, text: '守霧人從來不畫地圖。……可是這一次，我們想留下一張。給以後還要守門的人。' },
+  // 第五海域
+  { id: '票', title: '飛來飛去的船票', from: '紅帆的老水手', kind: 'kill', target: '舊船票', n: 4, island: '忘人港', side: '紅帆', rep: 10, reward: { 銀貝: 300, 舊船票: 2 }, text: '忘人港的船票到處亂飛。紅帆的人說，不要的船票，就該燒掉。……我們的船，不用票也能開。' },
+  { id: '布', title: '褪了色的布', from: '鐵匠的石伯', kind: 'bring', target: '褪色布', n: 4, island: '忘人港', reward: { 銀貝: 280, 圖紙: '褪色布斗篷' }, text: '聽說霧裡有一種布，顏色褪光了，卻比新布還暖。帶幾塊回來給我看看。' },
+  { id: '圖十六', title: '忘人港的地圖', from: '阿潮', kind: 'survey', island: '忘人港', n: 60, reward: { 銀貝: 380, 圖紙: '白頁量尺' }, text: '把那個港口畫下來。……我爸說，書上畫好了，他就找得到回家的路。' },
+  { id: '瓣', title: '白花樹的花', from: '灰燈渡的守霧人', kind: 'bring', target: '白花瓣', n: 4, island: '無名島', side: '守霧人', rep: 10, reward: { 銀貝: 300, 圖紙: '白花冠' }, text: '守霧人的老婆婆說，她小時候聞過那種白花。她想在灰燈下面，放一朵。' },
+  { id: '沉', title: '沉了一半的屋子', from: '商會的測量員', kind: 'kill', target: '半沉的屋子', n: 3, island: '無名島', side: '商會', against: '守霧人', rep: 10, reward: { 銀貝: 320, 潮痕石: 2 }, text: '商會想把那座島登記入冊。可是那些屋子一直在動，量不準。讓它們安靜下來。' },
+  { id: '圖十七', title: '無名島的名字', from: '蓮笙', kind: 'survey', island: '無名島', n: 60, reward: { 銀貝: 400, 圖紙: '潮痕甲' }, text: '……幫我把那座島畫下來。這一次，不要讓任何人把它忘掉。' },
+  { id: '聲', title: '掉下來的鐘聲', from: '灰燈渡的守霧人', kind: 'kill', target: '鐘聲', n: 4, island: '祈願塔', side: '守霧人', rep: 10, reward: { 銀貝: 320, 祈願銅: 2 }, text: '每一聲鐘響，海上就有一個地方被忘掉。讓那些掉下來的鐘聲，安靜下來吧。' },
+  { id: '銅', title: '祈願塔的銅', from: '商會的皮貨商', kind: 'bring', target: '祈願銅', n: 4, island: '祈願塔', side: '商會', rep: 10, reward: { 銀貝: 340, 圖紙: '祈願銅戒' }, text: '三百年前的銅，在千帆市可以賣到天價。紅帆的人想搶先？門都沒有。' },
+  { id: '圖十八', title: '祈願塔下的城', from: '天文台的老人', kind: 'survey', island: '祈願塔', n: 60, reward: { 銀貝: 420, 圖紙: '霧影劍' }, text: '那座城，是一切開始的地方。把它畫下來吧。……讓它也被記得一次。' },
 ];
