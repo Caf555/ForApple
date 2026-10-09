@@ -26,13 +26,24 @@ export function dist(a, b) { const [x1, y1, z1] = cube(...a), [x2, y2, z2] = cub
 export function worldOf(g, id) { return g.world[id] || (g.world[id] = { cleared: false, good: false, best: 0, surveyed: [], visits: 0 }); }
 
 // 這次上島的路線（紅岬：強攻或正門），沒有的話是 null
-export function routeOf(g, id) { const R = ISLANDS[id].routes; return R && g.flags[R.key] ? R.opts[g.flags[R.key]] : null; }
+export function routeOf(g, id) {
+  const R = ISLANDS[id].routes;
+  if (R) return g.flags[R.key] ? R.opts[g.flags[R.key]] : null;
+  return ISLANDS[id].help ? helpOf(g) : null;
+}
+// 霧心：聲望到「信任」的勢力會來幫忙（守霧人：霧不會回來、低語都是真的；紅帆：妖物少 3 個）
+export const HELP_LEVEL = 2;
+export function helpers(g) { return FACTIONS.filter(f => repOn(g, f) && repLevel((g.rep || {})[f] || 0) >= HELP_LEVEL); }
+function helpOf(g) {
+  const h = helpers(g);
+  return { truth: h.includes('守霧人'), noFog: h.includes('守霧人'), pool: h.includes('紅帆') ? { 怪: -3 } : {} };
+}
 // 看得見的範圍：礦坑很暗，少一格
 export function sight(def, lit) { return Math.max(0, (lit ? 2 : 1) - (def.dark ? 1 : 0)); }
 
 export function newIsland(g, id) {
   const def = ISLANDS[id], rec = worldOf(g, id), route = routeOf(g, id);
-  const start = route ? route.start : def.start;
+  const start = (route && route.start) || def.start;
   const tiles = [];
   const free = [];
   const kept = new Set(rec.surveyed);
@@ -253,7 +264,7 @@ export class Explore {
     }
     if (!wasSeen) this.ctx.audio.sfx('pen');
     // 霧會回來
-    if (diff.fogBack && !(isl.lit && this.grey) && isl.steps % (g.diff === '困難' ? 5 : 7) === 0) {
+    if (diff.fogBack && !(isl.lit && this.grey) && !(routeOf(g, isl.id) || {}).noFog && isl.steps % (g.diff === '困難' ? 5 : 7) === 0) {
       const back = isl.tiles.filter(x => x.seen && !x.surveyed && !x.drawn && x.kind !== '起' && x.kind !== '王' && dist([x.c, x.r], isl.pos) >= 2);
       if (back.length) { const x = pick(back); x.seen = false; this.ctx.ui.toast('霧，吞回了一格。只有測繪過的地方，才不會被吞掉。'); this.ctx.audio.sfx('whisper'); }
     }
@@ -396,7 +407,8 @@ export class Explore {
         this.ctx.audio.sfx('pen');
         await ui.story(this.ctx.storyLines(def.fragment));
         const all = Object.keys(ISLANDS).filter(k => ISLANDS[k].fragment), got = all.filter(k => g.flags['碎片:' + k]).length;
-        await ui.alert('公會的舊圖碎片', [`找到了 ${got} 張公會長留下的舊圖碎片。（墨水 +2、士氣 +8）`, '霧心的其他島上，可能還有。']);
+        if (got >= all.length) g.flags.舊圖 = 1;
+        await ui.alert('公會的舊圖碎片', [`找到了 ${got}／${all.length} 張公會長留下的舊圖碎片。（墨水 +2、士氣 +8）`, got >= all.length ? '五張都找到了。最後的那一戰，也許會有一點不一樣。' : '霧心的其他島上，可能還有。']);
         t.done = true;
         break;
       }
@@ -438,6 +450,8 @@ export class Explore {
           t.done = true; isl.boss = true; isl.bossNow = true;
           const picks = await ui.story(this.ctx.storyLines(B.down));
           if (B.pick && picks.length) g.flags[B.pick] = picks[0];
+          // 霧心：打倒公會長，就是最後的抉擇
+          if (B.final) { this.record(); return this.ctx.finale(isl.id, surveyPct(isl)); }
           const bp = this.ctx.newBlueprint(def.bps);
           await ui.alert(B.place, [bp ? `（得到圖紙「${bp}」。回港以後，可以請鐵匠打造）` : '', '這座島的首領倒下了。', `現在可以繼續探索、測繪，回到登陸點（「起」）就能返航。目前測繪度 ${surveyPct(isl)}%：60% 以上，結局會不一樣。`].filter(Boolean));
         }

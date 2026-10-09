@@ -17,6 +17,8 @@
 // 忘人港「褪色的畫」：滑動方塊，把港口的畫拼回來（滑塊拼圖）
 // 無名島「數織」：照著格子旁邊的數字把格子塗黑，畫出島的樣子（數織）
 // 祈願塔「搬鐘」：把整疊鐘搬到另一根柱子，小鐘上面不能放大鐘（河內塔）
+// 畫室「墨線」：同顏色的墨點連起來，線不能交叉，要填滿整張紙（連連看）
+// 霧心「四色地圖」：相鄰的區域不能同色，可是正中間那一塊要留白（著色）
 // 每個遊戲的外框上都掛著 solve()：只給自動試玩機器人用
 // 每個小遊戲都回傳 Promise<boolean>：過關是 true
 import { el, $ } from './ui.js';
@@ -41,7 +43,7 @@ function frame(title, help) {
   $('layer').append(box);
   return { box, stage, info, msg, btns };
 }
-export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路', '褪色的畫', '數織', '搬鐘'];
+export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路', '褪色的畫', '數織', '搬鐘', '墨線', '四色地圖'];
 
 // 遊戲結束：顯示結果，按下按鈕才關掉
 function finish(f, win, line, res) {
@@ -50,7 +52,7 @@ function finish(f, win, line, res) {
 }
 
 export function playPuzzle(ctx, kind, place) {
-  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath, 褪色的畫: fadedPicture, 數織: nonogram, 搬鐘: bells }[kind];
+  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath, 褪色的畫: fadedPicture, 數織: nonogram, 搬鐘: bells, 墨線: inkLines, 四色地圖: fourColor }[kind];
   return game(ctx, place);
 }
 
@@ -1291,5 +1293,175 @@ function bells(ctx) {
       for (const [a, c] of plan) { await tap(a); await tap(c); await wait(60); }
     };
     reset();
+  });
+}
+
+// ═════════ 墨線：同顏色的墨點連起來，線不能交叉，要填滿整張紙 ═════════
+// 出題：先在格子上走出一條經過每一格的路（隨機打亂），再切成幾段，每段的兩頭就是墨點
+const INKS = ['#c0402a', '#3a7ab8', '#d9a43a', '#4a9a5a', '#8a5ab8', '#d97aa0', '#3ab8b0'];
+function inkLines(ctx) {
+  return new Promise(res => {
+    const N = byDiff(ctx, [5, 6, 7]), K = byDiff(ctx, [4, 5, 6]);
+    const at = (c, r) => r * N + c, cr = k => [k % N, Math.floor(k / N)];
+    const near = (a, b) => { const [ac, ar] = cr(a), [bc, br] = cr(b); return Math.abs(ac - bc) + Math.abs(ar - br) === 1; };
+    const nbrs = k => { const [c, r] = cr(k); return [[c + 1, r], [c - 1, r], [c, r + 1], [c, r - 1]].filter(([x, y]) => x >= 0 && y >= 0 && x < N && y < N).map(([x, y]) => at(x, y)); };
+    // 蛇形走一遍，再用「咬尾巴」的方法打亂
+    let P = [];
+    for (let r = 0; r < N; r++) for (let i = 0; i < N; i++) P.push(at(r % 2 ? N - 1 - i : i, r));
+    for (let s = 0; s < N * N * 40; s++) {
+      if (Math.random() < 0.5) P.reverse();
+      const end = P[P.length - 1], cand = nbrs(end).filter(k => k !== P[P.length - 2]);
+      const j = P.indexOf(cand[rnd(cand.length)]);
+      P = [...P.slice(0, j + 1), ...P.slice(j + 1).reverse()];
+    }
+    // 切成 K 段，每段至少 3 格
+    const lens = Array(K).fill(3);
+    for (let left = N * N - 3 * K; left > 0; left--) lens[rnd(K)]++;
+    const sol = []; let p = 0;
+    for (const L of lens) { sol.push(P.slice(p, p + L)); p += L; }
+    const dot = {}; sol.forEach((s, k) => { dot[s[0]] = k; dot[s[s.length - 1]] = k; });
+
+    const f = frame('墨線', '從一個墨點拉出線，連到同顏色的另一個墨點。線不能交叉，最後整張紙都要畫滿。（也可以點墨點，再一格一格點過去）');
+    const S = 300, cell = S / N;
+    const svg = svgEl('svg', { viewBox: `0 0 ${S} ${S}`, class: 'pz-ink' });
+    f.stage.append(svg);
+    const quit = el('button', { class: 'btn', onclick: () => { if (!over) { over = true; quit.remove(); finish(f, false, '墨在紙上暈開了。線條連不起來，畫不完這張圖。', res); } } }, '畫不出來');
+    f.btns.append(quit);
+    let paths = sol.map(() => []), active = null, sel = null, over = false, last = null;
+    const owner = k => paths.findIndex(q => q.includes(k));
+    const done = k => { const q = paths[k]; return q.length > 1 && dot[q[0]] === k && dot[q[q.length - 1]] === k && q[0] !== q[q.length - 1]; };
+    const status = () => {
+      const filled = new Set(paths.flat()).size, ok = paths.filter((_, k) => done(k)).length;
+      f.info.textContent = `連好 ${ok}／${K} 條　畫滿 ${filled}／${N * N} 格`;
+    };
+    const draw = () => {
+      svg.innerHTML = '';
+      for (let k = 0; k < N * N; k++) { const [c, r] = cr(k); svg.append(svgEl('rect', { x: c * cell + 1, y: r * cell + 1, width: cell - 2, height: cell - 2, rx: 4, fill: '#efe6cf', stroke: '#c9b48a' })); }
+      paths.forEach((q, k) => {
+        for (const x of q) { const [c, r] = cr(x); svg.append(svgEl('rect', { x: c * cell + 1, y: r * cell + 1, width: cell - 2, height: cell - 2, rx: 4, fill: INKS[k], 'fill-opacity': done(k) ? .28 : .16 })); }
+        if (q.length > 1) svg.append(svgEl('polyline', { points: q.map(x => { const [c, r] = cr(x); return `${(c + .5) * cell},${(r + .5) * cell}`; }).join(' '), fill: 'none', stroke: INKS[k], 'stroke-width': cell * .32, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+      });
+      for (const k in dot) { const [c, r] = cr(+k); svg.append(svgEl('circle', { cx: (c + .5) * cell, cy: (r + .5) * cell, r: cell * .32, fill: INKS[dot[k]], stroke: sel === dot[k] ? '#fff6dc' : '#2a2016', 'stroke-width': sel === dot[k] ? 3 : 1.5 })); }
+      status();
+    };
+    const cellAt = e => { const b = svg.getBoundingClientRect(); const c = Math.floor((e.clientX - b.left) / b.width * N), r = Math.floor((e.clientY - b.top) / b.height * N); return c >= 0 && r >= 0 && c < N && r < N ? at(c, r) : null; };
+    // 把線拉到 k 這一格
+    const extend = k => {
+      const q = paths[active], end = q[q.length - 1];
+      if (q.length > 1 && k === q[q.length - 2]) { q.pop(); return true; }
+      if (q.includes(k)) { paths[active] = q.slice(0, q.indexOf(k) + 1); return true; }
+      if (!near(end, k) || done(active)) return false;
+      if (dot[k] !== undefined && dot[k] !== active) return false;
+      const o = owner(k);
+      if (o >= 0 && o !== active) paths[o] = paths[o].slice(0, paths[o].indexOf(k));
+      q.push(k); ctx.audio.tone(active % 5); return true;
+    };
+    const check = () => {
+      if (paths.every((_, k) => done(k)) && new Set(paths.flat()).size === N * N) {
+        over = true; quit.remove(); ctx.audio.sfx('win'); draw();
+        finish(f, true, '最後一條線連上的時候，整張紙都染上了顏色。一點空白都沒有。', res);
+      }
+    };
+    svg.addEventListener('pointerdown', e => {
+      if (over) return;
+      const k = cellAt(e); if (k === null) return;
+      e.preventDefault();
+      if (dot[k] !== undefined) { active = sel = dot[k]; paths[active] = [k]; ctx.audio.sfx('tap'); }
+      else if (owner(k) >= 0) { active = sel = owner(k); paths[active] = paths[active].slice(0, paths[active].indexOf(k) + 1); }
+      else if (sel !== null && paths[sel].length) { active = sel; if (!extend(k)) { active = null; return; } }
+      else return;
+      last = k; svg.setPointerCapture && svg.setPointerCapture(e.pointerId); draw();
+    });
+    svg.addEventListener('pointermove', e => {
+      if (over || active === null) return;
+      const k = cellAt(e); if (k === null || k === last) return;
+      last = k; if (extend(k)) draw();
+    });
+    const up = () => { if (active === null) return; active = null; last = null; draw(); check(); };
+    svg.addEventListener('pointerup', up); svg.addEventListener('pointercancel', up);
+    f.box.solve = async () => { for (let k = 0; k < K; k++) { paths[k] = [...sol[k]]; draw(); await wait(120); } check(); };
+    draw();
+  });
+}
+
+// ═════════ 四色地圖：相鄰的區域不能同色，可是正中間那一塊要留白 ═════════
+const MAPC = ['#c0604a', '#5f8fb8', '#d9b45a', '#6a9a6a'];
+function fourColor(ctx) {
+  return new Promise(res => {
+    const N = byDiff(ctx, [6, 7, 8]), R = byDiff(ctx, [8, 10, 12]), C = byDiff(ctx, [4, 4, 3]);
+    let tries = byDiff(ctx, [3, 2, 2]);
+    const at = (c, r) => r * N + c, cr = k => [k % N, Math.floor(k / N)];
+    const nbrs = k => { const [c, r] = cr(k); return [[c + 1, r], [c - 1, r], [c, r + 1], [c, r - 1]].filter(([x, y]) => x >= 0 && y >= 0 && x < N && y < N).map(([x, y]) => at(x, y)); };
+    const mid = at(Math.floor(N / 2), Math.floor(N / 2));
+    // 出題：從幾個種子一起長出區域；正中間的區域（0 號）小一點
+    let reg, adj, sol;
+    const solve = () => {
+      const col = Array(R).fill(-1); col[0] = null;
+      const go = i => { if (i >= R) return true; for (let c = 0; c < C; c++) { if ([...adj[i]].some(j => col[j] === c)) continue; col[i] = c; if (go(i + 1)) return true; } col[i] = -1; return false; };
+      return go(1) ? col : null;
+    };
+    for (let t = 0; t < 200; t++) {
+      reg = Array(N * N).fill(-1);
+      const seeds = [mid, ...shuffle([...Array(N * N).keys()].filter(k => k !== mid && !nbrs(mid).includes(k))).slice(0, R - 1)];
+      seeds.forEach((s, i) => reg[s] = i);
+      const size = Array(R).fill(1), cap = Math.max(3, Math.floor(N * N / R * 0.7));
+      for (let left = N * N - R; left > 0;) {
+        const front = [];
+        for (let k = 0; k < N * N; k++) if (reg[k] >= 0 && !(reg[k] === 0 && size[0] >= cap)) for (const n of nbrs(k)) if (reg[n] < 0) front.push([k, n]);
+        if (!front.length) break;
+        const [k, n] = front[rnd(front.length)]; reg[n] = reg[k]; size[reg[k]]++; left--;
+      }
+      if (reg.includes(-1)) continue;
+      adj = [...Array(R)].map(() => new Set());
+      for (let k = 0; k < N * N; k++) for (const n of nbrs(k)) if (reg[n] !== reg[k]) { adj[reg[k]].add(reg[n]); adj[reg[n]].add(reg[k]); }
+      if (adj[0].size < 3) continue;
+      sol = solve();
+      if (sol) break;
+    }
+    const f = frame('四色地圖', `點一塊區域上色，再點一次換顏色。相鄰的區域不能同一個顏色（有 ${C} 種顏色可以用）。海圖的角落，有一行很小的字：「正中間那一塊，不要畫。」`);
+    const S = 300, cell = S / N;
+    const svg = svgEl('svg', { viewBox: `0 0 ${S} ${S}`, class: 'pz-ink' });
+    f.stage.append(svg);
+    const ok = el('button', { class: 'btn primary', onclick: () => judge() }, '畫好了');
+    f.btns.append(ok);
+    let col = Array(R).fill(null), over = false;
+    const clash = () => { let n = 0; for (let i = 0; i < R; i++) for (const j of adj[i]) if (j > i && col[i] !== null && col[i] === col[j]) n++; return n; };
+    const status = () => { f.info.textContent = `還有 ${col.filter((c, i) => i && c === null).length} 塊沒上色　顏色撞在一起 ${clash()} 處　還可以再畫 ${tries - 1} 次`; };
+    const draw = () => {
+      svg.innerHTML = '';
+      for (let k = 0; k < N * N; k++) {
+        const [c, r] = cr(k), i = reg[k], bad = col[i] !== null && [...adj[i]].some(j => col[j] === col[i]);
+        svg.append(svgEl('rect', { x: c * cell, y: r * cell, width: cell, height: cell, fill: col[i] === null ? '#efe6cf' : MAPC[col[i]], 'fill-opacity': bad ? .6 : 1 }));
+        if (bad) svg.append(svgEl('path', { d: `M${c * cell + 4} ${r * cell + 4} l${cell - 8} ${cell - 8}`, stroke: '#2a2016', 'stroke-opacity': .35, 'stroke-width': 2 }));
+      }
+      // 區域的邊界畫粗線
+      for (let k = 0; k < N * N; k++) {
+        const [c, r] = cr(k);
+        if (c < N - 1 && reg[k] !== reg[k + 1]) svg.append(svgEl('line', { x1: (c + 1) * cell, y1: r * cell, x2: (c + 1) * cell, y2: (r + 1) * cell, stroke: '#2a2016', 'stroke-width': 3 }));
+        if (r < N - 1 && reg[k] !== reg[k + N]) svg.append(svgEl('line', { x1: c * cell, y1: (r + 1) * cell, x2: (c + 1) * cell, y2: (r + 1) * cell, stroke: '#2a2016', 'stroke-width': 3 }));
+      }
+      svg.append(svgEl('rect', { x: 1.5, y: 1.5, width: S - 3, height: S - 3, fill: 'none', stroke: '#2a2016', 'stroke-width': 3 }));
+      status();
+    };
+    svg.addEventListener('pointerdown', e => {
+      if (over) return;
+      const b = svg.getBoundingClientRect(), c = Math.floor((e.clientX - b.left) / b.width * N), r = Math.floor((e.clientY - b.top) / b.height * N);
+      if (c < 0 || r < 0 || c >= N || r >= N) return;
+      const i = reg[at(c, r)];
+      col[i] = col[i] === null ? 0 : col[i] + 1 >= C ? null : col[i] + 1;
+      ctx.audio.tone(col[i] === null ? 0 : col[i] + 1); draw();
+    });
+    const judge = async () => {
+      if (over) return;
+      const empty = col.filter((c, i) => i && c === null).length, n = clash();
+      if (!empty && !n && col[0] === null) { over = true; ok.remove(); ctx.audio.sfx('win'); return finish(f, true, '每一塊都上好了顏色，正中間留著一塊空白。海圖看起來，好像還在呼吸。', res); }
+      tries--; ctx.audio.sfx('fail');
+      const why = empty ? `還有 ${empty} 塊沒有上色。` : n ? `有 ${n} 個地方，相鄰的兩塊是同一個顏色。` : '顏色都對了。可是正中間那一塊，被畫滿了。整張圖，好像透不過氣。';
+      if (tries <= 0) { over = true; ok.remove(); status(); return finish(f, false, why + '墨水在紙上暈開了，這張海圖畫不完。', res); }
+      f.msg.textContent = why + '再想想看。';
+      status();
+    };
+    f.box.solve = async () => { col = [...sol]; col[0] = null; draw(); await wait(200); judge(); };
+    draw();
   });
 }
