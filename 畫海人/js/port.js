@@ -48,7 +48,7 @@ export class Port {
       : g.flags.第二章 && !g.flags.焰 ? '環礁的四座島都畫進書裡了。天文台的老人說，往南看得到煙的地方，有下一片海。'
       : g.flags.第三章 && !g.flags.北 ? '焰之群島的四座島都畫進書裡了。天文台的老人，把望遠鏡轉向了北方。'
       : g.flags.第四章 && !g.flags.霧心 ? '北霧海的四座島都畫進書裡了。從霧門帶回來的劍客，在天文台醒了。'
-      : g.flags.結局 ? '海圖的五頁都畫好了。可以繼續補完測繪、完成心願、接委託；到「天文台」，可以重新做一次最後的抉擇。'
+      : g.flags.結局 ? '海圖的五頁都畫好了。可以繼續補完測繪、完成心願、接委託；到「天文台」，可以重新做一次最後的抉擇，也可以在「小遊戲間」挑遺跡謎題來玩。'
       : g.flags.霧心 ? '霧心的島都畫進海圖了。打倒公會長以前，可以回去補完測繪、完成隊友的心願、接委託、打造裝備。'
       : g.flags.第四章 ? '北霧海的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : g.flags.第三章 ? '焰之群島的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
@@ -72,7 +72,7 @@ export class Port {
         fac('酒館', ready ? `有 ${ready} 個委託可以回報！` : `委託告示板（進行中 ${jobsN}/${JOBS_MAX}）`, () => this.tavern(), this.hasTavern, '完成低語礁以後開放'),
         fac('鐵匠', `用素材打造裝備（素材 ${matN} 個）`, () => this.smith(), this.hasTavern, '完成低語礁以後開放'),
         fac('船塢', '加大貨艙、補船帆、裝船首像', () => this.yard(), this.hasYard, '完成晨忘島以後開放'),
-        g.flags.第一章 ? fac('天文台', !g.flags.環礁 || (g.flags.第二章 && !g.flags.焰) || (g.flags.第三章 && !g.flags.北) || (g.flags.第四章 && !g.flags.霧心) ? '門開了！進去看看' : '星圖與往霧心的路', () => ctx.observatory()) : null,
+        g.flags.第一章 ? fac('天文台', !g.flags.環礁 || (g.flags.第二章 && !g.flags.焰) || (g.flags.第三章 && !g.flags.北) || (g.flags.第四章 && !g.flags.霧心) ? '門開了！進去看看' : g.flags.結局 ? '重新抉擇・小遊戲間' : '星圖與往霧心的路', () => ctx.observatory()) : null,
         g.flags.第一章 ? fac('市場', '把素材賣成銀貝', () => this.market(), this.hasMarket, '完成千帆市以後開放') : null,
         g.flags.焰 ? fac('黑市', '紅帆的地下交易：火藥、稀有圖紙', () => this.blackMarket(), this.hasBlack, '完成紅帆港以後開放') : null),
       el('div', { class: 'p-isles' }, ...ISLAND_ORDER.filter(id => this.seas.includes(ISLANDS[id].sea)).map(id => {

@@ -1,6 +1,6 @@
 // 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章 → 霧心：最後的抉擇 → 結局 → 尾聲（之後可以繼續玩）
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES } from './data.js';
-import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
+import { ISLANDS, ISLAND_ORDER, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
 import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
 import { UI, el, $ } from './ui.js';
@@ -8,6 +8,7 @@ import { Audio } from './audio.js';
 import { Battle } from './battle.js';
 import { Explore, newIsland, worldOf, surveyMax, helpers } from './explore.js';
 import { Port, statText } from './port.js';
+import { playPuzzle, PUZZLE_TIPS } from './puzzle.js';
 
 export const VERSION = 'M5 第五海域 v0.2（完結）';
 
@@ -256,14 +257,36 @@ ctx.observatory = async () => {
     g.flags.霧心 = 1; save(g);
   } else if (g.flags.結局) {
     const seen = (g.endings || []).map(k => ENDINGS[k].title).join('、');
-    const i = await ctx.ui.choose('天文台', ['老人把望遠鏡對著霧心。那裡，現在是一片很淡很淡的霧。', `看過的結局：${seen}（${(g.endings || []).length}/${Object.keys(ENDINGS).length}）`, '「想再做一次最後的抉擇嗎？」老人問，「書的最後一頁，隨時可以重新畫。」'], [{ label: '回到霧心，重新做最後的抉擇' }, { label: '不用了' }]);
+    const i = await ctx.ui.choose('天文台', ['老人把望遠鏡對著霧心。那裡，現在是一片很淡很淡的霧。', `看過的結局：${seen}（${(g.endings || []).length}/${Object.keys(ENDINGS).length}）`, '「想再做一次最後的抉擇嗎？」老人問，「書的最後一頁，隨時可以重新畫。」', '牆上掛著一路畫回來的遺跡謎題，每一個都可以再玩一次。'], [{ label: '回到霧心，重新做最後的抉擇' }, { label: '小遊戲間：挑一個遺跡謎題來玩' }, { label: '不用了' }]);
     if (i === 0) return lastChoice();
+    if (i === 1) return minigames();
   } else {
     const where = g.flags.霧心 ? '霧心' : g.flags.北 ? '北霧海' : g.flags.焰 ? '焰之群島' : '環礁';
     await ctx.ui.alert('天文台', ['老人在擦望遠鏡。', `「往霧心的路，還很長。」他說，「先把${where}的每一座島，都好好畫進書裡吧。」`], '回到港口');
   }
   ctx.port.show();
 };
+
+// 小遊戲間（通關後）：每座島的遺跡謎題，挑一個玩。不拿獎勵、不改劇情；難度只算這一次
+async function minigames(diff = ctx.g.diff) {
+  const g = ctx.g;
+  const list = ISLAND_ORDER.filter(id => ISLANDS[id].ruin && ISLANDS[id].ruin.game).map(id => ({ id, kind: ISLANDS[id].ruin.game.kind, sea: ISLANDS[id].sea }));
+  const seas = [...new Set(list.map(x => x.sea))];
+  const solved = x => (g.practice || {})[x.kind] || g.flags['謎:' + x.id];
+  const pick = await new Promise(res => {
+    const api = ctx.ui.sheet('小遊戲間', body => {
+      body.append(el('p', { class: 'para' }, '一路畫回來的遺跡謎題，都掛在天文台的牆上。挑一個來玩吧。（不拿獎勵，也不影響劇情和存檔）'),
+        el('div', { class: 'set-row' }, el('b', {}, '這次的難度'), el('div', { class: 'chips' }, ...['悠閒', '標準', '困難'].map(k => el('button', { class: 'chip btn-chip' + (diff === k ? ' on' : ''), onclick: () => { diff = k; api.rebuild(); } }, k)))));
+      for (const sea of seas) body.append(el('h3', { class: 'pg-sea' }, sea), el('div', { class: 'pg-list' }, ...list.filter(x => x.sea === sea).map(x =>
+        el('button', { class: 'pg-game' + (solved(x) ? ' done' : ''), onclick: () => { res(x); api.close(); } },
+          el('b', {}, x.kind), el('small', {}, `${x.id}・${PUZZLE_TIPS[x.kind] || ''}${solved(x) ? '・✓' : ''}`)))));
+    }, { onClose: () => res(null) });
+  });
+  if (!pick) return ctx.port.show();
+  const win = await playPuzzle({ ...ctx, g: { ...g, diff }, practice: true }, pick.kind, pick.id);
+  if (win) { g.practice = { ...(g.practice || {}), [pick.kind]: 1 }; save(g); }
+  return minigames(diff);
+}
 
 // ───────── 最後的抉擇與結局 ─────────
 // 打倒公會長：記下霧心的紀錄，然後是最後的抉擇
@@ -333,7 +356,7 @@ function credits(k) {
       el('li', {}, `走了 ${g.stats.steps} 格・戰鬥 ${g.stats.battles} 場・擊退 ${g.stats.kills} 隻`),
       el('li', {}, `委託完成 ${g.jobsDone.length} 個・圖紙 ${g.bps.length}/${Object.keys(EQUIPS).length} 張`),
       el('li', {}, `用時：約 ${min} 分鐘`)),
-    el('p', { class: 'muted' }, '回到港口以後，可以繼續玩：接委託、補完測繪、完成心願。到天文台，可以重新做一次最後的抉擇，看看其他的結局。'),
+    el('p', { class: 'muted' }, '回到港口以後，可以繼續玩：接委託、補完測繪、完成心願。到天文台，可以重新做一次最後的抉擇，看看其他的結局，也可以在「小遊戲間」挑遺跡謎題來玩。'),
     el('div', { class: 'col' }, el('button', { class: 'btn primary', onclick: () => ctx.port.show() }, '回到港口'))));
 }
 
@@ -390,7 +413,7 @@ function help() {
     '・北霧海：淡藍色的格子結了冰，走上去會一直往同一個方向滑，滑到冰的盡頭才停（滑行不吃糧）。「聲」是霧裡的低語，可能是線索，也可能是陷阱；聽過的低語記在選單的「霧裡的低語」。「跡」是母親留下的星形記號，每座島一個。',
     '・霧心：白色的格子是「空白」，紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去；空白後面，有時候藏著寶箱，有時候藏著妖物。「圖」是公會長五十年前留下的舊圖碎片，每座島一張。',
     '・心願（第五章開始）：每個隊友都有一個心願，在「隊伍」裡看得到。大部分的心願，要在那個人的島上拿到好結局（測繪度 60% 以上返航）才會完成；沒完成的，可以回去那座島再玩一次。',
-    '・霧心的最後一座島：商會、紅帆、守霧人的聲望到「信任」以上，就會來幫忙。打倒公會長以後，是最後的抉擇，有四種結局。「留白」要三方聲望都到「信任」、8 個隊友的心願都完成、全部的島平均畫到最多能畫的九成才選得到。看完結局可以繼續玩，到天文台可以重新選。',
+    '・霧心的最後一座島：商會、紅帆、守霧人的聲望到「信任」以上，就會來幫忙。打倒公會長以後，是最後的抉擇，有四種結局。「留白」要三方聲望都到「信任」、8 個隊友的心願都完成、全部的島平均畫到最多能畫的九成才選得到。看完結局可以繼續玩，到天文台可以重新選，也可以進「小遊戲間」，挑任何一座島的遺跡謎題來玩（可以選難度，不拿獎勵）。',
     '・守霧人（第四章開始）：聲望到「信任」，出航可以走祕密航道，不會遇到航海事件；到「夥伴」，點燈的時候用的是灰燈：霧不會回來，也聽得出低語是真是假。',
   ], '知道了');
 }
