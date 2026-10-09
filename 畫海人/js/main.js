@@ -1,6 +1,6 @@
-// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完
-import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE } from './data.js';
-import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, CINEMA } from './islands.js';
+// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章
+import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES } from './data.js';
+import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
 import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
 import { UI, el, $ } from './ui.js';
@@ -9,7 +9,7 @@ import { Battle } from './battle.js';
 import { Explore, newIsland, worldOf, surveyMax } from './explore.js';
 import { Port, statText } from './port.js';
 
-export const VERSION = 'M4 第四海域 v0.1';
+export const VERSION = 'M5 第五海域 v0.1（前半）';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -238,8 +238,13 @@ ctx.observatory = async () => {
     g.rep = { ...(g.rep || { 商會: 0, 紅帆: 0 }), 守霧人: 10 };
     await ctx.ui.story(lines(OBSERVATORY4));
     g.flags.北 = 1; save(g);
+  } else if (g.flags.第四章 && !g.flags.霧心) {
+    await cinema('第五章');
+    await ctx.ui.story(lines(OBSERVATORY5));
+    await ctx.recruit('霧子');
+    g.flags.霧心 = 1; save(g);
   } else {
-    const where = g.flags.北 ? '北霧海' : g.flags.焰 ? '焰之群島' : '環礁';
+    const where = g.flags.霧心 ? '霧心' : g.flags.北 ? '北霧海' : g.flags.焰 ? '焰之群島' : '環礁';
     await ctx.ui.alert('天文台', ['老人在擦望遠鏡。', `「往霧心的路，還很長。」他說，「先把${where}的每一座島，都好好畫進書裡吧。」`], '回到港口');
   }
   ctx.port.show();
@@ -296,6 +301,8 @@ function help() {
     '・焰之群島：發紅的格子是熱地，走上去全隊會掉一點血；礦坑很暗，看得見的範圍比較小；噴氣口每走三步噴一次火，發亮的時候不要踩上去。',
     '・聲望（第三章開始）：商會和紅帆會記得你們幫過誰。勢力委託、島上的選擇都會改變聲望；紅帆的聲望越高，「黑市」賣的東西越好，商會的聲望越高，「市場」收素材的價錢越好。',
     '・北霧海：淡藍色的格子結了冰，走上去會一直往同一個方向滑，滑到冰的盡頭才停（滑行不吃糧）。「聲」是霧裡的低語，可能是線索，也可能是陷阱；聽過的低語記在選單的「霧裡的低語」。「跡」是母親留下的星形記號，每座島一個。',
+    '・霧心：白色的格子是「空白」，紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去；空白後面，有時候藏著寶箱，有時候藏著妖物。「圖」是公會長五十年前留下的舊圖碎片，每座島一張。',
+    '・心願（第五章開始）：每個隊友都有一個心願，在「隊伍」裡看得到。大部分的心願，要在那個人的島上拿到好結局（測繪度 60% 以上返航）才會完成；沒完成的，可以回去那座島再玩一次。',
     '・守霧人（第四章開始）：聲望到「信任」，出航可以走祕密航道，不會遇到航海事件；到「夥伴」，點燈的時候用的是灰燈：霧不會回來，也聽得出低語是真是假。',
   ], '知道了');
 }
@@ -321,6 +328,7 @@ ctx.partySheet = () => {
           el('small', {}, slot), el('b', {}, h.eq[slot] || '—')))),
         el('p', { class: 'muted small' }, ctx.ui.fmt(d.desc)),
         el('p', { class: 'small' }, '技能：' + d.skills.join('、')),
+        g.flags.霧心 && WISHES[h.key] ? el('p', { class: 'small wish' + (wishDone(h.key) ? ' done' : '') }, `心願：${WISHES[h.key].text}　` + (wishDone(h.key) ? '✓ 完成了' : WISHES[h.key].isle ? `（在「${WISHES[h.key].isle}」拿到好結局）` : '（第五章的最後揭曉）')) : null,
         el('div', { class: 'chips' }, ...['藥草', '海靈露'].map(k => el('button', { class: 'chip btn-chip', disabled: !(g.supply[k] > 0) || h.hp <= 0 || (k === '藥草' ? h.hp >= st.hp : h.mp >= st.mp), onclick: () => {
           g.supply[k]--;
           if (k === '藥草') h.hp = Math.min(st.hp, h.hp + Math.round(st.hp * ITEMS.藥草.heal)); else h.mp = Math.min(st.mp, h.mp + ITEMS.海靈露.mp);
@@ -330,6 +338,10 @@ ctx.partySheet = () => {
     body.append(el('p', { class: 'muted small' }, '點「前排／後排」可以調整站位。點裝備欄可以換裝備（在港口的鐵匠打造）。'));
   });
 };
+
+// 隊友的心願：那座島拿到好結局就算完成
+function wishDone(key) { const w = WISHES[key]; return !!(w && w.isle && (ctx.g.world[w.isle] || {}).good); }
+ctx.wishDone = wishDone;
 
 // 換裝備：列出手上有、這個人能用的
 function equipSheet(h, slot, parent) {

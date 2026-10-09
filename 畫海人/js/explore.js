@@ -52,6 +52,8 @@ export function newIsland(g, id) {
   for (const k in (route && route.pool) || {}) pool[k] = Math.max(0, (pool[k] || 0) + route.pool[k]);
   // 母親的足跡：找到過就不會再出現
   if (g.flags['足跡:' + id]) delete pool.跡;
+  // 公會的舊圖碎片：找到過就不會再出現
+  if (g.flags['碎片:' + id]) delete pool.圖;
   for (const k in pool) for (let i = 0; i < pool[k]; i++) bag.push(k);
   shuffle(free).forEach((t, i) => { t.kind = bag[i] || '空'; if (t.kind === '空') t.done = true; });
   // 火山的地形：熱地（走上去會受傷）、噴氣口（每走三步噴一次）。登陸點、首領、村子、營地、測繪點不會是
@@ -61,6 +63,8 @@ export function newIsland(g, id) {
   // 北霧海的冰面：只結在空地上，登陸點旁邊不會有
   const nIce = (def.ice || 0) + ((route && route.ice) || 0);
   shuffle(tiles.filter(t => t.kind === '空' && t.land !== '岩' && t.land !== '熱' && t.land !== '噴' && dist([t.c, t.r], start) > 1)).slice(0, nIce).forEach(t => { t.land = '冰'; });
+  // 霧心的空白格：紙還沒畫到的地方。登陸點旁邊、村子、測繪點、首領、霧眼不會是；不會把路完全擋住
+  if (def.blank) placeBlank(def, tiles, start, def.blank);
   const isl = { id, tiles, pos: [...start], start: [...start], steps: 0, lit: false, food: 0, events: shuffle(def.events.map((_, i) => i)), boss: false, key: false };
   // 已經完成過的島：首領不在了，門也開著；測繪過的測繪點不用再畫
   if (rec.cleared) { isl.boss = true; isl.key = true; const b = tiles.find(t => t.kind === '王'); b.done = true; }
@@ -73,6 +77,18 @@ export function newIsland(g, id) {
   tiles.find(t => t.kind === '王').seen = true;
   rec.visits++;
   return isl;
+}
+
+function placeBlank(def, tiles, start, n) {
+  const at = (c, r) => tiles[r * def.cols + c];
+  const can = tiles.filter(t => ['空', '寶', '怪', '？'].includes(t.kind) && !t.surveyed && !['岩', '冰', '熱', '噴'].includes(t.land) && dist([t.c, t.r], start) > 1);
+  for (let k = n; k > 0; k--) for (let tries = 0; tries < 40; tries++) {
+    const pick = new Set(shuffle(can).slice(0, k));
+    // 不是空白的格子，從登陸點都要走得到
+    const seen = new Set([start.join(',')]), q = [start];
+    while (q.length) { const p = q.shift(); for (const [c, r] of neighbors(...p, def)) { const key = c + ',' + r; if (!seen.has(key) && !pick.has(at(c, r))) { seen.add(key); q.push([c, r]); } } }
+    if (seen.size === tiles.length - pick.size) { for (const t of pick) { t.base = t.land; t.land = '白'; } return; }
+  }
 }
 
 export function pointDone(tiles, t) { return tiles.every(x => x.surveyed || dist([x.c, x.r], [t.c, t.r]) > 2); }
@@ -144,7 +160,7 @@ export class Explore {
       grp.setAttribute('class', 'hex' + (t.seen ? ' seen land-' + t.land : ' fog') + (t.surveyed ? ' surveyed' : '') + (here ? ' here' : '') + (can ? ' can' : ''));
       const poly = document.createElementNS(NS, 'polygon'); poly.setAttribute('points', pts); grp.append(poly);
       const vent = t.seen && t.land === '噴' && !here && (t.done || t.kind === '空') && t.kind !== '起' && t.kind !== '村';
-      const label = here || vent ? '' : !t.seen ? '' : t.kind === '王' ? def.boss.label[isl.key ? 1 : 0] : t.done && t.kind !== '村' && t.kind !== '起' ? '·' : t.kind === '空' ? '' : t.kind;
+      const label = here || vent ? '' : !t.seen || t.land === '白' ? '' : t.kind === '王' ? def.boss.label[isl.key ? 1 : 0] : t.done && t.kind !== '村' && t.kind !== '起' ? '·' : t.kind === '空' ? '' : t.kind;
       if (label) { const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', x); tx.setAttribute('y', y + 7); tx.setAttribute('class', 'k k-' + t.kind + (t.done ? ' done' : '')); tx.textContent = label; grp.append(tx); }
       if (vent) { const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', x); tx.setAttribute('y', y + 5); tx.setAttribute('class', 'vent'); tx.textContent = (isl.steps + 1) % 3 === 0 ? '噴！' : '煙'; grp.append(tx); }
       if (t.land === '噴' && (isl.steps + 1) % 3 === 0) grp.classList.add('erupt');
@@ -177,6 +193,7 @@ export class Explore {
       el('p', { class: 'muted' }, full ? `測繪度 ${pct}%：這座島已經畫滿了（最高就是 ${max}%），測繪點不會再出現。` : `測繪度 ${pct}%，這座島最高可以畫到 ${max}%。`),
       el('p', { class: 'muted' }, (isl.lit ? '燈亮著：看得更遠、霧中不會打偏；每走一格用掉 1 份燈油。' : '點燈可以看得更遠（每走一格用 1 份燈油）。') + (def.dark ? def.darkTip || '這裡很暗，看得見的範圍比較小。' : '') + (isl.lit && this.grey ? '點的是守霧人的灰燈：霧不會回來，也聽得出低語是真是假。' : '')),
       def.ice ? el('p', { class: 'muted' }, '淡藍色的格子結了冰：走上去會一直往同一個方向滑，滑到冰的盡頭才停。滑行不吃糧。') : null,
+      def.blank ? el('p', { class: 'muted' }, '白色的格子是「空白」：紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去。空白後面，有時候藏著東西。') : null,
       def.hot || def.vents ? el('p', { class: 'muted' }, (def.hot ? '發紅的格子是熱地：走上去，全隊會掉一點體力。' : '') + (def.vents ? `噴氣口每走三步噴一次火：寫著「噴！」的時候，下一步不要踩上去。` : '')) : null].filter(Boolean));
     if (cur.kind === '村') this.$info.append(el('button', { class: 'btn small', onclick: () => this.village() }, '進村子'));
     if (cur.kind === '起') this.$info.append(el('button', { class: 'btn small' + (isl.boss ? ' primary' : ''), onclick: () => this.sailHome(!isl.boss) }, isl.boss ? '返航' : '先回港口'));
@@ -185,6 +202,17 @@ export class Explore {
   async move(t) {
     const g = this.g, isl = this.isl, diff = DIFF[g.diff] || DIFF.標準;
     if (this.busy) return;
+    // 空白格：花 1 份墨水，把它畫成路
+    if (t.land === '白') {
+      this.busy = true;
+      const ok = g.supply.墨水 >= 1;
+      const i = await this.ctx.ui.choose('空白', ['這一格什麼都沒有，像紙還沒畫到的地方。', ok ? '要用 1 份墨水，把它畫成路嗎？' : '要用墨水才能把它畫成路，可是你們的墨水用完了。'], [{ label: '畫成路（墨水 1）', disabled: !ok }, { label: '先不要' }]);
+      this.busy = false;
+      if (i !== 0) return;
+      g.supply.墨水--; t.land = t.base || '林'; t.drawn = true; t.seen = true;
+      this.ctx.audio.sfx('pen');
+      this.ctx.ui.toast(t.kind === '空' ? '筆尖畫過的地方，變成了一條路。' : '畫出來的路上，好像有什麼東西……');
+    }
     this.busy = true;
     let from = [...isl.pos];
     isl.pos = [t.c, t.r];
@@ -211,7 +239,7 @@ export class Explore {
       const [nc, nr] = ahead(from, [t.c, t.r]);
       if (nc < 0 || nr < 0 || nc >= this.def.cols || nr >= this.def.rows) break;
       const n = tileAt(isl, nc, nr);
-      if (n.land === '岩') break;
+      if (n.land === '岩' || n.land === '白') break;
       from = [t.c, t.r]; t = n; isl.pos = [t.c, t.r]; slid++;
       reveal(isl, isl.pos, sight(this.def, isl.lit));
     }
@@ -226,7 +254,7 @@ export class Explore {
     if (!wasSeen) this.ctx.audio.sfx('pen');
     // 霧會回來
     if (diff.fogBack && !(isl.lit && this.grey) && isl.steps % (g.diff === '困難' ? 5 : 7) === 0) {
-      const back = isl.tiles.filter(x => x.seen && !x.surveyed && x.kind !== '起' && x.kind !== '王' && dist([x.c, x.r], isl.pos) >= 2);
+      const back = isl.tiles.filter(x => x.seen && !x.surveyed && !x.drawn && x.kind !== '起' && x.kind !== '王' && dist([x.c, x.r], isl.pos) >= 2);
       if (back.length) { const x = pick(back); x.seen = false; this.ctx.ui.toast('霧，吞回了一格。只有測繪過的地方，才不會被吞掉。'); this.ctx.audio.sfx('whisper'); }
     }
     else if (!isl.lit && Math.random() < 0.18) { this.ctx.ui.toast(pick(this.def.whispers)); this.ctx.audio.sfx('whisper'); }
@@ -361,6 +389,17 @@ export class Explore {
         t.done = true;
         break;
       }
+      case '圖': {
+        // 公會的舊圖碎片：每座島一張，是五十年前公會長畫的
+        g.flags['碎片:' + isl.id] = 1;
+        g.supply.墨水 += 2; g.morale = Math.min(100, g.morale + 8);
+        this.ctx.audio.sfx('pen');
+        await ui.story(this.ctx.storyLines(def.fragment));
+        const all = Object.keys(ISLANDS).filter(k => ISLANDS[k].fragment), got = all.filter(k => g.flags['碎片:' + k]).length;
+        await ui.alert('公會的舊圖碎片', [`找到了 ${got} 張公會長留下的舊圖碎片。（墨水 +2、士氣 +8）`, '霧心的其他島上，可能還有。']);
+        t.done = true;
+        break;
+      }
       case '遺': {
         // 遺跡小遊戲：解開了多拿獎勵；解不開也看得到字（首領弱點不會卡關）。解開過的，之後直接看字
         const R = def.ruin, G = R.game;
@@ -394,10 +433,10 @@ export class Explore {
         if (!isl.key) { await ui.alert(B.place, B.locked); isl.pos = from; break; }
         const i = await ui.choose(B.place, B.enter, [{ label: `進入${B.place}` }, { label: '再準備一下' }]);
         if (i !== 0) { isl.pos = from; break; }
-        await ui.story(B.intro.map(text => ({ text })));
+        await ui.story(this.ctx.storyLines(B.intro));
         if (await this.fight(t, from, B.foes, '首領')) {
           t.done = true; isl.boss = true; isl.bossNow = true;
-          const picks = await ui.story(B.down.map(L => typeof L === 'string' ? { text: L } : L));
+          const picks = await ui.story(this.ctx.storyLines(B.down));
           if (B.pick && picks.length) g.flags[B.pick] = picks[0];
           const bp = this.ctx.newBlueprint(def.bps);
           await ui.alert(B.place, [bp ? `（得到圖紙「${bp}」。回港以後，可以請鐵匠打造）` : '', '這座島的首領倒下了。', `現在可以繼續探索、測繪，回到登陸點（「起」）就能返航。目前測繪度 ${surveyPct(isl)}%：60% 以上，結局會不一樣。`].filter(Boolean));

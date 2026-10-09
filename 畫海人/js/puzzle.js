@@ -14,6 +14,9 @@
 // 鏡冰湖「冰滑」：推一下就一路滑到撞到東西才停，把小船滑進洞口（滑行）
 // 斷桅灣「密碼鎖」：每猜一次，告訴你幾個數字和位置都對、幾個只有數字對（猜數字）
 // 霧門「光路」：轉動冰稜鏡，讓光經過每一個燈座（折射光）
+// 忘人港「褪色的畫」：滑動方塊，把港口的畫拼回來（滑塊拼圖）
+// 無名島「數織」：照著格子旁邊的數字把格子塗黑，畫出島的樣子（數織）
+// 祈願塔「搬鐘」：把整疊鐘搬到另一根柱子，小鐘上面不能放大鐘（河內塔）
 // 每個遊戲的外框上都掛著 solve()：只給自動試玩機器人用
 // 每個小遊戲都回傳 Promise<boolean>：過關是 true
 import { el, $ } from './ui.js';
@@ -38,7 +41,7 @@ function frame(title, help) {
   $('layer').append(box);
   return { box, stage, info, msg, btns };
 }
-export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路'];
+export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路', '褪色的畫', '數織', '搬鐘'];
 
 // 遊戲結束：顯示結果，按下按鈕才關掉
 function finish(f, win, line, res) {
@@ -47,7 +50,7 @@ function finish(f, win, line, res) {
 }
 
 export function playPuzzle(ctx, kind, place) {
-  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath }[kind];
+  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath, 褪色的畫: fadedPicture, 數織: nonogram, 搬鐘: bells }[kind];
   return game(ctx, place);
 }
 
@@ -1100,5 +1103,193 @@ function lightPath(ctx) {
     };
     f.box.solve = async () => { while (round < plan.length) { while (busy) await wait(40); if (round >= plan.length) break; const r0 = round; for (let k = 0; k < N * N && round === r0; k++) if (mir[k] && mir[k] !== sol[k]) { await turn(k); await wait(60); } while (round === r0 && busy) await wait(40); if (round === r0) break; } };
     setup();
+  });
+}
+
+// ═════════ 褪色的畫：滑動方塊，把港口的畫拼回來（滑塊拼圖） ═════════
+// 畫是一張 SVG，切成 N×N 塊，少掉最後一塊當空格
+function harborArt() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3c98a"/><stop offset=".55" stop-color="#e9a07a"/><stop offset="1" stop-color="#7a9cb0"/></linearGradient></defs>`
+    + `<rect width="300" height="300" fill="url(#s)"/><circle cx="210" cy="96" r="30" fill="#fff2cf"/>`
+    + `<path d="M0 150 Q60 120 120 140 T240 130 L300 140 L300 300 L0 300 Z" fill="#4a7488"/><path d="M0 190 Q80 176 150 186 T300 184 V300 H0 Z" fill="#2e5468"/>`
+    + `<path d="M150 140 L170 60 L178 60 L196 140 Z" fill="#d9d2c0"/><rect x="164" y="48" width="20" height="14" fill="#f0d49a"/>`
+    + `<rect x="30" y="120" width="40" height="30" fill="#c0604a"/><path d="M26 120 L50 100 L74 120 Z" fill="#7a3a2c"/><rect x="80" y="126" width="34" height="26" fill="#e3d2a6"/><path d="M76 126 L97 108 L118 126 Z" fill="#5a4630"/>`
+    + `<rect x="0" y="206" width="160" height="10" fill="#5a4630"/>${[10, 50, 90, 130].map(x => `<rect x="${x}" y="206" width="6" height="40" fill="#3a2c1c"/>`).join('')}`
+    + `<path d="M200 236 L276 236 Q270 252 256 254 L214 254 Q204 250 200 236 Z" fill="#3a2c1c"/><line x1="238" y1="236" x2="238" y2="170" stroke="#3a2c1c" stroke-width="3"/><path d="M240 174 Q272 200 240 232 Z" fill="#efe6cf"/>`
+    + `<path d="M20 70 q8 -6 16 0 q8 -6 16 0 M80 50 q6 -5 12 0 q6 -5 12 0" stroke="#5a4630" stroke-width="2" fill="none"/></svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+function fadedPicture(ctx) {
+  return new Promise(res => {
+    const [N, depth, spare] = byDiff(ctx, [[3, 18, 60], [3, 34, 50], [4, 40, 70]]);
+    const f = frame('褪色的畫', '畫被切成方塊、打亂了。點空格旁邊的方塊，它會滑進空格。把畫拼回原本的樣子（右下角是空格）。');
+    const board = el('div', { class: 'pz-slide' });
+    const peek = el('img', { class: 'pz-peek', src: harborArt(), alt: '原本的畫' });
+    f.stage.append(board, el('small', { class: 'muted' }, '原本的畫：'), peek);
+    const art = harborArt();
+    // a[位置] = 方塊編號（N*N-1 是空格）
+    let a = [...Array(N * N).keys()], gap = N * N - 1, path = [], moves = 0, over = false;
+    const nb = p => [[0, -1], [-1, 0], [1, 0], [0, 1]].map(([dx, dy]) => [p % N + dx, Math.floor(p / N) + dy]).filter(([x, y]) => x >= 0 && y >= 0 && x < N && y < N).map(([x, y]) => y * N + x);
+    const swap = p => { a[gap] = a[p]; a[p] = N * N - 1; path.push(gap); gap = p; };
+    // 從拼好的樣子，空格隨便走 depth 步（不馬上走回頭）
+    do {
+      a = [...Array(N * N).keys()]; gap = N * N - 1; path = [];
+      for (let i = 0; i < depth; i++) { const back = path[path.length - 1]; const opts = nb(gap).filter(p => p !== back); swap(opts[rnd(opts.length)]); }
+    } while (a.every((v, i) => v === i));
+    const limit = depth + spare;
+    const status = () => { f.info.textContent = `滑了 ${moves}／${limit} 次`; };
+    const draw = () => {
+      board.innerHTML = '';
+      board.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
+      a.forEach((v, p) => {
+        if (v === N * N - 1) { board.append(el('div', { class: 'pz-sq gap' })); return; }
+        const x = v % N, y = Math.floor(v / N);
+        board.append(el('button', { class: 'pz-sq' + (v === p ? ' ok' : ''), 'aria-label': `第 ${v + 1} 塊`, style: { backgroundImage: `url("${art}")`, backgroundSize: `${N * 100}% ${N * 100}%`, backgroundPosition: `${x * 100 / (N - 1)}% ${y * 100 / (N - 1)}%` }, onclick: () => tap(p) }, el('small', {}, String(v + 1))));
+      });
+      status();
+    };
+    const tap = p => {
+      if (over || !nb(gap).includes(p)) return;
+      swap(p); moves++; ctx.audio.sfx('tap'); draw();
+      if (a.every((v, i) => v === i)) { over = true; board.classList.add('done'); ctx.audio.sfx('win'); return finish(f, true, '最後一塊滑進去的時候，畫上的顏色，一點一點回來了。夕陽、燈塔、碼頭上的小船。', res); }
+      if (moves >= limit) { over = true; ctx.audio.sfx('fail'); return finish(f, false, '方塊卡住了，再也推不動。畫還是灰灰的。', res); }
+    };
+    // 機器人：空格沿著走過的路，一步一步走回去
+    f.box.solve = async () => { while (!over && path.length) { const p = path[path.length - 1]; tap(p); path.pop(); path.pop(); await wait(70); } };
+    draw();
+  });
+}
+
+// ═════════ 數織：照著格子旁邊的數字，把島的地圖畫回來 ═════════
+// 數字是這一列（行）連在一起的黑格有幾段、每段幾格
+const runs = line => { const r = []; let n = 0; for (const v of line) { if (v) n++; else if (n) { r.push(n); n = 0; } } if (n) r.push(n); return r.length ? r : [0]; };
+// 一條線的所有可能塗法裡，一定是黑（1）、一定是白（0）、還不知道（null）
+function lineSolve(clue, known) {
+  const L = known.length, out = Array(L).fill(undefined);
+  const blocks = clue[0] === 0 ? [] : clue;
+  const place = (i, pos, cur) => {
+    if (i === blocks.length) {
+      for (let k = pos; k < L; k++) { if (known[k] === 1) return; cur[k] = 0; }
+      for (let k = 0; k < L; k++) out[k] = out[k] === undefined ? cur[k] : out[k] === cur[k] ? out[k] : null;
+      return;
+    }
+    const b = blocks[i], restMin = blocks.slice(i + 1).reduce((s, x) => s + x + 1, 0);
+    for (let s = pos; s + b + restMin <= L; s++) {
+      let ok = true;
+      for (let k = pos; k < s; k++) if (known[k] === 1) { ok = false; break; }
+      if (!ok) break;
+      for (let k = s; k < s + b; k++) if (known[k] === 0) { ok = false; break; }
+      if (!ok) continue;
+      if (s + b < L && known[s + b] === 1) continue;
+      const c = cur.slice();
+      for (let k = pos; k < s; k++) c[k] = 0;
+      for (let k = s; k < s + b; k++) c[k] = 1;
+      if (s + b < L) c[s + b] = 0;
+      place(i + 1, s + b + 1, c);
+    }
+  };
+  place(0, 0, Array(L).fill(0));
+  return out.some(v => v === undefined) ? null : out;
+}
+function nonoSolvable(N, rows, cols) {
+  const g = [...Array(N)].map(() => Array(N).fill(null));
+  for (let changed = true; changed;) {
+    changed = false;
+    for (let r = 0; r < N; r++) { const o = lineSolve(rows[r], g[r]); if (!o) return false; o.forEach((v, c) => { if (v !== null && g[r][c] === null) { g[r][c] = v; changed = true; } }); }
+    for (let c = 0; c < N; c++) { const o = lineSolve(cols[c], g.map(row => row[c])); if (!o) return false; o.forEach((v, r) => { if (v !== null && g[r][c] === null) { g[r][c] = v; changed = true; } }); }
+  }
+  return g.every(row => row.every(v => v !== null));
+}
+function nonogram(ctx) {
+  return new Promise(res => {
+    const N = byDiff(ctx, [5, 6, 7]);
+    let lives = byDiff(ctx, [5, 3, 2]);
+    const f = frame('數織', '格子旁邊的數字，是那一列（行）連在一起的黑格：例如「2 1」是先連兩格黑、隔開、再一格黑。照著數字把格子塗黑，畫出島原本的樣子。');
+    let sol;
+    for (let t = 0; t < 400; t++) {
+      // 中間比較容易是陸地，像一座島
+      sol = [...Array(N * N)].map((_, k) => { const x = k % N - (N - 1) / 2, y = Math.floor(k / N) - (N - 1) / 2; return Math.random() < 0.85 - (x * x + y * y) / (N * N * 0.55) ? 1 : 0; });
+      const rows = [...Array(N)].map((_, r) => runs(sol.slice(r * N, r * N + N))), cols = [...Array(N)].map((_, c) => runs(sol.filter((_, k) => k % N === c)));
+      if (sol.filter(Boolean).length >= N * N * 0.4 && nonoSolvable(N, rows, cols)) break;
+    }
+    const rows = [...Array(N)].map((_, r) => runs(sol.slice(r * N, r * N + N))), cols = [...Array(N)].map((_, c) => runs(sol.filter((_, k) => k % N === c)));
+    const st = Array(N * N).fill(0); // 0 空白、1 塗黑、2 打叉、3 塗錯
+    let mode = 1, over = false;
+    const grid = el('div', { class: 'pz-nono' });
+    const modeBtns = el('div', { class: 'chips' });
+    f.stage.append(grid, modeBtns);
+    const need = sol.filter(Boolean).length;
+    const status = () => { f.info.textContent = `畫好 ${st.filter((v, k) => v === 1 && sol[k]).length}／${need} 格　還可以塗錯 ${lives - 1} 次`; };
+    const drawMode = () => { modeBtns.innerHTML = ''; [[1, '■ 塗黑'], [2, '✕ 打叉（做記號）']].forEach(([m, l]) => modeBtns.append(el('button', { class: 'chip btn-chip' + (mode === m ? ' on' : ''), onclick: () => { mode = m; drawMode(); } }, l))); };
+    const draw = () => {
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = `auto repeat(${N}, minmax(0, 1fr))`;
+      grid.append(el('div', { class: 'pz-nc corner' }));
+      cols.forEach((c, i) => grid.append(el('div', { class: 'pz-nc col' + (lineDone(i, true) ? ' ok' : '') }, ...c.map(n => el('span', {}, String(n))))));
+      for (let r = 0; r < N; r++) {
+        grid.append(el('div', { class: 'pz-nc row' + (lineDone(r, false) ? ' ok' : '') }, ...rows[r].map(n => el('span', {}, String(n)))));
+        for (let c = 0; c < N; c++) { const k = r * N + c; grid.append(el('button', { class: 'pz-nk s' + st[k], 'aria-label': `第 ${r + 1} 列第 ${c + 1} 格`, onclick: () => tap(k) })); }
+      }
+      status();
+    };
+    const lineDone = (i, isCol) => [...Array(N)].every((_, j) => { const k = isCol ? j * N + i : i * N + j; return !sol[k] || st[k] === 1; });
+    const tap = k => {
+      if (over) return;
+      if (mode === 2) { if (st[k] === 0) st[k] = 2; else if (st[k] === 2) st[k] = 0; ctx.audio.sfx('tap'); return draw(); }
+      if (st[k] === 1 || st[k] === 3) return;
+      if (sol[k]) { st[k] = 1; ctx.audio.sfx('pen'); }
+      else { st[k] = 3; lives--; ctx.audio.sfx('fail'); f.msg.textContent = '那一格不是陸地。（已經幫你打上紅色的叉）'; }
+      draw();
+      if (sol.every((v, i) => !v || st[i] === 1)) { over = true; grid.classList.add('done'); ctx.audio.sfx('win'); return finish(f, true, '最後一格塗好的時候，石牆上的島，慢慢有了顏色。屋子、白花樹、小小的碼頭，都回來了。', res); }
+      if (lives <= 0) { over = true; sol.forEach((v, i) => { if (v && st[i] !== 1) st[i] = 4; }); draw(); return finish(f, false, '塗錯太多次，石牆上的線糊成了一片。', res); }
+    };
+    f.box.solve = async () => { mode = 1; for (let k = 0; k < N * N && !over; k++) if (sol[k] && st[k] !== 1) { tap(k); await wait(40); } };
+    drawMode(); draw();
+  });
+}
+
+// ═════════ 搬鐘：把整疊鐘搬到最右邊的柱子（河內塔） ═════════
+function bells(ctx) {
+  return new Promise(res => {
+    const n = byDiff(ctx, [3, 4, 5]);
+    const best = 2 ** n - 1, limit = best + byDiff(ctx, [10, 8, 6]);
+    let tries = byDiff(ctx, [3, 2, 2]);
+    const f = frame('搬鐘', '點一根柱子拿起最上面的鐘，再點另一根柱子放下。一次只能搬一口，小鐘上面不能放大鐘。把整疊鐘搬到最右邊的柱子。');
+    const box = el('div', { class: 'pz-hanoi' });
+    f.stage.append(box);
+    const redo = el('button', { class: 'btn', onclick: () => { if (!busy && moves) lose('重新來過。'); } }, '重來');
+    f.btns.append(redo);
+    let pegs, hold = null, moves = 0, busy = false, over = false;
+    const status = () => { f.info.textContent = `搬了 ${moves}／${limit} 次（最少要 ${best} 次）　還可以重來 ${tries - 1} 次`; };
+    const reset = () => { pegs = [[...Array(n)].map((_, i) => n - i), [], []]; hold = null; moves = 0; draw(); };
+    const draw = () => {
+      box.innerHTML = '';
+      pegs.forEach((p, i) => box.append(el('button', { class: 'pz-peg' + (hold === i ? ' hold' : '') + (i === 2 ? ' goal' : ''), 'aria-label': ['左邊', '中間', '右邊'][i] + '的柱子', onclick: () => tap(i) },
+        el('i', { class: 'pz-pole' }), ...p.map((s, k) => el('span', { class: 'pz-bell' + (hold === i && k === p.length - 1 ? ' up' : ''), style: { width: `${30 + s * 12}%`, bottom: `${8 + k * 22}px` } })))));
+      status();
+    };
+    const tap = async i => {
+      if (busy || over) return;
+      if (hold === null) { if (pegs[i].length) { hold = i; ctx.audio.tone(pegs[i][pegs[i].length - 1]); draw(); } return; }
+      if (hold === i) { hold = null; draw(); return; }
+      const s = pegs[hold][pegs[hold].length - 1], top = pegs[i][pegs[i].length - 1];
+      if (top && top < s) { ctx.audio.sfx('fail'); f.msg.textContent = '大鐘不能放在小鐘上面。'; hold = null; draw(); return; }
+      pegs[i].push(pegs[hold].pop()); hold = null; moves++; ctx.audio.tone(s); draw();
+      if (pegs[2].length === n) { over = true; redo.remove(); ctx.audio.sfx('win'); return finish(f, true, moves === best ? '一次都沒有多搬！鐘樓裡響起一段很慢、很完整的旋律。' : '最後一口鐘放好的時候，鐘樓裡響起一段很慢的旋律。', res); }
+      if (moves >= limit) lose('搬太多次，鐘的聲音亂成一團。');
+    };
+    const lose = async why => {
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { over = true; redo.remove(); status(); return finish(f, false, '鐘聲亂成一團，鐘樓裡什麼旋律都聽不出來。', res); }
+      busy = true; f.msg.textContent = why + '鐘回到了一開始的柱子。';
+      await wait(700); busy = false; reset();
+    };
+    f.box.solve = async () => {
+      reset();
+      const plan = [], mv = (k, a, b, c) => { if (!k) return; mv(k - 1, a, c, b); plan.push([a, c]); mv(k - 1, b, a, c); };
+      mv(n, 0, 1, 2);
+      for (const [a, c] of plan) { await tap(a); await tap(c); await wait(60); }
+    };
+    reset();
   });
 }

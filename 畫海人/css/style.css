@@ -527,6 +527,11 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 /* 北霧海：冰面、低語、母親的足跡 */
 .hex.seen.land-冰 polygon { fill: #cfe4ec; stroke: #8fb6c4; }
 .hex .k-聲 { fill: #4a6a7a; } .hex .k-跡 { fill: #b8862e; }
+/* 霧心：空白格（紙還沒畫到的地方）、舊圖碎片 */
+.hex.seen.land-白 polygon { fill: #f6f1e4; stroke: #c9bca0; stroke-dasharray: 5 4; }
+.hex.seen.land-白.can polygon { fill: #fffaf0; }
+.hex .k-圖 { fill: #7a4a24; }
+.hero .wish { color: var(--muted); } .hero .wish.done { color: var(--accent2); }
 /* 低語：找出說謊的聲音 */
 .pz-voices { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 .pz-voice { background: rgba(160, 190, 200, .1); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 14px; line-height: 1.6; }
@@ -558,3 +563,31 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .pz-lsvg .cup.on { fill: #f0d49a; stroke: #fff2cf; }
 .pz-beam { fill: none; stroke: #f0d49a; stroke-width: 3; stroke-opacity: .85; stroke-linejoin: round; pointer-events: none; }
 .pz-src { fill: #9fb4ba; stroke: #f0d49a; stroke-width: 2; }
+/* 褪色的畫（滑塊拼圖） */
+.pz-slide { display: grid; gap: 3px; width: 100%; max-width: 300px; aspect-ratio: 1; background: #3a2c1c; padding: 4px; border-radius: 8px; }
+.pz-sq { position: relative; border: 0; padding: 0; border-radius: 3px; background-repeat: no-repeat; filter: saturate(.25) brightness(.9); cursor: pointer; }
+.pz-sq.ok { filter: none; }
+.pz-sq.gap { background: #1a140e; }
+.pz-sq small { position: absolute; left: 3px; top: 1px; font-size: 11px; color: #fff; text-shadow: 0 0 3px #000; }
+.pz-slide.done .pz-sq { filter: none; }
+.pz-peek { width: 72px; height: 72px; border-radius: 6px; border: 1px solid var(--line); }
+/* 數織 */
+.pz-nono { display: grid; gap: 2px; width: 100%; max-width: 340px; align-items: stretch; }
+.pz-nc { font-size: 12px; color: var(--muted); display: flex; align-items: center; justify-content: flex-end; padding: 0 4px; font-family: var(--serif); white-space: nowrap; }
+.pz-nc.col { flex-direction: column; justify-content: flex-end; padding: 2px 0; line-height: 1.15; }
+.pz-nc.row { gap: 6px; }
+.pz-nc.ok { color: var(--accent2); }
+.pz-nk { width: 100%; min-width: 0; aspect-ratio: 1; border: 1px solid #6a5636; background: #efe6cf; border-radius: 2px; padding: 0; min-height: 0; position: relative; }
+.pz-nk.s1 { background: #2a2016; }
+.pz-nk.s2::after, .pz-nk.s3::after { content: '✕'; position: absolute; inset: 0; display: grid; place-items: center; color: #8a7a62; font-size: 14px; }
+.pz-nk.s3::after { color: #c0402a; }
+.pz-nk.s4 { background: #c0a080; }
+.pz-nono.done .pz-nk.s1 { background: #3a6a4a; }
+/* 搬鐘（河內塔） */
+.pz-hanoi { display: flex; gap: 6px; width: 100%; max-width: 360px; }
+.pz-peg { flex: 1; position: relative; height: 170px; border: 1px solid var(--line); border-radius: 10px; background: rgba(240, 212, 154, .05); padding: 0; }
+.pz-peg.goal { border-color: #b8862e; }
+.pz-peg.hold { background: rgba(240, 212, 154, .16); }
+.pz-pole { position: absolute; left: 50%; bottom: 6px; width: 6px; height: 140px; margin-left: -3px; background: #6a5636; border-radius: 3px; }
+.pz-bell { position: absolute; left: 50%; transform: translateX(-50%); height: 18px; border-radius: 10px 10px 4px 4px; background: linear-gradient(#e8c27a, #8a6a3a); box-shadow: 0 2px 0 rgba(0, 0, 0, .35); transition: bottom .15s; }
+.pz-bell.up { box-shadow: 0 0 10px #f0d49a; transform: translate(-50%, -12px); }
