@@ -1,7 +1,7 @@
 // 島嶼探索：六角格地圖、霧、補給、格子上的事件
 import { ISLANDS, TILE_INFO } from './islands.js';
-import { EQUIPS, MATS, PARTY_MAX, FACTIONS, repLevel, repOn, MIST_LAMP } from './data.js';
-import { heroStats, makeHero, DIFF, save } from './state.js';
+import { EQUIPS, MATS, PARTY_MAX, FACTIONS, repLevel, repOn, MIST_LAMP, cargoMax } from './data.js';
+import { heroStats, makeHero, DIFF, save, cargoUsed } from './state.js';
 import { survey } from './survey.js';
 import { playPuzzle } from './puzzle.js';
 import { el, $ } from './ui.js';
@@ -505,9 +505,11 @@ export class Explore {
       }
     }
     ui.sheet('村子的小店', (body, api) => {
-      body.append(el('p', { class: 'muted' }, `銀貝：${g.silver}`));
+      const used = cargoUsed(g), max = cargoMax(g);
+      body.append(el('p', { class: 'muted' }, `銀貝：${g.silver}　貨艙：${used} / ${max}`));
       for (const [k, [n, price]] of Object.entries(V.shop)) {
-        body.append(el('div', { class: 'shop-row' }, el('span', {}, `${k} ×${n}`), el('button', { class: 'btn small', disabled: g.silver < price, onclick: () => { g.silver -= price; g.supply[k] = (g.supply[k] || 0) + n; this.ctx.audio.sfx('item'); api.rebuild(); this.draw(); } }, `${price} 銀貝`)));
+        const full = used + n > max;
+        body.append(el('div', { class: 'shop-row' }, el('span', {}, `${k} ×${n}`), el('button', { class: 'btn small', disabled: g.silver < price || full, onclick: () => { g.silver -= price; g.supply[k] = (g.supply[k] || 0) + n; this.ctx.audio.sfx('item'); api.rebuild(); this.draw(); } }, full ? '貨艙滿了' : `${price} 銀貝`)));
       }
     });
   }

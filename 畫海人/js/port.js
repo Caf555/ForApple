@@ -226,16 +226,17 @@ export class Port {
         el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `紅帆「${REP_LEVELS[lv]}」`)));
       for (const it of BLACK_MARKET) {
         const locked = lv < it.need, owned = it.kind === 'bp' && g.bps.includes(it.bp);
+        const full = it.kind === 'supply' && cargoUsed(g) + it.n > cargoMax(g);
         const sub = it.kind === 'bp' ? `${EQUIPS[it.bp].slot}・${statText(EQUIPS[it.bp].stats)}` : it.kind === 'mat' ? `${MATS[it.name]}　×${it.n}` : `${ITEMS[it.name].desc}　×${it.n}`;
         body.append(el('div', { class: 'shop-row' + (locked ? ' locked' : '') },
           el('div', {}, el('b', {}, locked ? '？？？' : it.name), el('small', {}, locked ? `紅帆的聲望到「${REP_LEVELS[it.need]}」才拿得出來` : sub)),
-          el('button', { class: 'btn small', disabled: locked || owned || g.silver < it.price, onclick: () => {
+          el('button', { class: 'btn small', disabled: locked || owned || full || g.silver < it.price, onclick: () => {
             g.silver -= it.price;
             if (it.kind === 'bp') g.bps.push(it.bp);
             else if (it.kind === 'mat') g.mats[it.name] = (g.mats[it.name] || 0) + it.n;
             else g.supply[it.name] = (g.supply[it.name] || 0) + it.n;
             ctx.audio.sfx('item'); save(g); ctx.ui.toast(`買到了「${it.name}」。`); api.rebuild();
-          } }, owned ? '已經有了' : `${it.price} 銀貝`)));
+          } }, owned ? '已經有了' : full ? '貨艙滿了' : `${it.price} 銀貝`)));
       }
     }, { onClose: () => this.show() });
   }
