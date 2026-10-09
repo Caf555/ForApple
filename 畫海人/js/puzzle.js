@@ -10,6 +10,10 @@
 // 鐵喉礦坑「礦車」：推礦車，把每一台推到軌道終點的記號上（推箱子）
 // 鍛火嶼「鍛火」：看準爐溫剛好的時候敲下去（抓時機）
 // 紅岬「熔岩」：踩一塊石頭，它和上下左右的石頭會一起翻面，把全部踩成冷的（關燈遊戲）
+// 灰燈渡「低語」：幾個聲音裡剛好一個在說謊，找出信要送到哪裡（推理）
+// 鏡冰湖「冰滑」：推一下就一路滑到撞到東西才停，把小船滑進洞口（滑行）
+// 斷桅灣「密碼鎖」：每猜一次，告訴你幾個數字和位置都對、幾個只有數字對（猜數字）
+// 霧門「光路」：轉動冰稜鏡，讓光經過每一個燈座（折射光）
 // 每個遊戲的外框上都掛著 solve()：只給自動試玩機器人用
 // 每個小遊戲都回傳 Promise<boolean>：過關是 true
 import { el, $ } from './ui.js';
@@ -34,7 +38,7 @@ function frame(title, help) {
   $('layer').append(box);
   return { box, stage, info, msg, btns };
 }
-export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩'];
+export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路'];
 
 // 遊戲結束：顯示結果，按下按鈕才關掉
 function finish(f, win, line, res) {
@@ -43,7 +47,7 @@ function finish(f, win, line, res) {
 }
 
 export function playPuzzle(ctx, kind, place) {
-  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava }[kind];
+  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath }[kind];
   return game(ctx, place);
 }
 
@@ -814,6 +818,287 @@ function lava(ctx) {
     };
     // 解法：一開始產生熔岩田時踩過的格子，再扣掉玩家已經踩過的（踩兩次等於沒踩）
     f.box.solve = async () => { const sol = gen.map((v, i) => v ^ mine[i]); for (let i = 0; i < sol.length; i++) if (sol[i]) { await press(i); await wait(50); } };
+    setup();
+  });
+}
+
+// ═════════ 低語：幾個聲音裡，剛好有一個在說謊（推理） ═════════
+const PLACES = ['東邊的棧橋', '西邊的棧橋', '北邊的燈', '南邊的燈', '守霧人的屋子'];
+const VOICES = ['低沉的聲音', '小孩的聲音', '沙啞的聲音', '溫柔的聲音'];
+const sayText = s => s.t === 'is' ? `信要送到『${PLACES[s.x]}』。` : s.t === 'not' ? `信不是送到『${PLACES[s.x]}』。` : `不是『${PLACES[s.x]}』，就是『${PLACES[s.y]}』。`;
+const sayTrue = (s, a) => s.t === 'is' ? a === s.x : s.t === 'not' ? a !== s.x : a === s.x || a === s.y;
+// 剛好一句是假話的地點（答案唯一才拿來出題）
+const liarAnswers = (says, n) => [...Array(n).keys()].filter(a => says.filter(s => !sayTrue(s, a)).length === 1);
+function makeWhisper(n, v) {
+  for (let tries = 0; tries < 2000; tries++) {
+    const ans = rnd(n), liar = rnd(v), says = [];
+    for (let i = 0; i < v; i++) {
+      const want = i !== liar;
+      for (let k = 0; k < 50; k++) {
+        const t = ['is', 'not', 'not', 'or'][rnd(4)], x = rnd(n); let y = rnd(n); if (y === x) y = (x + 1) % n;
+        const s = { t, x, y };
+        if (sayTrue(s, ans) === want) { says.push(s); break; }
+      }
+    }
+    if (says.length === v && liarAnswers(says, n).length === 1) return { ans, liar, says };
+  }
+  return null;
+}
+function whisper(ctx) {
+  return new Promise(res => {
+    const plan = byDiff(ctx, [[[3, 3], [3, 3]], [[4, 3], [4, 4]], [[4, 4], [5, 4], [5, 4]]]);
+    let tries = byDiff(ctx, [3, 2, 2]);
+    const f = frame('低語', '霧裡有幾個聲音，告訴你信要送到哪裡。其中剛好有一個聲音在說謊，其他的都是真話。想一想，信要送到哪裡？');
+    const list = el('div', { class: 'pz-voices' });
+    const picks = el('div', { class: 'pz-places' });
+    f.stage.append(list, picks);
+    let round = 0, Q = null, busy = false;
+    const status = () => { f.info.textContent = `第 ${round + 1}／${plan.length} 封信　還可以猜錯 ${tries - 1} 次`; };
+    const setup = () => {
+      const [n, v] = plan[round];
+      Q = makeWhisper(n, v);
+      list.innerHTML = ''; picks.innerHTML = '';
+      Q.says.forEach((s, i) => list.append(el('div', { class: 'pz-voice' }, el('b', {}, VOICES[i]), el('span', {}, '「' + sayText(s) + '」'))));
+      for (let a = 0; a < n; a++) picks.append(el('button', { class: 'btn pz-place', onclick: () => pick(a) }, PLACES[a]));
+      status();
+    };
+    const pick = async a => {
+      if (busy) return;
+      busy = true;
+      const btn = picks.children[a];
+      if (a === Q.ans) {
+        btn.classList.add('ok'); ctx.audio.sfx('item');
+        list.children[Q.liar].classList.add('liar');
+        round++;
+        if (round >= plan.length) { ctx.audio.sfx('win'); return finish(f, true, '最後一封信送到的時候，霧裡的聲音都安靜了下來。有一個聲音，小聲地說：「謝謝。」', res); }
+        f.msg.textContent = `說謊的是「${VOICES[Q.liar]}」。信送到了！下一封。`;
+        await wait(1200); busy = false; setup(); return;
+      }
+      btn.classList.add('bad'); tries--; ctx.audio.sfx('fail'); status();
+      if (tries <= 0) { list.children[Q.liar].classList.add('liar'); return finish(f, false, `信送錯地方了。說謊的是「${VOICES[Q.liar]}」……霧裡的聲音，越來越遠。`, res); }
+      f.msg.textContent = '不是這裡。想想看：如果這裡是對的，有幾個聲音在說謊？';
+      busy = false;
+    };
+    f.box.solve = async () => { while (round < plan.length && Q) { while (busy) await wait(40); if (round >= plan.length) break; await pick(liarAnswers(Q.says, plan[round][0])[0]); await wait(60); } };
+    setup();
+  });
+}
+
+// ═════════ 冰滑：推一下，滑到撞到東西才停（滑行） ═════════
+const D4 = [[0, -1, '↑', 'u'], [-1, 0, '←', 'l'], [1, 0, '→', 'r'], [0, 1, '↓', 'd']];
+function slideTo(W, H, rock, hole, p, dx, dy) {
+  let x = p % W, y = Math.floor(p / W);
+  for (;;) {
+    const nx = x + dx, ny = y + dy;
+    if (nx < 0 || ny < 0 || nx >= W || ny >= H || rock.has(ny * W + nx)) break;
+    x = nx; y = ny;
+    if (y * W + x === hole) break;
+  }
+  return y * W + x;
+}
+function solveSlide(W, H, rock, hole, from) {
+  const prev = new Map([[from, null]]), q = [from];
+  while (q.length) {
+    const p = q.shift();
+    if (p === hole) { const path = []; let k = p; while (prev.get(k)) { path.unshift(prev.get(k)[1]); k = prev.get(k)[0]; } return path; }
+    for (const d of D4) { const t = slideTo(W, H, rock, hole, p, d[0], d[1]); if (!prev.has(t)) { prev.set(t, [p, d]); q.push(t); } }
+  }
+  return null;
+}
+function iceSlide(ctx) {
+  return new Promise(res => {
+    const plan = byDiff(ctx, [[[6, 3], [6, 4]], [[7, 4], [7, 5]], [[7, 5], [8, 6], [8, 6]]]);
+    let tries = byDiff(ctx, [4, 3, 2]);
+    const f = frame('冰滑', '冰面很滑。小船推一下，就會一直滑，撞到冰柱或湖岸才停。把小船滑進湖心的洞口（發光的圓圈）。滑過洞口的時候，船會掉進去。');
+    const grid = el('div', { class: 'pz-ice' });
+    const pad = el('div', { class: 'pz-pad' });
+    f.stage.append(grid, pad);
+    const redo = el('button', { class: 'btn', onclick: () => { if (!busy && moves) lose('重新來過。'); } }, '重來');
+    f.btns.append(redo);
+    let round = 0, W = 6, H = 6, rock = new Set(), hole = 0, start = 0, me = 0, moves = 0, limit = 0, busy = false;
+    const status = () => { f.info.textContent = `第 ${round + 1}／${plan.length} 片冰面　推了 ${moves}／${limit} 次　還可以重來 ${tries - 1} 次`; };
+    const setup = () => {
+      const [n, need] = plan[round]; W = H = n;
+      for (let t = 0; t < 3000; t++) {
+        rock = new Set(shuffle([...Array(W * H).keys()]).slice(0, Math.round(W * H * .16)));
+        const free = [...Array(W * H).keys()].filter(k => !rock.has(k));
+        hole = free[rnd(free.length)]; start = free[rnd(free.length)];
+        if (hole === start) continue;
+        const p = solveSlide(W, H, rock, hole, start);
+        if (p && p.length >= need && p.length <= need + 2) { limit = p.length + byDiff(ctx, [4, 3, 2]); break; }
+      }
+      reset();
+    };
+    const reset = () => { me = start; moves = 0; draw(); };
+    const draw = () => {
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = `repeat(${W}, 1fr)`;
+      for (let k = 0; k < W * H; k++) grid.append(el('div', { class: 'pz-ic' + (rock.has(k) ? ' rock' : '') + (k === hole ? ' hole' : '') + (k === me ? ' me' : '') }));
+      status();
+    };
+    const push = async (dx, dy) => {
+      if (busy) return;
+      const t = slideTo(W, H, rock, hole, me, dx, dy);
+      if (t === me) return;
+      me = t; moves++; ctx.audio.sfx('step'); draw();
+      if (me === hole) {
+        busy = true; ctx.audio.sfx('item');
+        round++;
+        if (round >= plan.length) { redo.remove(); ctx.audio.sfx('win'); return finish(f, true, '小船滑進洞口的那一刻，冰下傳來一聲很低很低的鐘響。洞口的冰，融化了一圈。', res); }
+        f.msg.textContent = '滑進去了！下一片冰面。';
+        await wait(900); busy = false; setup(); return;
+      }
+      if (moves >= limit) lose('推太多次，冰面裂開了。');
+    };
+    const lose = async why => {
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { busy = true; redo.remove(); status(); return finish(f, false, '冰面裂得太厲害，小船推不過去了。', res); }
+      busy = true; f.msg.textContent = why + '小船回到了一開始的地方。';
+      await wait(700); busy = false; reset();
+    };
+    pad.append(...D4.map(([dx, dy, label, area]) => el('button', { class: 'btn pz-dir', style: { gridArea: area }, 'aria-label': label, onclick: () => push(dx, dy) }, label)));
+    f.box.solve = async () => { while (round < plan.length) { while (busy) await wait(40); if (round >= plan.length) break; const r0 = round; for (const d of solveSlide(W, H, rock, hole, me) || []) { await push(d[0], d[1]); await wait(60); } while (round === r0 && busy) await wait(40); } };
+    setup();
+  });
+}
+
+// ═════════ 密碼鎖：猜公會長航海箱的密碼（猜數字） ═════════
+const perms = (pool, k) => k === 0 ? [[]] : pool.flatMap(d => perms(pool.filter(x => x !== d), k - 1).map(r => [d, ...r]));
+const score = (code, g) => { let a = 0, b = 0; g.forEach((d, i) => { if (code[i] === d) a++; else if (code.includes(d)) b++; }); return [a, b]; };
+function lock(ctx) {
+  return new Promise(res => {
+    const [K, D, maxTry] = byDiff(ctx, [[3, 5, 10], [4, 6, 8], [4, 7, 9]]);
+    const f = frame('密碼鎖', `公會長的航海箱上有 ${K} 格密碼，每格是 1～${D} 的數字，數字不會重複。每猜一次，鎖會告訴你：●＝數字對、位置也對；○＝數字對、可是位置不對。`);
+    const all = perms([...Array(D)].map((_, i) => i + 1), K);
+    const code = all[rnd(all.length)];
+    const hist = el('div', { class: 'pz-hist' });
+    const slots = el('div', { class: 'pz-code' });
+    const keys = el('div', { class: 'pz-keys' });
+    f.stage.append(hist, slots, keys);
+    let cur = [], used = 0, over = false;
+    const status = () => { f.info.textContent = `猜了 ${used}／${maxTry} 次`; };
+    const draw = () => {
+      slots.innerHTML = '';
+      for (let i = 0; i < K; i++) slots.append(el('span', { class: 'pz-digit' + (cur[i] ? ' on' : '') }, cur[i] ? String(cur[i]) : '·'));
+      [...keys.querySelectorAll('.pz-key')].forEach((b, i) => { b.disabled = over || cur.includes(i + 1) || cur.length >= K; });
+      send.disabled = over || cur.length < K;
+      status();
+    };
+    const press = d => { if (over || cur.length >= K || cur.includes(d)) return; cur.push(d); ctx.audio.tone(d); draw(); };
+    const back = el('button', { class: 'btn', onclick: () => { if (!over) { cur.pop(); draw(); } } }, '退一格');
+    const send = el('button', { class: 'btn primary', onclick: () => guess() }, '轉動');
+    for (let d = 1; d <= D; d++) keys.append(el('button', { class: 'btn pz-key', onclick: () => press(d) }, String(d)));
+    f.btns.append(back, send);
+    const tried = [];
+    const guess = () => {
+      if (over || cur.length < K) return;
+      const g = [...cur], [a, b] = score(code, g);
+      used++; tried.push([g, a, b]); cur = [];
+      hist.prepend(el('div', { class: 'pz-row' }, el('span', { class: 'pz-g' }, g.join(' ')), el('span', { class: 'pz-ab' }, '●'.repeat(a) + '○'.repeat(b) + '－'.repeat(K - a - b))));
+      if (a === K) { over = true; back.remove(); send.remove(); ctx.audio.sfx('win'); draw(); return finish(f, true, '喀。航海箱打開了。裡面是一疊用繩子綁好的票：每一張上面，都畫著一支筆。', res); }
+      ctx.audio.sfx(a ? 'step' : 'tap');
+      if (used >= maxTry) { over = true; back.remove(); send.remove(); ctx.audio.sfx('fail'); draw(); return finish(f, false, `鎖卡住了，再也轉不動。密碼是 ${code.join(' ')}。`, res); }
+      f.msg.textContent = a + b === 0 ? '這幾個數字都不在密碼裡。' : '看看●和○，再想想下一次要怎麼排。';
+      draw();
+    };
+    // 機器人：每次都猜一個「和之前所有結果都對得上」的密碼
+    f.box.solve = async () => { while (!over) { const ok = all.filter(c => tried.every(([g, a, b]) => { const [x, y] = score(c, g); return x === a && y === b; })); cur = []; for (const d of ok[0]) { press(d); await wait(30); } guess(); await wait(80); } };
+    draw();
+  });
+}
+
+// ═════════ 光路：轉動冰稜鏡，把灰燈的光引進每一個燈座（折射光） ═════════
+const BOUNCE = { '/': { r: 'u', u: 'r', l: 'd', d: 'l' }, '\\': { r: 'd', d: 'r', l: 'u', u: 'l' } };
+const STEP = { r: [1, 0], l: [-1, 0], u: [0, -1], d: [0, 1] };
+function traceBeam(N, mir, sy) {
+  let x = -1, y = sy, dir = 'r';
+  const path = [], seen = new Set();
+  for (;;) {
+    x += STEP[dir][0]; y += STEP[dir][1];
+    if (x < 0 || y < 0 || x >= N || y >= N) break;
+    const k = y * N + x, s = k + dir;
+    if (seen.has(s)) break; seen.add(s);
+    path.push([x, y, dir]);
+    if (mir[k]) dir = BOUNCE[mir[k]][dir];
+  }
+  return path;
+}
+function lightPath(ctx) {
+  return new Promise(res => {
+    const plan = byDiff(ctx, [[[5, 2, 2], [5, 2, 2]], [[5, 3, 3], [6, 3, 3]], [[6, 3, 4], [6, 4, 4], [7, 4, 4]]]);
+    let tries = byDiff(ctx, [4, 3, 2]);
+    const f = frame('光路', '左邊的灰燈會射出一道光。點一下冰稜鏡，它會轉個方向（／和＼互換），光碰到它就會轉彎。讓光經過每一個燈座。');
+    const box = el('div', { class: 'pz-light' });
+    f.stage.append(box);
+    const redo = el('button', { class: 'btn', onclick: () => { if (!busy && taps) lose('重新來過。'); } }, '重來');
+    f.btns.append(redo);
+    let round = 0, N = 5, sy = 0, sol = [], startMir = [], mir = [], cups = [], taps = 0, limit = 0, busy = false;
+    const status = () => { f.info.textContent = `第 ${round + 1}／${plan.length} 道門　轉了 ${taps}／${limit} 次　還可以重來 ${tries - 1} 次`; };
+    const lit = () => { const p = traceBeam(N, mir, sy); return cups.filter(k => p.some(([x, y]) => y * N + x === k)); };
+    const setup = () => {
+      const [n, nc, needM] = plan[round]; N = n;
+      for (let t = 0; t < 5000; t++) {
+        sy = rnd(N);
+        sol = Array(N * N).fill(null);
+        for (let k = 0; k < N * N; k++) if (Math.random() < .3) sol[k] = Math.random() < .5 ? '/' : '\\';
+        const p = traceBeam(N, sol, sy);
+        const hitM = p.filter(([x, y]) => sol[y * N + x]).length;
+        const empty = p.filter(([x, y]) => !sol[y * N + x]).map(([x, y]) => y * N + x);
+        if (hitM < needM || empty.length < nc + 2) continue;
+        cups = [empty[empty.length - 1], ...shuffle(empty.slice(1, -1)).slice(0, nc - 1)];
+        startMir = sol.map(m => m && Math.random() < .55 ? (m === '/' ? '\\' : '/') : m);
+        mir = startMir;
+        const diff = sol.filter((m, k) => m !== startMir[k]).length;
+        if (diff < 2 || lit().length === cups.length) continue;
+        limit = diff + byDiff(ctx, [6, 4, 3]);
+        break;
+      }
+      reset();
+    };
+    const reset = () => { mir = [...startMir]; taps = 0; draw(); };
+    const draw = () => {
+      const C = 40, Wd = N * C + 40;
+      const svg = svgEl('svg', { viewBox: `-40 0 ${Wd} ${N * C}`, class: 'pz-lsvg' });
+      for (let k = 0; k < N * N; k++) {
+        const x = k % N, y = Math.floor(k / N);
+        const g = svgEl('g', { class: 'pz-lc' + (mir[k] ? ' m' : '') });
+        g.append(svgEl('rect', { x: x * C + 1, y: y * C + 1, width: C - 2, height: C - 2, rx: 5 }));
+        if (mir[k]) g.append(svgEl('line', mir[k] === '/' ? { x1: x * C + 8, y1: y * C + C - 8, x2: x * C + C - 8, y2: y * C + 8 } : { x1: x * C + 8, y1: y * C + 8, x2: x * C + C - 8, y2: y * C + C - 8 }));
+        if (cups.includes(k)) g.append(svgEl('circle', { class: 'cup', cx: x * C + C / 2, cy: y * C + C / 2, r: 9 }));
+        if (mir[k]) g.addEventListener('click', () => turn(k));
+        svg.append(g);
+      }
+      const p = traceBeam(N, mir, sy);
+      const pts = [[-20, sy * C + C / 2], ...p.map(([x, y]) => [x * C + C / 2, y * C + C / 2])];
+      const last = p[p.length - 1];
+      if (last) { const [dx, dy] = STEP[mir[last[1] * N + last[0]] ? BOUNCE[mir[last[1] * N + last[0]]][last[2]] : last[2]]; pts.push([last[0] * C + C / 2 + dx * C / 2, last[1] * C + C / 2 + dy * C / 2]); }
+      svg.append(svgEl('polyline', { class: 'pz-beam', points: pts.map(q => q.join(',')).join(' ') }));
+      const on = lit();
+      for (const k of on) svg.append(svgEl('circle', { class: 'cup on', cx: (k % N) * C + C / 2, cy: Math.floor(k / N) * C + C / 2, r: 9 }));
+      svg.append(svgEl('circle', { class: 'pz-src', cx: -20, cy: sy * C + C / 2, r: 11 }));
+      box.innerHTML = ''; box.append(svg);
+      status();
+      return on.length;
+    };
+    const turn = async k => {
+      if (busy || !mir[k]) return;
+      mir[k] = mir[k] === '/' ? '\\' : '/'; taps++; ctx.audio.sfx('tap');
+      if (draw() === cups.length) {
+        busy = true; ctx.audio.sfx('item');
+        round++;
+        if (round >= plan.length) { redo.remove(); ctx.audio.sfx('win'); return finish(f, true, '最後一個燈座亮起來的時候，冰做的門，從裡面透出了一點點光。', res); }
+        f.msg.textContent = '每個燈座都亮了！下一道門。';
+        await wait(900); busy = false; setup(); return;
+      }
+      if (taps >= limit) lose('冰稜鏡轉太多次，裂開了。');
+    };
+    const lose = async why => {
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { busy = true; redo.remove(); status(); return finish(f, false, '冰稜鏡全都裂了，光再也照不進門裡。', res); }
+      busy = true; f.msg.textContent = why + '冰稜鏡回到了一開始的方向。';
+      await wait(700); busy = false; reset();
+    };
+    f.box.solve = async () => { while (round < plan.length) { while (busy) await wait(40); if (round >= plan.length) break; const r0 = round; for (let k = 0; k < N * N && round === r0; k++) if (mir[k] && mir[k] !== sol[k]) { await turn(k); await wait(60); } while (round === r0 && busy) await wait(40); if (round === r0) break; } };
     setup();
   });
 }

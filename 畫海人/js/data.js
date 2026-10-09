@@ -34,6 +34,8 @@ export const HEROES = {
     desc: '銀貝商會會長的兒子。帳算得很快，箭射得很準，嘴巴有點壞。', skills: ['穿霧箭', '火藥箭', '清點'] },
   葛蘿: { title: '守衛', job: '守衛', element: '石', color: '#c0604a', hp: 132, mp: 16, atk: 14, def: 14, mag: 4, spd: 8, weapon: '紅帆短斧',
     desc: '紅帆海盜的前船長，只有一隻手臂。話很少，一開口，海盜們都會安靜下來。', skills: ['護舷', '落錨', '升帆'] },
+  老洛: { title: '製圖師', job: '製圖師', element: '影', color: '#8fa3ad', hp: 80, mp: 26, atk: 8, def: 7, mag: 15, spd: 10, weapon: '舊量尺',
+    desc: '畫海人公會的第二位製圖師，少了一隻眼睛。五十年來，一張圖都沒有畫過。', skills: ['舊圖', '畫錯', '量尺'] },
 };
 export const PARTY_MAX = 4; // 一次最多 4 人出戰，其他人在船上待命
 
@@ -41,6 +43,8 @@ export const PARTY_MAX = 4; // 一次最多 4 人出戰，其他人在船上待�
 // aim：不會因為霧而落空；loot：打倒時素材一定掉，而且多一份
 // target：enemy 一名敵人／enemyFront 敵方前排／allies 對方全體（heal 時是自己人全體）／ally 一名同伴／front 我方前排／team 我方全體／self 自己
 // cover：替後排擋攻擊（回合數）；haste：速度變快（回合數）
+// chart：看穿敵人（回合數：打它不會落空、比較容易爆擊）；ruler：下一次攻擊一定命中、一定爆擊（回合數內有效）
+// 狀態「畫錯」：被畫錯的敵人，輪到它時有一半的機會打到自己人
 export const SKILLS = {
   攻擊: { cost: 0, type: 'phy', target: 'enemy', power: 1, desc: '普通攻擊。' },
   標記: { cost: 3, type: 'debuff', target: 'enemy', mark: 3, desc: '在敵人身上畫一個記號：三回合內受到的傷害 +30%，並看穿它的弱點。' },
@@ -61,6 +65,9 @@ export const SKILLS = {
   護舷: { cost: 3, type: 'buff', target: 'self', cover: 2, desc: '用身體當船舷：兩回合內，敵人打向後排同伴的攻擊，都由自己擋下來（擋的時候受傷 −30%）。' },
   落錨: { cost: 5, type: 'phy', target: 'enemy', power: 1.4, element: '石', status: '定身', chance: 0.3, desc: '把整個人的重量砸下去。石屬性的重擊，有機會讓敵人動不了。' },
   升帆: { cost: 5, type: 'buff', target: 'team', haste: 2, desc: '吼一聲海盜的號子：兩回合內，全隊的速度變快，比較容易先出手。' },
+  舊圖: { cost: 4, type: 'debuff', target: 'allies', chart: 3, desc: '攤開五十年前的地圖：三回合內，看穿全部敵人的弱點；打它們不會落空，也比較容易爆擊。' },
+  畫錯: { cost: 5, type: 'mag', target: 'enemy', power: 18, element: '影', status: '畫錯', chance: 0.5, desc: '故意把敵人畫錯。影屬性法術，可以打後排；被畫錯的敵人，有時候會打到自己人。' },
+  量尺: { cost: 4, type: 'buff', target: 'ally', ruler: 2, desc: '用獨眼對準：指定一名同伴，他的下一次攻擊一定命中，而且一定爆擊。' },
   // 敵人的招式
   鉗擊: { cost: 0, type: 'phy', target: 'enemy', power: 1.3, desc: '' },
   鹽霧: { cost: 0, type: 'mag', target: 'allies', power: 9, element: '潮', desc: '' },
@@ -129,6 +136,27 @@ export const SKILLS = {
   編號: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.6, desc: '' },
   噴發: { cost: 0, type: 'mag', target: 'allies', power: 29, element: '焰', desc: '' },
   火山甦醒: { cost: 0, type: 'mag', target: 'allies', power: 52, element: '焰', status: '迷惘', chance: 0.25, desc: '' },
+  // 第四海域
+  信紙割: { cost: 0, type: 'phy', target: 'enemy', power: 1.35, desc: '' },
+  忘卻: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.6, desc: '' },
+  投信: { cost: 0, type: 'mag', target: 'allies', power: 28, element: '風', desc: '' },
+  灰光: { cost: 0, type: 'mag', target: 'enemy', power: 28, element: '星', desc: '' },
+  封口: { cost: 0, type: 'heal', target: 'self', power: 80, desc: '' },
+  讀不完: { cost: 0, type: 'mag', target: 'allies', power: 54, element: '風', status: '迷惘', chance: 0.3, desc: '' },
+  冰鏡: { cost: 0, type: 'mag', target: 'enemy', power: 29, element: '星', desc: '' },
+  霜咬: { cost: 0, type: 'phy', target: 'enemy', power: 1.4, status: '定身', chance: 0.25, desc: '' },
+  寒潮: { cost: 0, type: 'mag', target: 'allies', power: 30, element: '潮', desc: '' },
+  祈禱: { cost: 0, type: 'heal', target: 'self', power: 85, desc: '' },
+  全城的祈禱: { cost: 0, type: 'mag', target: 'allies', power: 56, element: '潮', status: '迷惘', chance: 0.25, desc: '' },
+  斷桅: { cost: 0, type: 'phy', target: 'enemyFront', power: 1.1, element: '石', desc: '' },
+  爭吵: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.6, desc: '' },
+  冰封: { cost: 0, type: 'mag', target: 'enemy', power: 30, element: '石', status: '定身', chance: 0.3, desc: '' },
+  重來一次: { cost: 0, type: 'heal', target: 'self', power: 90, desc: '' },
+  天亮以前: { cost: 0, type: 'mag', target: 'allies', power: 58, element: '石', status: '定身', chance: 0.25, desc: '' },
+  門扉: { cost: 0, type: 'phy', target: 'enemy', power: 1.7, desc: '' },
+  霜光: { cost: 0, type: 'mag', target: 'allies', power: 31, element: '星', desc: '' },
+  回到門後: { cost: 0, type: 'heal', target: 'self', power: 95, desc: '' },
+  霧門開啟: { cost: 0, type: 'mag', target: 'allies', power: 60, element: '風', status: '迷惘', chance: 0.25, desc: '' },
 };
 
 // row：'front' 前排／'back' 後排；drop：[素材, 機率, 數量]
@@ -237,6 +265,44 @@ export const ENEMIES = {
   第七號: { element: '石', row: 'front', rank: '首領', hp: 1720, atk: 37, def: 24, mag: 40, spd: 10, exp: 620, silver: 340, skills: [['噴發', 2], ['編號', 1], ['落石', 1], ['添煤', 1]], big: '火山甦醒', drop: [['紅赭土', 1, 3], ['夜光珠', 1, 3]],
     phase2: { element: '焰', line: '號碼牌一塊一塊熔掉了。底下的岩石，是燒紅的。睡了二十年的火山，翻了一個身。' },
     phase3: { element: '影', line: '火山的影子站了起來。它還是想不起自己的名字。「我是……第七號……」' }, desc: '被商會改成號碼的島。它忘了自己的名字，火山也跟著睡著了。' },
+  // ═════ 第四海域：北霧海 ═════
+  // 灰燈渡
+  霜鴉: { element: '風', row: 'back', hp: 118, atk: 38, def: 15, mag: 16, spd: 21, exp: 36, silver: 21, skills: [['群啄', 2], ['攻擊', 2]], drop: [['霜晶', 0.4]], desc: '羽毛上結著霜的烏鴉。牠們停在灰燈上，一盞一盞地數。' },
+  信紙蛾: { element: '風', row: 'back', hp: 112, atk: 10, def: 14, mag: 37, spd: 17, exp: 36, silver: 21, skills: [['投信', 1], ['鱗粉', 2], ['低語', 1]], drop: [['舊信紙', 0.5]], desc: '翅膀是兩張寫滿字的信紙。字都是倒過來寫的。' },
+  灰燈鬼: { element: '星', row: 'back', hp: 116, atk: 9, def: 15, mag: 38, spd: 14, exp: 37, silver: 22, skills: [['灰光', 2], ['晨露', 1]], drop: [['灰燈油', 0.5]], desc: '一盞走丟的灰燈。它的光不照東西，只照路。' },
+  白狐: { element: '風', row: 'front', hp: 160, atk: 39, def: 19, mag: 10, spd: 22, exp: 36, silver: 22, skills: [['撕咬', 2], ['攻擊', 2]], drop: [['白狐毛', 0.5]], desc: '雪一樣白的狐狸。守霧人說，牠們是霧的孩子。' },
+  投信的人: { element: '影', row: 'front', hp: 182, atk: 38, def: 22, mag: 26, spd: 11, exp: 38, silver: 22, skills: [['信紙割', 2], ['忘卻', 1], ['攻擊', 1]], drop: [['舊信紙', 0.35], ['灰燈油', 0.3]], desc: '手裡一直拿著一封信，站在信箱前面。投不下去，也走不開。' },
+  守燈的影子: { element: '星', row: 'front', rank: '精英', hp: 880, atk: 41, def: 27, mag: 30, spd: 11, exp: 170, silver: 120, skills: [['灰光', 2], ['信紙割', 1], ['硬化', 1], ['攻擊', 1]], drop: [['灰燈油', 1, 3], ['夜光珠', 1]], desc: '一個守霧人點了一輩子的燈，他走了以後，影子留下來繼續點。腰上掛著渡口鐵門的鑰匙。' },
+  沒人讀的信: { element: '風', row: 'front', rank: '首領', hp: 1880, atk: 39, def: 24, mag: 42, spd: 13, exp: 660, silver: 360, skills: [['投信', 2], ['信紙割', 1], ['忘卻', 1], ['封口', 1]], big: '讀不完', drop: [['舊信紙', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '信封一個一個裂開。上千封信同時開口說話，每一句都是「請讓我忘記」。' }, desc: '五十年來投進霧裡、沒有人讀過的信，疊成了一個人的形狀。' },
+  // 鏡冰湖
+  冰鏡人: { element: '星', row: 'front', hp: 188, atk: 40, def: 22, mag: 30, spd: 13, exp: 39, silver: 23, skills: [['冰鏡', 2], ['抹去', 1], ['攻擊', 1]], drop: [['鏡冰', 0.5]], desc: '從冰裡走出來的人。它長得像你忘掉的某個人。' },
+  冰柱蟹: { element: '石', row: 'front', hp: 206, atk: 41, def: 30, mag: 8, spd: 8, exp: 40, silver: 24, skills: [['鉗擊', 2], ['硬化', 1], ['攻擊', 1]], drop: [['霜晶', 0.5]], desc: '背上長滿冰柱的螃蟹。走路的聲音，像風鈴。' },
+  霜鯨幼: { element: '潮', row: 'front', hp: 220, atk: 40, def: 24, mag: 22, spd: 9, exp: 41, silver: 25, skills: [['寒潮', 1], ['撕咬', 2]], drop: [['鯨油', 0.5]], desc: '在冰縫裡迷路的小鯨魚。牠在找媽媽，誰擋路就撞誰。' },
+  跪著的人: { element: '影', row: 'front', hp: 196, atk: 39, def: 23, mag: 30, spd: 10, exp: 40, silver: 24, skills: [['冷霧', 2], ['晨露', 1], ['攻擊', 1]], drop: [['古銅片', 0.3], ['鏡冰', 0.3]], desc: '跪在冰上的人影，抬頭看著同一個地方。三百年了，他們一直沒有站起來。' },
+  冰下的光: { element: '星', row: 'back', hp: 120, atk: 10, def: 16, mag: 40, spd: 15, exp: 39, silver: 23, skills: [['灰光', 2], ['冰鏡', 1]], drop: [['鏡冰', 0.4]], desc: '從冰的裂縫裡透出來的光。靠近一點，聽得見很多人在小聲地唸。' },
+  冰面的裂縫: { element: '潮', row: 'front', rank: '精英', hp: 940, atk: 43, def: 27, mag: 32, spd: 10, exp: 178, silver: 125, skills: [['寒潮', 2], ['霜咬', 1], ['攻擊', 1]], drop: [['鏡冰', 1, 3], ['夜光珠', 1]], desc: '湖面上一道越裂越長的縫。縫的最深處，卡著一把通往湖心的銅鑰匙。' },
+  祈禱的人: { element: '潮', row: 'front', rank: '首領', hp: 2020, atk: 40, def: 25, mag: 44, spd: 11, exp: 700, silver: 380, skills: [['寒潮', 2], ['霜咬', 1], ['冰鏡', 1], ['祈禱', 1]], big: '全城的祈禱', drop: [['鏡冰', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '冰下的城裡，全城的人一起抬起頭。三百年前的那句話，又唸了一次：「讓痛苦的地方，消失吧。」' }, desc: '跪在湖心最前面的人。三百年前，是他帶著全城的人，說出了那句祈禱。' },
+  // 斷桅灣
+  凍帆: { element: '風', row: 'back', hp: 124, atk: 11, def: 16, mag: 40, spd: 16, exp: 40, silver: 24, skills: [['改畫', 1], ['鱗粉', 2], ['低語', 1]], drop: [['凍木', 0.35], ['霜晶', 0.3]], desc: '凍在桅杆上的帆。風一吹，整面帆一起裂開，又一起長回去。' },
+  斷槳: { element: '石', row: 'front', hp: 214, atk: 42, def: 29, mag: 8, spd: 9, exp: 41, silver: 25, skills: [['斷桅', 1], ['硬化', 1], ['攻擊', 2]], drop: [['凍木', 0.5]], desc: '一支斷掉的槳。它還記得，那天晚上有一艘小船偷偷划走了。' },
+  吵架的影子: { element: '影', row: 'front', hp: 200, atk: 41, def: 23, mag: 32, spd: 12, exp: 41, silver: 25, skills: [['爭吵', 2], ['抹去', 1], ['攻擊', 1]], drop: [['古銅片', 0.35]], desc: '船艙裡的影子。它們拍著桌子，一直在吵同一件事。' },
+  霜水手: { element: '潮', row: 'front', hp: 210, atk: 42, def: 25, mag: 20, spd: 11, exp: 41, silver: 25, skills: [['冰封', 1], ['撕咬', 2]], drop: [['鯨油', 0.35], ['凍木', 0.3]], desc: '凍在甲板上的水手。他的手，還握著一支筆。' },
+  冰燈蛾: { element: '焰', row: 'back', hp: 118, atk: 10, def: 15, mag: 41, spd: 18, exp: 40, silver: 24, skills: [['撲火', 1], ['火花', 2]], drop: [['灰燈油', 0.4]], desc: '圍著船艙的燈飛的蛾子。翅膀結了霜，還是一直往燈上撞。' },
+  旗艦的舵: { element: '石', row: 'front', rank: '精英', hp: 1000, atk: 44, def: 30, mag: 26, spd: 9, exp: 185, silver: 130, skills: [['斷桅', 2], ['硬化', 1], ['冰封', 1], ['攻擊', 1]], drop: [['凍木', 1, 3], ['夜光珠', 1]], desc: '公會旗艦的舵輪，自己轉個不停。舵柄上，掛著船長室的鑰匙。' },
+  那一夜: { element: '石', row: 'front', rank: '首領', hp: 2150, atk: 42, def: 27, mag: 44, spd: 10, exp: 730, silver: 400, skills: [['爭吵', 2], ['斷桅', 1], ['冰封', 1], ['重來一次', 1]], big: '天亮以前', drop: [['凍木', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '船艙的燈全部亮了。五十年前的每一個人，同時站起來，同時開口：「畫完它！」「不能畫完！」' }, desc: '五十年前，公會分裂的那一夜。冰把它凍住了，它就一直重來。' },
+  // 霧門
+  冰像: { element: '石', row: 'front', hp: 230, atk: 44, def: 32, mag: 10, spd: 8, exp: 43, silver: 26, skills: [['門扉', 1], ['硬化', 1], ['攻擊', 2]], drop: [['古銅片', 0.5]], desc: '門前的冰雕像，雕的是以前守門的人。它們的臉，都朝著門。' },
+  門前的雪: { element: '風', row: 'back', hp: 128, atk: 11, def: 17, mag: 42, spd: 17, exp: 42, silver: 25, skills: [['霜光', 1], ['鱗粉', 2]], drop: [['霜晶', 0.5]], desc: '落在門前、從來不融化的雪。被它蓋過的腳印，都會不見。' },
+  霧行者: { element: '影', row: 'front', hp: 214, atk: 43, def: 25, mag: 34, spd: 13, exp: 43, silver: 26, skills: [['忘卻', 1], ['冷霧', 1], ['攻擊', 2]], drop: [['白狐毛', 0.3], ['古銅片', 0.3]], desc: '在霧裡走了太久的人。他已經忘了要去哪裡，只記得不能停下來。' },
+  守霧的狼: { element: '風', row: 'front', hp: 196, atk: 45, def: 22, mag: 10, spd: 22, exp: 42, silver: 25, skills: [['撕咬', 3], ['攻擊', 1]], drop: [['白狐毛', 0.5]], desc: '守霧人養的灰狼。牠們不咬人，只把人趕回霧的外面。……大部分的時候。' },
+  霜靈: { element: '星', row: 'back', hp: 126, atk: 10, def: 16, mag: 43, spd: 15, exp: 42, silver: 25, skills: [['霜光', 1], ['灰光', 2], ['晨露', 1]], drop: [['霜晶', 0.4]], desc: '霧最濃的地方，偶爾會結出一小團發光的霜。它會替同伴擋住寒氣。' },
+  第一道門: { element: '星', row: 'front', rank: '精英', hp: 1060, atk: 46, def: 31, mag: 34, spd: 10, exp: 195, silver: 140, skills: [['門扉', 2], ['霜光', 1], ['硬化', 1], ['攻擊', 1]], drop: [['古銅片', 1, 3], ['夜光珠', 1]], desc: '霧門前面，還有一道比較小的冰門。它的門縫裡，夾著開第二道門用的冰鑰匙。' },
+  守門人: { element: '風', row: 'front', rank: '首領', hp: 2400, atk: 44, def: 28, mag: 46, spd: 12, exp: 820, silver: 450, skills: [['霜光', 2], ['門扉', 1], ['忘卻', 1], ['回到門後', 1]], big: '霧門開啟', drop: [['古銅片', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '星', line: '守門人摘下冰做的面具。面具底下的眼睛，是星星的顏色。「……還有人記得，門後面是什麼嗎？」' },
+    phase3: { element: '影', line: '門後的霧湧了出來，纏在守門人身上。「不要過去。過去了，就要把那份痛，全部想起來。」' }, desc: '霧門的守門人。他自願留在門口三百年，不讓任何人進去。' },
 };
 
 export const ITEMS = {
@@ -275,6 +341,15 @@ export const MATS = {
   炭: '鍛火嶼的炭。燒起來沒有煙，只有很穩很穩的火。',
   硫磺: '黃色的石頭。聞起來很臭，可是能讓火燒得更旺。',
   熔岩玻璃: '熔岩冷掉以後結成的黑玻璃。對著光看，裡面有火在動。',
+  // 第四海域
+  霜晶: '冰最冷的地方結出來的晶體。放在手心，很久都不會融。',
+  灰燈油: '守霧人點灰燈用的油。燒起來沒有顏色，只有一點點光。',
+  舊信紙: '寫給霧的信。字已經看不清楚了，紙還記得是誰寫的。',
+  白狐毛: '白狐換下來的毛。很輕、很暖，摸起來像霧。',
+  鏡冰: '鏡冰湖的冰。對著它看，會看見一件忘掉的小事。',
+  鯨油: '北霧海的漁夫最珍貴的東西。點了以後，霧會往後退一步。',
+  凍木: '凍在冰裡五十年的船板。敲起來像石頭，聞起來還是海。',
+  古銅片: '三百年前的銅片，刻著看不懂的字。',
 };
 
 // ───────── 裝備：在鐵匠用素材打造。who：只有誰能用（不寫就是大家都能用） ─────────
@@ -336,6 +411,25 @@ export const EQUIPS = {
   // 黑市才買得到的圖紙
   紅帆旗披風: { slot: '防具', stats: { def: 16, hp: 52, spd: 3 }, cost: { 銀貝: 320, 舊帆布: 4, 紅赭土: 3 }, desc: '一整面紅帆旗改成的披風。紅帆的人看見它，都會讓路。' },
   海盜望遠鏡: { slot: '飾品', stats: { spd: 6, atk: 4, mag: 4 }, cost: { 銀貝: 280, 熔岩玻璃: 2, 鐵礦: 2 }, desc: '鏡片是熔岩玻璃磨的。看得見霧後面的東西——偶爾。' },
+  // 第四海域
+  舊量尺: { slot: '武器', who: '老洛', stats: { mag: 14, mp: 8 }, cost: { 銀貝: 120, 漂流木: 2, 鏽鐵: 2 }, desc: '老洛用了五十年的量尺，刻度都磨平了。他說，量的不是距離，是記憶。' },
+  公會圓規: { slot: '武器', who: '老洛', stats: { mag: 26, mp: 14 }, cost: { 銀貝: 300, 古銅片: 3, 鏡冰: 2, 夜光珠: 1 }, desc: '畫海人公會的圓規。兩隻腳一隻是銅，一隻是星光。' },
+  霜晶筆: { slot: '武器', who: '墨里', stats: { mag: 28, mp: 12 }, cost: { 銀貝: 300, 霜晶: 3, 舊信紙: 2 }, desc: '筆尖是一小塊霜晶。畫出來的線，很冷，很準。' },
+  古銅筆: { slot: '武器', who: '墨里', stats: { mag: 33, mp: 15 }, cost: { 銀貝: 380, 古銅片: 3, 灰燈油: 2, 夜光珠: 1 }, desc: '用三百年前的銅打的筆。握著它，會聽見很老很老的聲音在說：記得。' },
+  鏡冰刀: { slot: '武器', who: '阿潮', stats: { atk: 31 }, cost: { 銀貝: 300, 鏡冰: 4, 凍木: 2 }, desc: '刀身是一整片鏡冰。阿潮說，揮刀的時候，看得見他爸爸在笑。' },
+  灰燈杖: { slot: '武器', who: '蓮笙', stats: { mag: 23, mp: 15 }, cost: { 銀貝: 280, 灰燈油: 3, 舊信紙: 2 }, desc: '杖頭掛著一盞小小的灰燈。蓮笙拿著它的時候，霧的聲音會變得很溫柔。' },
+  鯨骨琴: { slot: '武器', who: '小鈴', stats: { mag: 23, spd: 5 }, cost: { 銀貝: 280, 鯨油: 2, 凍木: 3 }, desc: '琴身是凍木，弦塗了鯨油。彈起來，像鯨魚在很遠的地方唱歌。' },
+  凍木弓: { slot: '武器', who: '費米', stats: { atk: 26, spd: 3 }, cost: { 銀貝: 290, 凍木: 3, 白狐毛: 2 }, desc: '用公會的船板削成的弓。費米說，這是他用過最不像商會的東西。' },
+  古銅斧: { slot: '武器', who: '葛蘿', stats: { atk: 28, def: 4, spd: -1 }, cost: { 銀貝: 320, 古銅片: 3, 凍木: 2, 夜光珠: 1 }, desc: '斧刃刻著看不懂的古字。葛蘿說，看不懂也好，砍起來比較不會想太多。' },
+  白狐皮襖: { slot: '防具', stats: { def: 20, hp: 66, spd: 2 }, cost: { 銀貝: 300, 白狐毛: 4, 舊信紙: 1 }, desc: '白狐毛縫的短襖。穿上以後，連霧都覺得你是自己人。' },
+  鯨油斗篷: { slot: '防具', stats: { def: 19, hp: 62, mp: 6 }, cost: { 銀貝: 290, 鯨油: 3, 白狐毛: 1 }, desc: '塗了鯨油的斗篷，雪落在上面，一下子就滑掉了。' },
+  霜晶甲: { slot: '防具', stats: { def: 24, hp: 76, spd: -1 }, cost: { 銀貝: 360, 霜晶: 3, 古銅片: 2, 夜光珠: 1 }, desc: '一片一片霜晶串起來的甲。很冷，可是什麼都砍不進來。' },
+  守霧人長袍: { slot: '防具', stats: { def: 18, hp: 58, mag: 6, spd: 2 }, cost: { 銀貝: 340, 白狐毛: 3, 灰燈油: 3 }, desc: '守霧人的灰色長袍。穿著它走在霧裡，霧會讓路。' },
+  舊信封護符: { slot: '飾品', stats: { mp: 18, mag: 6 }, cost: { 銀貝: 240, 舊信紙: 3 }, desc: '一個沒有寄出去的信封。裡面是空的，可是摸起來很暖。' },
+  鏡冰墜: { slot: '飾品', stats: { spd: 7, atk: 5 }, cost: { 銀貝: 260, 鏡冰: 3 }, desc: '一小片鏡冰。戴著它，好像有人一直在提醒你：快一點。' },
+  灰燈籠飾: { slot: '飾品', stats: { hp: 44, def: 6, mag: 4 }, cost: { 銀貝: 270, 灰燈油: 2, 霜晶: 2 }, desc: '掛在腰上的小灰燈。它不照路，只照你自己。' },
+  古銅羅盤: { slot: '飾品', stats: { atk: 7, mag: 7, spd: 3 }, cost: { 銀貝: 320, 古銅片: 2, 鯨油: 2 }, desc: '指針不指北，指著霧的中心。' },
+  霜晶戒: { slot: '飾品', stats: { hp: 30, atk: 5, mag: 5, mp: 8 }, cost: { 銀貝: 300, 霜晶: 3, 夜光珠: 1 }, desc: '霜晶磨成的戒指，一年四季都不會融。' },
 };
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
@@ -352,8 +446,14 @@ export const SHIP = {
 };
 export const cargoMax = g => 40 + 15 * ((g.ship && g.ship.貨艙) || 0);
 
-// ───────── 勢力聲望（第三章開始）：0～100，每 20 一級 ─────────
-export const FACTIONS = ['商會', '紅帆'];
+// ───────── 勢力聲望（第三章開始；守霧人從第四章開始）：0～100，每 20 一級 ─────────
+export const FACTIONS = ['商會', '紅帆', '守霧人'];
+// 這條聲望開始算了沒
+export const repOn = (g, k) => !!(g && g.flags && (k === '守霧人' ? g.flags.北 : g.flags.焰));
+// 勢力委託：幫了這一邊，哪一邊會不高興（沒寫的話：商會↔紅帆、守霧人→商會）
+export const againstOf = c => c.against || (c.side === '商會' ? '紅帆' : '商會');
+// 守霧人聲望到「信任」：走祕密航道；到「夥伴」：灰燈（點燈時霧不會回來，聽得出哪個低語在說謊）
+export const MIST_ROUTE = 2, MIST_LAMP = 3;
 export const REP_LEVELS = ['冷淡', '認識', '信任', '夥伴', '至交'];
 export const repLevel = n => Math.max(0, Math.min(4, Math.floor((n || 0) / 20)));
 
@@ -372,7 +472,7 @@ export const BLACK_MARKET = [
 // ───────── 酒館的委託 ─────────
 // kind：kill 擊退指定的敵人／bring 把素材交到酒館／survey 某座島的測繪度達到多少
 // island：這座島開放以後，告示板上才會出現（bring 的話，是素材出產的島）
-// side：勢力委託。完成時這個勢力的聲望 +rep，另一個勢力 −5
+// side：勢力委託。完成時這個勢力的聲望 +rep，against（不高興的那一邊）−5
 export const COMMISSIONS = [
   { id: '網', title: '咬破漁網的礁鼠', from: '漁市的老周', kind: 'kill', target: '礁鼠', n: 4, island: '低語礁', reward: { 銀貝: 35, 漂流木: 2 }, text: '漁網每天晚上都被咬破。聽說是低語礁那邊游過來的礁鼠。' },
   { id: '燈', title: '燈塔需要的燈芯', from: '燈塔港的守燈人', kind: 'bring', target: '燈芯', n: 3, island: '低語礁', reward: { 銀貝: 30, 圖紙: '燈芯鈴杖' }, text: '鹽灣島的燈快沒芯了。燈蛾的翅膀粉，捻起來就是最好的燈芯。' },
@@ -414,4 +514,18 @@ export const COMMISSIONS = [
   { id: '號', title: '要塞的巡邏', from: '紅帆的老水手', kind: 'kill', target: '號碼兵', n: 4, island: '紅岬', side: '紅帆', rep: 10, reward: { 銀貝: 220, 礦工牌: 2 }, text: '那些號碼兵每天晚上沿著海岸巡邏。他們以前，都是紅岬的人。' },
   { id: '赭', title: '紅色的土', from: '商會的染坊', kind: 'bring', target: '紅赭土', n: 5, island: '紅帆港', side: '商會', rep: 10, reward: { 銀貝: 200, 圖紙: '紅帆琴' }, text: '商會想做紅帆布來賣。……不要跟海盜說是我們買的。' },
   { id: '圖十一', title: '紅岬的舊名字', from: '葛蘿', kind: 'survey', island: '紅岬', n: 60, reward: { 銀貝: 300, 圖紙: '熔岩斧' }, text: '把紅岬畫進書裡。不是商會的第七號——是我們的島。' },
+  // 第四海域
+  { id: '信', title: '沒有寄出去的信', from: '灰燈渡的守霧人', kind: 'kill', target: '信紙蛾', n: 4, island: '灰燈渡', side: '守霧人', rep: 10, reward: { 銀貝: 240, 舊信紙: 2 }, text: '信紙蛾把信從信箱裡叼出來，到處亂飛。那些信，不該被任何人讀到。' },
+  { id: '灰', title: '灰燈的油', from: '灰燈渡的守霧人', kind: 'bring', target: '灰燈油', n: 4, island: '灰燈渡', side: '守霧人', rep: 10, reward: { 銀貝: 220, 圖紙: '灰燈籠飾' }, text: '冬天快到了，灰燈要多一點油。沒有灰燈，霧就看不見回家的路。' },
+  { id: '狐', title: '白狐的毛皮', from: '商會的皮貨商', kind: 'kill', target: '白狐', n: 4, island: '灰燈渡', side: '商會', against: '守霧人', rep: 10, reward: { 銀貝: 260, 圖紙: '白狐皮襖' }, text: '北邊的白狐毛，在千帆市可以賣很好的價錢。守霧人說那是霧的孩子？……生意就是生意。' },
+  { id: '圖十二', title: '灰燈渡的地圖', from: '老洛', kind: 'survey', island: '灰燈渡', n: 60, reward: { 銀貝: 280, 圖紙: '舊信封護符' }, text: '五十年沒畫圖了。……妳畫給我看吧。我想看看，現在的畫海人，是怎麼畫的。' },
+  { id: '冰', title: '照得出回憶的冰', from: '鐵匠的石伯', kind: 'bring', target: '鏡冰', n: 4, island: '鏡冰湖', reward: { 銀貝: 240, 圖紙: '鏡冰墜' }, text: '聽說北邊的冰，照得出忘掉的事。我想看看我年輕的時候，到底有沒有比較帥。' },
+  { id: '鯨', title: '撞破油船的小鯨', from: '商會的油行', kind: 'kill', target: '霜鯨幼', n: 3, island: '鏡冰湖', side: '商會', against: '守霧人', rep: 10, reward: { 銀貝: 280, 鯨油: 2 }, text: '冰縫裡的小鯨，把商會的油船撞破了三艘。把牠們趕回深水去。' },
+  { id: '圖十三', title: '鏡冰湖的湖岸', from: '酒館的鹽姨', kind: 'survey', island: '鏡冰湖', n: 60, reward: { 銀貝: 300, 圖紙: '霜晶甲' }, text: '冰面上的路，每天都在變。有一張地圖，漁夫才敢走上去。' },
+  { id: '跪', title: '跪著的人', from: '灰燈渡的守霧人', kind: 'kill', target: '跪著的人', n: 3, island: '鏡冰湖', side: '守霧人', rep: 10, reward: { 銀貝: 260, 古銅片: 2 }, text: '冰上那些跪著的人影，越來越多了。讓他們休息吧。' },
+  { id: '木', title: '五十年的船板', from: '船塢的大副', kind: 'bring', target: '凍木', n: 4, island: '斷桅灣', reward: { 銀貝: 260, 圖紙: '凍木弓' }, text: '公會的船，是全群島最好的船。拆一塊船板回來，讓我看看它們是怎麼造的。' },
+  { id: '吵', title: '吵不完的架', from: '守霧人的老婆婆', kind: 'kill', target: '吵架的影子', n: 4, island: '斷桅灣', side: '守霧人', rep: 10, reward: { 銀貝: 280, 圖紙: '守霧人長袍' }, text: '那個海灣的影子，每天晚上都吵到天亮。吵得整片海都睡不著。讓它們安靜一點吧。' },
+  { id: '圖十四', title: '斷桅灣的海圖', from: '天文台的老人', kind: 'survey', island: '斷桅灣', n: 60, reward: { 銀貝: 320, 圖紙: '古銅羅盤' }, text: '那支船隊停在哪裡，五十年來沒有人知道。畫下來吧。……我想看看，那天晚上我沒有跟去的地方。' },
+  { id: '像', title: '門前的冰像', from: '紅帆的老水手', kind: 'kill', target: '冰像', n: 4, island: '霧門', side: '紅帆', against: '守霧人', rep: 10, reward: { 銀貝: 300, 火藥: 2 }, text: '要往門那邊走，冰像擋在路上。紅帆的規矩：擋路的，就打碎。' },
+  { id: '圖十五', title: '霧門前的路', from: '灰燈渡的守霧人', kind: 'survey', island: '霧門', n: 60, reward: { 銀貝: 360, 圖紙: '古銅筆' }, text: '守霧人從來不畫地圖。……可是這一次，我們想留下一張。給以後還要守門的人。' },
 ];

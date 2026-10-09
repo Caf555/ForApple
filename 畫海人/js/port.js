@@ -1,5 +1,5 @@
 // 港口：碼頭（補給）、酒館（委託）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（賣素材）、黑市（第三章）
-import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, BLACK_MARKET } from './data.js';
+import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS } from './islands.js';
 import { cargoUsed, save } from './state.js';
 import { worldOf, surveyMax } from './explore.js';
@@ -10,7 +10,8 @@ const SUPPLY_TIP = { 糧: '每走一格吃 1 份。吃光了會又餓又累。',
 const JOBS_MAX = 2;
 // 市場收購素材的價錢（銀貝）
 const MAT_PRICE = { 漂流木: 3, 霧苔: 3, 鹽晶: 4, 燈芯: 4, 珊瑚枝: 5, 鐘銅: 6, 褪色羽: 6, 鏽鐵: 7, 船帆布: 7, 夜光珠: 20, 銀貝殼: 8, 帳紙: 8, 鏡砂: 9, 測繩: 9, 墨魚墨: 9, 珍珠: 12, 閘石: 10, 白珊瑚: 12,
-  紅赭土: 10, 舊帆布: 11, 火藥: 13, 鐵礦: 12, 礦工牌: 14, 炭: 11, 硫磺: 13, 熔岩玻璃: 18 };
+  紅赭土: 10, 舊帆布: 11, 火藥: 13, 鐵礦: 12, 礦工牌: 14, 炭: 11, 硫磺: 13, 熔岩玻璃: 18,
+  霜晶: 14, 灰燈油: 15, 舊信紙: 13, 白狐毛: 16, 鏡冰: 17, 鯨油: 16, 凍木: 14, 古銅片: 20 };
 
 export const statText = st => Object.entries(st).map(([k, v]) => `${STAT_NAME[k]}${v > 0 ? '+' : ''}${v}`).join(' ');
 export const costText = c => Object.entries(c).map(([k, v]) => `${k} ${v}`).join('・');
@@ -44,6 +45,8 @@ export class Port {
     const tip = next ? `下一個目的地：${next}（${ISLANDS[next].sub}）`
       : g.flags.第一章 && !g.flags.環礁 ? '淺灘的三座島都畫進書裡了。山丘上的「天文台」，門好像開了。'
       : g.flags.第二章 && !g.flags.焰 ? '環礁的四座島都畫進書裡了。天文台的老人說，往南看得到煙的地方，有下一片海。'
+      : g.flags.第三章 && !g.flags.北 ? '焰之群島的四座島都畫進書裡了。天文台的老人，把望遠鏡轉向了北方。'
+      : g.flags.第四章 ? '北霧海的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : g.flags.第三章 ? '焰之群島的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : g.flags.第二章 ? '環礁的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : '可以回去補完測繪、接委託、打造裝備。';
@@ -58,14 +61,14 @@ export class Port {
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => ctx.menu() }, '☰')),
       el('p', { class: 'p-tip' }, tip),
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`), ctx.ui.bar(cargoUsed(g), cargoMax(g), 'cargo')),
-      g.flags.焰 ? el('div', { class: 'p-rep' }, ...FACTIONS.map(f => el('span', {}, el('b', {}, f), `　${REP_LEVELS[repLevel(this.rep(f))]}`, ctx.ui.bar(this.rep(f), 100, 'rep')))) : null,
+      g.flags.焰 ? el('div', { class: 'p-rep' }, ...FACTIONS.filter(f => repOn(g, f)).map(f => el('span', {}, el('b', {}, f), `　${REP_LEVELS[repLevel(this.rep(f))]}`, ctx.ui.bar(this.rep(f), 100, 'rep')))) : null,
       el('div', { class: 'facs' },
         fac('碼頭', '買補給：糧、燈油、墨水、藥', () => this.dock()),
         fac('海圖', '選一座島，出航', () => this.chart()),
         fac('酒館', ready ? `有 ${ready} 個委託可以回報！` : `委託告示板（進行中 ${jobsN}/${JOBS_MAX}）`, () => this.tavern(), this.hasTavern, '完成低語礁以後開放'),
         fac('鐵匠', `用素材打造裝備（素材 ${matN} 個）`, () => this.smith(), this.hasTavern, '完成低語礁以後開放'),
         fac('船塢', '加大貨艙、補船帆、裝船首像', () => this.yard(), this.hasYard, '完成晨忘島以後開放'),
-        g.flags.第一章 ? fac('天文台', !g.flags.環礁 || (g.flags.第二章 && !g.flags.焰) ? '門開了！進去看看' : '星圖與往霧心的路', () => ctx.observatory()) : null,
+        g.flags.第一章 ? fac('天文台', !g.flags.環礁 || (g.flags.第二章 && !g.flags.焰) || (g.flags.第三章 && !g.flags.北) ? '門開了！進去看看' : '星圖與往霧心的路', () => ctx.observatory()) : null,
         g.flags.第一章 ? fac('市場', '把素材賣成銀貝', () => this.market(), this.hasMarket, '完成千帆市以後開放') : null,
         g.flags.焰 ? fac('黑市', '紅帆的地下交易：火藥、稀有圖紙', () => this.blackMarket(), this.hasBlack, '完成紅帆港以後開放') : null),
       el('div', { class: 'p-isles' }, ...ISLAND_ORDER.filter(id => this.seas.includes(ISLANDS[id].sea)).map(id => {
@@ -126,7 +129,7 @@ export class Port {
     const best = worldOf(g, c.island).best; return { text: `${c.island}的測繪度：${best}%/${c.n}%`, ready: best >= c.n };
   }
 
-  rewardText(r, c) { return Object.entries(r).map(([k, v]) => k === '圖紙' ? `圖紙「${v}」` : `${k} ${v}`).concat(c && c.side ? [`${c.side}聲望 +${c.rep}（${FACTIONS.find(f => f !== c.side)} −5）`] : []).join('、'); }
+  rewardText(r, c) { return Object.entries(r).map(([k, v]) => k === '圖紙' ? `圖紙「${v}」` : `${k} ${v}`).concat(c && c.side ? [`${c.side}聲望 +${c.rep}（${againstOf(c)} −5）`] : []).join('、'); }
   jobTitle(c) { return c.side ? `【${c.side}】${c.title}` : c.title; }
 
   tavern() {
@@ -166,7 +169,7 @@ export class Port {
     }
     if (c.side) {
       ctx.addRep(c.side, c.rep); got.push(`${c.side}聲望 +${c.rep}`);
-      const other = FACTIONS.find(f => f !== c.side); ctx.addRep(other, -5); got.push(`${other}聲望 −5`);
+      const other = againstOf(c); ctx.addRep(other, -5); got.push(`${other}聲望 −5`);
     }
     g.morale = Math.min(100, g.morale + 5);
     ctx.audio.sfx('item'); save(g);

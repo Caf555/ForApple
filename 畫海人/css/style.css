@@ -524,3 +524,37 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .p-rep { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin: 4px 0; font-size: 13px; }
 .p-rep span { display: block; } .p-rep .bar { margin-top: 3px; } .bar.rep i { background: #d9704a; }
 .shop-row.locked b { color: var(--muted); }
+/* 北霧海：冰面、低語、母親的足跡 */
+.hex.seen.land-冰 polygon { fill: #cfe4ec; stroke: #8fb6c4; }
+.hex .k-聲 { fill: #4a6a7a; } .hex .k-跡 { fill: #b8862e; }
+/* 低語：找出說謊的聲音 */
+.pz-voices { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.pz-voice { background: rgba(160, 190, 200, .1); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 14px; line-height: 1.6; }
+.pz-voice b { display: block; font-size: 12px; color: var(--muted); font-weight: normal; }
+.pz-voice.liar { border-color: var(--hp); background: rgba(200, 80, 60, .12); }
+.pz-places { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.pz-place { min-height: 44px; } .pz-place.ok { background: #3a6a4a; color: #fff; } .pz-place.bad { opacity: .45; }
+/* 冰滑 */
+.pz-ice { display: grid; gap: 2px; width: 100%; max-width: 330px; background: #4a6a78; padding: 4px; border-radius: 8px; }
+.pz-ic { aspect-ratio: 1; border-radius: 4px; background: linear-gradient(135deg, #e6f2f6, #b8d4de); position: relative; }
+.pz-ic.rock { background: radial-gradient(circle at 40% 30%, #dff4fa, #6a92a2 45%, #2e4a56); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .3); }
+.pz-ic.hole::after { content: ''; position: absolute; inset: 18%; border-radius: 50%; background: radial-gradient(#0c2430, #1c4a5a); box-shadow: 0 0 10px #9fe3dc; }
+.pz-ic.me::before { content: ''; position: absolute; inset: 20% 12%; background: linear-gradient(#8a6a3a, #4a3a26); border-radius: 40% 40% 50% 50%; z-index: 1; box-shadow: 0 0 8px rgba(240, 212, 154, .8); }
+/* 密碼鎖 */
+.pz-hist { width: 100%; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.pz-row { display: flex; justify-content: space-between; padding: 4px 10px; border-radius: 6px; background: rgba(240, 212, 154, .08); font-family: var(--serif); }
+.pz-g { letter-spacing: .3em; } .pz-ab { color: var(--accent2); letter-spacing: .15em; }
+.pz-code { display: flex; gap: 8px; }
+.pz-digit { width: 44px; height: 52px; display: grid; place-items: center; border-radius: 8px; border: 2px solid #6a5636; background: #2a2016; font-size: 26px; font-family: var(--serif); color: var(--muted); }
+.pz-digit.on { color: #f0d49a; border-color: #b8862e; }
+.pz-keys { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.pz-key { width: 48px; min-height: 48px; font-size: 20px; padding: 0; }
+/* 光路 */
+.pz-light { width: 100%; max-width: 360px; }
+.pz-lsvg { width: 100%; height: auto; display: block; }
+.pz-lc rect { fill: #24404c; } .pz-lc.m { cursor: pointer; } .pz-lc.m rect { fill: #2e5260; }
+.pz-lc line { stroke: #dff4fa; stroke-width: 4; stroke-linecap: round; }
+.pz-lc .cup, .pz-lsvg .cup { fill: none; stroke: #8fa3ad; stroke-width: 2.5; }
+.pz-lsvg .cup.on { fill: #f0d49a; stroke: #fff2cf; }
+.pz-beam { fill: none; stroke: #f0d49a; stroke-width: 3; stroke-opacity: .85; stroke-linejoin: round; pointer-events: none; }
+.pz-src { fill: #9fb4ba; stroke: #f0d49a; stroke-width: 2; }
