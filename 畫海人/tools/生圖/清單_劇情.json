@@ -534,6 +534,180 @@
       "name": "幕_三片海的地圖",
       "seed": 5185,
       "prompt": "An opened cartographer's book on a dark table, older islands faintly inked on the left, newly drawn volcanic islands on the right with a red dashed route leading north into a pale swirl of fog, a glowing gold pen resting across."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往北的航線",
+      "seed": 5186,
+      "prompt": "An old parchment sea chart, a red dashed route line drawn from southern volcanic islands northward into a pale blank area of swirling white fog at the top of the page, a glowing pen tip at the end of the line."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_結霜的船頭",
+      "seed": 5187,
+      "prompt": "The bow of a small wooden sailing ship covered in white frost and tiny icicles, cold dark northern sea, faint stars, breath-like mist over the water."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_霧邊的灰燈",
+      "seed": 5188,
+      "prompt": "A long row of grey lanterns on poles standing in cold still water, receding into a thick wall of white fog, soft pale cyan light, quiet and lonely."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_提燈的獨眼老人",
+      "seed": 5189,
+      "prompt": "An old one-eyed man in a worn grey coat standing at the end of a wooden pier in thick fog, holding up a grey lantern, as if waiting for someone, calm and weathered."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往灰燈渡",
+      "seed": 5190,
+      "prompt": "An old sea chart page that is almost entirely blank white, with only a tiny row of grey lantern marks at the edge and a red route line being drawn toward them by a glowing pen."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_插在水裡的灰燈",
+      "seed": 5191,
+      "prompt": "Grey lanterns on thin poles stuck into calm icy water at the edge of the fog, their reflections trembling, cold muted blue palette."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_沒有門牌的屋子",
+      "seed": 5192,
+      "prompt": "Simple grey wooden houses of the fog keepers in a snowy village, no signs or numbers on the doors, no maps on the walls, one warm window, a cloaked figure walking past."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_寫給霧的信箱",
+      "seed": 5193,
+      "prompt": "A small wooden mailbox at the very end of a pier, its slot facing a wall of fog, a few paper letters drifting out of it and floating into the mist."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_投完信的人",
+      "seed": 5194,
+      "prompt": "A person turning away from a mailbox at the end of a pier, face relaxed and empty as if they have just forgotten something, soft pale morning light, fog behind."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_鏡子一樣的冰",
+      "seed": 5195,
+      "prompt": "A vast frozen sea, perfectly flat and smooth like a mirror, clouds and pale dawn sky reflected in the ice, tiny dark islands on the horizon."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冰裡的倒影",
+      "seed": 5196,
+      "prompt": "An adult fisherman in a heavy coat looking down at mirror-like ice; his reflection in the ice is a small child instead, cold blue light, wonder and sadness."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冰下的屋頂",
+      "seed": 5197,
+      "prompt": "Looking down through clear thick ice: faint shapes of ancient rooftops and a tall spire of a sunken city far below, cracks of light in the ice."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_跪著的城",
+      "seed": 5198,
+      "prompt": "Beneath the ice, an ancient sunken city where all the people kneel, looking up toward the same direction, praying, eerie pale cyan light filtering down."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冰縫裡的霧",
+      "seed": 5199,
+      "prompt": "A long jagged crack across a frozen sea, white fog slowly rising out of the crack into the sky, quiet and ominous."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冰封的船隊",
+      "seed": 5200,
+      "prompt": "A whole fleet of old sailing ships frozen in the ice of a northern bay at night, their masts broken like a fallen forest, stars above."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_帆上的公會徽章",
+      "seed": 5201,
+      "prompt": "Close-up of a weathered frozen sail bearing a guild emblem of a pen and a star stitched in faded gold thread, frost on the canvas."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_亮起來的船艙",
+      "seed": 5202,
+      "prompt": "At night, the cabin windows of empty frozen ships light up one by one with warm yellow light, no people on deck, eerie and quiet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_吵架的影子",
+      "seed": 5203,
+      "prompt": "Through a warm-lit cabin window, the silhouettes of many people around a table gesturing and arguing, papers and pens on the table."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_天亮熄燈",
+      "seed": 5204,
+      "prompt": "Dawn over a frozen bay of ships, all the cabin lights going dark at the same time, pale golden light on the ice."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往霧裡的灰燈",
+      "seed": 5205,
+      "prompt": "A line of grey lanterns leading deep into extremely thick white fog, only the lanterns visible, fading into nothing, mysterious."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冰做的門",
+      "seed": 5206,
+      "prompt": "A towering gate made of ice, carved with ancient unreadable runes, standing in deep fog on a snowy plain, cold blue light within."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_背對門的守霧人",
+      "seed": 5207,
+      "prompt": "A circle of fog keepers in grey robes kneeling in the snow with their backs to a giant ice gate, heads bowed, fog all around."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_走到門前的腳印",
+      "seed": 5208,
+      "prompt": "A single line of small footprints in fresh snow leading all the way up to the foot of a giant ice gate, nobody in sight."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_門上的星",
+      "seed": 5209,
+      "prompt": "Close-up of an ice gate surface with a small star symbol drawn by a pen tip, glowing faintly gold, frost patterns around it."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_門縫的光",
+      "seed": 5210,
+      "prompt": "A giant ice gate opening a narrow crack, a beam of warm light pouring out across the snow and fog."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_回頭的母親",
+      "seed": 5211,
+      "prompt": "Seen from behind, a young woman with a pen tucked behind her ear walking into white fog beyond a gate, turning her head to look back one last time, warm faint glow from her pen."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_雪地上的劍客",
+      "seed": 5212,
+      "prompt": "A young swordswoman with no memory lying unconscious in the snow before an ice gate, a sword with a pen engraved on its hilt stuck in the snow beside her, dawn light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_四片海的地圖",
+      "seed": 5213,
+      "prompt": "An opened cartographer's book with four seas of islands drawn around the pages, northern icy islands newly inked, the very centre of the map still completely blank white, a glowing gold pen resting across."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_往回走的腳印",
+      "seed": 5214,
+      "prompt": "On the far side of an ice gate, a fresh line of footprints in the snow leading back toward the viewer, soft hopeful light behind the fog."
     }
   ]
 }
