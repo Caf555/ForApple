@@ -90,7 +90,7 @@ export class Battle {
       this.check();
     }
     // 同步回隊伍
-    for (const a of this.allies) { a.ref.hp = a.alive ? a.hp : 0; a.ref.mp = a.mp; a.ref.row = a.row; }
+    for (const a of this.allies) if (a.ref) { a.ref.hp = a.alive ? a.hp : 0; a.ref.mp = a.mp; a.ref.row = a.row; }
     const result = this.over;
     if (result === 'win') await this.rewards();
     else if (result === 'lose') await sleep(600);
@@ -119,6 +119,7 @@ export class Battle {
     }
     let act;
     if (u.side === 'foe') act = this.foeAI(u);
+    else if (u.guest) act = this.guestAI(u);
     else {
       this.highlight(u);
       act = this.ctx.settings.auto ? this.allyAI(u) : await this.choose(u);
@@ -133,16 +134,25 @@ export class Battle {
   foeAI(u) {
     const d = u.def;
     if (d.rank === '首領') {
-      if (u.charging) { u.charging = false; return { type: 'skill', skill: d.big, big: true }; }
+      if (u.charging) { u.charging = false; return { type: 'skill', skill: u.big || d.big, big: true }; }
       u.n = (u.n || 0) + 1;
       if (u.n % 3 === 2) return { type: 'charge' };
     }
-    const tot = d.skills.reduce((s, [, w]) => s + w, 0);
+    const list = u.skills || d.skills;
+    const tot = list.reduce((s, [, w]) => s + w, 0);
     let r = Math.random() * tot, name = '攻擊';
-    for (const [n, w] of d.skills) { r -= w; if (r <= 0) { name = n; break; } }
+    for (const [n, w] of list) { r -= w; if (r <= 0) { name = n; break; } }
     const hs = SKILLS[name];
     if (hs.type === 'heal' && (hs.target === 'self' ? u.hp > u.maxhp * 0.6 : !this.foes.some(f => f.alive && f.hp < f.maxhp * 0.6))) name = '攻擊';
     return { type: 'skill', skill: name };
+  }
+
+  // 來幫忙的人（公會長戰的母親）：不能控制。輪流替全隊畫結界、用筆攻擊
+  guestAI(u) {
+    u.n = (u.n || 0) + 1;
+    if (u.n % 2 === 1 && this.allies.some(a => a.alive && !a.fx.ward)) return { type: 'skill', skill: '母親的結界' };
+    const foes = this.foes.filter(f => f.alive);
+    return { type: 'skill', skill: '母親的筆', target: foes.find(f => f.charging) || foes.find(f => f.def.rank === '首領') || foes[0] };
   }
 
   allyAI(u) {
@@ -289,12 +299,12 @@ export class Battle {
     }
     if (act.type === 'charge') {
       u.charging = true;
-      this.log(`⚠ ${u.name} 正在蓄力……下一次會使出「${u.def.big}」！`);
+      this.log(`⚠ ${u.name} 正在蓄力……下一次會使出「${u.big || u.def.big}」！`);
       if (!this.hinted) { this.hinted = true; this.log('（用它怕的屬性打中，或打出爆擊，就能打斷它。也可以先「防禦」。）'); }
       this.float(u, '蓄力', 'warn'); this.flash(); this.ctx.audio.sfx('boss'); await this.pause(1.2); return;
     }
     const sk = SKILLS[act.skill];
-    if (u.side === 'ally') u.mp = Math.max(0, u.mp - sk.cost);
+    if (u.side === 'ally' && !u.guest) u.mp = Math.max(0, u.mp - sk.cost);
     if (act.skill !== '攻擊') this.log(`${u.name} 使出「${act.skill}」！`);
     if (act.big) { this.quake(); this.ctx.audio.sfx('boss'); }
     const foesOf = u.side === 'ally' ? this.foes : this.allies;
@@ -383,20 +393,23 @@ export class Battle {
     const isl = this.g.island, weak = isl && ISLANDS[isl.id].ruin.weak;
     const remember = !!(u.side === 'ally' && weak && t.key === weak.boss && this.g.flags['遺跡:' + isl.id] && ((weak.who && u.key === weak.who) || (weak.element && element === weak.element)));
     if (remember) dmg *= 1.4;
+    // 母親在的時候：{名}的筆和母親的筆一起畫
+    const together = u.key === '墨里' && t.phase3 && this.allies.some(a => a.guest && a.alive);
+    if (together) dmg *= 1.3;
     const m = this.g.morale;
     dmg *= u.side === 'ally' ? 1 + (m - 50) / 250 : 1 - (m - 50) / 400;
     const crit = ruler || Math.random() < (t.fx.chart ? 0.16 : 0.06);
     if (crit) dmg *= 1.5;
     dmg = Math.max(1, Math.round(dmg));
     t.hp = Math.max(0, t.hp - dmg);
-    const note = (mult >= 1.5 ? '（剋制！）' : mult > 1 ? '（星影相衝！）' : mult < 0.8 ? '（被剋……）' : '') + (sheltered ? '（後排 −30%）' : '') + (sk.type === 'phy' && u.row === 'back' ? '（後排近身，威力減半）' : '');
+    const note = (together ? '（兩支筆一起畫！）' : '') + (mult >= 1.5 ? '（剋制！）' : mult > 1 ? '（星影相衝！）' : mult < 0.8 ? '（被剋……）' : '') + (sheltered ? '（後排 −30%）' : '') + (sk.type === 'phy' && u.row === 'back' ? '（後排近身，威力減半）' : '');
     this.log(`${crit ? '爆擊！' : ''}${t.name} 受到 ${dmg} 點傷害${note}`);
     this.float(t, String(dmg), crit ? 'crit' : mult >= 1.3 ? 'weak' : 'dmg');
     this.shake(t);
     this.ctx.audio.sfx(crit ? 'crit' : sk.type === 'mag' ? 'magic' : 'hit');
     if (t.charging && t.alive && (mult >= 1.3 || crit || remember || sk.interrupt)) {
       t.charging = false; t.status.定身 = 1;
-      this.log(remember ? weak.line : `「${t.def.big}」被打斷了！`);
+      this.log(remember ? weak.line : `「${t.big || t.def.big}」被打斷了！`);
       this.float(t, '打斷', 'warn');
     }
     if (t.side === 'foe' && t.def.rank === '首領' && !t.phase2 && t.hp > 0 && t.hp <= t.maxhp / 2) t.phaseDue = true;
@@ -424,11 +437,29 @@ export class Battle {
       this.flash(); this.quake(); this.ctx.audio.sfx('boss');
       this.log(p.line);
       if (p.element) { f.el = p.element; this.log(`${f.name} 的屬性變成了「${p.element}」！`); }
-      f.st.atk = Math.round(f.st.atk * 1.2); f.st.mag = Math.round(f.st.mag * 1.2);
+      if (p.skills) f.skills = p.skills;
+      if (p.big) f.big = p.big;
+      // 公會的舊圖碎片全部找到：最後一個階段變弱
+      if (p.soft && this.g.flags.舊圖) { this.log(p.soft); f.st.atk = Math.round(f.st.atk * 0.85); f.st.mag = Math.round(f.st.mag * 0.85); }
+      else { f.st.atk = Math.round(f.st.atk * 1.2); f.st.mag = Math.round(f.st.mag * 1.2); }
       this.float(f, '變', 'warn');
       this.renderAll();
       await this.pause(1.4);
+      if (p.talk && this.allies.some(a => a.alive && a.key === p.talk.who)) { this.log(p.talk.line); await this.pause(1.4); }
+      if (p.guest) await this.addGuest(p.guest);
     }
+  }
+
+  async addGuest(G) {
+    const u = { side: 'ally', id: 'g' + this.allies.length, key: G.name, name: G.name, guest: true, color: G.color, el: G.element,
+      st: { atk: G.atk, def: G.def, mag: G.mag, spd: G.spd }, maxhp: G.hp, hp: G.hp, maxmp: G.mp, mp: G.mp, row: 'back', alive: true, status: {}, fx: {} };
+    this.allies.push(u);
+    this.nodes[u.id] = this.card(u);
+    this.renderRows();
+    this.flash(); this.ctx.audio.sfx('heal');
+    this.log(G.line);
+    this.float(u, '加入', 'heal');
+    await this.pause(1.6);
   }
 
   async tide() {
@@ -458,10 +489,10 @@ export class Battle {
     for (const m in drops) this.ctx.gainMat(m, drops[m]);
     g.morale = Math.min(100, g.morale + ({ 首領: 15, 精英: 12 }[this.opt.kind] || 6));
     const msgs = [];
-    for (const a of this.allies) msgs.push(...gainExp(a.ref, a.alive ? exp : Math.floor(exp / 2)));
+    for (const a of this.allies) if (a.ref) msgs.push(...gainExp(a.ref, a.alive ? exp : Math.floor(exp / 2)));
     // 待命的人也拿一半的經驗，才不會被甩得太遠
     for (const h of g.party) if (h.bench) msgs.push(...gainExp(h, Math.floor(exp / 2)));
-    for (const a of this.allies) if (a.ref.hp <= 0) a.ref.hp = 1;
+    for (const a of this.allies) if (a.ref && a.ref.hp <= 0) a.ref.hp = 1;
     this.ctx.audio.music(null);
     this.ctx.audio.sfx(msgs.length ? 'level' : 'win');
     const dl = Object.entries(drops).map(([m, n]) => `${m} ${n}`).join('、');
@@ -496,7 +527,7 @@ export class Battle {
 
   card(u) {
     const ally = u.side === 'ally';
-    const face = el('span', { class: 'face', style: { background: ally ? HEROES[u.key].color : 'var(--foe)' } }, u.name.slice(0, 1));
+    const face = el('span', { class: 'face', style: { background: ally ? u.color || HEROES[u.key].color : 'var(--foe)' } }, u.name.slice(0, 1));
     return el('div', { class: 'unit ' + u.side + (u.def && u.def.rank ? ' rank' : '') },
       face, el('div', { class: 'u-main' },
         el('div', { class: 'u-name' }, el('span', { class: 'elem e-' + u.el }, u.el), u.name),

@@ -49,8 +49,8 @@ export const WISHES = {
   費米: { text: '在父親和良心之間，做出自己的選擇', isle: '帳房島' },
   葛蘿: { text: '奪回家鄉的島', isle: '紅岬' },
   老洛: { text: '面對五十年前的那一夜', isle: '斷桅灣' },
-  嘎嘎: { text: '找回自己的名字', isle: null },
-  霧子: { text: '知道自己是誰', isle: null },
+  嘎嘎: { text: '找回自己的名字', isle: null, flag: '嘎嘎名字', hint: '打倒公會長的時候，嘎嘎要在隊上' },
+  霧子: { text: '知道自己是誰', isle: '畫室' },
 };
 export const PARTY_MAX = 4; // 一次最多 4 人出戰，其他人在船上待命
 
@@ -197,6 +197,31 @@ export const SKILLS = {
   漲水: { cost: 0, type: 'mag', target: 'enemy', power: 33, element: '潮', desc: '' },
   再祈禱一次: { cost: 0, type: 'heal', target: 'self', power: 106, desc: '' },
   鐘響: { cost: 0, type: 'mag', target: 'allies', power: 66, element: '星', status: '定身', chance: 0.25, desc: '' },
+  框住: { cost: 0, type: 'debuff', target: 'enemy', status: '定身', chance: 0.5, desc: '' },
+  墨染: { cost: 0, type: 'mag', target: 'enemy', power: 35, element: '影', desc: '' },
+  灰色: { cost: 0, type: 'mag', target: 'allies', power: 36, element: '石', desc: '' },
+  顏料: { cost: 0, type: 'mag', target: 'enemy', power: 36, element: '焰', desc: '' },
+  剪影: { cost: 0, type: 'phy', target: 'enemy', power: 1.5, desc: '' },
+  塗掉: { cost: 0, type: 'phy', target: 'enemy', power: 1.6, element: '焰', desc: '' },
+  再畫一次: { cost: 0, type: 'heal', target: 'self', power: 110, desc: '' },
+  畫完了: { cost: 0, type: 'mag', target: 'allies', power: 68, element: '石', status: '定身', chance: 0.25, desc: '' },
+  一片白: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.6, desc: '' },
+  纏光: { cost: 0, type: 'mag', target: 'allies', power: 37, element: '星', desc: '' },
+  未完: { cost: 0, type: 'phy', target: 'enemy', power: 1.55, element: '風', desc: '' },
+  畫掉: { cost: 0, type: 'mag', target: 'enemy', power: 38, element: '潮', desc: '' },
+  懸著的筆: { cost: 0, type: 'mag', target: 'allies', power: 40, element: '星', desc: '' },
+  // 公會長：第一階段一直把人「畫進圖裡」
+  畫進圖裡: { cost: 0, type: 'debuff', target: 'enemy', status: '定身', chance: 0.8, desc: '' },
+  完整的海: { cost: 0, type: 'mag', target: 'allies', power: 38, element: '星', desc: '' },
+  星之筆: { cost: 0, type: 'mag', target: 'enemy', power: 46, element: '星', desc: '' },
+  我來畫: { cost: 0, type: 'heal', target: 'self', power: 120, desc: '' },
+  最後的地圖: { cost: 0, type: 'mag', target: 'allies', power: 72, element: '星', status: '定身', chance: 0.3, desc: '' },
+  影之筆: { cost: 0, type: 'mag', target: 'enemy', power: 48, element: '影', desc: '' },
+  不要再忘記: { cost: 0, type: 'mag', target: 'allies', power: 42, element: '影', status: '迷惘', chance: 0.3, desc: '' },
+  全部畫完: { cost: 0, type: 'mag', target: 'allies', power: 76, element: '影', status: '定身', chance: 0.3, desc: '' },
+  // 母親（第三階段來幫忙，不能控制）
+  母親的筆: { cost: 0, type: 'mag', target: 'enemy', power: 52, element: '星', desc: '' },
+  母親的結界: { cost: 0, type: 'buff', target: 'team', ward: 2, desc: '' },
 };
 
 // row：'front' 前排／'back' 後排；drop：[素材, 機率, 數量]
@@ -371,6 +396,29 @@ export const ENEMIES = {
   守鐘人: { element: '星', row: 'front', rank: '精英', hp: 1240, atk: 49, def: 33, mag: 36, spd: 10, exp: 220, silver: 155, skills: [['鐘鳴', 2], ['石跪', 1], ['硬化', 1], ['攻擊', 1]], drop: [['祈願銅', 1, 3], ['夜光珠', 1]], desc: '塔門口敲鐘的人，敲了三百年。他的腰上，掛著塔頂的鑰匙。' },
   最初的祈禱: { element: '星', row: 'front', rank: '首領', hp: 2760, atk: 48, def: 29, mag: 50, spd: 12, exp: 940, silver: 510, skills: [['鐘鳴', 2], ['安魂', 1], ['漲水', 1], ['再祈禱一次', 1]], big: '鐘響', drop: [['祈願銅', 1, 3], ['夜光珠', 1, 3]],
     phase2: { element: '影', line: '鐘裡傳出全城的聲音：「讓痛苦的地方，消失吧。」三百年來，這句話一次都沒有停過。' }, desc: '三百年前，全城的人一起說出口的那句話。它住在塔頂的鐘裡。' },
+  // 畫室
+  畫框: { element: '石', row: 'front', hp: 284, atk: 49, def: 36, mag: 10, spd: 7, exp: 49, silver: 29, skills: [['框住', 1], ['硬化', 1], ['攻擊', 2]], drop: [['舊畫紙', 0.4]], desc: '空的畫框。它在找一個地方，把它框起來，再也不讓它動。' },
+  墨跡: { element: '影', row: 'front', hp: 246, atk: 49, def: 27, mag: 36, spd: 13, exp: 49, silver: 29, skills: [['墨染', 2], ['攻擊', 1]], drop: [['墨漬', 0.5]], desc: '從畫桌上滴下來的墨。它爬到哪裡，哪裡就被畫上一筆。' },
+  灰色的風景: { element: '石', row: 'front', hp: 270, atk: 48, def: 33, mag: 30, spd: 8, exp: 49, silver: 29, skills: [['灰色', 1], ['硬化', 1], ['攻擊', 2]], drop: [['舊畫紙', 0.4]], desc: '畫完的地方。山不會動，海不會動，風也不會吹。' },
+  未乾的顏料: { element: '焰', row: 'back', hp: 140, atk: 11, def: 18, mag: 48, spd: 16, exp: 49, silver: 29, skills: [['顏料', 2], ['鱗粉', 1]], drop: [['墨漬', 0.4]], desc: '還沒乾的紅色顏料。它很燙，因為公會長畫得太用力了。' },
+  剪下的影子: { element: '影', row: 'front', hp: 214, atk: 50, def: 23, mag: 12, spd: 24, exp: 48, silver: 28, skills: [['剪影', 3], ['攻擊', 1]], drop: [['舊畫紙', 0.3]], desc: '從畫裡的人身上剪下來的影子。它們跑得很快，好像怕被畫回去。' },
+  守畫的人: { element: '焰', row: 'front', rank: '精英', hp: 1320, atk: 50, def: 34, mag: 38, spd: 11, exp: 230, silver: 160, skills: [['塗掉', 2], ['顏料', 1], ['硬化', 1], ['攻擊', 1]], drop: [['墨漬', 1, 3], ['夜光珠', 1]], desc: '替公會長看守畫室的人。他的臉被畫上了一層灰，看不出年紀。他的圍裙口袋裡，有畫室內門的鑰匙。' },
+  畫完的海: { element: '石', row: 'front', rank: '首領', hp: 2880, atk: 50, def: 30, mag: 51, spd: 12, exp: 980, silver: 530, skills: [['灰色', 2], ['框住', 1], ['塗掉', 1], ['再畫一次', 1]], big: '畫完了', drop: [['舊畫紙', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '焰', line: '牆上所有的地圖，一起燒了起來。可是燒完以後，它們又是完整的。「畫完的東西，不會消失。」' },
+    phase3: { element: '影', line: '畫的後面，有一個人形的空白。空白裡，傳出很輕的聲音：「……我也是，被畫掉的。」' }, desc: '公會長五十年來畫完的海，一張疊一張，疊成了一個巨大的身影。' },
+  // 霧心
+  空白: { element: '星', row: 'back', hp: 142, atk: 11, def: 19, mag: 49, spd: 15, exp: 50, silver: 30, skills: [['一片白', 1], ['纏光', 1], ['晨露', 1]], drop: [['空白的紙', 0.4]], desc: '霧心裡，一塊會動的空白。碰到它的人，會忘記自己剛剛想說什麼。' },
+  纏繞的光: { element: '星', row: 'back', hp: 138, atk: 10, def: 18, mag: 50, spd: 17, exp: 50, silver: 30, skills: [['纏光', 2], ['灰光', 1]], drop: [['星石', 0.4]], desc: '兩道纏在一起的筆光，一金一藍。它們打了很久的架，已經分不開了。' },
+  未完的線: { element: '風', row: 'front', hp: 240, atk: 51, def: 26, mag: 20, spd: 18, exp: 50, silver: 30, skills: [['未完', 2], ['攻擊', 1]], drop: [['空白的紙', 0.3]], desc: '畫到一半就停下來的線。它一直往前跑，想找到自己的終點。' },
+  最後的霧: { element: '影', row: 'front', hp: 262, atk: 50, def: 30, mag: 38, spd: 12, exp: 50, silver: 30, skills: [['不要再忘記', 1], ['冷霧', 1], ['攻擊', 2]], drop: [['星石', 0.3]], desc: '海上最後的一團霧。它很怕，因為整片海就快要畫完了。' },
+  被畫掉的人: { element: '潮', row: 'front', hp: 276, atk: 50, def: 31, mag: 26, spd: 10, exp: 50, silver: 30, skills: [['畫掉', 1], ['硬化', 1], ['攻擊', 2]], drop: [['空白的紙', 0.4]], desc: '公會長畫地圖的時候，順手畫掉的人。他們變成了海上的一筆灰色。' },
+  最後一筆: { element: '星', row: 'front', rank: '精英', hp: 1400, atk: 51, def: 34, mag: 40, spd: 11, exp: 240, silver: 170, skills: [['懸著的筆', 2], ['未完', 1], ['硬化', 1], ['攻擊', 1]], drop: [['星石', 1, 3], ['夜光珠', 1]], desc: '公會長還沒畫下去的最後一筆。它懸在空中，等著落下。它的筆尖上，掛著通往霧心中央的鑰匙。' },
+  公會長: { element: '星', row: 'front', rank: '首領', hp: 3300, atk: 52, def: 31, mag: 54, spd: 13, exp: 1200, silver: 640, skills: [['畫進圖裡', 2], ['完整的海', 2], ['星之筆', 1], ['我來畫', 1]], big: '最後的地圖', drop: [['星石', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '影', skills: [['影之筆', 2], ['不要再忘記', 2], ['畫進圖裡', 1], ['我來畫', 1]], big: '全部畫完', line: '公會長的影子，從他的腳下站了起來。「我把猶豫割掉了。所以我才能一直畫下去。」',
+      talk: { who: '霧子', line: '公會長看著霧子，筆停了一下：「……妳回來了。回來吧，回到我身上。」霧子握緊了劍：「不要。」' } },
+    phase3: { line: '霧心的白色裡，伸出了另一支筆。淡藍色的光，擋在{名}的前面。', soft: '公會長看著地上的五張舊圖碎片，手抖了一下：「……那是我年輕的時候畫的。」他的筆，慢了下來。',
+      guest: { name: '母親', element: '星', color: '#9fd0e8', hp: 900, mp: 60, atk: 20, def: 30, mag: 60, spd: 14, line: '「{名}。」母親站在她身邊，舉起了筆，「我們一起畫。」' } },
+    desc: '五十年前帶著公會走進霧裡的人。他想把整片海畫完，讓任何地方都不再被忘記。' },
 };
 
 export const ITEMS = {
@@ -425,6 +473,10 @@ export const MATS = {
   潮痕石: '被大浪泡過的石頭，上面有一條洗不掉的線。',
   祈願銅: '祈願塔的鐘掉下來的銅片。敲一下，會聽見很多人一起嘆氣。',
   石像灰: '跪著的石像身上落下來的灰。抹在手上，手會變得很穩。',
+  舊畫紙: '畫室裡的舊畫紙。紙很厚，上面畫的海，一動也不動。',
+  墨漬: '從畫桌上刮下來的墨。五十年了，還沒有乾。',
+  星石: '霧心裡撿到的小石頭，會發出淡淡的星光。和畫海人的筆尖，是同一種光。',
+  空白的紙: '一張什麼都沒畫的紙。拿在手上，會覺得有一點點期待。',
 };
 
 // ───────── 裝備：在鐵匠用素材打造。who：只有誰能用（不寫就是大家都能用） ─────────
@@ -521,6 +573,20 @@ export const EQUIPS = {
   白花冠: { slot: '飾品', stats: { hp: 40, mag: 8, mp: 10 }, cost: { 銀貝: 320, 白花瓣: 3 }, desc: '白花瓣編的花冠。戴著它，霧裡的聲音會變得很溫柔。' },
   船票護符: { slot: '飾品', stats: { spd: 8, atk: 6 }, cost: { 銀貝: 310, 舊船票: 3 }, desc: '三張綁在一起的船票。戴著它，總覺得一定趕得上下一班船。' },
   祈願銅戒: { slot: '飾品', stats: { atk: 8, mag: 8, spd: 3 }, cost: { 銀貝: 360, 祈願銅: 2, 石像灰: 2 }, desc: '祈願銅打的戒指。戴久了，會聽見一句很老的祈禱，變得越來越小聲。' },
+  // 每個人的最後一把武器（傳說）
+  星辰筆: { slot: '武器', who: '墨里', stats: { mag: 42, mp: 20, spd: 3 }, cost: { 銀貝: 600, 星石: 4, 空白的紙: 2, 夜光珠: 2 }, desc: '用霧心的星石磨出來的筆尖。畫下去的線會發光，可是它最好看的時候，是什麼都還沒畫的時候。' },
+  歸航刀: { slot: '武器', who: '阿潮', stats: { atk: 45, hp: 40 }, cost: { 銀貝: 560, 褪色布: 2, 星石: 2, 夜光珠: 2 }, desc: '刀柄纏著海燕號的舊帆布。阿潮說，這把刀只做一件事：帶大家回家。' },
+  名字之杖: { slot: '武器', who: '蓮笙', stats: { mag: 40, mp: 22 }, cost: { 銀貝: 540, 白花瓣: 3, 空白的紙: 2, 夜光珠: 1 }, desc: '杖上刻著那座島的名字。只有蓮笙唸得出來，唸出來的時候，花會開。' },
+  終曲琴: { slot: '武器', who: '小鈴', stats: { mag: 39, spd: 8 }, cost: { 銀貝: 540, 祈願銅: 2, 星石: 2, 夜光珠: 1 }, desc: '琴上只有最後一首歌。彈完的時候，大家都會想起一個想念的人。' },
+  白帳弓: { slot: '武器', who: '費米', stats: { atk: 41, spd: 7 }, cost: { 銀貝: 560, 舊畫紙: 3, 星石: 2, 夜光珠: 1 }, desc: '弓臂貼著一頁空白的帳。費米說，有些東西，不用算也知道值不值得。' },
+  回家的斧: { slot: '武器', who: '葛蘿', stats: { atk: 43, def: 8 }, cost: { 銀貝: 570, 潮痕石: 2, 星石: 2, 夜光珠: 2 }, desc: '斧柄刻著紅岬所有人的名字。一隻手拿著它，也很穩。' },
+  未畫完的尺: { slot: '武器', who: '老洛', stats: { mag: 41, mp: 20 }, cost: { 銀貝: 560, 舊畫紙: 2, 空白的紙: 2, 夜光珠: 1 }, desc: '一把只有一半刻度的尺。另一半，老洛說要留給下一個畫海人。' },
+  有名字的劍: { slot: '武器', who: '霧子', stats: { atk: 47, spd: 4 }, cost: { 銀貝: 580, 墨漬: 3, 星石: 2, 夜光珠: 2 }, desc: '霧子在劍身上刻了自己的名字。從那天起，這把劍有了自己的影子。' },
+  名字的殼: { slot: '武器', who: '嘎嘎', stats: { atk: 35, def: 15 }, cost: { 銀貝: 520, 潮痕石: 3, 空白的紙: 2, 夜光珠: 1 }, desc: '殼上寫著一個名字。嘎嘎每天都要低頭看一次，確定它還在。' },
+  畫室長袍: { slot: '防具', stats: { def: 30, hp: 96, mag: 6 }, cost: { 銀貝: 480, 舊畫紙: 4, 墨漬: 2, 夜光珠: 1 }, desc: '公會長在畫室裡穿的長袍。袖口沾滿了墨，可是一點都不髒。' },
+  空白披風: { slot: '防具', stats: { def: 26, hp: 82, mag: 8, spd: 3 }, cost: { 銀貝: 460, 空白的紙: 4, 星石: 1 }, desc: '一件白色的披風。穿著它站在霧裡，霧會以為你是它的一部分。' },
+  星石墜: { slot: '飾品', stats: { atk: 10, mag: 10, spd: 4 }, cost: { 銀貝: 440, 星石: 3, 墨漬: 1 }, desc: '一顆小小的星石。晚上把它舉起來，天上會多一顆星。' },
+  舊畫紙護符: { slot: '飾品', stats: { hp: 60, mp: 20, def: 6 }, cost: { 銀貝: 420, 舊畫紙: 3, 空白的紙: 1 }, desc: '折成小方塊的舊畫紙。打開來，是五十年前的鹽灣島。' },
 };
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
@@ -629,4 +695,10 @@ export const COMMISSIONS = [
   { id: '聲', title: '掉下來的鐘聲', from: '灰燈渡的守霧人', kind: 'kill', target: '鐘聲', n: 4, island: '祈願塔', side: '守霧人', rep: 10, reward: { 銀貝: 320, 祈願銅: 2 }, text: '每一聲鐘響，海上就有一個地方被忘掉。讓那些掉下來的鐘聲，安靜下來吧。' },
   { id: '銅', title: '祈願塔的銅', from: '商會的皮貨商', kind: 'bring', target: '祈願銅', n: 4, island: '祈願塔', side: '商會', rep: 10, reward: { 銀貝: 340, 圖紙: '祈願銅戒' }, text: '三百年前的銅，在千帆市可以賣到天價。紅帆的人想搶先？門都沒有。' },
   { id: '圖十八', title: '祈願塔下的城', from: '天文台的老人', kind: 'survey', island: '祈願塔', n: 60, reward: { 銀貝: 420, 圖紙: '霧影劍' }, text: '那座城，是一切開始的地方。把它畫下來吧。……讓它也被記得一次。' },
+  { id: '框', title: '空的畫框', from: '商會的測量員', kind: 'kill', target: '畫框', n: 4, island: '畫室', side: '商會', rep: 10, reward: { 銀貝: 360, 圖紙: '白帳弓' }, text: '會長說，這是商會最後一個請託：把那些畫框打碎。……他說，商會不想再把任何地方框起來賣了。' },
+  { id: '漬', title: '五十年的墨', from: '鹽灣島的雜貨店阿秀', kind: 'bring', target: '墨漬', n: 4, island: '畫室', reward: { 銀貝: 340, 圖紙: '畫室長袍' }, text: '聽說霧裡有一種墨，五十年都不會乾。妳的書，該用這種墨寫最後一頁。' },
+  { id: '圖十九', title: '畫室的地圖', from: '霧子', kind: 'survey', island: '畫室', n: 60, reward: { 銀貝: 440, 圖紙: '有名字的劍' }, text: '……把那個房間畫下來。不是他畫的樣子，是妳看到的樣子。' },
+  { id: '線', title: '沒有終點的線', from: '守霧人的老婆婆', kind: 'kill', target: '未完的線', n: 4, island: '霧心', side: '守霧人', rep: 10, reward: { 銀貝: 380, 圖紙: '名字之杖' }, text: '守霧人最後的請託：那些畫到一半的線，一直在霧裡亂跑。讓它們停下來吧。……停下來，也是一種終點。' },
+  { id: '星', title: '霧心的星石', from: '紅帆的老水手', kind: 'bring', target: '星石', n: 4, island: '霧心', side: '紅帆', rep: 10, reward: { 銀貝: 380, 圖紙: '回家的斧' }, text: '紅帆最後的請託：帶一顆星石回來。我們要把它鑲在旗桿上。以後在海上，就不怕找不到回家的路。' },
+  { id: '圖二十', title: '霧心', from: '天文台的老人', kind: 'survey', island: '霧心', n: 60, reward: { 銀貝: 500, 圖紙: '星辰筆' }, text: '海圖的最後一頁。……畫多少，留多少，由妳決定。' },
 ];

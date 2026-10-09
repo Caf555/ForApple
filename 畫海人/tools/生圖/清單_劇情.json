@@ -822,6 +822,204 @@
       "name": "幕_鐘響時消失的島",
       "seed": 5233,
       "prompt": "Seen from a high tower, a distant small island on the misty sea fading into fog as rings of sound ripple out from a great bell."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_掛滿地圖的房間",
+      "seed": 5234,
+      "prompt": "An enormous old drawing room inside the fog, every wall covered from floor to ceiling with framed hand-drawn sea charts, a tiny silhouette of a person standing in the middle, dim candlelight."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_沒有空白的地圖",
+      "seed": 5235,
+      "prompt": "Close-up of an extremely detailed antique sea chart with every inch filled with islands, rocks, waves and tiny markings, not a single blank space left, oppressive and perfect."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_窗外灰色的海",
+      "seed": 5236,
+      "prompt": "A tall window in a dark drawing room, outside the window the sea and an island have turned completely grey and frozen still like a painting, a silhouette watching from inside."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_畫桌上的星筆",
+      "seed": 5237,
+      "prompt": "A large wooden drawing desk with an unfinished map, an old pen with a star-shaped tip glowing warm gold resting on it, candle wax and ink stains."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_人形的空白",
+      "seed": 5238,
+      "prompt": "Beside a drawing desk, on the dark wooden floor, a pale empty human-shaped blank space as if someone's shadow had been cut out with scissors, eerie quiet light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_一片白",
+      "seed": 5239,
+      "prompt": "A vast endless field of pure white mist at the center of the sea, nothing at all visible, soft and silent, only the faintest hint of a horizon."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_纏在一起的光",
+      "seed": 5240,
+      "prompt": "Inside a white void, two ribbons of light, one warm gold and one pale blue, twisting and coiling around each other like two strokes of a pen in a duel."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_停在半空的筆",
+      "seed": 5241,
+      "prompt": "A very old man in a worn guild robe holding a pen with a star-shaped tip, the pen frozen in mid-air in the middle of a white void, just one stroke left to draw."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_擋在筆前的女人",
+      "seed": 5242,
+      "prompt": "Back view of a woman in a pale grey traveling cloak with a faintly blue-glowing pen standing with one arm raised, blocking an old man's glowing golden pen in a white void, the blue and gold light pushing against each other."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_回頭的女人",
+      "seed": 5243,
+      "prompt": "A woman with long dark hair tied back, pale grey traveling cloak, turning around in a white misty void and giving a gentle tired smile, soft blue glow, face kindly visible."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_霧散的群島",
+      "seed": 5244,
+      "prompt": "A bright clear sky over an archipelago as the last fog dissolves away, sunlit blue sea, many green islands fully visible to the horizon, warm daylight."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_繁忙的港口",
+      "seed": 5245,
+      "prompt": "A busy prosperous harbor crowded with dozens of sailing ships under clear sunny skies, colorful flags, bustling docks."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_畫滿的海圖",
+      "seed": 5246,
+      "prompt": "An open old map book whose pages are completely filled with drawn islands and routes, not a single blank space, a pen laid down beside it."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_碼頭上的小孩",
+      "seed": 5247,
+      "prompt": "A small child sitting at the edge of a wooden pier on a sunny day, quietly looking at a calm flat sea with a perfectly clear horizon, nothing unknown left."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_平靜的海",
+      "seed": 5248,
+      "prompt": "A perfectly calm, flat, sunlit sea stretching to the horizon, peaceful but strangely still, no fog, no waves."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_回來的薄霧",
+      "seed": 5249,
+      "prompt": "A thin gentle mist returning over the sea at twilight, soft and quiet, grey lanterns glowing along the edge of the fog."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_有燈的島",
+      "seed": 5250,
+      "prompt": "Several islands in thin mist at dusk, islands with lit warm windows and lanterns stand clear while the fog parts around them, one unlit island fades softly into the fog."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_門前的母女",
+      "seed": 5251,
+      "prompt": "Two figures, a 17-year-old girl with short black hair with one white streak, deep-blue old sailor coat, leather satchel and a woman in a pale grey traveling cloak with a faintly blue-glowing pen, standing side by side before a towering gate made of ice under a starry night, holding small lights, guardians of the gate."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_每年一次的船",
+      "seed": 5252,
+      "prompt": "A small sailing boat arriving at a lamplit wooden pier at dusk, people on the pier waving, a once-a-year reunion."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_一路的灰燈",
+      "seed": 5253,
+      "prompt": "A long line of grey lanterns on poles standing in the shallow sea, stretching into soft fog toward the horizon, quiet and enduring."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_飛向港口的書頁",
+      "seed": 5254,
+      "prompt": "Hundreds of pages torn from an old map book flying on the wind across the sea toward distant harbors, a girl with a satchel watching them from a cliff at dawn."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_大家都在畫",
+      "seed": 5255,
+      "prompt": "On a lively harbor at sunset, fishermen, children, pirates and merchants all sitting on the dock drawing their own maps on single pages, warm and joyful."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_亂糟糟的海圖",
+      "seed": 5256,
+      "prompt": "A chaotic colorful sea chart drawn by many different hands, overlapping lines in red, blue, green and purple ink, the same island drawn many different ways, messy and full of life."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_紅帆的船隊",
+      "seed": 5257,
+      "prompt": "A fleet of ships with deep red sails sailing out of light fog together, banners flying, lanterns on their bows."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_熱鬧的夜市",
+      "seed": 5258,
+      "prompt": "A crowded night market on a harbor full of warm lanterns, people laughing and trading hand-drawn maps, lively and festive."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_正中間的空白",
+      "seed": 5259,
+      "prompt": "An old sea chart with many islands drawn in a ring around the edges, and a perfectly round blank space left untouched in the very center, softly glowing."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_清晨的霧",
+      "seed": 5260,
+      "prompt": "Early morning on a small harbor island with a lighthouse, a light morning mist lying gently over the water, sunrise colors beginning to show."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_太陽出來霧散了",
+      "seed": 5261,
+      "prompt": "The morning sun rising over the sea and the light mist dissolving in golden sunlight, revealing calm water, hopeful and warm."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_站在空白邊緣的母親",
+      "seed": 5262,
+      "prompt": "A woman in a pale grey cloak standing at the edge of a large blank white circle on a giant map laid over the sea, looking toward the viewer, soft blue glow."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_母親叫她的名字",
+      "seed": 5263,
+      "prompt": "A mother and her 17-year-old daughter with short black hair and a white streak standing face to face on a beach at sunrise, the mother's hand on the girl's cheek, warm emotional reunion."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_鹽灣島的碼頭",
+      "seed": 5264,
+      "prompt": "The wooden pier of a small fishing harbor at golden evening, many friends gathered and waving, a lighthouse on the hill, ships coming home."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_回家的船",
+      "seed": 5265,
+      "prompt": "An old fishing ship named Swallow sailing home into a harbor at dawn, a father and his son standing at the bow, an old turtle and an old fisherman on the pier."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_書的最後一頁",
+      "seed": 5266,
+      "prompt": "The last page of an old map book open on a desk under lamplight, a simple drawing of a group of friends standing together on a pier, the rest of the page still blank."
     }
   ]
 }

@@ -1,15 +1,15 @@
-// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章
+// 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章 → 霧心：最後的抉擇 → 結局 → 尾聲（之後可以繼續玩）
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES } from './data.js';
-import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA } from './islands.js';
+import { ISLANDS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
 import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
 import { UI, el, $ } from './ui.js';
 import { Audio } from './audio.js';
 import { Battle } from './battle.js';
-import { Explore, newIsland, worldOf, surveyMax } from './explore.js';
+import { Explore, newIsland, worldOf, surveyMax, helpers } from './explore.js';
 import { Port, statText } from './port.js';
 
-export const VERSION = 'M5 第五海域 v0.1（前半）';
+export const VERSION = 'M5 第五海域 v0.2（完結）';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -175,6 +175,17 @@ ctx.sail = async id => {
     for (const [k, v] of Object.entries(o.rep || {})) ctx.addRep(k, v);
     await ctx.ui.alert(id, [...o.line, ctx.fxText({ ...o.fx, ...o.rep })].filter(Boolean));
   }
+  // 霧心：聲望到「信任」的勢力來幫忙
+  if (def.help) {
+    const h = helpers(g), say = [];
+    if (h.includes('守霧人')) say.push('守霧人的灰燈小舟，一路陪你們開到白色的邊上。「霧心裡的霧，我們替你們看著。」（霧不會回來，低語都說真話）');
+    if (h.includes('紅帆')) say.push('紅帆的船隊在外圍下了錨，炮口對著霧。「裡面的東西，我們先替你們轟一輪。」（妖物少 3 個）');
+    if (h.includes('商會')) { say.push('商會的破冰船靠過來，船員把一箱一箱的補給搬上船。「會長說，這次不收錢。」（糧 +12、藥草 +4、海靈露 +3、醒神香 +1）'); ctx.applyFx({ 糧: 12, 藥草: 4, 海靈露: 3, 醒神香: 1 }); }
+    const miss = FACTIONS.filter(f => !h.includes(f));
+    if (miss.length) say.push(`（${miss.join('、')}的聲望到「信任」以上的話，也會來幫忙）`);
+    if (!h.length) say.unshift('白色的邊上，只有你們的船。');
+    await ctx.ui.alert('來幫忙的人', say);
+  }
   await ctx.ui.story(lines(def.arrive));
   g.island = newIsland(g, id);
   g.phase = 'island';
@@ -243,12 +254,88 @@ ctx.observatory = async () => {
     await ctx.ui.story(lines(OBSERVATORY5));
     await ctx.recruit('霧子');
     g.flags.霧心 = 1; save(g);
+  } else if (g.flags.結局) {
+    const seen = (g.endings || []).map(k => ENDINGS[k].title).join('、');
+    const i = await ctx.ui.choose('天文台', ['老人把望遠鏡對著霧心。那裡，現在是一片很淡很淡的霧。', `看過的結局：${seen}（${(g.endings || []).length}/${Object.keys(ENDINGS).length}）`, '「想再做一次最後的抉擇嗎？」老人問，「書的最後一頁，隨時可以重新畫。」'], [{ label: '回到霧心，重新做最後的抉擇' }, { label: '不用了' }]);
+    if (i === 0) return lastChoice();
   } else {
     const where = g.flags.霧心 ? '霧心' : g.flags.北 ? '北霧海' : g.flags.焰 ? '焰之群島' : '環礁';
     await ctx.ui.alert('天文台', ['老人在擦望遠鏡。', `「往霧心的路，還很長。」他說，「先把${where}的每一座島，都好好畫進書裡吧。」`], '回到港口');
   }
   ctx.port.show();
 };
+
+// ───────── 最後的抉擇與結局 ─────────
+// 打倒公會長：記下霧心的紀錄，然後是最後的抉擇
+ctx.finale = async (id, pct) => {
+  const g = ctx.g, rec = worldOf(g, id);
+  rec.cleared = true;
+  if (pct >= 60) rec.good = true;
+  if (has('嘎嘎')) g.flags.嘎嘎名字 = 1;
+  if ((g.world.忘人港 || {}).good) g.flags.海生回家 = 1;
+  g.phase = 'port'; g.island = null; g.trip = null;
+  for (const h of g.party) { const s = heroStats(h); h.hp = s.hp; h.mp = s.mp; }
+  save(g);
+  await lastChoice();
+};
+
+// 留白（真結局）還差什麼：三方聲望都到「信任」、8 個隊友的心願都完成、每座島都畫到最多能畫的九成
+export const TRUE_REP = 2, TRUE_SURVEY = 0.9;
+function trueEndMissing(g) {
+  const miss = [];
+  const low = FACTIONS.filter(f => repLevel((g.rep || {})[f] || 0) < TRUE_REP);
+  if (low.length) miss.push(`${low.map(f => `${f}（現在「${REP_LEVELS[repLevel((g.rep || {})[f] || 0)]}」）`).join('、')}的聲望，還沒到「${REP_LEVELS[TRUE_REP]}」。`);
+  const wish = Object.keys(WISHES).filter(k => !wishDone(k));
+  if (wish.length) miss.push(`還有隊友的心願沒有完成：${wish.join('、')}。（在「隊伍」裡看得到）`);
+  const ids = Object.keys(ISLANDS), avg = ids.reduce((a, id) => a + Math.min(1, worldOf(g, id).best / surveyMax(id)), 0) / ids.length;
+  if (avg < TRUE_SURVEY) miss.push(`全部 ${ids.length} 座島的測繪度，平均只畫到最多能畫的 ${Math.floor(avg * 100)}%，要到 ${TRUE_SURVEY * 100}%。`);
+  return miss;
+}
+ctx.trueEndMissing = () => trueEndMissing(ctx.g);
+
+async function lastChoice() {
+  const g = ctx.g, h = helpers(g);
+  for (const f of FACTIONS) g.flags['幫忙:' + f] = h.includes(f) ? 1 : 0;
+  g.flags.最高聲望 = [...FACTIONS].sort((a, b) => ((g.rep || {})[b] || 0) - ((g.rep || {})[a] || 0))[0];
+  ctx.audio.music('劇情');
+  await ctx.ui.story(lines(FINALE_ASK));
+  const keys = Object.keys(ENDINGS);
+  let k;
+  for (;;) {
+    const miss = trueEndMissing(g);
+    const i = await ctx.ui.choose('最後的抉擇', ['繪圖師之書的最後一頁，還是空白的。', '（選了以後就會看到結局。之後到天文台，可以重新選一次）'], keys.map(x => ({ label: ENDINGS[x].label + (ENDINGS[x].need && miss.length ? '（還差一些東西）' : '') })));
+    k = keys[i];
+    if (!ENDINGS[k].need || !miss.length) break;
+    await ctx.ui.alert('留白', ['{名}拿起筆，停在正中間。可是，好像還少了什麼。', ...miss.map(m => '・' + m), '（完成以後，到港口的天文台，可以重新做一次最後的抉擇）']);
+  }
+  g.flags.結局 = k;
+  g.endings = [...new Set([...(g.endings || []), k])];
+  save(g);
+  await ctx.ui.story(lines(ENDINGS[k].lines));
+  await cinema(ENDINGS[k].cine);
+  await ctx.ui.story(lines(EPILOGUE));
+  await cinema('尾聲');
+  credits(k);
+}
+ctx.lastChoice = lastChoice;
+
+function credits(k) {
+  const g = ctx.g;
+  const min = Math.max(1, Math.round((Date.now() - g.stats.start) / 60000));
+  ctx.audio.music('標題');
+  const s = $('screen'); s.innerHTML = ''; s.className = 'result credits';
+  s.append(el('div', { class: 't-box' },
+    el('h2', {}, '全劇終'),
+    el('p', { class: 't-sub' }, ENDINGS[k].title),
+    el('ul', { class: 'res' }, ...CREDITS.map(([a, b]) => el('li', {}, a ? el('b', {}, a + '　') : null, ctx.ui.fmt(b)))),
+    el('ul', { class: 'res' },
+      el('li', {}, `看過的結局：${(g.endings || []).length}/${Object.keys(ENDINGS).length}`),
+      el('li', {}, `走了 ${g.stats.steps} 格・戰鬥 ${g.stats.battles} 場・擊退 ${g.stats.kills} 隻`),
+      el('li', {}, `委託完成 ${g.jobsDone.length} 個・圖紙 ${g.bps.length}/${Object.keys(EQUIPS).length} 張`),
+      el('li', {}, `用時：約 ${min} 分鐘`)),
+    el('p', { class: 'muted' }, '回到港口以後，可以繼續玩：接委託、補完測繪、完成心願。到天文台，可以重新做一次最後的抉擇，看看其他的結局。'),
+    el('div', { class: 'col' }, el('button', { class: 'btn primary', onclick: () => ctx.port.show() }, '回到港口'))));
+}
 
 function chapterEnd(ch = CHAPTERS[0]) {
   const g = ctx.g;
@@ -303,6 +390,7 @@ function help() {
     '・北霧海：淡藍色的格子結了冰，走上去會一直往同一個方向滑，滑到冰的盡頭才停（滑行不吃糧）。「聲」是霧裡的低語，可能是線索，也可能是陷阱；聽過的低語記在選單的「霧裡的低語」。「跡」是母親留下的星形記號，每座島一個。',
     '・霧心：白色的格子是「空白」，紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去；空白後面，有時候藏著寶箱，有時候藏著妖物。「圖」是公會長五十年前留下的舊圖碎片，每座島一張。',
     '・心願（第五章開始）：每個隊友都有一個心願，在「隊伍」裡看得到。大部分的心願，要在那個人的島上拿到好結局（測繪度 60% 以上返航）才會完成；沒完成的，可以回去那座島再玩一次。',
+    '・霧心的最後一座島：商會、紅帆、守霧人的聲望到「信任」以上，就會來幫忙。打倒公會長以後，是最後的抉擇，有四種結局。「留白」要三方聲望都到「信任」、8 個隊友的心願都完成、全部的島平均畫到最多能畫的九成才選得到。看完結局可以繼續玩，到天文台可以重新選。',
     '・守霧人（第四章開始）：聲望到「信任」，出航可以走祕密航道，不會遇到航海事件；到「夥伴」，點燈的時候用的是灰燈：霧不會回來，也聽得出低語是真是假。',
   ], '知道了');
 }
@@ -328,7 +416,7 @@ ctx.partySheet = () => {
           el('small', {}, slot), el('b', {}, h.eq[slot] || '—')))),
         el('p', { class: 'muted small' }, ctx.ui.fmt(d.desc)),
         el('p', { class: 'small' }, '技能：' + d.skills.join('、')),
-        g.flags.霧心 && WISHES[h.key] ? el('p', { class: 'small wish' + (wishDone(h.key) ? ' done' : '') }, `心願：${WISHES[h.key].text}　` + (wishDone(h.key) ? '✓ 完成了' : WISHES[h.key].isle ? `（在「${WISHES[h.key].isle}」拿到好結局）` : '（第五章的最後揭曉）')) : null,
+        g.flags.霧心 && WISHES[h.key] ? el('p', { class: 'small wish' + (wishDone(h.key) ? ' done' : '') }, `心願：${WISHES[h.key].text}　` + (wishDone(h.key) ? '✓ 完成了' : WISHES[h.key].isle ? `（在「${WISHES[h.key].isle}」拿到好結局）` : `（${WISHES[h.key].hint || '第五章的最後揭曉'}）`)) : null,
         el('div', { class: 'chips' }, ...['藥草', '海靈露'].map(k => el('button', { class: 'chip btn-chip', disabled: !(g.supply[k] > 0) || h.hp <= 0 || (k === '藥草' ? h.hp >= st.hp : h.mp >= st.mp), onclick: () => {
           g.supply[k]--;
           if (k === '藥草') h.hp = Math.min(st.hp, h.hp + Math.round(st.hp * ITEMS.藥草.heal)); else h.mp = Math.min(st.mp, h.mp + ITEMS.海靈露.mp);
@@ -339,8 +427,8 @@ ctx.partySheet = () => {
   });
 };
 
-// 隊友的心願：那座島拿到好結局就算完成
-function wishDone(key) { const w = WISHES[key]; return !!(w && w.isle && (ctx.g.world[w.isle] || {}).good); }
+// 隊友的心願：那座島拿到好結局就算完成（嘎嘎：打倒公會長的時候在隊上）
+function wishDone(key) { const w = WISHES[key]; return !!(w && has(key) && (w.flag ? ctx.g.flags[w.flag] : w.isle && (ctx.g.world[w.isle] || {}).good)); }
 ctx.wishDone = wishDone;
 
 // 換裝備：列出手上有、這個人能用的
