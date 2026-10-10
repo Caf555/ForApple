@@ -45,7 +45,7 @@ for (const [k, e] of Object.entries(PORT_EVENTS)) if (!e.title || (!e.text && k 
 // 每張圖紙都要拿得到：一開始就會、島上的寶箱或首領、委託報酬
 const bpFrom = new Set(Object.keys(EQUIPS).filter(k => EQUIPS[k].start));
 for (const h of Object.values(HEROES)) if (h.weapon) { if (!EQUIPS[h.weapon]) bad(`隊友自己的武器「${h.weapon}」不存在`); bpFrom.add(h.weapon); }
-for (const d of Object.values(ISLANDS)) for (const b of d.bps) bpFrom.add(b);
+for (const d of Object.values(ISLANDS)) { for (const b of d.bps) bpFrom.add(b); if (d.boss.bp) { if (!EQUIPS[d.boss.bp]) bad(`首領一定給的圖紙「${d.boss.bp}」不存在`); bpFrom.add(d.boss.bp); } }
 for (const c of COMMISSIONS) if (c.reward.圖紙) bpFrom.add(c.reward.圖紙);
 for (const it of BLACK_MARKET) if (it.kind === 'bp') { if (!EQUIPS[it.bp]) bad(`黑市的圖紙「${it.bp}」不存在`); bpFrom.add(it.bp); }
 for (const it of BLACK_MARKET) {
@@ -57,9 +57,22 @@ for (const it of BLACK_MARKET) {
 const CH_FLAGS = ['第一章', '第二章', '第三章', '第四章', '環礁', '焰', '北', '霧心'];
 for (const [where, list] of [['黑市的換貨', BLACK_POOL], ['市場的舶來品', IMPORTS]]) for (const it of list) {
   if (it.kind === 'bp') { if (!EQUIPS[it.bp]) bad(`${where}的圖紙「${it.bp}」不存在`); bpFrom.add(it.bp); }
+  else if (it.kind === 'find') { if (!(ISLANDS[it.find] || {}).hidden) bad(`${where}的「${it.name}」要找的「${it.find}」不是隱藏島`); }
   else if (it.kind === 'mat' ? !MATS[it.name] : !ITEMS[it.name] && !['糧', '燈油', '墨水'].includes(it.name)) bad(`${where}的「${it.name}」不存在`);
   if (it.flag && !CH_FLAGS.includes(it.flag)) bad(`${where}的「${it.name}」：章節旗標「${it.flag}」不認得`);
   if (!(it.price > 0)) bad(`${where}的「${it.name}」沒有價錢`);
+}
+// 隱藏島：每座都要有一個找到的方法（酒館的線索、市場的日誌、黑市的藏寶圖、船塢的改造），找到的時候要有話說
+const FIND_BY = { 醉鯨礁: '酒館', 紅帆藏寶島: '黑市' };
+for (const it of IMPORTS) if (it.kind === 'find') FIND_BY[it.find] = '市場';
+for (const d of Object.values(SHIP)) for (const l of d.levels) if (l.find) { if (!(ISLANDS[l.find] || {}).hidden) bad(`船塢「${l.label}」要找的「${l.find}」不是隱藏島`); FIND_BY[l.find] = '船塢'; }
+if (BLACK_MARKET.filter(it => it.kind === 'map').map(it => it.n).sort().join() !== '1,2,3') bad('黑市的藏寶圖碎片要剛好 1、2、3 三片');
+for (const [id, d] of Object.entries(ISLANDS)) if (d.hidden) {
+  if (!FIND_BY[id]) bad(`隱藏島「${id}」沒有找到的方法`);
+  if (d.flag !== '隱:' + id) bad(`隱藏島「${id}」的 flag 要寫成「隱:${id}」`);
+  if (!(d.found || []).length) bad(`隱藏島「${id}」缺少找到時的文字`);
+  for (const k in d.boss.gift || {}) if (!FX_OK(k)) bad(`隱藏島「${id}」首領給的「${k}」不認得`);
+  if (ISLAND_ORDER.find(k => ISLANDS[k].sea === d.sea) === id) bad(`隱藏島「${id}」不能是${d.sea}的第一座島（海圖的海域標題會跟著不見）`);
 }
 for (const k of Object.keys(EQUIPS)) if (!bpFrom.has(k)) bad(`裝備 ${k} 的圖紙沒有地方拿得到`);
 // 裝備升級：每件裝備都在一條線上、只在一條線上；同一條線同一個欄位、同一個人，照價錢由便宜到貴
