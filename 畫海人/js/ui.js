@@ -36,10 +36,16 @@ export class UI {
     return api;
   }
 
+  // 視窗裡的文字：一般字串，或 { who, need, text } 這種角色台詞（need 的人不在隊伍裡就不顯示）
+  paras(lines) {
+    const arr = (Array.isArray(lines) ? lines : [lines]).map(t => t && typeof t === 'object' ? t : { text: t });
+    return this.ctx.storyLines(arr).map(L => el('p', { class: 'para' }, L.who ? el('b', {}, this.fmt(L.who) + '：') : null, this.fmt(L.text)));
+  }
+
   alert(title, lines, btn = '繼續') {
     return new Promise(res => {
       const api = this.sheet(title, body => {
-        (Array.isArray(lines) ? lines : [lines]).forEach(t => body.append(el('p', { class: 'para' }, this.fmt(t))));
+        body.append(...this.paras(lines));
         body.append(el('div', { class: 'btns' }, el('button', { class: 'btn primary', onclick: () => { api.close(); res(); } }, btn)));
       }, { noClose: true });
     });
@@ -48,7 +54,7 @@ export class UI {
   choose(title, lines, opts) {
     return new Promise(res => {
       const api = this.sheet(title, body => {
-        lines.forEach(t => body.append(el('p', { class: 'para' }, this.fmt(t))));
+        body.append(...this.paras(lines));
         body.append(el('div', { class: 'col' }, ...opts.map((o, i) => el('button', { class: 'btn', disabled: o.disabled, onclick: () => { api.close(); res(i); } }, this.fmt(o.label)))));
       }, { noClose: true });
     });

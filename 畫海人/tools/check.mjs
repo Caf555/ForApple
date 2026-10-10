@@ -152,5 +152,20 @@ for (const [k, c] of Object.entries(CINEMA)) {
 }
 for (const n of picList) if (!usedPics.includes(n)) bad(`生圖清單裡的「${n}」沒有用到`);
 
+// 台詞：混在文字裡的角色台詞 { who, need, text } 一定要有文字；need 要是存在的隊友
+// （視窗會把它排成「名字：台詞」，不會再出現 [object Object]）
+const walkLines = (v, where) => {
+  if (Array.isArray(v)) {
+    if (v.some(x => typeof x === 'string')) for (const x of v) if (x && typeof x === 'object' && !Array.isArray(x)) {
+      if ((x.who || x.need) && (typeof x.text !== 'string' || !x.text)) bad(`${where} 有一句台詞沒有文字`);
+      if (x.need && !HEROES[x.need]) bad(`${where} 的台詞要的隊友「${x.need}」不存在`);
+    }
+    v.forEach(x => walkLines(x, where));
+  } else if (v && typeof v === 'object') for (const k in v) walkLines(v[k], where === '' ? k : where);
+};
+for (const [k, v] of Object.entries({ ISLANDS, SEA_EVENTS, PORT_SCENES, CHAPTERS, LATE_RECRUIT, ENDINGS, EPILOGUE, FINALE_ASK, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5 })) {
+  if (k === 'ISLANDS') for (const [id, d] of Object.entries(v)) walkLines(d, `島「${id}」`); else walkLines(v, k);
+}
+
 if (errs.length) { console.log('發現問題：\n' + errs.map(e => '・' + e).join('\n')); process.exit(1); }
 console.log(`《畫海人》檢查通過：${Object.keys(ISLANDS).length} 座島、${Object.keys(ENEMIES).length} 種敵人、${Object.keys(EQUIPS).length} 件裝備、${COMMISSIONS.length} 個委託、${Object.keys(CINEMA).length} 段劇情動畫（${usedPics.length} 張圖）。`);
