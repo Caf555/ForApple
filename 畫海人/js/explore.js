@@ -1,7 +1,7 @@
 // 島嶼探索：六角格地圖、霧、補給、格子上的事件
 import { ISLANDS, TILE_INFO } from './islands.js';
 import { EQUIPS, MATS, PARTY_MAX, FACTIONS, repLevel, repOn, MIST_LAMP, cargoMax } from './data.js';
-import { heroStats, makeHero, DIFF, save, cargoUsed } from './state.js';
+import { heroStats, makeHero, DIFF, save, cargoUsed, moraleTier } from './state.js';
 import { survey } from './survey.js';
 import { playPuzzle } from './puzzle.js';
 import { el, $ } from './ui.js';
@@ -40,6 +40,15 @@ function helpOf(g) {
 }
 // 看得見的範圍：礦坑很暗，少一格
 export function sight(def, lit) { return Math.max(0, (lit ? 2 : 1) - (def.dark ? 1 : 0)); }
+
+// 斷糧以後撐得了幾格（0 = 不會被迫返航）
+export const starveLimit = g => (DIFF[g.diff] || DIFF.標準).starve;
+// 村子小店這次登島的存貨（份數）
+export function villageStock(g, id) {
+  const base = (DIFF[g.diff] || DIFF.標準).stock, def = ISLANDS[id], bonus = worldOf(g, id).good && def.sea !== '霧心' ? 1 : 0, out = {};
+  for (const k of Object.keys((def.village || {}).shop || {})) out[k] = (base[k] ?? 1) + bonus;
+  return out;
+}
 
 export function newIsland(g, id) {
   const def = ISLANDS[id], rec = worldOf(g, id), route = routeOf(g, id);
@@ -82,7 +91,7 @@ export function newIsland(g, id) {
   shuffle(tiles.filter(t => t.kind === '空' && t.land !== '岩' && t.land !== '熱' && t.land !== '噴' && dist([t.c, t.r], start) > 1)).slice(0, nIce).forEach(t => { t.land = '冰'; });
   // 霧心的空白格：紙還沒畫到的地方。登陸點旁邊、村子、測繪點、首領、霧眼不會是；不會把路完全擋住
   if (def.blank) placeBlank(def, tiles, start, def.blank);
-  const isl = { id, tiles, pos: [...start], start: [...start], steps: 0, lit: false, food: 0, events: shuffle(def.events.map((_, i) => i)), boss: false, key: false };
+  const isl = { id, tiles, pos: [...start], start: [...start], steps: 0, lit: false, food: 0, hunger: 0, events: shuffle(def.events.map((_, i) => i)), boss: false, key: false };
   // 已經完成過的島：首領不在了，門也開著；測繪過的測繪點不用再畫
   if (rec.cleared) { isl.boss = true; isl.key = true; const b = tiles.find(t => t.kind === '王'); b.done = true; }
   // 測繪點：周圍兩圈都已經畫進書裡，才算畫完；上次畫得不夠準的，這次可以重畫
@@ -189,8 +198,12 @@ export class Explore {
     // 狀態列
     const s = g.supply;
     this.$status.innerHTML = '';
-    this.$status.append(...[['糧', s.糧], ['燈油', s.燈油], ['墨水', s.墨水], ['銀貝', g.silver], ['士氣', g.morale], [surveyPct(isl) >= surveyMax(isl.id) ? '測繪滿' : '測繪', surveyPct(isl) + '%']].map(([k, v]) =>
-      el('span', { class: 'st' + (k === '糧' && v <= 3 ? ' low' : '') }, el('small', {}, k), el('b', {}, String(v)))));
+    if (s.糧 > 0) isl.hunger = 0;
+    const mt = moraleTier(g.morale);
+    const lim = starveLimit(g);
+    this.$status.append(...[['糧', isl.hunger ? `飢餓${lim ? `${isl.hunger}/${lim}` : ''}` : '糧', s.糧, isl.hunger || s.糧 <= 3 ? 'low' : ''], ['燈油', '燈油', s.燈油], ['墨水', '墨水', s.墨水], ['銀貝', '銀貝', g.silver],
+      ['士氣', `士氣${mt.name}`, g.morale, mt.cls && 'm-' + mt.cls], ['測繪', surveyPct(isl) >= surveyMax(isl.id) ? '測繪滿' : '測繪', surveyPct(isl) + '%']].map(([k, label, v, cls]) =>
+      el('span', { class: 'st' + (cls ? ' ' + cls : ''), 'data-k': k }, el('small', {}, label), el('b', {}, String(v)))));
     this.$lamp.textContent = isl.lit ? '熄燈' : this.grey ? '點灰燈' : '點燈';
     this.$lamp.classList.toggle('on', isl.lit);
     this.$party.innerHTML = '';
@@ -237,14 +250,26 @@ export class Explore {
     this.ctx.audio.sfx('step');
     // 糧食
     isl.food += diff.food;
+    let starving = false;
     while (isl.food >= 1) {
       isl.food -= 1;
-      if (g.supply.糧 > 0) g.supply.糧--;
-      else {
-        for (const h of g.party) { const st = heroStats(h); if (h.hp > 0) h.hp = Math.max(1, h.hp - Math.round(st.hp * 0.08)); }
-        g.morale = Math.max(0, g.morale - 4);
-        this.ctx.ui.toast('沒有糧食了。大家又餓又累……');
-      }
+      if (g.supply.糧 > 0) { g.supply.糧--; isl.hunger = 0; }
+      else starving = true;
+    }
+    if (starving) {
+      // 斷糧：越餓越嚴重。標準、困難會扣到倒下，撐不住就被迫返航；悠閒體力最低 1
+      const lim = starveLimit(g);
+      isl.hunger = (isl.hunger || 0) + 1;
+      if (lim && isl.hunger > lim) { this.draw(); await this.starveHome('餓'); this.busy = false; return; }
+      for (const h of g.party) { const st = heroStats(h); if (h.hp > 0) h.hp = Math.max(lim ? 0 : 1, h.hp - Math.round(st.hp * 0.08)); }
+      g.morale = Math.max(0, g.morale - 4);
+      if (lim && g.party.filter(h => !h.bench).every(h => h.hp <= 0)) { this.draw(); await this.starveHome('倒'); this.busy = false; return; }
+      if (isl.hunger === 1) {
+        this.draw();
+        await this.ctx.ui.alert('糧吃完了', ['最後一袋糧，也吃完了。大家的肚子一直在叫。',
+          lim ? `（飢餓：每走一格，全隊掉體力、士氣 −4，體力會掉到倒下；戰鬥時攻擊 −20%。再走 ${lim} 格，大家就撐不住了，船會被迫開回港口）` : '（飢餓：每走一格，全隊掉一點體力、士氣 −4。戰鬥時攻擊 −20%）',
+          '找到糧食（寶箱、事件、村子）就能解除。也可以先走回登陸點返航。']);
+      } else this.ctx.ui.toast(!lim ? '沒有糧食了。大家又餓又累……' : isl.hunger >= lim ? '餓得走不動了……再走一格，大家就撐不住了！' : `好餓……還撐得了 ${lim - isl.hunger} 格。`);
     }
     // 燈油
     if (isl.lit) { g.supply.燈油--; if (g.supply.燈油 <= 0) { g.supply.燈油 = 0; isl.lit = false; this.ctx.ui.toast('燈油用完了，燈熄了。'); } }
@@ -359,15 +384,22 @@ export class Explore {
         break;
       }
       case '火': {
-        const i = await ui.choose('營地', ['一塊避風的岩石後面，有前人留下的火堆。', '生火要用掉 2 份糧食（煮一頓熱的）。'], [{ label: '生火休息（糧 2）', disabled: g.supply.糧 < 2 }, { label: '不休息，繼續走' }]);
+        // 休息回體力，訓練回士氣，只能選一個。士氣「低落」以下，休息只回 40%
+        const low = g.morale < 40, rest = low ? 0.4 : 0.6;
+        const i = await ui.choose('營地', ['一塊避風的岩石後面，有前人留下的火堆。', '生火休息要用掉 2 份糧食（煮一頓熱的），全隊回復體力和靈。', '一起訓練要用掉 1 份糧食，可以提振士氣。兩個只能選一個。', low ? `（士氣${moraleTier(g.morale).name}：休息只回復 40%）` : ''].filter(Boolean),
+          [{ label: '生火休息（糧 2）', disabled: g.supply.糧 < 2 }, { label: '一起訓練（糧 1）', disabled: g.supply.糧 < 1 }, { label: '不休息，繼續走' }]);
         if (i === 0) {
           g.supply.糧 -= 2;
-          for (const h of g.party) { const st = heroStats(h); h.hp = Math.max(h.hp, Math.min(st.hp, h.hp + Math.round(st.hp * 0.6))); h.mp = Math.min(st.mp, h.mp + Math.round(st.mp * 0.6)); }
+          for (const h of g.party) { const st = heroStats(h); h.hp = Math.max(h.hp, Math.min(st.hp, h.hp + Math.round(st.hp * rest))); h.mp = Math.min(st.mp, h.mp + Math.round(st.mp * rest)); }
           g.morale = Math.min(100, g.morale + 10);
           this.ctx.audio.sfx('heal');
           const has = k => g.party.some(h => h.key === k && !h.bench);
           const talks = def.camp.map(c => Array.isArray(c) ? { lines: c } : c).filter(c => !c.need || has(c.need));
-          await ui.alert('營火', [...(talks.length ? pick(talks).lines : ['大家圍著火堆，安靜地吃完了一頓熱的。']), '（全隊回復了 60%，士氣 +10）']);
+          await ui.alert('營火', [...(talks.length ? pick(talks).lines : ['大家圍著火堆，安靜地吃完了一頓熱的。']), `（全隊回復了 ${rest * 100}%，士氣 +10）`]);
+          t.done = true;
+        } else if (i === 1) {
+          g.supply.糧 -= 1;
+          await this.ctx.train('營地');
           t.done = true;
         }
         break;
@@ -473,6 +505,25 @@ export class Explore {
     rec.best = Math.max(rec.best, surveyPct(this.isl));
   }
 
+  // 餓到撐不住，或全隊都倒下：船被迫開回港口。測繪留著，可是這趟不算返航結局；士氣剩 30，這趟賺的銀貝少一半
+  async starveHome(why) {
+    const g = this.g, isl = this.isl, ui = this.ctx.ui, def = this.def, rec = worldOf(g, isl.id);
+    this.record();
+    const t = g.trip || { silver: g.silver };
+    const earned = g.silver - t.silver, lost = earned > 0 ? Math.floor(earned / 2) : 0;
+    g.silver -= lost;
+    this.ctx.audio.sfx('fail');
+    await ui.alert('撐不住了', [why === '餓' ? '已經好幾天沒有吃東西了。有人走著走著，就跪了下來。' : '大家一個接一個倒下了。', '阿潮把每個人拖回船上，一個人把船開回了鹽灣島。',
+      `（被迫返航：測繪過的地方會留在書裡，可是這趟不算返航結局。士氣剩 30${lost ? `，這趟賺的銀貝少了一半（−${lost}）` : ''}）`]);
+    // 首領已經打倒了：還是算完成（不然下次首領又會出現），只是拿不到這次的好結局
+    if (isl.bossNow && !rec.cleared) {
+      await ui.story(this.ctx.storyLines(def.endings.plain.lines));
+      rec.cleared = true;
+      return this.ctx.backToPort({ island: isl.id, ending: 'plain', first: true, pct: surveyPct(isl), forced: true });
+    }
+    this.ctx.backToPort({ island: isl.id, ending: null, first: false, pct: surveyPct(isl), forced: true });
+  }
+
   async sailHome(ask) {
     const isl = this.isl, ui = this.ctx.ui, def = this.def, rec = worldOf(this.g, isl.id);
     const pct = surveyPct(isl);
@@ -510,12 +561,19 @@ export class Explore {
         this.draw();
       }
     }
+    // 小店的東西有限：每樣可以買幾份看難度，每次登島補滿；拿過好結局的島，村子多給 1 份（霧心的村子不加）
+    if (!this.isl.stock) this.isl.stock = villageStock(g, this.isl.id);
+    const stock = this.isl.stock, thanks = worldOf(g, this.isl.id).good && this.def.sea !== '霧心';
     ui.sheet('村子的小店', (body, api) => {
       const used = cargoUsed(g), max = cargoMax(g);
-      body.append(el('p', { class: 'muted' }, `銀貝：${g.silver}　貨艙：${used} / ${max}`));
+      body.append(el('p', { class: 'muted' }, `銀貝：${g.silver}　貨艙：${used} / ${max}`),
+        el('p', { class: 'muted small' }, `村子的存貨不多，每樣東西只能買幾份（下次登島會補貨）。${thanks ? '你們把這座島畫下來了，村子的人每樣多留了 1 份給你們。' : ''}`));
       for (const [k, [n, price]] of Object.entries(V.shop)) {
+        const left = stock[k] || 0;
+        if (!left && !(this.isl.sold || {})[k]) continue;
         const full = used + n > max;
-        body.append(el('div', { class: 'shop-row' }, el('span', {}, `${k} ×${n}`), el('button', { class: 'btn small', disabled: g.silver < price || full, onclick: () => { g.silver -= price; g.supply[k] = (g.supply[k] || 0) + n; this.ctx.audio.sfx('item'); api.rebuild(); this.draw(); } }, full ? '貨艙滿了' : `${price} 銀貝`)));
+        body.append(el('div', { class: 'shop-row' }, el('span', {}, `${k} ×${n}`, el('small', { class: 'muted' }, left ? `　還剩 ${left} 份` : '　賣完了')),
+          el('button', { class: 'btn small', disabled: !left || g.silver < price || full, onclick: () => { g.silver -= price; g.supply[k] = (g.supply[k] || 0) + n; stock[k]--; (this.isl.sold = this.isl.sold || {})[k] = 1; this.ctx.audio.sfx('item'); api.rebuild(); this.draw(); save(g); } }, !left ? '賣完了' : full ? '貨艙滿了' : `${price} 銀貝`)));
       }
     });
   }

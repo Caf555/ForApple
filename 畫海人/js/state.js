@@ -2,10 +2,27 @@
 import { HEROES, EQUIPS, SMUGGLE_CARGO } from './data.js';
 
 export const DIFF = {
-  悠閒: { foe: 0.7, food: 0.5, fogBack: false, label: '悠閒：敵人較弱、補給消耗減半、霧不會回來' },
-  標準: { foe: 1, food: 1, fogBack: true, label: '標準：照設計的平衡' },
-  困難: { foe: 1.3, food: 1, fogBack: true, label: '困難：敵人更強，霧回來得更快' },
+  悠閒: { foe: 0.7, food: 0.5, fogBack: false, label: '悠閒：敵人較弱、補給消耗減半、霧不會回來',
+    stock: { 糧: 5, 燈油: 3, 墨水: 3, 藥草: 3, 海靈露: 2, 醒神香: 2 }, starve: 0, daze: false },
+  標準: { foe: 1, food: 1, fogBack: true, label: '標準：照設計的平衡',
+    stock: { 糧: 3, 燈油: 2, 墨水: 2, 藥草: 2, 海靈露: 1, 醒神香: 1 }, starve: 6, daze: true },
+  困難: { foe: 1.3, food: 1, fogBack: true, label: '困難：敵人更強，霧回來得更快，村子的東西更少',
+    stock: { 糧: 2, 燈油: 1, 墨水: 1, 藥草: 1, 海靈露: 1, 醒神香: 0 }, starve: 6, daze: true },
 };
+// stock：村子小店每樣東西可以買幾份（每次登島補滿）
+// starve：斷糧以後還撐得了幾格，再走一格就被迫返航（0 = 不會被迫返航，體力最低 1）
+// daze：士氣「崩潰」時，戰鬥一開始會不會有人發呆
+
+// 士氣分四段：高昂、平穩、低落、崩潰
+export const MORALE_TIERS = [
+  { min: 80, name: '高昂', cls: 'good', tip: '爆擊率 +5%、打贏的經驗 +10%' },
+  { min: 40, name: '平穩', cls: '', tip: '沒有額外效果' },
+  { min: 20, name: '低落', cls: 'low', tip: '營火只回復 40%' },
+  { min: 0, name: '崩潰', cls: 'bad', tip: '營火只回復 40%；戰鬥一開始，會有一個人發呆一回合' },
+];
+export const moraleTier = m => MORALE_TIERS.find(t => m >= t.min) || MORALE_TIERS[3];
+// 回港口的時候，士氣至少拉回這麼多
+export const MORALE_HOME = 40;
 
 export function newGame(diff = '標準') {
   return {

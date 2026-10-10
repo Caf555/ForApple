@@ -1,7 +1,7 @@
 // 戰鬥：前後兩排、換位、元素、地形、士氣、首領蓄力與第二階段
 import { HEROES, SKILLS, ENEMIES, ITEMS, COMMISSIONS, elementMult, weaknessOf } from './data.js';
 import { ISLANDS } from './islands.js';
-import { heroStats, gainExp, DIFF } from './state.js';
+import { heroStats, gainExp, DIFF, moraleTier } from './state.js';
 import { el, $ } from './ui.js';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -64,6 +64,12 @@ export class Battle {
         '・輪到自己時可以「換位」；漲潮時前排會被海水打到，可以先退到後排。',
       ], '開始戰鬥');
     }
+    // 士氣崩潰：一開始會有一個人發呆，第一回合不能行動（悠閒不會）
+    this.morale0 = g.morale;
+    if (g.morale < 20 && diff.daze) {
+      const a = pick(this.allies.filter(x => x.alive && !x.guest));
+      if (a) { a.status.發呆 = 1; this.log(`士氣崩潰了……${a.name} 心不在焉，發起呆來。`); }
+    }
     const ambush = this.opt.terrain === '林' && Math.random() < 0.35;
     if (ambush) this.log('偷襲！敵人先動手了。');
 
@@ -110,6 +116,7 @@ export class Battle {
   async turn(u) {
     u.defending = false;
     if (u.status.定身) { this.log(`${u.name} 動不了！`); this.float(u, '定身', 'st'); await this.pause(0.8); return; }
+    if (u.status.發呆) { this.log(`${u.name} 在發呆，什麼都沒做。`); this.float(u, '發呆', 'st'); await this.pause(0.8); return; }
     if (u.status.迷惘 && Math.random() < 0.5) { this.log(`${u.name} 在霧裡迷了路，什麼都沒做。`); this.float(u, '迷惘', 'st'); await this.pause(0.8); return; }
     // 被老洛「畫錯」的敵人：有一半的機會，打到自己人（只剩自己的話，打到自己）
     if (u.side === 'foe' && u.status.畫錯 && !u.charging && Math.random() < 0.5) {
@@ -398,7 +405,10 @@ export class Battle {
     if (together) dmg *= 1.3;
     const m = this.g.morale;
     dmg *= u.side === 'ally' ? 1 + (m - 50) / 250 : 1 - (m - 50) / 400;
-    const crit = ruler || Math.random() < (t.fx.chart ? 0.16 : 0.06);
+    // 斷糧（飢餓）：我方攻擊 −20%
+    if (u.side === 'ally' && this.g.island && this.g.island.hunger > 0) dmg *= 0.8;
+    // 士氣高昂：我方爆擊率 +5%
+    const crit = ruler || Math.random() < (t.fx.chart ? 0.16 : 0.06) + (u.side === 'ally' && m >= 80 ? 0.05 : 0);
     if (crit) dmg *= 1.5;
     dmg = Math.max(1, Math.round(dmg));
     t.hp = Math.max(0, t.hp - dmg);
@@ -479,6 +489,8 @@ export class Battle {
     const g = this.g;
     let exp = 0, silver = 0;
     for (const f of this.foes) { exp += f.def.exp; silver += f.def.silver; }
+    // 士氣高昂（打這一仗以前）：經驗 +10%
+    if (this.morale0 >= 80) exp = Math.round(exp * 1.1);
     g.silver += silver;
     g.stats.kills += this.foes.length;
     const drops = {}, jobs = new Set();
@@ -546,8 +558,9 @@ export class Battle {
   }
 
   renderAll() {
-    this.$morale.textContent = `士氣 ${this.g.morale}`;
-    this.$morale.className = 'chip' + (this.g.morale >= 70 ? ' good' : this.g.morale < 30 ? ' bad' : '');
+    const mt = moraleTier(this.g.morale);
+    this.$morale.textContent = `士氣 ${this.g.morale} ${mt.name}`;
+    this.$morale.className = 'chip' + (mt.cls === 'good' ? ' good' : mt.cls ? ' bad' : '');
     for (const u of [...this.allies, ...this.foes]) {
       const n = this.nodes[u.id];
       n.classList.toggle('dead', !u.alive);

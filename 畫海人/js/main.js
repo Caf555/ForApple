@@ -2,13 +2,14 @@
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
-import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings } from './state.js';
+import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings, moraleTier, MORALE_TIERS, MORALE_HOME } from './state.js';
 import { UI, el, $ } from './ui.js';
 import { Audio } from './audio.js';
 import { Battle } from './battle.js';
 import { Explore, newIsland, worldOf, surveyMax, helpers } from './explore.js';
 import { Port, statText } from './port.js';
 import { playPuzzle, PUZZLE_TIPS } from './puzzle.js';
+import { playTraining, trainingMorale, TRAININGS, TRAINING_KINDS } from './training.js';
 
 export const VERSION = 'M5 第五海域 v0.2（完結）';
 
@@ -56,6 +57,17 @@ ctx.recruit = async key => {
 
 // ───────── 共用：效果、素材、圖紙、委託 ─────────
 // 效果：糧、燈油、墨水、藥草…（數量）；素材（數量）；銀貝；hp（全隊比例）；士氣
+// 訓練（營地、甲板）：隨機挑一種，帶隊的人不在隊上就換人帶；表現越好，士氣回得越多
+ctx.train = async where => {
+  const g = ctx.g, kind = TRAINING_KINDS[Math.floor(Math.random() * TRAINING_KINDS.length)];
+  const lead = TRAININGS[kind].lead.find(k => g.party.some(h => h.key === k && !h.bench)) || TRAININGS[kind].lead.find(k => has(k)) || '阿潮';
+  const score = await playTraining(ctx, kind, lead);
+  const n = trainingMorale(score);
+  g.morale = Math.min(100, g.morale + n);
+  save(g);
+  await ctx.ui.alert(`${where}・${kind}`, [score >= 0.8 ? '大家練得滿身大汗，笑得很開心。' : score >= 0.5 ? '練完以後，大家的肩膀都放鬆了一點。' : '練得亂七八糟，大家笑成一團。', `（士氣 +${n}，現在是 ${g.morale}・${moraleTier(g.morale).name}）`]);
+};
+
 ctx.applyFx = fx => {
   const g = ctx.g;
   for (const [k, v] of Object.entries(fx || {})) {
@@ -197,6 +209,9 @@ ctx.sail = async id => {
   }
   // 黑市的走私：往目的地的路上，可能被商會的巡邏船臨檢
   if (g.smuggle && g.smuggle.island === id && Math.random() < (g.diff === '悠閒' ? 0.25 : 0.4)) await inspect(id);
+  // 甲板上的訓練：每趟出航一次，可以跳過
+  const d = await ctx.ui.choose('甲板上', ['離登島還有一段路。海風很穩，甲板上空出了一塊地方。', `（訓練可以提振士氣。現在的士氣：${g.morale}・${moraleTier(g.morale).name}）`], [{ label: '在甲板上訓練一下' }, { label: '直接準備登島' }]);
+  if (d === 0) await ctx.train('甲板');
   await ctx.ui.story(lines(def.arrive));
   const tip = g.tip && g.tip.island === id;
   g.island = newIsland(g, id);
@@ -236,7 +251,8 @@ ctx.backToPort = async rep => {
   g.phase = 'port'; g.island = null;
   // 回到家：全隊休息
   for (const h of g.party) { const s = heroStats(h); h.hp = s.hp; h.mp = s.mp; }
-  g.morale = Math.max(g.morale, 50);
+  // 回港：士氣至少拉回「平穩」的底（被迫返航的話，剩 30）
+  g.morale = rep.forced ? 30 : Math.max(g.morale, MORALE_HOME);
   save(g);
   ctx.audio.music('港口');
   const t = g.trip || { mats: {}, silver: g.silver, bps: [] };
@@ -318,9 +334,18 @@ async function minigames(diff = ctx.g.diff) {
       for (const sea of seas) body.append(el('h3', { class: 'pg-sea' }, sea), el('div', { class: 'pg-list' }, ...list.filter(x => x.sea === sea).map(x =>
         el('button', { class: 'pg-game' + (solved(x) ? ' done' : ''), onclick: () => { res(x); api.close(); } },
           el('b', {}, x.kind), el('small', {}, `${x.id}・${PUZZLE_TIPS[x.kind] || ''}${solved(x) ? '・✓' : ''}`)))));
+      body.append(el('h3', { class: 'pg-sea' }, '訓練'), el('div', { class: 'pg-list' }, ...TRAINING_KINDS.map(k =>
+        el('button', { class: 'pg-game' + ((g.practice || {})[k] ? ' done' : ''), onclick: () => { res({ kind: k, train: true }); api.close(); } },
+          el('b', {}, k), el('small', {}, `${TRAININGS[k].lead[0]}・${TRAININGS[k].tip}${(g.practice || {})[k] ? '・✓' : ''}`)))));
     }, { onClose: () => res(null) });
   });
   if (!pick) return ctx.port.show();
+  if (pick.train) {
+    const T = TRAININGS[pick.kind], lead = T.lead.find(k => has(k)) || '阿潮';
+    const score = await playTraining({ ...ctx, g: { ...g, diff }, practice: true }, pick.kind, lead);
+    if (score >= 0.8) { g.practice = { ...(g.practice || {}), [pick.kind]: 1 }; save(g); }
+    return minigames(diff);
+  }
   const win = await playPuzzle({ ...ctx, g: { ...g, diff }, practice: true }, pick.kind, pick.id);
   if (win) { g.practice = { ...(g.practice || {}), [pick.kind]: 1 }; save(g); }
   return minigames(diff);
@@ -438,6 +463,10 @@ function help() {
   ctx.ui.alert('怎麼玩', [
     '・港口：在「碼頭」買補給，在「海圖」選一座島出航。完成島嶼以後，酒館、鐵匠、船塢會陸續開放。',
     '・島上：點和你相鄰的格子前進。每走一格吃掉 1 份糧。霧裡看不見的格子，走過去才知道是什麼。點燈可以看得更遠，但會用掉燈油。',
+    '・糧吃完了會「飢餓」：每走一格全隊掉體力、士氣 −4，戰鬥時攻擊 −20%。標準和困難會掉到倒下，斷糧以後再走 6 格就撐不住，船會被迫開回港口（測繪留著，可是不算返航結局，士氣剩 30，這趟賺的銀貝少一半）。悠閒只會掉到剩 1 點體力。找到糧就解除。',
+    '・士氣分四段：高昂（80 以上：爆擊率 +5%、經驗 +10%）、平穩（40 以上）、低落（20 以上：營火只回復 40%）、崩潰（20 以下：再加上戰鬥一開始會有一個人發呆一回合，悠閒不會）。回港口時，士氣至少拉回 40。',
+    '・訓練：營地可以選「生火休息」（糧 2，回體力）或「一起訓練」（糧 1，回士氣），只能選一個；每趟出航在甲板上也可以免費訓練一次。表現很好士氣 +15、不錯 +10、失敗也有 +4。',
+    '・村子的小店：存貨有限，每樣東西只能買幾份（悠閒最多、困難最少），每次登島會補貨。拿過好結局的島，村子每樣多留 1 份給你們。',
     '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。描得越準，畫進書裡的範圍越大。測繪過的格子，霧就吞不回去，下次再來也會留著；上次畫得不夠準的測繪點，下次來可以重畫補上。每座島能畫的範圍有上限（測繪點周圍兩圈），畫滿以後測繪點就不會再出現；島上畫面下方會寫出這座島最高能畫到多少，畫滿了狀態列會顯示「測繪滿」。',
     '・目標：找到「霧眼」，打倒守門的東西拿到鑰匙，再打倒島上的首領。之後回到登陸點就能返航；測繪度 60% 以上，結局會不一樣。還沒打倒首領也可以先回港。',
     '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
@@ -461,7 +490,9 @@ ctx.partySheet = () => {
   const g = ctx.g;
   const refresh = () => { save(g); if (g.phase === 'island') ctx.explore.draw(); };
   ctx.ui.sheet('隊伍與裝備', (body, api) => {
-    body.append(el('p', { class: 'muted' }, `士氣 ${g.morale}：越高，攻擊越痛、受到的傷害越少。打贏、在營地休息會提高；有人倒下、斷糧會降低。`));
+    const mt = moraleTier(g.morale);
+    body.append(el('p', { class: 'muted' }, `士氣 ${g.morale}・${mt.name}：越高，攻擊越痛、受到的傷害越少。打贏、營地休息、訓練會提高；有人倒下、斷糧會降低。`),
+      el('p', { class: 'muted small' }, MORALE_TIERS.map(t => `${t.name}（${t.min}以上）：${t.tip}`).join('　')));
     const out = g.party.filter(x => !x.bench).length;
     if (g.party.length > PARTY_MAX) body.append(el('p', { class: 'muted' }, `出戰 ${out}/${PARTY_MAX} 人。待命的人不會上場，每場戰鬥拿一半的經驗；可以隨時換人。`));
     for (const h of g.party) {
