@@ -112,8 +112,10 @@ button { font: inherit; color: inherit; }
 #screen.island { display: flex; flex-direction: column; gap: 8px; }
 .status { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
 .st { display: flex; flex-direction: column; align-items: center; background: var(--panel); border-radius: 8px; padding: 3px 0; }
-.st small { font-size: 11px; color: var(--muted); } .st b { font-size: 15px; }
+.st small { font-size: 11px; color: var(--muted); white-space: nowrap; } .st b { font-size: 15px; }
 .st.low b { color: var(--hp); }
+.st.low small { color: var(--hp); }
+.st.m-good b, .st.m-good small { color: #9fe0b5; } .st.m-low b, .st.m-low small { color: #e8c07a; } .st.m-bad b, .st.m-bad small { color: var(--hp); }
 .mapwrap { border-radius: 14px; padding: 6px; background: radial-gradient(ellipse at 50% 50%, #263a4a 0%, #142029 100%); box-shadow: inset 0 0 30px rgba(0, 0, 0, .6); }
 .hexmap { display: block; width: 100%; height: auto; touch-action: manipulation; }
 .hex polygon { stroke: rgba(15, 26, 36, .9); stroke-width: 2; transition: fill .4s; }
@@ -601,3 +603,21 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .pg-game b { display: block; font-family: var(--serif); } .pg-game small { color: var(--muted); font-size: 11px; }
 .pg-game.done { border-style: solid; border-color: var(--orn); }
 .pz-quit { position: absolute; top: 10px; right: 10px; }
+
+/* 訓練：划船比賽、對招、合唱 */
+.tr-lane { position: relative; width: 100%; height: 54px; border-radius: 10px; background: linear-gradient(180deg, #24485a, #1a3442); border: 1px solid var(--line); overflow: hidden; }
+.tr-boat { position: absolute; top: 8px; left: 4%; font-size: 30px; transition: left .25s ease; }
+.tr-boat.row { animation: tr-row .25s ease; } @keyframes tr-row { 40% { transform: translateY(-4px) rotate(-6deg); } }
+.tr-flag { position: absolute; right: 6px; top: 10px; font-size: 26px; }
+.tr-drum { position: relative; width: 96px; height: 96px; margin: 14px auto; border-radius: 50%; background: #6a3a2a; border: 4px solid #c9a46a; display: grid; place-items: center; font-family: var(--serif); font-size: 26px; color: #f3e2c0; }
+.tr-drum.on { animation: tr-drum .22s ease; } @keyframes tr-drum { 30% { background: #e0a050; transform: scale(1.08); } }
+.tr-ring { position: absolute; inset: -4px; border-radius: 50%; border: 3px solid rgba(255, 236, 170, .8); pointer-events: none; }
+.tr-foe { margin: 10px auto; width: 140px; height: 110px; border-radius: 14px; background: var(--panel); border: 2px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tr-foe b { font-family: var(--serif); font-size: 42px; } .tr-foe small { color: var(--muted); }
+.tr-foe.show { border-color: #e8c07a; } .tr-foe.good { border-color: #6fb38a; background: rgba(111, 179, 138, .2); } .tr-foe.bad { border-color: var(--hp); background: rgba(200, 80, 70, .2); }
+.tr-timer { width: 100%; height: 10px; border-radius: 5px; background: var(--panel); overflow: hidden; } .tr-timer div { height: 100%; background: #e8c07a; }
+.tr-guards { display: flex; gap: 8px; width: 100%; margin-top: 12px; } .tr-guards .btn { flex: 1; min-height: 56px; font-size: 20px; }
+.tr-staff { position: relative; width: 100%; height: 150px; border-radius: 10px; border: 1px solid var(--line); background: repeating-linear-gradient(180deg, transparent 0 28px, rgba(255, 255, 255, .12) 28px 30px), var(--panel); overflow: hidden; }
+.tr-line { position: absolute; top: 0; bottom: 0; left: 20%; width: 4px; margin-left: -2px; background: #e8c07a; box-shadow: 0 0 8px #e8c07a; }
+.tr-note { position: absolute; font-size: 26px; margin-left: -10px; color: #f3e2c0; }
+.tr-note.good { color: #9fe0b5; } .tr-note.bad { color: var(--hp); opacity: .6; }

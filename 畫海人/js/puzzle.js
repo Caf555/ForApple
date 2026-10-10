@@ -33,7 +33,7 @@ const svgEl = (tag, a = {}) => { const n = document.createElementNS(NS, tag); fo
 const byDiff = (ctx, arr) => arr[{ 悠閒: 0, 標準: 1, 困難: 2 }[ctx.g && ctx.g.diff] ?? 1];
 
 // 共用的外框：標題、遊戲區、狀態、說明、按鈕
-function frame(title, help) {
+export function frame(title, help) {
   const box = el('div', { class: 'survey puzzle' });
   const stage = el('div', { class: 'pz-stage' });
   const info = el('div', { class: 'sv-score' }, '');
