@@ -40,7 +40,9 @@ export class Battle {
       const dup = this.opt.enemies.filter(x => x === k).length > 1;
       // 祈願塔的鐘停了以後：前四片海的霧眼（精英）變弱一些
       const calm = d.rank === '精英' && (g.world.祈願塔 || {}).cleared && g.island && ISLANDS[g.island.id].sea !== '霧心' ? 0.85 : 1;
-      const hp = Math.round(d.hp * diff.foe * calm);
+      // 航海時遇到濃霧：霧眼的守門妖物比較弱
+      const fog = d.rank === '精英' && g.island && g.island.weather === '濃霧' ? 0.85 : 1;
+      const hp = Math.round(d.hp * diff.foe * calm * fog);
       return { side: 'foe', id: 'f' + i, key: k, name: k + (dup ? ' ' + '甲乙丙'[count[k] - 1] : ''), def: d, el: d.element,
         st: { atk: Math.round(d.atk * diff.foe), def: d.def, mag: Math.round(d.mag * diff.foe), spd: d.spd },
         maxhp: hp, hp, row: d.row, alive: true, status: {}, fx: {} };
