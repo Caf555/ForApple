@@ -633,3 +633,25 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 /* 船況、港口突發事件 */
 .bar.hull i { background: var(--glow); }
 .p-event { margin: 6px 0 10px; }
+
+/* ───────── 打造小遊戲：打鐵、釘船板 ───────── */
+.fg-row .fg-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
+.fg-row .fg-opt small { flex: 1; }
+.fg-anvil { position: relative; width: 200px; height: 90px; margin: 8px auto 14px; background: linear-gradient(#4a5257, #2b3135); border-radius: 10px 10px 30px 30px; box-shadow: inset 0 3px 0 rgba(255,255,255,.12); }
+.fg-anvil.bang { animation: fgbang .25s; }
+@keyframes fgbang { 30% { transform: translateY(3px) scale(1.02, .97); } }
+.fg-metal { position: absolute; left: 50%; top: -14px; width: 120px; height: 22px; transform: translateX(-50%); border-radius: 6px; background: radial-gradient(circle at 50% 50%, #ffe08a, #ff8a2a 55%, #b2391a); box-shadow: 0 0 18px #ff8a2a; transition: width .25s, height .25s, filter .25s; }
+.fg-metal.s1 { width: 104px; height: 20px; } .fg-metal.s2 { width: 90px; height: 18px; } .fg-metal.s3 { width: 78px; height: 16px; filter: brightness(.85); }
+.fg-metal.bad { box-shadow: 0 0 18px #ff8a2a, 0 0 2px 6px rgba(255,200,80,.35); }
+.fg-gauge { position: relative; height: 34px; width: min(340px, 100%); margin: 0 auto 10px; border-radius: 8px; background: var(--panel, #10212a); border: 1px solid rgba(220,180,106,.35); overflow: hidden; }
+.fg-zone { position: absolute; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(220,180,106,.25), rgba(240,212,154,.75), rgba(220,180,106,.25)); }
+.fg-needle { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; background: #fff; box-shadow: 0 0 8px #fff; border-radius: 2px; }
+.fg-marks { display: flex; justify-content: center; gap: 14px; font-size: 22px; margin-bottom: 8px; color: var(--muted); }
+.fg-marks .hit { color: var(--accent2); } .fg-marks .miss { color: #e2735a; }
+.ng-board { position: relative; height: 120px; width: min(340px, 100%); margin: 46px auto 14px; border-radius: 6px; background: repeating-linear-gradient(90deg, #7a5532 0 2px, #8d6339 2px 60px), linear-gradient(#8d6339, #6a4a2c); box-shadow: inset 0 -6px 0 rgba(0,0,0,.25); }
+.ng-board.bang { animation: fgbang .25s; }
+.ng-nail { position: absolute; top: 46px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #9aa3a8; border: 2px solid #3c4347; }
+.ng-nail.now { background: var(--accent2); box-shadow: 0 0 10px var(--accent2); }
+.ng-nail.hit { background: #3c4347; border-color: #22282b; width: 10px; height: 10px; margin-left: -5px; top: 48px; }
+.ng-nail.miss { background: #c66a4e; border-color: #7a3424; transform: rotate(35deg) scaleY(.6); border-radius: 3px; }
+.ng-hammer { position: absolute; top: -40px; font-size: 40px; transform-origin: 50% 0; pointer-events: none; }

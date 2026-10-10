@@ -595,6 +595,47 @@ export const EQUIPS = {
 };
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
+// ───────── 裝備升級：每件裝備屬於一條「線」，由弱到強 ─────────
+// 武器：每個角色一條線（照價錢排）；防具、飾品照特色分系
+// 每條線前 2 件可以直接打造；第 3 件以後要拿同一條線前面的裝備升級
+const GEAR_LINES_FIXED = {
+  重甲: ['珊瑚甲', '珍珠鱗甲', '礦工皮甲', '熔岩鱗甲', '霜晶甲', '潮痕甲'],
+  輕裝: ['霧苔斗篷', '帆布大衣', '帳紙披風', '測繩外套', '舊帆布外套', '白狐皮襖', '紅帆旗披風', '遠洋鯨皮甲', '褪色布斗篷'],
+  長袍: ['南洋絲綢衣', '鯨油斗篷', '守霧人長袍', '空白披風', '畫室長袍'],
+  葛蘿的盾: ['鐵喉大盾'],
+  速度飾品: ['燈芯護符', '褪色羽飾', '鏡砂護符', '紅赭護符', '鏡冰墜', '船票護符'],
+  法力飾品: ['鹽晶墜子', '銀貝耳環', '墨魚墨瓶', '硫磺香囊', '舊信封護符', '舶來星盤', '白花冠'],
+  守護飾品: ['夜光錨墜', '珍珠墜', '商隊護身鈴', '礦工牌項鍊', '灰燈籠飾', '舊畫紙護符'],
+  攻擊飾品: ['白珊瑚戒', '炭火戒', '海盜望遠鏡', '霜晶戒', '古銅羅盤', '祈願銅戒', '星石墜'],
+};
+export const GEAR_LINES = { ...GEAR_LINES_FIXED };
+for (const [n, e] of Object.entries(EQUIPS)) {
+  if (e.slot !== '武器') continue;
+  (GEAR_LINES[`${e.who}的武器`] = GEAR_LINES[`${e.who}的武器`] || []).push(n);
+}
+for (const k in GEAR_LINES) if (k.endsWith('的武器')) GEAR_LINES[k].sort((a, b) => EQUIPS[a].cost.銀貝 - EQUIPS[b].cost.銀貝);
+export const LINE_OF = {};
+for (const [line, list] of Object.entries(GEAR_LINES)) list.forEach((n, i) => { LINE_OF[n] = { line, i }; });
+export const DIRECT_CRAFT = 2;   // 每條線前幾件可以直接打造
+// 拿前面第幾件升級，要補原價的幾成
+export const upgradeRate = steps => steps <= 1 ? 0.5 : steps === 2 ? 0.7 : 0.85;
+export const upgradeCost = (target, from) => {
+  const r = upgradeRate(LINE_OF[target].i - LINE_OF[from].i), out = {};
+  for (const [k, v] of Object.entries(EQUIPS[target].cost)) out[k] = k === '銀貝' ? Math.round(v * r) : Math.ceil(v * r);
+  return out;
+};
+
+// ───────── 打造小遊戲 ─────────
+export const FORGE_AUTO_RATE = 0.8;  // 關掉小遊戲時的成功率
+export const forgeTier = cost => Math.min(1, (cost.銀貝 || 0) / 600);   // 越貴越難
+export const retryPrice = cost => Math.max(10, Math.round((cost.銀貝 || 0) / 2));
+// 兩次都失敗：每種素材退一半（捨去），第一種素材至少退 1 個；銀貝不退
+export const forgeRefund = cost => {
+  const out = {}; let first = true;
+  for (const [k, v] of Object.entries(cost)) { if (k === '銀貝') continue; const n = Math.max(first ? 1 : 0, Math.floor(v / 2)); if (n) out[k] = n; first = false; }
+  return out;
+};
+
 // ───────── 船塢：改造船 ─────────
 // flag：要到哪一章才能改（沒寫的話，船塢一開就能改）
 export const SHIP = {
