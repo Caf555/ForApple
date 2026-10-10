@@ -67,9 +67,11 @@ export class Port {
   makeRumor() {
     const g = this.g, pick = a => a[Math.floor(Math.random() * a.length)];
     const who = pick(RUMOR_FOLKS.filter(([, f]) => !f || g.flags[f]))[0];
-    const seas = [...new Set(this.openIsles().map(id => ISLANDS[id].sea))].filter(sea => SEA_EVENTS.some(e => (e.sea || '淺灘') === sea));
+    // 流言只預告簡單的事件（不是連續小故事、隊友事件、碰運氣或海上戰鬥）
+    const plain = sea => SEA_EVENTS.filter(e => (e.sea || '淺灘') === sea && !e.chain && !e.need && !e.opts.some(o => o.fight || o.chance || o.need));
+    const seas = [...new Set(this.openIsles().map(id => ISLANDS[id].sea))].filter(sea => plain(sea).length);
     if (seas.length && Math.random() < 0.5) {
-      const sea = pick(seas), ev = pick(SEA_EVENTS.filter(e => (e.sea || '淺灘') === sea));
+      const sea = pick(seas), ev = pick(plain(sea));
       const best = ev.opts.reduce((a, o) => fxScore(o.fx) > fxScore(a.fx) ? o : a, ev.opts[0]);
       return { kind: 'sea', who, sea, title: ev.title, text: `「最近在${sea}，有人遇到了『${ev.title}』。我跟你說，遇到的話，「${best.label}」就對了。」`, note: `（下一次往${sea}出航，一定會遇到「${ev.title}」）` };
     }

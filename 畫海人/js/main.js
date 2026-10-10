@@ -162,7 +162,7 @@ ctx.sail = async id => {
   ctx.audio.music('港口');
   // 第一次去這座島：先播這座島的故事
   if (!worldOf(g, id).visits && CINEMA[id]) await cinema(id);
-  let pool = SEA_EVENTS.filter(e => (e.sea || '淺灘') === def.sea).sort(() => Math.random() - 0.5).slice(0, def.seaEvents);
+  let pool = seaPool(g, def);
   // 酒館的流言說過的航海事件：這一趟一定會遇到
   if (g.forecast && g.forecast.sea === def.sea) {
     const ev = SEA_EVENTS.find(e => e.title === g.forecast.title && (e.sea || '淺灘') === def.sea);
@@ -174,15 +174,8 @@ ctx.sail = async id => {
     const i = await ctx.ui.choose('守霧人的航道', ['守霧人的小舟在港口等著。「跟著我們的燈走，」他們說，「冰下的航道，海上的東西找不到你們。」'], [{ label: '走祕密航道（不會遇到航海事件）' }, { label: '走一般的航線' }]);
     if (i === 0) pool = [];
   }
-  for (const ev of pool) {
-    const i = await ctx.ui.choose(`航海・${ev.title}`, ev.text, ev.opts.map(o => ({ label: o.label, disabled: !ctx.explore.canPay(o.fx) })));
-    const o = ev.opts[i];
-    // 補好的船帆：壞事減半
-    const fx = { ...o.fx };
-    if (g.ship.船帆) for (const k in fx) if (fx[k] < 0 && !o.label.includes(`${k} `) && !o.label.includes(`（${k}`)) fx[k] = k === 'hp' ? fx[k] / 2 : Math.ceil(fx[k] / 2);
-    ctx.applyFx(fx);
-    await ctx.ui.alert(ev.title, [o.line, ctx.fxText(fx), g.ship.船帆 && JSON.stringify(fx) !== JSON.stringify(o.fx) ? '（補好的船帆，讓損失少了一半）' : ''].filter(Boolean));
-  }
+  g.weather = null;
+  for (const ev of pool) await seaEvent(ev);
   // 攻上島以前要選邊（紅岬）：選了就不能改
   const R = def.routes;
   if (R && !g.flags[R.key]) {
@@ -243,6 +236,71 @@ async function inspect(id) {
   }
   g.smuggle = null; ctx.addRep('紅帆', -5);
   await ctx.ui.alert('商會的巡邏船', ['貨箱被搬走了。', ctx.fxText({ 紅帆: -5 })]);
+}
+
+// ───────── 航海事件 ─────────
+// 每個事件的 id：海域＋標題（不同海域可以同名）
+const seaId = ev => `${ev.sea || '淺灘'}:${ev.title}`;
+const onDeck = k => ctx.g.party.some(h => h.key === k && !h.bench);
+// 這一趟會遇到的事件：優先抽還沒看過的；連續小故事照順序、每趟最多一段；海上戰鬥、天氣每趟最多一個
+function seaPool(g, def) {
+  const sea = def.sea, seen = new Set(g.seaSeen || []), chain = g.seaChain || {};
+  const ok = e => (e.sea || '淺灘') === sea && (!e.need || onDeck(e.need)) && (!e.chain || (chain[e.chain] || 0) === e.step - 1);
+  let cand = SEA_EVENTS.filter(ok);
+  // 這片海能遇到的都看過了：重新洗牌（連續小故事不算）
+  if (cand.filter(e => !e.chain).every(e => seen.has(seaId(e)))) { g.seaSeen = (g.seaSeen || []).filter(id => !cand.some(e => seaId(e) === id)); seen.clear(); }
+  const shuffled = cand.map(e => [(seen.has(seaId(e)) ? 1 : 0) + Math.random() * 0.9, e]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
+  const out = [], kinds = new Set();
+  // 連續小故事的下一段，先放進來
+  const next = shuffled.find(e => e.chain);
+  if (next && def.seaEvents) { out.push(next); kinds.add('chain'); }
+  for (const e of shuffled) {
+    if (out.length >= def.seaEvents) break;
+    if (out.includes(e)) continue;
+    const k = e.chain ? 'chain' : e.weather ? 'weather' : e.opts.some(o => o.fight) ? 'fight' : null;
+    if (k && kinds.has(k)) continue;
+    if (k) kinds.add(k);
+    out.push(e);
+  }
+  return out.sort(() => Math.random() - 0.5);
+}
+
+// 碰運氣：士氣會影響成功率（高昂 +10%、低落 −10%、崩潰 −20%）
+const luck = (o, m) => Math.max(0.05, Math.min(0.95, o.chance + (m >= 80 ? 0.1 : m < 20 ? -0.2 : m < 40 ? -0.1 : 0)));
+
+async function seaEvent(ev) {
+  const g = ctx.g;
+  const opts = ev.opts.filter(o => !o.need || onDeck(o.need));
+  const label = o => o.chance ? `${o.label}（成功 ${Math.round(luck(o, g.morale) * 100)}%）` : o.label;
+  const i = await ctx.ui.choose(`航海・${ev.title}`, lines(ev.text).map(L => L.who ? `${L.who}：「${L.text}」` : L.text), opts.map(o => ({ label: label(o), disabled: !ctx.explore.canPay(o.fx) })));
+  const o = opts[i];
+  g.seaSeen = [...new Set([...(g.seaSeen || []), seaId(ev)])];
+  if (ev.chain) g.seaChain = { ...(g.seaChain || {}), [ev.chain]: ev.step };
+  let res = o, note = '';
+  if (o.chance) { const win = Math.random() < luck(o, g.morale); res = { ...(win ? o.win : o.lose), fx: { ...(o.fx || {}), ...((win ? o.win : o.lose).fx || {}) } }; note = win ? '（成功了！）' : '（失敗了……）'; }
+  if (o.fight) {
+    ctx.applyFx(o.fx);
+    await ctx.ui.alert(ev.title, [o.line]);
+    const r = await ctx.battle.start({ enemies: o.fight, terrain: '潮間帶', kind: '一般' });
+    ctx.audio.music('港口');
+    if (r === 'win') res = o.win;
+    else {
+      // 打輸了：大家被拖回船上，剩一點點體力
+      for (const h of g.party) h.hp = Math.max(1, Math.round(heroStats(h).hp * 0.3));
+      g.morale = Math.max(0, g.morale - 10);
+      res = { line: o.loseLine || '你們拚命把船開走，好不容易才甩掉它。大家都累壞了。', fx: {} };
+    }
+    note = '';
+  }
+  // 補好的船帆：壞事減半（自己選擇付出的不算）
+  const fx = { ...(res.fx || {}) };
+  if (g.ship.船帆 && !o.fight) for (const k in fx) if (fx[k] < 0 && !(o.fx && o.fx[k] === fx[k]) && !o.label.includes(`${k} `) && !o.label.includes(`（${k}`)) fx[k] = k === 'hp' ? fx[k] / 2 : Math.ceil(fx[k] / 2);
+  ctx.applyFx(fx);
+  if (o.weather || res.weather) g.weather = o.weather || res.weather;
+  const good = ev.goodIsle && (g.world[ev.goodIsle] || {}).good && ev.goodLine;
+  const W = { 晴朗: '（晴朗：登島時看得見的範圍多一圈）', 濃霧: '（濃霧：登島時看得見的範圍少一圈，可是霧眼的守門妖物比較弱）', 順風: '（順風：登島以後，前 6 步不吃糧）' };
+  await ctx.ui.alert(ev.title, [note, ...lines([].concat(res.line || [])).map(L => L.who ? `${L.who}：「${L.text}」` : L.text), good, ctx.fxText(fx), g.ship.船帆 && JSON.stringify(fx) !== JSON.stringify(res.fx || {}) ? '（補好的船帆，讓損失少了一半）' : '', g.weather && (o.weather || res.weather) ? W[g.weather] : ''].filter(Boolean));
+  save(g);
 }
 
 // ───────── 回港 ─────────
@@ -465,6 +523,7 @@ function help() {
     '・島上：點和你相鄰的格子前進。每走一格吃掉 1 份糧。霧裡看不見的格子，走過去才知道是什麼。點燈可以看得更遠，但會用掉燈油。',
     '・糧吃完了會「飢餓」：每走一格全隊掉體力、士氣 −4，戰鬥時攻擊 −20%。標準和困難會掉到倒下，斷糧以後再走 6 格就撐不住，船會被迫開回港口（測繪留著，可是不算返航結局，士氣剩 30，這趟賺的銀貝少一半）。悠閒只會掉到剩 1 點體力。找到糧就解除。',
     '・士氣分四段：高昂（80 以上：爆擊率 +5%、經驗 +10%）、平穩（40 以上）、低落（20 以上：營火只回復 40%）、崩潰（20 以下：再加上戰鬥一開始會有一個人發呆一回合，悠閒不會）。回港口時，士氣至少拉回 40。',
+    '・航海事件：出航到登島之間會遇到。會先遇到還沒看過的事件；有些要某個隊友在隊上才會遇到。寫著「成功 %」的選項是碰運氣，士氣越高越容易成功；也可能遇到海上戰鬥、改變登島時的天氣（晴朗多看見一圈、濃霧少一圈但霧眼比較弱、順風前 6 步不吃糧）。每片海還有一段三次航行才看得完的小故事。',
     '・訓練：營地可以選「生火休息」（糧 2，回體力）或「一起訓練」（糧 1，回士氣），只能選一個；每趟出航在甲板上也可以免費訓練一次。表現很好士氣 +15、不錯 +10、失敗也有 +4。',
     '・村子的小店：存貨有限，每樣東西只能買幾份（悠閒最多、困難最少），每次登島會補貨。拿過好結局的島，村子每樣多留 1 份給你們。',
     '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。描得越準，畫進書裡的範圍越大。測繪過的格子，霧就吞不回去，下次再來也會留著；上次畫得不夠準的測繪點，下次來可以重畫補上。每座島能畫的範圍有上限（測繪點周圍兩圈），畫滿以後測繪點就不會再出現；島上畫面下方會寫出這座島最高能畫到多少，畫滿了狀態列會顯示「測繪滿」。',
