@@ -1,8 +1,9 @@
 // 港口：碼頭（補給）、酒館（委託、流言、潮汐骰）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（行情、買賣素材、舶來品）、黑市（第三章：換貨、紅帆牌桌、走私）
-import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, HULL_BROKEN, hullOf, repairCost, PORT_EVENTS, PORT_EVENT_CHANCE, RUMOR_FOLKS, WHALE_CLUES, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO } from './data.js';
+import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, HULL_BROKEN, hullOf, repairCost, PORT_EVENTS, PORT_EVENT_CHANCE, RUMOR_FOLKS, WHALE_CLUES, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost, FORGE_AUTO_RATE, forgeTier, retryPrice, forgeRefund } from './data.js';
+import { playForge } from './forge.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS } from './islands.js';
 import { diceGame, cardGame } from './gamble.js';
-import { cargoUsed, save } from './state.js';
+import { cargoUsed, save, heroStats } from './state.js';
 import { worldOf, surveyMax } from './explore.js';
 import { el, $ } from './ui.js';
 
@@ -159,15 +160,14 @@ export class Port {
     const jobsN = Object.keys(g.jobs).length;
     const ready = Object.keys(g.jobs).filter(id => this.jobState(COMMISSIONS.find(c => c.id === id)).ready).length;
     const matN = Object.values(g.mats).reduce((a, b) => a + b, 0);
-    s.append(
+    s.append(...[
       el('div', { class: 'p-head' }, el('h2', {}, '鹽灣島・港口'), el('span', { class: 'grow' }),
         el('button', { class: 'btn small', onclick: () => ctx.partySheet() }, '隊伍'),
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => ctx.menu() }, '☰')),
       el('p', { class: 'p-tip' }, tip),
-      // 原生的 append 會把 null 印成「null」，沒有的東西要給空字串
-      this.eventBox() || '',
+      this.eventBox(),
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`), ctx.ui.bar(cargoUsed(g), cargoMax(g), 'cargo')),
-      g.flags.焰 ? el('div', { class: 'p-rep' }, ...FACTIONS.filter(f => repOn(g, f)).map(f => el('span', {}, el('b', {}, f), `　${REP_LEVELS[repLevel(this.rep(f))]}`, ctx.ui.bar(this.rep(f), 100, 'rep')))) : '',
+      g.flags.焰 ? el('div', { class: 'p-rep' }, ...FACTIONS.filter(f => repOn(g, f)).map(f => el('span', {}, el('b', {}, f), `　${REP_LEVELS[repLevel(this.rep(f))]}`, ctx.ui.bar(this.rep(f), 100, 'rep')))) : null,
       el('div', { class: 'facs' },
         fac('碼頭', '買補給：糧、燈油、墨水、藥', () => this.dock()),
         fac('海圖', '選一座島，出航', () => this.chart()),
@@ -181,7 +181,7 @@ export class Port {
         const r = worldOf(g, id), on = this.unlocked(id);
         return el('div', { class: 'isle' + (r.cleared ? ' done' : '') + (on ? '' : ' locked') },
           el('b', {}, on ? id : '？？？'), el('small', {}, !on ? '還沒畫進海圖' : r.cleared ? `${r.good ? '★★' : '★'}　測繪 ${r.best}%${r.best >= surveyMax(id) ? '・已畫滿' : ''}` : '未完成'));
-      })));
+      }))].filter(Boolean));
     // 該找到的隱藏島：跳出來說海圖上多了一條航線
     const find = this.newFind();
     if (find) ctx.discover(find).then(() => this.show());
@@ -317,20 +317,90 @@ export class Port {
     ctx.ui.toast(`委託完成：${got.join('、')}`);
   }
 
-  // ───────── 鐵匠：打造 ─────────
+  // ───────── 打造的流程（鐵匠、船塢共用） ─────────
+  // 先付素材和銀貝 → 小遊戲 → 失敗可以加錢再試一次 → 兩次都失敗，退一半素材（銀貝不退）
+  // 成功才呼叫 apply()；升級失敗的話，舊裝備不會被收走
+  async forge(kind, name, cost, apply) {
+    const g = this.g, ctx = this.ctx, ui = ctx.ui, who = kind === '船塢' ? '大副' : '石伯';
+    const auto = ctx.settings.forgeGame === false;
+    const play = async retry => {
+      if (!auto) return playForge(ctx, kind, { name, tier: forgeTier(cost), retry });
+      const ok = Math.random() < FORGE_AUTO_RATE;
+      return { ok, perfect: false };
+    };
+    this.pay(cost); save(g);
+    let r = await play(false);
+    if (!r.ok) {
+      const price = retryPrice(cost), back = forgeRefund(cost);
+      const i = await ui.choose(kind === '船塢' ? '改造失敗' : '打壞了', [
+        auto ? `${who}：「……這次沒弄好。」` : `${who}：「別灰心，再來一次。」`,
+        `再付 ${price} 銀貝，可以再試一次${auto ? '' : `（${who}幫你扶著，比較容易）`}。`,
+        `放棄的話，會退回一半的素材：${costText(back) || '沒有'}。銀貝不退。`],
+        [{ label: `再試一次（${price} 銀貝，現在有 ${g.silver}）`, disabled: g.silver < price }, { label: '放棄' }]);
+      if (i === 0) { g.silver -= price; save(g); r = await play(true); }
+      if (!r.ok) {
+        for (const [k, v] of Object.entries(back)) g.mats[k] = (g.mats[k] || 0) + v;
+        save(g);
+        await ui.alert(kind === '船塢' ? '改造失敗' : '打壞了', [i === 0 ? '第二次也失敗了。' : '這次就先放棄吧。', `退回了：${costText(back) || '沒有'}。`]);
+        return false;
+      }
+    }
+    apply();
+    if (r.perfect) { const k = Object.keys(cost).find(x => x !== '銀貝'); if (k) g.mats[k] = (g.mats[k] || 0) + 1; }
+    ctx.audio.sfx(kind === '船塢' ? 'level' : 'item');
+    save(g);
+    if (auto) ctx.ui.toast(`${name}：成功了！`);
+    return true;
+  }
+
+  // 有幾件（放在包包裡的＋穿在身上的）
+  owned(name) { const g = this.g; return (g.gear[name] || 0) + g.party.filter(h => Object.values(h.eq).includes(name)).length; }
+  // 拿舊裝備升級：優先用包包裡的；用到身上穿的，就直接換上新的
+  swapUp(from, to) {
+    const g = this.g;
+    if (g.gear[from] > 0) { g.gear[from]--; g.gear[to] = (g.gear[to] || 0) + 1; return null; }
+    const h = g.party.find(x => Object.values(x.eq).includes(from));
+    const slot = Object.keys(h.eq).find(k => h.eq[k] === from);
+    h.eq[slot] = to;
+    const s = heroStats(h); h.hp = Math.min(h.hp, s.hp); h.mp = Math.min(h.mp, s.mp);
+    return h.key;
+  }
+  // 能不能從頭打造：每條線前 2 件可以；後面的，只有在完全沒辦法拿到前面的裝備時（保險，避免卡住）
+  canDirect(name) {
+    const { line, i } = LINE_OF[name];
+    if (i < DIRECT_CRAFT) return true;
+    const before = GEAR_LINES[line].slice(0, i);
+    return !before.some(n => this.owned(n) || this.g.bps.includes(n));
+  }
+
+  // ───────── 鐵匠：打造、升級 ─────────
   smith() {
     const g = this.g, ctx = this.ctx;
+    const again = () => this.smith();
+    const run = async (api, name, cost, apply) => { api.close(); await this.forge('鐵匠', name, cost, apply); again(); };
     ctx.ui.sheet('鐵匠・打造', (body, api) => {
-      body.append(el('p', { class: 'muted' }, '石伯：「有圖紙，我才打得出來。圖紙在寶箱、首領和委託裡。打好的東西，到「隊伍」裡穿上。」'));
+      body.append(el('p', { class: 'muted' }, '石伯：「有圖紙，我才打得出來。每條線前兩件可以從頭打，後面的，要拿同一條線前面的裝備來升級：越接近的，要補的越少。打的時候你來敲，敲得準才打得成。」'));
       const mats = Object.entries(g.mats).filter(([, n]) => n > 0);
       body.append(el('div', { class: 'matbox' }, el('b', {}, '素材'), mats.length ? el('div', { class: 'chips' }, ...mats.map(([k, n]) => el('span', { class: 'chip', title: MATS[k] }, `${k} ${n}`))) : el('small', { class: 'muted' }, '還沒有素材。打倒妖物、打開寶箱就會得到。')));
+      body.append(el('p', { class: 'small muted' }, `銀貝 ${g.silver}`));
       for (const slot of SLOTS) {
         body.append(el('h3', { class: 'sub-h' }, slot));
         for (const name of g.bps.filter(n => EQUIPS[n].slot === slot)) {
-          const e = EQUIPS[name], own = (g.gear[name] || 0) + g.party.filter(h => Object.values(h.eq).includes(name)).length;
-          body.append(el('div', { class: 'shop-row' },
-            el('div', {}, el('b', {}, name + (e.who ? `（${e.who}）` : '')), el('small', {}, `${statText(e.stats)}・${e.desc}`), el('small', { class: 'cost' + (this.canAfford(e.cost) ? '' : ' short') }, `需要：${costText(e.cost)}${own ? `・已經有 ${own} 件` : ''}`)),
-            el('button', { class: 'btn small', disabled: !this.canAfford(e.cost), onclick: () => { this.pay(e.cost); g.gear[name] = (g.gear[name] || 0) + 1; ctx.audio.sfx('item'); save(g); ctx.ui.toast(`打好了「${name}」。到「隊伍」裡穿上吧。`); api.rebuild(); } }, '打造')));
+          const e = EQUIPS[name], own = this.owned(name), { line, i } = LINE_OF[name], list = GEAR_LINES[line];
+          const rows = [];
+          // 從頭打造
+          if (this.canDirect(name)) rows.push(el('div', { class: 'fg-opt' }, el('small', { class: 'cost' + (this.canAfford(e.cost) ? '' : ' short') }, `從頭打：${costText(e.cost)}`),
+            el('button', { class: 'btn small', disabled: !this.canAfford(e.cost), onclick: () => run(api, name, e.cost, () => { g.gear[name] = (g.gear[name] || 0) + 1; ctx.ui.toast(`打好了「${name}」。到「隊伍」裡穿上吧。`); }) }, '打造')));
+          // 升級：同一條線前面的、手上有的
+          for (const from of list.slice(0, i).filter(n => this.owned(n)).reverse()) {
+            const c = upgradeCost(name, from);
+            rows.push(el('div', { class: 'fg-opt' }, el('small', { class: 'cost' + (this.canAfford(c) ? '' : ' short') }, `用「${from}」升級：${costText(c)}`),
+              el('button', { class: 'btn small', disabled: !this.canAfford(c), onclick: () => run(api, name, c, () => { const who = this.swapUp(from, name); ctx.ui.toast(who ? `「${from}」升級成「${name}」，${who}已經換上了。` : `「${from}」升級成「${name}」了。到「隊伍」裡穿上吧。`); }) }, '升級')));
+          }
+          if (!rows.length) rows.push(el('small', { class: 'muted' }, `要先有同一條線前面的裝備（例如「${list[i - 1]}」），才能升級成這件。`));
+          body.append(el('div', { class: 'shop-row fg-row' },
+            el('div', {}, el('b', {}, name + (e.who ? `（${e.who}）` : '')), el('small', {}, `${statText(e.stats)}・${e.desc}`),
+              el('small', { class: 'muted' }, `${line}・第 ${i + 1}／${list.length} 件${i ? `・前一件「${list[i - 1]}」` : ''}${own ? `・已經有 ${own} 件` : ''}`), ...rows)));
         }
       }
       const unknown = Object.keys(EQUIPS).length - g.bps.length;
@@ -435,7 +505,7 @@ export class Port {
     const g = this.g, ctx = this.ctx;
     ctx.ui.sheet('船塢', (body, api) => {
       const hull = hullOf(g), rc = repairCost(g);
-      body.append(el('p', { class: 'muted' }, '大副：「船好，人才回得來。」'),
+      body.append(el('p', { class: 'muted' }, '大副：「船好，人才回得來。改造的時候你來釘船板，釘得準才改得成。」'),
         el('h3', { class: 'sub-h' }, '修船'),
         el('div', { class: 'p-meter' }, el('span', {}, `船況 ${hull} / 100`), el('span', {}, hull < HULL_BROKEN ? '不修不能出航！' : hull < 50 ? '破破爛爛：航海事件的壞事會更嚴重' : hull < 100 ? '還撐得住' : '完好'), ctx.ui.bar(hull, 100, 'hull')),
         el('p', { class: 'small muted' }, g.flags.龍骨 ? '船裡裝著冰下船塢的「公會的龍骨」：船況不會再下降了。' : '航海事件的壞結果、海上戰鬥、每次靠岸，都會磨損船況。改造「船身」可以少磨損一些。'),
@@ -447,7 +517,7 @@ export class Port {
         body.append(el('div', { class: 'shop-row' + (wait ? ' locked' : '') },
           el('div', {}, el('b', {}, `${part}　${lv ? '★'.repeat(lv) : '—'}`), el('small', {}, nx ? `${nx.label}：${nx.note}` : `已經改造到最好了（${d.levels[lv - 1].note}）`),
             nx ? el('small', { class: 'cost' + (!wait && this.canAfford(nx.cost) ? '' : ' short') }, wait ? `大副：「這個要等${FLAG_NAME[nx.flag]}，我才知道怎麼做。」` : `需要：${costText(nx.cost)}`) : null),
-          nx ? el('button', { class: 'btn small', disabled: wait || !this.canAfford(nx.cost), onclick: () => { this.pay(nx.cost); g.ship[part] = lv + 1; ctx.audio.sfx('level'); save(g); api.rebuild(); } }, '改造') : null));
+          nx ? el('button', { class: 'btn small', disabled: wait || !this.canAfford(nx.cost), onclick: async () => { api.close(); await this.forge('船塢', nx.label, nx.cost, () => { g.ship[part] = lv + 1; }); this.yard(); } }, '改造') : null));
       }
     }, { onClose: () => this.show() });
   }
