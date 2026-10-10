@@ -99,7 +99,12 @@ export function newIsland(g, id) {
   // 航海時遇到的天氣：晴朗多看見一圈、濃霧少一圈、順風前 6 步不吃糧
   isl.weather = g.weather || null; g.weather = null;
   if (isl.weather === '順風') isl.tailwind = 6;
-  reveal(isl, start, Math.max(0, (g.ship && g.ship.船首像 ? 2 : 1) - (def.dark ? 1 : 0) + (isl.weather === '晴朗' ? 1 : isl.weather === '濃霧' ? -1 : 0)));
+  // 船首像：一級散開兩圈、二級散開三圈；港口突發事件「霧進港」少一圈（有船首像就不怕）
+  const fig = (g.ship && g.ship.船首像) || 0, fogIn = g.port && g.port.event && g.port.event.id === '霧進港' && !fig ? 1 : 0;
+  reveal(isl, start, Math.max(0, 1 + fig - fogIn - (def.dark ? 1 : 0) + (isl.weather === '晴朗' ? 1 : isl.weather === '濃霧' ? -1 : 0)));
+  if (fig >= 2) for (const t of tiles) if (t.kind === '寶' && !t.done) t.seen = true;
+  // 小艇：前 5 步沿著海岸划，不吃糧
+  if (g.ship && g.ship.小艇) isl.tailwind = (isl.tailwind || 0) + 5;
   // 從正門進去：巡邏兵（妖物）在哪裡，一開始就看得到
   if (route && route.see) for (const t of tiles) if (t.kind === route.see) t.seen = true;
   // 首領的位置，從一開始就看得見：這是這座島的終點

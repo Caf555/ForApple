@@ -1,5 +1,5 @@
 // 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章 → 霧心：最後的抉擇 → 結局 → 尾聲（之後可以繼續玩）
-import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES } from './data.js';
+import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES, HULL_WEAR, HULL_WORN, hullOf } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
 import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings, moraleTier, MORALE_TIERS, MORALE_HOME } from './state.js';
@@ -39,6 +39,9 @@ const flagOk = f => { const [k, v] = f.split('='); return v === undefined ? !!ct
 const lines = arr => arr.map(L => typeof L === 'string' ? { text: L } : L).filter(L => (!L.need || has(L.need)) && (!L.flag || flagOk(L.flag)));
 ctx.storyLines = lines;
 
+// 出戰人數上限：港口流感的時候少一個
+ctx.partyMax = () => PARTY_MAX - (ctx.g.party.some(h => h.sick) ? 1 : 0);
+
 // 新隊友加入：等級跟出戰的人差不多，帶著自己的武器；出戰滿 4 人的話，先在船上待命
 ctx.recruit = async key => {
   const g = ctx.g;
@@ -49,10 +52,10 @@ ctx.recruit = async key => {
   const w = HEROES[key].weapon || (key === '小鈴' ? '貝殼琴' : null);
   if (w && EQUIPS[w]) { h.eq.武器 = w; if (!g.bps.includes(w)) g.bps.push(w); }
   const s = heroStats(h); h.hp = s.hp; h.mp = s.mp;
-  if (g.party.filter(x => !x.bench).length >= PARTY_MAX) h.bench = true;
+  if (g.party.filter(x => !x.bench).length >= ctx.partyMax()) h.bench = true;
   g.party.push(h);
   save(g);
-  if (h.bench) await ctx.ui.alert('隊伍', [`出戰的人已經有 ${PARTY_MAX} 個了，${key}先在船上待命。`, '打開「隊伍」，點「出戰／待命」就可以換人。']);
+  if (h.bench) await ctx.ui.alert('隊伍', [`出戰的人已經有 ${ctx.partyMax()} 個了，${key}先在船上待命。`, '打開「隊伍」，點「出戰／待命」就可以換人。']);
 };
 
 // ───────── 共用：效果、素材、圖紙、委託 ─────────
@@ -78,6 +81,13 @@ ctx.applyFx = fx => {
     else if (MATS[k]) { if (v > 0) ctx.gainMat(k, v); else g.mats[k] = Math.max(0, (g.mats[k] || 0) + v); }
     else g.supply[k] = Math.max(0, (g.supply[k] || 0) + v);
   }
+};
+// 船況磨損：船身改造越好、難度越悠閒，磨損越少。回傳實際磨掉多少
+ctx.wearHull = n => {
+  const g = ctx.g, lv = (g.ship && g.ship.船身) || 0;
+  const k = Math.max(1, Math.round(n * (1 - 0.25 * lv) * (g.diff === '悠閒' ? 0.5 : 1)));
+  const before = hullOf(g); g.hull = Math.max(0, before - k);
+  return before - g.hull;
 };
 ctx.fxText = fx => {
   const parts = Object.entries(fx || {}).filter(([k]) => !FACTIONS.includes(k) || repOn(ctx.g, k)).map(([k, v]) => k === 'hp' ? `全隊體力 ${v > 0 ? '+' : ''}${Math.round(v * 100)}%` : `${k}${FACTIONS.includes(k) ? '聲望' : ''} ${v > 0 ? '+' : ''}${v}`);
@@ -162,7 +172,9 @@ ctx.sail = async id => {
   ctx.audio.music('港口');
   // 第一次去這座島：先播這座島的故事
   if (!worldOf(g, id).visits && CINEMA[id]) await cinema(id);
-  let pool = seaPool(g, def);
+  // 港口突發事件「暴風季」：多遇到一個航海事件（雙層帆不怕）
+  const storm = ctx.port.ev('暴風季') && (g.ship.船帆 || 0) < 2 && def.seaEvents ? 1 : 0;
+  let pool = seaPool(g, storm ? { ...def, seaEvents: def.seaEvents + storm } : def);
   // 酒館的流言說過的航海事件：這一趟一定會遇到
   if (g.forecast && g.forecast.sea === def.sea) {
     const ev = SEA_EVENTS.find(e => e.title === g.forecast.title && (e.sea || '淺灘') === def.sea);
@@ -208,6 +220,7 @@ ctx.sail = async id => {
   // 拿過好結局的島：登島時多一段「之後的樣子」
   await ctx.ui.story(lines([...def.arrive, ...(worldOf(g, id).good && def.after ? def.after.arrive : [])]));
   const tip = g.tip && g.tip.island === id;
+  ctx.wearHull(HULL_WEAR.land);
   g.island = newIsland(g, id);
   if (tip) await ctx.ui.alert('酒館的流言', ['{名}想起酒館裡聽到的話。島上那個地方……好像真的有一個箱子。', '（這一趟，島上多了一個寶箱）']);
   if (g.smuggle && g.smuggle.island === id) {
@@ -232,6 +245,7 @@ async function inspect(id) {
     await ctx.ui.alert('商會的巡邏船', ['巡邏船上的傭兵跳了過來。他們身後的霧裡，還跟著別的東西……']);
     const r = await ctx.battle.start({ enemies: foes, terrain: '潮間帶', lit: false, kind: '一般' });
     ctx.audio.music('港口');
+    ctx.wearHull(r === 'win' ? HULL_WEAR.fight : HULL_WEAR.lost);
     if (r === 'win') { ctx.addRep('商會', -3); await ctx.ui.alert('商會的巡邏船', ['巡邏船掉頭跑了。貨箱還在。', ctx.fxText({ 商會: -3 })]); return; }
     for (const h of ctx.g.party) h.hp = Math.max(1, h.hp, Math.round(heroStats(h).hp * 0.3));
   }
@@ -277,13 +291,14 @@ async function seaEvent(ev) {
   const o = opts[i];
   g.seaSeen = [...new Set([...(g.seaSeen || []), seaId(ev)])];
   if (ev.chain) g.seaChain = { ...(g.seaChain || {}), [ev.chain]: ev.step };
-  let res = o, note = '';
+  let res = o, note = '', wear = 0;
   if (o.chance) { const win = Math.random() < luck(o, g.morale); res = { ...(win ? o.win : o.lose), fx: { ...(o.fx || {}), ...((win ? o.win : o.lose).fx || {}) } }; note = win ? '（成功了！）' : '（失敗了……）'; }
   if (o.fight) {
     ctx.applyFx(o.fx);
     await ctx.ui.alert(ev.title, [o.line]);
     const r = await ctx.battle.start({ enemies: o.fight, terrain: '潮間帶', kind: '一般' });
     ctx.audio.music('港口');
+    wear = ctx.wearHull(r === 'win' ? HULL_WEAR.fight : HULL_WEAR.lost);
     if (r === 'win') res = o.win;
     else {
       // 打輸了：大家被拖回船上，剩一點點體力
@@ -293,14 +308,22 @@ async function seaEvent(ev) {
     }
     note = '';
   }
-  // 補好的船帆：壞事減半（自己選擇付出的不算）
-  const fx = { ...(res.fx || {}) };
-  if (g.ship.船帆 && !o.fight) for (const k in fx) if (fx[k] < 0 && !(o.fx && o.fx[k] === fx[k]) && !o.label.includes(`${k} `) && !o.label.includes(`（${k}`)) fx[k] = k === 'hp' ? fx[k] / 2 : Math.ceil(fx[k] / 2);
+  // 船況太差：壞事加重一半；補好的船帆：壞事減半，雙層帆只剩四分之一（自己選擇付出的不算）
+  const fx = { ...(res.fx || {}) }, sail = g.ship.船帆 || 0, worn = hullOf(g) < HULL_WORN;
+  const hurt = k => fx[k] < 0 && !(o.fx && o.fx[k] === fx[k]) && !o.label.includes(`${k} `) && !o.label.includes(`（${k}`);
+  const bad = !o.fight && Object.keys(fx).some(hurt);
+  if (bad) for (const k in fx) if (hurt(k)) {
+    let v = fx[k];
+    if (worn) v = k === 'hp' ? v * 1.5 : Math.floor(v * 1.5);
+    if (sail) v = k === 'hp' ? v / (sail >= 2 ? 4 : 2) : Math.ceil(v / (sail >= 2 ? 4 : 2));
+    fx[k] = v;
+  }
+  if (bad) wear = ctx.wearHull(HULL_WEAR.bad);
   ctx.applyFx(fx);
   if (o.weather || res.weather) g.weather = o.weather || res.weather;
   const good = ev.goodIsle && (g.world[ev.goodIsle] || {}).good && ev.goodLine;
   const W = { 晴朗: '（晴朗：登島時看得見的範圍多一圈）', 濃霧: '（濃霧：登島時看得見的範圍少一圈，可是霧眼的守門妖物比較弱）', 順風: '（順風：登島以後，前 6 步不吃糧）' };
-  await ctx.ui.alert(ev.title, [note, ...lines([].concat(res.line || [])).map(L => L.who ? `${L.who}：「${L.text}」` : L.text), good, ctx.fxText(fx), g.ship.船帆 && JSON.stringify(fx) !== JSON.stringify(res.fx || {}) ? '（補好的船帆，讓損失少了一半）' : '', g.weather && (o.weather || res.weather) ? W[g.weather] : ''].filter(Boolean));
+  await ctx.ui.alert(ev.title, [note, ...lines([].concat(res.line || [])).map(L => L.who ? `${L.who}：「${L.text}」` : L.text), good, ctx.fxText(fx), bad && worn ? '（船破破爛爛的，損失更重了）' : '', bad && sail ? `（${sail >= 2 ? '雙層帆，讓損失只剩四分之一' : '補好的船帆，讓損失少了一半'}）` : '', wear ? `（船況 −${wear}，剩 ${hullOf(g)}）` : '', g.weather && (o.weather || res.weather) ? W[g.weather] : ''].filter(Boolean));
   save(g);
 }
 
@@ -532,6 +555,8 @@ function help() {
     '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
     '・隊伍：一次最多 4 個人出戰，其他人在船上待命。在「隊伍」裡點「出戰／待命」換人（{名}一定要出戰）。',
     '・委託：在酒館接下（最多 2 個），完成以後回酒館回報，拿報酬。',
+    '・船塢：可以修船和改造船。船況會因為航海事件的壞結果、海上戰鬥和靠岸慢慢磨損；低於 50，壞事會更嚴重，低於 20 就不能出航。',
+    '・港口突發事件（第二章開始）：回港的時候偶爾會發生一些事，例如流感（一位隊友這一趟不能出戰，可以用醒神香或請醫生治好）、暴風季、罷市、祭典。只影響這一次回港到下一趟出航。',
     '・回港就是新的一天：酒館有新的流言（請酒客喝一杯，聽寶箱的位置或航海事件的訣竅），也可以玩「潮汐骰」；市場的行情會變，偶爾有舶來品；黑市有新貨、「紅帆牌桌」和走私的差事。骰子和牌每次回港能玩的局數有限。',
     '・戰鬥分前後兩排。前排：近身攻擊 +15%，但敵人的近身攻擊只打前排。後排：前排還有人時受傷 −30%，近身攻擊威力減半，法術不受影響。',
     '・技能要花「靈」。防禦會回復一點靈；海靈露可以回復 15 點；營地休息、回港也會回復。',
@@ -553,15 +578,15 @@ ctx.partySheet = () => {
     const mt = moraleTier(g.morale);
     body.append(el('p', { class: 'muted' }, `士氣 ${g.morale}・${mt.name}：越高，攻擊越痛、受到的傷害越少。打贏、營地休息、訓練會提高；有人倒下、斷糧會降低。`),
       el('p', { class: 'muted small' }, MORALE_TIERS.map(t => `${t.name}（${t.min}以上）：${t.tip}`).join('　')));
-    const out = g.party.filter(x => !x.bench).length;
-    if (g.party.length > PARTY_MAX) body.append(el('p', { class: 'muted' }, `出戰 ${out}/${PARTY_MAX} 人。待命的人不會上場，每場戰鬥拿一半的經驗；可以隨時換人。`));
+    const out = g.party.filter(x => !x.bench).length, max = ctx.partyMax(), sick = g.party.find(h => h.sick);
+    if (g.party.length > PARTY_MAX || sick) body.append(el('p', { class: 'muted' }, `出戰 ${out}/${max} 人。待命的人不會上場，每場戰鬥拿一半的經驗；可以隨時換人。${sick ? `（${sick.key}生病了，這一趟不能出戰）` : ''}`));
     for (const h of g.party) {
       const d = HEROES[h.key], st = heroStats(h), name = ctx.ui.fmt(h.key === '墨里' ? '{名}' : h.key);
       body.append(el('div', { class: 'hero' + (h.bench ? ' bench' : '') },
         el('div', { class: 'h-top' }, el('span', { class: 'face', style: { background: d.color } }, name.slice(0, 1)),
           el('div', {}, el('b', {}, name), el('small', {}, `　${d.job}・Lv${h.lv}・${d.element}屬性`)),
           el('span', { class: 'grow' }),
-          g.party.length > PARTY_MAX && h.key !== '墨里' ? el('button', { class: 'btn small' + (h.bench ? '' : ' on'), disabled: h.bench && out >= PARTY_MAX, onclick: () => { h.bench = !h.bench; refresh(); api.rebuild(); } }, h.bench ? '待命' : '出戰') : null,
+          h.sick ? el('span', { class: 'chip' }, '生病') : g.party.length > PARTY_MAX && h.key !== '墨里' ? el('button', { class: 'btn small' + (h.bench ? '' : ' on'), disabled: h.bench && out >= max, onclick: () => { h.bench = !h.bench; refresh(); api.rebuild(); } }, h.bench ? '待命' : '出戰') : null,
           h.bench ? null : el('button', { class: 'btn small', onclick: () => { h.row = h.row === 'front' ? 'back' : 'front'; if (g.party.filter(x => !x.bench && x.row === h.row).length > 3) h.row = h.row === 'front' ? 'back' : 'front'; refresh(); api.rebuild(); } }, h.row === 'front' ? '前排' : '後排')),
         el('div', { class: 'h-bars' }, ctx.ui.bar(h.hp, st.hp, 'hp'), el('small', {}, `體 ${h.hp}/${st.hp}`), ctx.ui.bar(h.mp, st.mp, 'mp'), el('small', {}, `靈 ${h.mp}/${st.mp}`), ctx.ui.bar(h.exp, expNeed(h.lv), 'exp'), el('small', {}, `經驗 ${h.exp}/${expNeed(h.lv)}`)),
         el('p', { class: 'small stats' }, `攻 ${st.atk}・防 ${st.def}・法 ${st.mag}・速 ${st.spd}`),

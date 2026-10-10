@@ -596,15 +596,44 @@ export const EQUIPS = {
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
 // ───────── 船塢：改造船 ─────────
+// flag：要到哪一章才能改（沒寫的話，船塢一開就能改）
 export const SHIP = {
   貨艙: { desc: '補給的上限', levels: [
     { label: '加大貨艙', cost: { 銀貝: 60, 漂流木: 5 }, note: '貨艙 40 → 55' },
     { label: '雙層貨艙', cost: { 銀貝: 130, 鏽鐵: 3, 船帆布: 2 }, note: '貨艙 55 → 70' },
-    { label: '鐵骨貨艙', cost: { 銀貝: 260, 鐵礦: 4, 舊帆布: 3 }, note: '貨艙 70 → 85' }] },
+    { label: '鐵骨貨艙', cost: { 銀貝: 260, 鐵礦: 4, 舊帆布: 3 }, note: '貨艙 70 → 85', flag: '焰' },
+    { label: '霜木貨艙', cost: { 銀貝: 400, 凍木: 4, 霜晶: 3 }, note: '貨艙 85 → 100', flag: '北' }] },
   船帆: { desc: '航海事件的損失', levels: [
-    { label: '補好船帆', cost: { 銀貝: 50, 船帆布: 2, 褪色羽: 2 }, note: '航海事件的損失減半' }] },
+    { label: '補好船帆', cost: { 銀貝: 50, 船帆布: 2, 褪色羽: 2 }, note: '航海事件的損失減半' },
+    { label: '雙層帆', cost: { 銀貝: 180, 舊帆布: 3, 紅赭土: 2 }, note: '航海事件的損失只剩四分之一；暴風季也不會多遇到事件', flag: '焰' }] },
   船首像: { desc: '登島時看得更遠', levels: [
-    { label: '霧燈船首像', cost: { 銀貝: 80, 鐘銅: 2, 燈芯: 3 }, note: '登島時，周圍兩圈的霧會散開' }] },
+    { label: '霧燈船首像', cost: { 銀貝: 80, 鐘銅: 2, 燈芯: 3 }, note: '登島時，周圍兩圈的霧會散開' },
+    { label: '星石船首像', cost: { 銀貝: 300, 古銅片: 3, 鏡冰: 2 }, note: '登島時散開三圈霧，而且一開始就看得到寶箱在哪裡', flag: '北' }] },
+  船身: { desc: '船況的損耗', levels: [
+    { label: '補強船身', cost: { 銀貝: 90, 漂流木: 4, 鏽鐵: 2 }, note: '船況的損耗少四分之一' },
+    { label: '包鐵船身', cost: { 銀貝: 200, 鐵礦: 3, 礦工牌: 2 }, note: '船況的損耗少一半', flag: '焰' },
+    { label: '凍木船身', cost: { 銀貝: 360, 凍木: 3, 古銅片: 2 }, note: '船況的損耗少四分之三', flag: '北' }] },
+  小艇: { desc: '沿著海岸划小艇', levels: [
+    { label: '裝一艘小艇', cost: { 銀貝: 150, 漂流木: 6, 船帆布: 2 }, note: '每次登島，前 5 步划小艇沿著海岸走，不吃糧', flag: '焰' }] },
+};
+// 船況：0～100。航海事件的壞結果、海上戰鬥、靠岸都會磨損；低於 50 壞事更嚴重，低於 20 不能出航
+export const HULL_WEAR = { bad: 6, fight: 8, lost: 15, land: 2 }, HULL_WORN = 50, HULL_BROKEN = 20;
+export const hullOf = g => (g.hull == null ? 100 : g.hull);
+// 修船：每 1 點船況 2 銀貝，每 20 點再用 1 個漂流木（沒有漂流木的話，每個用 10 銀貝代替）
+export const repairCost = g => { const miss = 100 - hullOf(g), wood = Math.ceil(miss / 20), have = Math.min(wood, (g.mats && g.mats.漂流木) || 0); return { miss, silver: miss * 2 + (wood - have) * 10, wood: have }; };
+
+// ───────── 港口突發事件：每次回港大約 1/3 的機會發生一件，只影響這一次回港到下一趟出航 ─────────
+// good：好事（悠閒難度只會遇到好事）
+export const PORT_EVENT_CHANCE = 1 / 3;
+export const PORT_EVENTS = {
+  流感: { good: false, title: '港口流感', text: '港口裡很多人都在咳嗽。{誰}也發燒了，下一趟沒辦法出戰（出戰的人最多 3 個）。', fix: '用 1 份醒神香，或請醫生（40 銀貝），{誰}就能好起來。' },
+  暴風季: { good: false, title: '暴風季', text: '天文台的老人說，這幾天外海會起大風。下一趟出航，會多遇到一個航海事件。', fix: '船塢的「雙層帆」不怕這種風。' },
+  罷市: { good: false, title: '商會罷市', text: '商會和碼頭的工人吵起來了。市場今天不開門；黑市趁機把價錢降了兩成。' },
+  臨檢: { good: false, title: '紅帆臨檢', text: '商會的船在碼頭盯著紅帆的人。黑市今天不開門；市場的收購價高兩成。' },
+  霧進港: { good: false, title: '霧進港', text: '一大早，霧就漫進了港口。下一趟登島的時候，看得見的範圍會少一圈。', fix: '裝了船首像的話，不受影響。' },
+  祭典: { good: true, title: '港口祭典', text: '今天是海神祭！酒館的流言免費聽，潮汐骰的押注加倍。' },
+  豐收: { good: true, title: '漁獲大豐收', text: '漁船滿載回港。碼頭的糧今天半價。' },
+  老客人: { good: true, title: '老客人回來了', text: '' },
 };
 export const cargoMax = g => 40 + 15 * ((g.ship && g.ship.貨艙) || 0);
 

@@ -629,3 +629,7 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .tr-line { position: absolute; top: 0; bottom: 0; left: 20%; width: 4px; margin-left: -2px; background: #e8c07a; box-shadow: 0 0 8px #e8c07a; }
 .tr-note { position: absolute; font-size: 26px; margin-left: -10px; color: #f3e2c0; }
 .tr-note.good { color: #9fe0b5; } .tr-note.bad { color: var(--hp); opacity: .6; }
+
+/* 船況、港口突發事件 */
+.bar.hull i { background: var(--glow); }
+.p-event { margin: 6px 0 10px; }

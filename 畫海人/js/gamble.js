@@ -47,7 +47,9 @@ export function diceGame(ctx, onStreak, onClose) {
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `今天還能玩 ${day.dice} 局`), day.streak ? el('span', {}, `連贏 ${day.streak} 局`) : null));
     if (st.phase === 'bet') {
       if (day.dice <= 0) { body.append(el('p', { class: 'para' }, '老漁夫打了個哈欠：「今天就到這裡。下次回港再來。」')); return; }
-      const bets = g.flags.焰 ? [...DICE_BETS, DICE_BET_BIG] : DICE_BETS;
+      // 港口祭典：押注加倍
+      const fest = day.event && day.event.id === '祭典' ? 2 : 1;
+      const bets = (g.flags.焰 ? [...DICE_BETS, DICE_BET_BIG] : DICE_BETS).map(b => b * fest);
       body.append(el('p', { class: 'para' }, '押多少？贏了拿回兩倍，擲出三條再加倍。平手退回押注。'),
         el('div', { class: 'btns' }, ...bets.map(b => el('button', { class: 'btn', disabled: g.silver < b, onclick: () => {
           g.silver -= b; day.dice--; ctx.audio.sfx('tap');

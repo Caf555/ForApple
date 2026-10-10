@@ -1,5 +1,5 @@
 // 港口：碼頭（補給）、酒館（委託、流言、潮汐骰）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（行情、買賣素材、舶來品）、黑市（第三章：換貨、紅帆牌桌、走私）
-import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, RUMOR_FOLKS, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO } from './data.js';
+import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, HULL_BROKEN, hullOf, repairCost, PORT_EVENTS, PORT_EVENT_CHANCE, RUMOR_FOLKS, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS } from './islands.js';
 import { diceGame, cardGame } from './gamble.js';
 import { cargoUsed, save } from './state.js';
@@ -9,6 +9,7 @@ import { el, $ } from './ui.js';
 export const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, 醒神香: 20 };
 const SUPPLY_TIP = { 糧: '每走一格吃 1 份。吃光了會又餓又累。', 燈油: '點燈時每走一格用 1 份：看得更遠，霧中不會打偏。', 墨水: '測繪要用 2 份。測繪過的地方，霧吞不回去。', 藥草: ITEMS.藥草.desc, 海靈露: ITEMS.海靈露.desc, 醒神香: ITEMS.醒神香.desc };
 const JOBS_MAX = 2, BOARD_N = 4;
+const FLAG_NAME = { 焰: '去過焰之群島', 北: '去過北霧海' };
 // 市場收購素材的價錢（銀貝）
 const MAT_PRICE = { 漂流木: 3, 霧苔: 3, 鹽晶: 4, 燈芯: 4, 珊瑚枝: 5, 鐘銅: 6, 褪色羽: 6, 鏽鐵: 7, 船帆布: 7, 夜光珠: 20, 銀貝殼: 8, 帳紙: 8, 鏡砂: 9, 測繩: 9, 墨魚墨: 9, 珍珠: 12, 閘石: 10, 白珊瑚: 12,
   紅赭土: 10, 舊帆布: 11, 火藥: 13, 鐵礦: 12, 礦工牌: 14, 炭: 11, 硫磺: 13, 熔岩玻璃: 18,
@@ -42,7 +43,11 @@ export class Port {
   // ───────── 港口的每一天：每次回港，流言、行情、舶來品、黑市的貨、走私都會換 ─────────
   newDay() {
     const g = this.g, pick = a => a[Math.floor(Math.random() * a.length)];
+    // 上一次回港的流感，到這次回港就好了
+    for (const h of g.party) this.cure(h);
     const day = { n: ((g.port && g.port.n) || 0) + 1, dice: DICE_PLAYS, cards: CARD_PLAYS, streak: 0, heard: false, sold: [] };
+    g.port = day;
+    day.event = this.rollEvent();
     day.rumor = this.makeRumor();
     // 市場的行情：去得到的島出產的素材裡，抽 2 樣搶手、1 樣滯銷
     const mats = shuffle([...new Set(this.openIsles().flatMap(id => ISLANDS[id].mats))]);
@@ -61,6 +66,30 @@ export class Port {
     return day;
   }
   get day() { return this.g.port || this.newDay(); }
+  // 今天的港口突發事件（沒有的話是 null）
+  ev(id) { const e = this.day.event; return e && (!id || e.id === id) ? e : null; }
+  // 港口流感：生病的隊友好起來，回到原本出戰或待命的樣子
+  cure(h) { if (!h.sick) return; h.bench = h.sick.bench; delete h.sick; }
+
+  // 每次回港：大約 1/3 的機會發生一件事（第一章不會；悠閒難度只有好事）
+  rollEvent() {
+    const g = this.g, pick = a => a[Math.floor(Math.random() * a.length)];
+    if (!g.flags.第一章 || Math.random() >= PORT_EVENT_CHANCE) return null;
+    const sickable = g.party.filter(h => h.key !== '墨里');
+    const ids = Object.keys(PORT_EVENTS).filter(k => (g.diff !== '悠閒' || PORT_EVENTS[k].good)
+      && (k !== '流感' || sickable.length) && (k !== '罷市' || this.hasMarket) && (k !== '臨檢' || this.hasBlack));
+    const id = pick(ids), e = { id };
+    if (id === '流感') { const h = pick(sickable); h.sick = { bench: !!h.bench }; h.bench = true; e.who = h.key; }
+    if (id === '老客人') {
+      const mats = [...new Set(this.openIsles().flatMap(k => ISLANDS[k].mats))], m = pick(mats);
+      const who = (g.world.忘人港 || {}).good ? '海生' : g.flags.北 ? '老洛的老朋友' : '大副的老朋友';
+      g.silver += 50; g.mats[m] = (g.mats[m] || 0) + 2;
+      e.text = `${who}划著小船來到碼頭：「路過，順便來看看你們。」他留下了一個包袱：銀貝 50、${m} 2。`;
+    }
+    return e;
+  }
+  evText(e) { const d = PORT_EVENTS[e.id]; return (e.text || d.text).replace('{誰}', e.who || ''); }
+  get rumorPrice() { return this.ev('祭典') ? 0 : RUMOR_PRICE; }
   openIsles() { return ISLAND_ORDER.filter(id => this.unlocked(id)); }
 
   // 流言：提示（某座島多一個寶箱）或預告（某片海會遇到的航海事件，和該怎麼選）
@@ -120,6 +149,7 @@ export class Port {
         el('button', { class: 'btn small', onclick: () => ctx.partySheet() }, '隊伍'),
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => ctx.menu() }, '☰')),
       el('p', { class: 'p-tip' }, tip),
+      this.eventBox(),
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`), ctx.ui.bar(cargoUsed(g), cargoMax(g), 'cargo')),
       g.flags.焰 ? el('div', { class: 'p-rep' }, ...FACTIONS.filter(f => repOn(g, f)).map(f => el('span', {}, el('b', {}, f), `　${REP_LEVELS[repLevel(this.rep(f))]}`, ctx.ui.bar(this.rep(f), 100, 'rep')))) : null,
       el('div', { class: 'facs' },
@@ -127,15 +157,30 @@ export class Port {
         fac('海圖', '選一座島，出航', () => this.chart()),
         fac('酒館', ready ? `有 ${ready} 個委託可以回報！` : `委託（進行中 ${jobsN}/${JOBS_MAX}）${this.day.heard ? '' : '・有新的流言'}`, () => this.tavern(), this.hasTavern, '完成低語礁以後開放'),
         fac('鐵匠', `用素材打造裝備（素材 ${matN} 個）`, () => this.smith(), this.hasTavern, '完成低語礁以後開放'),
-        fac('船塢', '加大貨艙、補船帆、裝船首像', () => this.yard(), this.hasYard, '完成晨忘島以後開放'),
+        fac('船塢', `船況 ${hullOf(g)}／100${hullOf(g) < HULL_BROKEN ? '・要修了才能出航！' : hullOf(g) < 100 ? '・可以修船' : ''}`, () => this.yard(), this.hasYard, '完成晨忘島以後開放'),
         g.flags.第一章 ? fac('天文台', !g.flags.環礁 || (g.flags.第二章 && !g.flags.焰) || (g.flags.第三章 && !g.flags.北) || (g.flags.第四章 && !g.flags.霧心) ? '門開了！進去看看' : g.flags.結局 ? '重新抉擇・小遊戲間' : '星圖與往霧心的路', () => ctx.observatory()) : null,
-        g.flags.第一章 ? fac('市場', `今天搶手：${this.day.hot.join('、') || '—'}${IMPORTS[this.day.imp] ? '・有舶來品！' : ''}`, () => this.market(), this.hasMarket, '完成千帆市以後開放') : null,
-        g.flags.焰 ? fac('黑市', g.smuggle ? `走私中：貨箱要送到${g.smuggle.island}` : this.day.smuggle ? '有一箱貨要送・今天的新貨' : '今天的新貨・紅帆牌桌', () => this.blackMarket(), this.hasBlack, '完成紅帆港以後開放') : null),
+        g.flags.第一章 ? fac('市場', `今天搶手：${this.day.hot.join('、') || '—'}${IMPORTS[this.day.imp] ? '・有舶來品！' : ''}`, () => this.market(), this.hasMarket && !this.ev('罷市'), this.hasMarket ? '商會罷市，今天不開門' : '完成千帆市以後開放') : null,
+        g.flags.焰 ? fac('黑市', g.smuggle ? `走私中：貨箱要送到${g.smuggle.island}` : this.day.smuggle ? '有一箱貨要送・今天的新貨' : '今天的新貨・紅帆牌桌', () => this.blackMarket(), this.hasBlack && !this.ev('臨檢'), this.hasBlack ? '紅帆臨檢，今天不開門' : '完成紅帆港以後開放') : null),
       el('div', { class: 'p-isles' }, ...ISLAND_ORDER.filter(id => this.seas.includes(ISLANDS[id].sea)).map(id => {
         const r = worldOf(g, id), on = this.unlocked(id);
         return el('div', { class: 'isle' + (r.cleared ? ' done' : '') + (on ? '' : ' locked') },
           el('b', {}, on ? id : '？？？'), el('small', {}, !on ? '還沒畫進海圖' : r.cleared ? `${r.good ? '★★' : '★'}　測繪 ${r.best}%${r.best >= surveyMax(id) ? '・已畫滿' : ''}` : '未完成'));
       })));
+  }
+
+  supplyPrice(k) { return k === '糧' && this.ev('豐收') ? 1 : PRICES[k]; }
+
+  // 港口畫面上方：今天發生的事
+  eventBox() {
+    const g = this.g, ctx = this.ctx, e = this.ev();
+    if (!e) return null;
+    const d = PORT_EVENTS[e.id], sick = e.id === '流感' && g.party.find(h => h.key === e.who && h.sick);
+    const fix = (label, ok, pay) => el('button', { class: 'btn small', disabled: !ok, onclick: () => { pay(); this.cure(sick); ctx.audio.sfx('item'); save(g); ctx.ui.toast(`${e.who}的燒退了，可以出戰了。`); this.show(); } }, label);
+    return el('div', { class: 'job p-event' + (d.good ? ' ready' : '') }, el('b', {}, `港口消息：${d.title}`), el('small', {}, ctx.ui.fmt(this.evText(e))),
+      e.id === '流感' && !sick ? el('p', { class: 'small' }, `${e.who}已經好了。`) : d.fix ? el('p', { class: 'small muted' }, d.fix.replace('{誰}', e.who || '')) : null,
+      sick ? el('div', { class: 'btns' },
+        fix(`用醒神香（有 ${g.supply.醒神香 || 0} 份）`, g.supply.醒神香 > 0, () => { g.supply.醒神香--; }),
+        fix('請醫生 40 銀貝', g.silver >= 40, () => { g.silver -= 40; })) : null);
   }
 
   // ───────── 碼頭：補給 ─────────
@@ -149,9 +194,9 @@ export class Port {
         body.append(el('div', { class: 'shop-row big' },
           el('div', {}, el('b', {}, `${k}　×${g.supply[k] || 0}`), el('small', {}, SUPPLY_TIP[k])),
           el('div', { class: 'qty' },
-            el('button', { class: 'btn small', 'aria-label': '賣回一份', disabled: !(g.supply[k] > 0), onclick: () => { g.supply[k]--; g.silver += PRICES[k]; api.rebuild(); } }, '−'),
-            el('span', {}, `${PRICES[k]} 銀貝`),
-            el('button', { class: 'btn small', 'aria-label': '買一份', disabled: g.silver < PRICES[k] || used >= max, onclick: () => { g.supply[k] = (g.supply[k] || 0) + 1; g.silver -= PRICES[k]; ctx.audio.sfx('tap'); api.rebuild(); } }, '＋'))));
+            el('button', { class: 'btn small', 'aria-label': '賣回一份', disabled: !(g.supply[k] > 0), onclick: () => { g.supply[k]--; g.silver += this.supplyPrice(k); api.rebuild(); } }, '−'),
+            el('span', {}, `${this.supplyPrice(k)} 銀貝`),
+            el('button', { class: 'btn small', 'aria-label': '買一份', disabled: g.silver < this.supplyPrice(k) || used >= max, onclick: () => { g.supply[k] = (g.supply[k] || 0) + 1; g.silver -= this.supplyPrice(k); ctx.audio.sfx('tap'); api.rebuild(); } }, '＋'))));
       }
     }, { onClose: () => { save(g); this.show(); } });
   }
@@ -174,6 +219,7 @@ export class Port {
 
   async sail(id) {
     const g = this.g, ctx = this.ctx, d = ISLANDS[id];
+    if (hullOf(g) < HULL_BROKEN) { await ctx.ui.alert('船況太差', [`船況只剩 ${hullOf(g)}，船底一直在進水。這樣出海太危險了。`, '先到「船塢」把船修好吧。']); return this.yard(); }
     const need = parseInt(d.food, 10);
     if (g.supply.糧 < need && !(await ctx.ui.confirm('確認', `糧食只有 ${g.supply.糧} 份。${id}大約要 ${d.food} 份，可能撐不完。還是要出航嗎？`, '出航', '再買一些'))) return this.dock();
     g.trip = { mats: {}, silver: g.silver, bps: [] };
@@ -201,7 +247,7 @@ export class Port {
       body.append(el('h3', { class: 'sub-h' }, '酒客的流言'),
         day.heard ? el('div', { class: 'job' }, el('b', {}, `${r.who}說`), el('small', {}, r.text), el('p', { class: 'small' }, r.note))
           : el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, `${r.who}好像知道些什麼`), el('small', {}, '請他喝一杯，就會說給你聽。每次回港都有新的流言。')),
-            el('button', { class: 'btn small', disabled: g.silver < RUMOR_PRICE, onclick: async () => { g.silver -= RUMOR_PRICE; ctx.audio.sfx('tap'); const L = this.hearRumor(); api.rebuild(); await ctx.ui.alert('酒客的流言', L); } }, `請一杯 ${RUMOR_PRICE} 銀貝`)),
+            el('button', { class: 'btn small', disabled: g.silver < this.rumorPrice, onclick: async () => { g.silver -= this.rumorPrice; ctx.audio.sfx('tap'); const L = this.hearRumor(); api.rebuild(); await ctx.ui.alert('酒客的流言', L); } }, this.rumorPrice ? `請一杯 ${this.rumorPrice} 銀貝` : '祭典：免費')),
         el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, '潮汐骰'), el('small', {}, `跟老漁夫賭骰子。今天還能玩 ${day.dice} 局。連贏三局，他會偷偷告訴你一件事。`)),
           el('button', { class: 'btn small', onclick: () => { api.close(); diceGame(ctx, () => this.streakTip(), () => this.tavern()); } }, '坐下來')));
       body.append(el('h3', { class: 'sub-h' }, '委託'), el('p', { class: 'muted' }, `鹽姨：「一次最多接 ${JOBS_MAX} 個。做完了回來找我，我再把報酬給你們。」`), el('p', { class: 'small muted' }, '（擊退的委託：接下以後打倒的才算；打完仗會顯示進度）'));
@@ -274,7 +320,7 @@ export class Port {
   }
 
   // ───────── 市場：今日行情、賣素材、買素材、舶來品 ─────────
-  matPrice(k) { const d = this.day, t = d.hot.includes(k) ? 2 : d.cold.includes(k) ? 0.5 : 1; return Math.max(1, Math.round((MAT_PRICE[k] || 5) * this.priceRate * t)); }
+  matPrice(k) { const d = this.day, t = (d.hot.includes(k) ? 2 : d.cold.includes(k) ? 0.5 : 1) * (this.ev('臨檢') ? 1.2 : 1); return Math.max(1, Math.round((MAT_PRICE[k] || 5) * this.priceRate * t)); }
   market(tab = '賣') {
     const g = this.g, ctx = this.ctx, day = this.day;
     ctx.ui.sheet('市場', (body, api) => {
@@ -325,18 +371,19 @@ export class Port {
         el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `紅帆「${REP_LEVELS[lv]}」`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`)));
       const row = (it, key) => {
         const locked = lv < it.need, owned = it.kind === 'bp' && g.bps.includes(it.bp), sold = key && day.sold.includes(key);
+        const price = this.ev('罷市') ? Math.round(it.price * 0.8) : it.price;
         const full = it.kind === 'supply' && cargoUsed(g) + it.n > cargoMax(g);
         const sub = it.kind === 'bp' ? `${EQUIPS[it.bp].slot}・${statText(EQUIPS[it.bp].stats)}` : it.kind === 'mat' ? `${MATS[it.name]}　×${it.n}` : `${SUPPLY_TIP[it.name]}　×${it.n}`;
         return el('div', { class: 'shop-row' + (locked ? ' locked' : '') },
           el('div', {}, el('b', {}, locked ? '？？？' : it.name), el('small', {}, locked ? `紅帆的聲望到「${REP_LEVELS[it.need]}」才拿得出來` : sub)),
-          el('button', { class: 'btn small', disabled: locked || owned || sold || full || g.silver < it.price, onclick: () => {
-            g.silver -= it.price;
+          el('button', { class: 'btn small', disabled: locked || owned || sold || full || g.silver < price, onclick: () => {
+            g.silver -= price;
             if (key) day.sold.push(key);
             if (it.kind === 'bp') g.bps.push(it.bp);
             else if (it.kind === 'mat') g.mats[it.name] = (g.mats[it.name] || 0) + it.n;
             else g.supply[it.name] = (g.supply[it.name] || 0) + it.n;
             ctx.audio.sfx('item'); save(g); ctx.ui.toast(`買到了「${it.name}」。`); api.rebuild();
-          } }, owned ? '已經有了' : sold ? '賣完了' : full ? '貨艙滿了' : `${it.price} 銀貝`));
+          } }, owned ? '已經有了' : sold ? '賣完了' : full ? '貨艙滿了' : `${price} 銀貝`));
       };
       if (day.black.length) body.append(el('h3', { class: 'sub-h' }, '今天櫃子後面的東西（每次回港換）'), ...day.black.map(i => row(BLACK_POOL[i], 'b' + i)));
       body.append(el('h3', { class: 'sub-h' }, '一直都有的貨'), ...BLACK_MARKET.map(it => row(it)));
@@ -363,16 +410,24 @@ export class Port {
   }
   smugglePay(id) { return 100 + 60 * SEAS.indexOf(ISLANDS[id].sea); }
 
-  // ───────── 船塢 ─────────
+  // ───────── 船塢：修船、改造 ─────────
   yard() {
     const g = this.g, ctx = this.ctx;
-    ctx.ui.sheet('船塢・改造', (body, api) => {
-      body.append(el('p', { class: 'muted' }, '大副：「船好，人才回得來。」'));
+    ctx.ui.sheet('船塢', (body, api) => {
+      const hull = hullOf(g), rc = repairCost(g);
+      body.append(el('p', { class: 'muted' }, '大副：「船好，人才回得來。」'),
+        el('h3', { class: 'sub-h' }, '修船'),
+        el('div', { class: 'p-meter' }, el('span', {}, `船況 ${hull} / 100`), el('span', {}, hull < HULL_BROKEN ? '不修不能出航！' : hull < 50 ? '破破爛爛：航海事件的壞事會更嚴重' : hull < 100 ? '還撐得住' : '完好'), ctx.ui.bar(hull, 100, 'hull')),
+        el('p', { class: 'small muted' }, '航海事件的壞結果、海上戰鬥、每次靠岸，都會磨損船況。改造「船身」可以少磨損一些。'),
+        rc.miss ? el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, `修到 100（+${rc.miss}）`), el('small', { class: 'cost' + (g.silver >= rc.silver ? '' : ' short') }, `需要：銀貝 ${rc.silver}${rc.wood ? `・漂流木 ${rc.wood}` : ''}`)),
+          el('button', { class: 'btn small primary', disabled: g.silver < rc.silver, onclick: () => { g.silver -= rc.silver; if (rc.wood) g.mats.漂流木 -= rc.wood; g.hull = 100; ctx.audio.sfx('level'); save(g); api.rebuild(); } }, '修船')) : null,
+        el('h3', { class: 'sub-h' }, '改造'));
       for (const [part, d] of Object.entries(SHIP)) {
-        const lv = g.ship[part] || 0, nx = d.levels[lv];
-        body.append(el('div', { class: 'shop-row' },
-          el('div', {}, el('b', {}, `${part}　${lv ? '★'.repeat(lv) : '—'}`), el('small', {}, nx ? `${nx.label}：${nx.note}` : `已經改造到最好了（${d.levels[lv - 1].note}）`), nx ? el('small', { class: 'cost' + (this.canAfford(nx.cost) ? '' : ' short') }, `需要：${costText(nx.cost)}`) : null),
-          nx ? el('button', { class: 'btn small', disabled: !this.canAfford(nx.cost), onclick: () => { this.pay(nx.cost); g.ship[part] = lv + 1; ctx.audio.sfx('level'); save(g); api.rebuild(); } }, '改造') : null));
+        const lv = g.ship[part] || 0, nx = d.levels[lv], wait = nx && nx.flag && !g.flags[nx.flag];
+        body.append(el('div', { class: 'shop-row' + (wait ? ' locked' : '') },
+          el('div', {}, el('b', {}, `${part}　${lv ? '★'.repeat(lv) : '—'}`), el('small', {}, nx ? `${nx.label}：${nx.note}` : `已經改造到最好了（${d.levels[lv - 1].note}）`),
+            nx ? el('small', { class: 'cost' + (!wait && this.canAfford(nx.cost) ? '' : ' short') }, wait ? `大副：「這個要等${FLAG_NAME[nx.flag]}，我才知道怎麼做。」` : `需要：${costText(nx.cost)}`) : null),
+          nx ? el('button', { class: 'btn small', disabled: wait || !this.canAfford(nx.cost), onclick: () => { this.pay(nx.cost); g.ship[part] = lv + 1; ctx.audio.sfx('level'); save(g); api.rebuild(); } }, '改造') : null));
       }
     }, { onClose: () => this.show() });
   }
