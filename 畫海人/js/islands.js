@@ -1,7 +1,9 @@
 // 《畫海人》的島嶼（淺灘、珊瑚環礁、焰之群島、北霧海、霧心）、事件、劇情文字
 // 六角格是尖頂、奇數列往右錯半格；座標寫成「欄,列」，從 0 開始
 // fixed：固定的格子；pool：其他格子隨機分配的內容（數量）
+// 每座島的隊友事件、多的營火夜談、重訪好結局時「之後的樣子」寫在 story.js，在下面併進來
 // 事件的 fx：糧、燈油、墨水、藥草、海靈露、醒神香、銀貝、素材（數量）；hp（全隊比例，負數是受傷）；士氣；商會、紅帆、守霧人（聲望）
+import { STORY } from './story.js';
 
 export const TILE_INFO = {
   起: { name: '登陸點', tip: '船停在這裡。' },
@@ -1789,6 +1791,8 @@ export const ISLANDS = {
   },
 };
 
+// 第三批劇情補強：隊友事件（need：那個人在隊上才會抽到）、營火夜談、after（重訪拿過好結局的島，登島和村子多一段）
+for (const [id, s] of Object.entries(STORY)) { const d = ISLANDS[id]; d.events.push(...s.events); d.camp.push(...s.camp); d.after = s.after; }
 export const ISLAND_ORDER = Object.keys(ISLANDS).sort((a, b) => ISLANDS[a].order - ISLANDS[b].order);
 export const SEAS = ['淺灘', '珊瑚環礁', '焰之群島', '北霧海', '霧心'];
 

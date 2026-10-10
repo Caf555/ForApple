@@ -374,7 +374,7 @@ export class Explore {
         break;
       }
       case '？': {
-        const ev = def.events[isl.events.shift() ?? Math.floor(Math.random() * def.events.length)];
+        const ev = this.drawEvent();
         const i = await ui.choose(ev.title, ev.text, ev.opts.map(o => ({ label: o.label, disabled: !this.canPay(o.fx) })));
         const o = ev.opts[i];
         this.ctx.applyFx(o.fx);
@@ -393,8 +393,13 @@ export class Explore {
           g.morale = Math.min(100, g.morale + 10);
           this.ctx.audio.sfx('heal');
           const has = k => g.party.some(h => h.key === k && !h.bench);
-          const talks = def.camp.map(c => Array.isArray(c) ? { lines: c } : c).filter(c => !c.need || has(c.need));
-          await ui.alert('營火', [...(talks.length ? pick(talks).lines : ['大家圍著火堆，安靜地吃完了一頓熱的。']), `（全隊回復了 ${rest * 100}%，士氣 +10）`]);
+          // 同一趟登島不會重複聽到同一段；隊上有那個人才聽得到的夜談，還沒聽過的優先
+          const heard = isl.talked || (isl.talked = []), heardAll = new Set(g.talkSeen || []);
+          const talks = def.camp.map((c, i) => ({ i, ...(Array.isArray(c) ? { lines: c } : c) })).filter(c => (!c.need || has(c.need)) && !heard.includes(c.i));
+          const fresh = talks.filter(c => c.need && !heardAll.has(`${isl.id}:${c.i}`));
+          const talk = fresh.length ? pick(fresh) : talks.length ? pick(talks) : null;
+          if (talk) { heard.push(talk.i); (g.talkSeen = g.talkSeen || []).includes(`${isl.id}:${talk.i}`) || g.talkSeen.push(`${isl.id}:${talk.i}`); }
+          await ui.alert('營火', [...(talk ? talk.lines : ['大家圍著火堆，安靜地吃完了一頓熱的。']), `（全隊回復了 ${rest * 100}%，士氣 +10）`]);
           t.done = true;
         } else if (i === 1) {
           g.supply.糧 -= 1;
@@ -548,12 +553,28 @@ export class Explore {
     this.ctx.backToPort({ island: isl.id, ending: null, first: false, pct });
   }
 
+  // 「？」格的事件：隊友事件要那個人在隊上才會抽到，還沒看過的隊友事件優先；一般事件照洗好的順序
+  drawEvent() {
+    const g = this.g, isl = this.isl, def = this.def;
+    const has = k => g.party.some(h => h.key === k && !h.bench), seen = new Set(g.evSeen || []);
+    const key = ev => `${isl.id}:${ev.title}`;
+    const ok = isl.events.filter(i => def.events[i] && (!def.events[i].need || has(def.events[i].need)));
+    let i = ok.find(i => def.events[i].need && !seen.has(key(def.events[i]))) ?? ok[0];
+    if (i == null) { const plain = def.events.map((e, j) => j).filter(j => !def.events[j].need); i = plain[Math.floor(Math.random() * plain.length)]; }
+    isl.events = isl.events.filter(j => j !== i);
+    const ev = def.events[i];
+    if (ev.need && !seen.has(key(ev))) (g.evSeen = g.evSeen || []).push(key(ev));
+    return ev;
+  }
+
   async village() {
     const g = this.g, ui = this.ctx.ui, V = this.def.village;
     const t = tileAt(this.isl, ...this.isl.pos);
     if (!t.met) {
       t.met = true;
-      await ui.alert(V.title, V.text);
+      // 拿過好結局的島：村子也有「之後的樣子」
+      const after = worldOf(g, this.isl.id).good && this.def.after ? this.def.after.village : [];
+      await ui.alert(V.title, [...V.text, ...after]);
       if (V.recruit && !g.party.some(h => h.key === V.recruit)) {
         await ui.story(V.recruitStory);
         await this.ctx.recruit(V.recruit);

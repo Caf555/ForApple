@@ -122,8 +122,15 @@ for (const [id, d] of Object.entries(ISLANDS)) {
   for (const grp of [...d.encounters, d.elite.foes, d.boss.foes]) for (const e of grp) if (!ENEMIES[e]) bad(`${id}：敵人「${e}」不存在`);
   if (!ENEMIES[d.boss.foes[0]] || ENEMIES[d.boss.foes[0]].rank !== '首領') bad(`${id}：首領戰的第一個敵人要是首領`);
   if (d.encounters.length < 5) bad(`${id}：一般戰鬥的組合太少`);
-  if (d.events.length < (d.pool['？'] || 0)) bad(`${id}：事件比事件格少`);
+  if (d.events.filter(e => !e.need).length < (d.pool['？'] || 0)) bad(`${id}：事件比事件格少（不算隊友事件）`);
   checkEvents(id, d.events);
+  // 第三批劇情：隊友事件、營火夜談的隊友要存在；事件不能同名；每座島都要有重訪的「之後的樣子」
+  for (const ev of d.events) { if (ev.need && !HEROES[ev.need]) bad(`${id}・${ev.title}：要的隊友「${ev.need}」不存在`); if (ev.opts.length < 2 || ev.opts.some(o => !o.label || !o.line)) bad(`${id}・${ev.title}：選項不完整`); }
+  if (new Set(d.events.map(e => e.title)).size !== d.events.length) bad(`${id}：有兩個同名的事件`);
+  if (d.events.filter(e => e.need).length < 2) bad(`${id}：隊友事件少於 2 個`);
+  for (const c of d.camp) if (!Array.isArray(c) && c.need && !HEROES[c.need]) bad(`${id}：營火夜談要的隊友「${c.need}」不存在`);
+  if (!d.after || !(d.after.arrive || []).length || !(d.after.village || []).length) bad(`${id}：缺少重訪好結局時「之後的樣子」（登島和村子）`);
+  for (const L of (d.after || {}).arrive || []) if (L.who && !['阿潮', '蓮笙'].includes(L.who) && !L.need && HEROES[L.who]) bad(`${id}：重訪登島台詞「${L.who}」要加 need（可能不在隊上）`);
   for (const b of d.bps) if (!EQUIPS[b]) bad(`${id}：圖紙「${b}」不存在`);
   for (const m of d.mats) if (!MATS[m]) bad(`${id}：素材「${m}」不存在`);
   if (d.village) for (const k in d.village.shop) if (!FX_OK(k)) bad(`${id}：村子賣的「${k}」不認得`);
