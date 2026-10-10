@@ -538,6 +538,11 @@ export const EQUIPS = {
   // 黑市才買得到的圖紙
   紅帆旗披風: { slot: '防具', stats: { def: 16, hp: 52, spd: 3 }, cost: { 銀貝: 320, 舊帆布: 4, 紅赭土: 3 }, desc: '一整面紅帆旗改成的披風。紅帆的人看見它，都會讓路。' },
   海盜望遠鏡: { slot: '飾品', stats: { spd: 6, atk: 4, mag: 4 }, cost: { 銀貝: 280, 熔岩玻璃: 2, 鐵礦: 2 }, desc: '鏡片是熔岩玻璃磨的。看得見霧後面的東西——偶爾。' },
+  // 市場的舶來品才買得到的圖紙
+  南洋絲綢衣: { slot: '防具', stats: { def: 11, hp: 40, mp: 6 }, cost: { 銀貝: 160, 珍珠: 2, 帳紙: 2 }, desc: '南邊群島來的絲綢，薄得像霧，刀卻砍不太進去。' },
+  商隊護身鈴: { slot: '飾品', stats: { hp: 30, def: 5, spd: 3 }, cost: { 銀貝: 180, 鐘銅: 3, 銀貝殼: 2 }, desc: '遠洋商隊掛在駱駝脖子上的鈴。這裡沒有駱駝，可是鈴聲一樣能壯膽。' },
+  舶來星盤: { slot: '飾品', stats: { mag: 8, mp: 10, spd: 3 }, cost: { 銀貝: 280, 熔岩玻璃: 2, 鏡砂: 3 }, desc: '另一片天空的星圖。上面有幾顆星，這裡的天上看不到。' },
+  遠洋鯨皮甲: { slot: '防具', stats: { def: 22, hp: 72, spd: 2 }, cost: { 銀貝: 360, 鯨油: 3, 霜晶: 2, 夜光珠: 1 }, desc: '捕鯨人的皮甲，鯨油一層一層塗上去。浪打在上面，會自己滑開。' },
   // 第四海域
   舊量尺: { slot: '武器', who: '老洛', stats: { mag: 14, mp: 8 }, cost: { 銀貝: 120, 漂流木: 2, 鏽鐵: 2 }, desc: '老洛用了五十年的量尺，刻度都磨平了。他說，量的不是距離，是記憶。' },
   公會圓規: { slot: '武器', who: '老洛', stats: { mag: 26, mp: 14 }, cost: { 銀貝: 300, 古銅片: 3, 鏡冰: 2, 夜光珠: 1 }, desc: '畫海人公會的圓規。兩隻腳一隻是銅，一隻是星光。' },
@@ -625,6 +630,43 @@ export const BLACK_MARKET = [
   { name: '圖紙：海盜望遠鏡', kind: 'bp', bp: '海盜望遠鏡', price: 260, need: 3 },
   { name: '熔岩玻璃', kind: 'mat', n: 2, price: 70, need: 3 },
 ];
+
+// ───────── 港口的每一天：每次回港，流言、行情、舶來品、黑市的貨都會換 ─────────
+export const RUMOR_PRICE = 15;              // 請酒客喝一杯，聽一則流言
+export const DICE_PLAYS = 5, CARD_PLAYS = 3; // 每次回港最多玩幾局
+export const DICE_BETS = [10, 30, 50], DICE_BET_BIG = 100, CARD_BETS = [50, 100, 200];
+// 黑市「今天櫃子後面的東西」：每次回港抽 2 樣。need 是紅帆的聲望等級，flag 是要到哪一章
+export const BLACK_POOL = [
+  { name: '藥草', kind: 'supply', n: 4, price: 24, need: 0 },
+  { name: '墨水', kind: 'supply', n: 6, price: 24, need: 0 },
+  { name: '燈油', kind: 'supply', n: 6, price: 28, need: 0 },
+  { name: '鐵礦', kind: 'mat', n: 3, price: 45, need: 0 },
+  { name: '海靈露', kind: 'supply', n: 3, price: 18, need: 0 },
+  { name: '醒神香', kind: 'supply', n: 2, price: 28, need: 1 },
+  { name: '硫磺', kind: 'mat', n: 3, price: 48, need: 1 },
+  { name: '霜晶', kind: 'mat', n: 2, price: 36, need: 1, flag: '北' },
+  { name: '鯨油', kind: 'mat', n: 2, price: 40, need: 1, flag: '北' },
+  { name: '夜光珠', kind: 'mat', n: 1, price: 50, need: 2 },
+  { name: '熔岩玻璃', kind: 'mat', n: 2, price: 60, need: 2 },
+  { name: '古銅片', kind: 'mat', n: 2, price: 50, need: 2, flag: '北' },
+  { name: '星石', kind: 'mat', n: 1, price: 70, need: 3, flag: '霧心' },
+  { name: '空白的紙', kind: 'mat', n: 2, price: 60, need: 3, flag: '霧心' },
+];
+// 市場的舶來品：每次回港有 1/3 的機會出現一樣。flag 是要到哪一章
+export const IMPORTS = [
+  { name: '圖紙：南洋絲綢衣', kind: 'bp', bp: '南洋絲綢衣', price: 140, flag: '第一章' },
+  { name: '圖紙：商隊護身鈴', kind: 'bp', bp: '商隊護身鈴', price: 170, flag: '第二章' },
+  { name: '圖紙：舶來星盤', kind: 'bp', bp: '舶來星盤', price: 240, flag: '第三章' },
+  { name: '圖紙：遠洋鯨皮甲', kind: 'bp', bp: '遠洋鯨皮甲', price: 300, flag: '第四章' },
+  { name: '夜光珠', kind: 'mat', n: 2, price: 55, flag: '第一章' },
+  { name: '熔岩玻璃', kind: 'mat', n: 2, price: 75, flag: '第三章' },
+  { name: '古銅片', kind: 'mat', n: 2, price: 70, flag: '第四章' },
+  { name: '星石', kind: 'mat', n: 1, price: 80, flag: '霧心' },
+];
+// 走私：黑市的一箱貨，佔貨艙 5 格，送到指定的島
+export const SMUGGLE_CARGO = 5;
+// 酒館裡講流言的人（flag：到哪一章才會出現）
+export const RUMOR_FOLKS = [['老漁夫'], ['賣魚的阿嬸'], ['喝醉的水手'], ['路過的商人', '第一章'], ['紅帆的年輕人', '焰'], ['守霧人的信差', '北']];
 
 // ───────── 酒館的委託 ─────────
 // kind：kill 擊退指定的敵人／bring 把素材交到酒館／survey 某座島的測繪度達到多少

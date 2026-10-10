@@ -1,6 +1,6 @@
 // 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章 → 霧心：最後的抉擇 → 結局 → 尾聲（之後可以繼續玩）
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES } from './data.js';
-import { ISLANDS, ISLAND_ORDER, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
+import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
 import { newGame, makeHero, heroStats, expNeed, DIFF, save, load, clearSave, loadSettings, saveSettings, moraleTier, MORALE_TIERS, MORALE_HOME } from './state.js';
 import { UI, el, $ } from './ui.js';
@@ -163,6 +163,12 @@ ctx.sail = async id => {
   // 第一次去這座島：先播這座島的故事
   if (!worldOf(g, id).visits && CINEMA[id]) await cinema(id);
   let pool = seaPool(g, def);
+  // 酒館的流言說過的航海事件：這一趟一定會遇到
+  if (g.forecast && g.forecast.sea === def.sea) {
+    const ev = SEA_EVENTS.find(e => e.title === g.forecast.title && (e.sea || '淺灘') === def.sea);
+    if (ev && pool.length && !pool.includes(ev)) pool[0] = ev;
+    g.forecast = null;
+  }
   // 守霧人信任你們以後：北霧海可以走祕密航道，不會遇到航海事件
   if (def.sea === '北霧海' && repOn(g, '守霧人') && repLevel(g.rep.守霧人 || 0) >= MIST_ROUTE) {
     const i = await ctx.ui.choose('守霧人的航道', ['守霧人的小舟在港口等著。「跟著我們的燈走，」他們說，「冰下的航道，海上的東西找不到你們。」'], [{ label: '走祕密航道（不會遇到航海事件）' }, { label: '走一般的航線' }]);
@@ -194,16 +200,44 @@ ctx.sail = async id => {
     if (!h.length) say.unshift('白色的邊上，只有你們的船。');
     await ctx.ui.alert('來幫忙的人', say);
   }
+  // 黑市的走私：往目的地的路上，可能被商會的巡邏船臨檢
+  if (g.smuggle && g.smuggle.island === id && Math.random() < (g.diff === '悠閒' ? 0.25 : 0.4)) await inspect(id);
   // 甲板上的訓練：每趟出航一次，可以跳過
   const d = await ctx.ui.choose('甲板上', ['離登島還有一段路。海風很穩，甲板上空出了一塊地方。', `（訓練可以提振士氣。現在的士氣：${g.morale}・${moraleTier(g.morale).name}）`], [{ label: '在甲板上訓練一下' }, { label: '直接準備登島' }]);
   if (d === 0) await ctx.train('甲板');
   // 拿過好結局的島：登島時多一段「之後的樣子」
   await ctx.ui.story(lines([...def.arrive, ...(worldOf(g, id).good && def.after ? def.after.arrive : [])]));
+  const tip = g.tip && g.tip.island === id;
   g.island = newIsland(g, id);
+  if (tip) await ctx.ui.alert('酒館的流言', ['{名}想起酒館裡聽到的話。島上那個地方……好像真的有一個箱子。', '（這一趟，島上多了一個寶箱）']);
+  if (g.smuggle && g.smuggle.island === id) {
+    const sm = g.smuggle; g.smuggle = null;
+    g.silver += sm.pay; ctx.addRep('紅帆', 8); ctx.addRep('商會', -3);
+    ctx.audio.sfx('item');
+    await ctx.ui.alert('走私', ['碼頭邊有一個戴斗笠的人，什麼都沒說，扛起貨箱就走了。', '過了一會兒，船艙裡多了一個錢袋。', ctx.fxText({ 銀貝: sm.pay, 紅帆: 8, 商會: -3 })]);
+  }
   g.phase = 'island';
   save(g);
   ctx.explore.show();
 };
+
+// 走私的貨箱被臨檢：交出貨、塞錢、或打一仗
+async function inspect(id) {
+  const g = ctx.g, bribe = 40 + 20 * SEAS.indexOf(ISLANDS[id].sea);
+  const i = await ctx.ui.choose('商會的巡邏船', ['一艘掛著銀貝旗的船靠了過來。「例行檢查。」船上的人說，「貨艙打開。」', '那箱貨，就放在最上面。'],
+    [{ label: '交出貨箱（走私失敗，紅帆聲望 −5）' }, { label: `塞 ${bribe} 銀貝，請他們當作沒看見`, disabled: g.silver < bribe }, { label: '不讓他們上船（打一仗）' }]);
+  if (i === 1) { g.silver -= bribe; await ctx.ui.alert('商會的巡邏船', ['帶頭的人掂了掂錢袋，揮揮手：「貨艙沒問題。走吧。」']); return; }
+  if (i === 2) {
+    const def = ISLANDS[id], foes = def.encounters[Math.floor(Math.random() * def.encounters.length)];
+    await ctx.ui.alert('商會的巡邏船', ['巡邏船上的傭兵跳了過來。他們身後的霧裡，還跟著別的東西……']);
+    const r = await ctx.battle.start({ enemies: foes, terrain: '潮間帶', lit: false, kind: '一般' });
+    ctx.audio.music('港口');
+    if (r === 'win') { ctx.addRep('商會', -3); await ctx.ui.alert('商會的巡邏船', ['巡邏船掉頭跑了。貨箱還在。', ctx.fxText({ 商會: -3 })]); return; }
+    for (const h of ctx.g.party) h.hp = Math.max(1, h.hp, Math.round(heroStats(h).hp * 0.3));
+  }
+  g.smuggle = null; ctx.addRep('紅帆', -5);
+  await ctx.ui.alert('商會的巡邏船', ['貨箱被搬走了。', ctx.fxText({ 紅帆: -5 })]);
+}
 
 // ───────── 航海事件 ─────────
 // 每個事件的 id：海域＋標題（不同海域可以同名）
@@ -282,6 +316,8 @@ ctx.backToPort = async rep => {
   ctx.audio.music('港口');
   const t = g.trip || { mats: {}, silver: g.silver, bps: [] };
   const mats = Object.entries(t.mats).map(([k, n]) => `${k} ${n}`).join('、');
+  // 回港就是新的一天：流言、行情、黑市的貨都換了
+  ctx.port.newDay();
   const ready = Object.keys(g.jobs).filter(id => ctx.port.jobState(COMMISSIONS.find(c => c.id === id)).ready).length;
   await ctx.ui.alert(rep.ending ? def.endings[rep.ending].title : `回到鹽灣島`, [
     `${rep.island}的測繪度：${rep.pct}%（最好 ${worldOf(g, rep.island).best}%，這座島最高 ${surveyMax(rep.island)}%）`,
@@ -496,6 +532,7 @@ function help() {
     '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
     '・隊伍：一次最多 4 個人出戰，其他人在船上待命。在「隊伍」裡點「出戰／待命」換人（{名}一定要出戰）。',
     '・委託：在酒館接下（最多 2 個），完成以後回酒館回報，拿報酬。',
+    '・回港就是新的一天：酒館有新的流言（請酒客喝一杯，聽寶箱的位置或航海事件的訣竅），也可以玩「潮汐骰」；市場的行情會變，偶爾有舶來品；黑市有新貨、「紅帆牌桌」和走私的差事。骰子和牌每次回港能玩的局數有限。',
     '・戰鬥分前後兩排。前排：近身攻擊 +15%，但敵人的近身攻擊只打前排。後排：前排還有人時受傷 −30%，近身攻擊威力減半，法術不受影響。',
     '・技能要花「靈」。防禦會回復一點靈；海靈露可以回復 15 點；營地休息、回港也會回復。',
     '・元素：潮剋焰、焰剋風、風剋石、石剋潮；星與影互剋。遺跡裡的文字，常常藏著首領的弱點。',
