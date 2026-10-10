@@ -82,6 +82,29 @@ for (const c of COMMISSIONS) {
 
 const checkEvents = (where, list) => list.forEach(ev => ev.opts.forEach(o => { for (const k in o.fx) if (!FX_OK(k)) bad(`${where}・${ev.title}：效果「${k}」不認得`); }));
 checkEvents('航海', SEA_EVENTS);
+// 航海事件（第二批）：碰運氣要有成功和失敗、海上戰鬥的敵人要存在、天氣要認得、隊友要存在、連續小故事要從第 1 段連到最後、同海域不能同名
+{
+  const seen = new Set(), chains = {};
+  for (const ev of SEA_EVENTS) {
+    const sea = ev.sea || '淺灘', w = `航海・${sea}・${ev.title}`;
+    if (!SEAS.includes(sea)) bad(`${w}：海域「${sea}」不存在`);
+    if (seen.has(sea + ev.title)) bad(`${w}：同一片海有兩個同名的事件`); seen.add(sea + ev.title);
+    if (ev.need && !HEROES[ev.need]) bad(`${w}：要的隊友「${ev.need}」不存在`);
+    if (ev.goodIsle && !ISLANDS[ev.goodIsle]) bad(`${w}：島「${ev.goodIsle}」不存在`);
+    if (ev.chain) (chains[sea + '・' + ev.chain] = chains[sea + '・' + ev.chain] || []).push(ev.step);
+    if (ev.weather && !ev.opts.some(o => o.weather)) bad(`${w}：天氣事件沒有任何一個選項會改天氣`);
+    if (!ev.opts.some(o => !o.need)) bad(`${w}：每個選項都要隊友，沒有人在的時候選不了`);
+    for (const o of ev.opts) {
+      if (o.need && !HEROES[o.need]) bad(`${w}：選項要的隊友「${o.need}」不存在`);
+      if (o.weather && !['晴朗', '濃霧', '順風'].includes(o.weather)) bad(`${w}：天氣「${o.weather}」不認得`);
+      if (o.chance && !(o.chance > 0 && o.chance < 1 && o.win && o.lose)) bad(`${w}：碰運氣的選項要有成功率、成功和失敗的結果`);
+      if (o.fight) { for (const k of o.fight) if (!ENEMIES[k]) bad(`${w}：海上戰鬥的敵人「${k}」不存在`); if (!o.win) bad(`${w}：海上戰鬥要寫打贏的結果`); }
+      for (const r of [o.win, o.lose]) if (r) for (const k in r.fx || {}) if (!FX_OK(k)) bad(`${w}：效果「${k}」不認得`);
+      if (!o.chance && !o.fight && !o.line) bad(`${w}：選項「${o.label}」沒有結果的文字`);
+    }
+  }
+  for (const [k, steps] of Object.entries(chains)) if (steps.slice().sort((a, b) => a - b).some((s, i) => s !== i + 1)) bad(`連續小故事「${k}」的段數不連續：${steps.join('、')}`);
+}
 for (const [id, d] of Object.entries(ISLANDS)) {
   const n = d.cols * d.rows;
   const fixed = Object.keys(d.fixed);

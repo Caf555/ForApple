@@ -90,7 +90,10 @@ export function newIsland(g, id) {
   if (rec.cleared) { isl.boss = true; isl.key = true; const b = tiles.find(t => t.kind === '王'); b.done = true; }
   // 測繪點：周圍兩圈都已經畫進書裡，才算畫完；上次畫得不夠準的，這次可以重畫
   for (const t of tiles) if (t.kind === '測' && pointDone(tiles, t)) t.done = true;
-  reveal(isl, start, Math.max(0, (g.ship && g.ship.船首像 ? 2 : 1) - (def.dark ? 1 : 0)));
+  // 航海時遇到的天氣：晴朗多看見一圈、濃霧少一圈、順風前 6 步不吃糧
+  isl.weather = g.weather || null; g.weather = null;
+  if (isl.weather === '順風') isl.tailwind = 6;
+  reveal(isl, start, Math.max(0, (g.ship && g.ship.船首像 ? 2 : 1) - (def.dark ? 1 : 0) + (isl.weather === '晴朗' ? 1 : isl.weather === '濃霧' ? -1 : 0)));
   // 從正門進去：巡邏兵（妖物）在哪裡，一開始就看得到
   if (route && route.see) for (const t of tiles) if (t.kind === route.see) t.seen = true;
   // 首領的位置，從一開始就看得見：這是這座島的終點
@@ -243,7 +246,9 @@ export class Explore {
     isl.steps++; g.stats.steps++;
     this.ctx.audio.sfx('step');
     // 糧食
-    isl.food += diff.food;
+    // 順風：登島以後前幾步不吃糧
+    if (isl.tailwind > 0) isl.tailwind--;
+    else isl.food += diff.food;
     let starving = false;
     while (isl.food >= 1) {
       isl.food -= 1;
