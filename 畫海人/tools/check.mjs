@@ -2,6 +2,8 @@
 import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, WISHES } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
 import { PUZZLES } from '../js/puzzle.js';
+import { DIFF } from '../js/state.js';
+import { TRAININGS } from '../js/training.js';
 import { ART_KEYS } from '../js/cinema.js';
 import { readFileSync } from 'node:fs';
 
@@ -102,6 +104,8 @@ for (const [id, d] of Object.entries(ISLANDS)) {
   for (const b of d.bps) if (!EQUIPS[b]) bad(`${id}：圖紙「${b}」不存在`);
   for (const m of d.mats) if (!MATS[m]) bad(`${id}：素材「${m}」不存在`);
   if (d.village) for (const k in d.village.shop) if (!FX_OK(k)) bad(`${id}：村子賣的「${k}」不認得`);
+  // 村子限量：每個難度都要寫每樣東西可以買幾份，而且糧至少能買 1 份
+  if (d.village) for (const [dk, D] of Object.entries(DIFF)) { for (const k in d.village.shop) if (typeof (D.stock || {})[k] !== 'number') bad(`${id}：難度「${dk}」沒寫村子的「${k}」可以買幾份`); if ('糧' in d.village.shop && !(D.stock.糧 >= 1)) bad(`難度「${dk}」：村子的糧至少要能買 1 份`); }
   if (d.village && d.village.recruit && !HEROES[d.village.recruit]) bad(`${id}：加入的隊友不存在`);
   const w = d.ruin.weak;
   const fr = Object.values(ISLANDS).filter(x => x.pool.圖).length;
@@ -182,6 +186,9 @@ const walkLines = (v, where) => {
 for (const [k, v] of Object.entries({ ISLANDS, SEA_EVENTS, PORT_SCENES, CHAPTERS, LATE_RECRUIT, ENDINGS, EPILOGUE, FINALE_ASK, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5 })) {
   if (k === 'ISLANDS') for (const [id, d] of Object.entries(v)) walkLines(d, `島「${id}」`); else walkLines(v, k);
 }
+
+// 訓練：帶隊的人要存在，名字不能和遺跡小遊戲重複
+for (const [k, T] of Object.entries(TRAININGS)) { if (PUZZLES.includes(k)) bad(`訓練「${k}」和遺跡小遊戲同名`); for (const h of T.lead) if (!HEROES[h]) bad(`訓練「${k}」：帶隊的「${h}」不存在`); }
 
 if (errs.length) { console.log('發現問題：\n' + errs.map(e => '・' + e).join('\n')); process.exit(1); }
 console.log(`《畫海人》檢查通過：${Object.keys(ISLANDS).length} 座島、${Object.keys(ENEMIES).length} 種敵人、${Object.keys(EQUIPS).length} 件裝備、${COMMISSIONS.length} 個委託、${Object.keys(CINEMA).length} 段劇情動畫（${usedPics.length} 張圖）。`);
