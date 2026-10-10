@@ -1,5 +1,5 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
-import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, WISHES } from '../js/data.js';
+import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
 import { PUZZLES } from '../js/puzzle.js';
 import { ART_KEYS } from '../js/cinema.js';
@@ -41,6 +41,14 @@ for (const it of BLACK_MARKET) {
   if (it.kind === 'mat' && !MATS[it.name]) bad(`黑市的素材「${it.name}」不存在`);
   if (it.kind === 'supply' && !ITEMS[it.name]) bad(`黑市的道具「${it.name}」不存在`);
   if (!(it.need >= 0 && it.need < REP_LEVELS.length)) bad(`黑市「${it.name}」需要的聲望等級不對`);
+}
+// 黑市的換貨、市場的舶來品：東西要存在，要到的章節要有這個旗標
+const CH_FLAGS = ['第一章', '第二章', '第三章', '第四章', '環礁', '焰', '北', '霧心'];
+for (const [where, list] of [['黑市的換貨', BLACK_POOL], ['市場的舶來品', IMPORTS]]) for (const it of list) {
+  if (it.kind === 'bp') { if (!EQUIPS[it.bp]) bad(`${where}的圖紙「${it.bp}」不存在`); bpFrom.add(it.bp); }
+  else if (it.kind === 'mat' ? !MATS[it.name] : !ITEMS[it.name] && !['糧', '燈油', '墨水'].includes(it.name)) bad(`${where}的「${it.name}」不存在`);
+  if (it.flag && !CH_FLAGS.includes(it.flag)) bad(`${where}的「${it.name}」：章節旗標「${it.flag}」不認得`);
+  if (!(it.price > 0)) bad(`${where}的「${it.name}」沒有價錢`);
 }
 for (const k of Object.keys(EQUIPS)) if (!bpFrom.has(k)) bad(`裝備 ${k} 的圖紙沒有地方拿得到`);
 // 每種素材都要找得到

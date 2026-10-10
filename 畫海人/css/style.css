@@ -601,3 +601,11 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .pg-game b { display: block; font-family: var(--serif); } .pg-game small { color: var(--muted); font-size: 11px; }
 .pg-game.done { border-style: solid; border-color: var(--orn); }
 .pz-quit { position: absolute; top: 10px; right: 10px; }
+
+/* 港口的博奕：潮汐骰、紅帆牌桌 */
+.dice { display: flex; gap: 10px; justify-content: center; margin: 8px 0; }
+.die { font-size: 44px; line-height: 1; width: 64px; height: 64px; border-radius: 12px; border: 2px solid var(--line); background: var(--panel2); color: var(--ink); padding: 0; }
+.die.sel { border-color: var(--accent); box-shadow: 0 0 12px rgba(220, 180, 106, .35); transform: translateY(-4px); }
+.die:disabled { opacity: 1; }
+.cards { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 6px 0; }
+.card { min-width: 48px; padding: 14px 6px; text-align: center; border-radius: 8px; border: 1px solid var(--accent); background: var(--panel2); font-family: var(--serif); font-size: 16px; }

@@ -67,6 +67,12 @@ export function newIsland(g, id) {
   if (g.flags['碎片:' + id]) delete pool.圖;
   for (const k in pool) for (let i = 0; i < pool[k]; i++) bag.push(k);
   shuffle(free).forEach((t, i) => { t.kind = bag[i] || '空'; if (t.kind === '空') t.done = true; });
+  // 酒館的流言說的寶箱：多放一個在空地上（用過就沒了）
+  if (g.tip && g.tip.island === id) {
+    const t = shuffle(free.filter(x => x.kind === '空' && dist([x.c, x.r], start) > 1))[0];
+    if (t) { t.kind = '寶'; t.done = false; }
+    g.tip = null;
+  }
   // 火山的地形：熱地（走上去會受傷）、噴氣口（每走三步噴一次）。登陸點、首領、村子、營地、測繪點不會是
   const open = shuffle(tiles.filter(t => !['起', '王', '村', '火', '測'].includes(t.kind) && dist([t.c, t.r], start) > 1));
   open.slice(0, def.hot || 0).forEach(t => { t.land = '熱'; });

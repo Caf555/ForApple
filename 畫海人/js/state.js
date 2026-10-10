@@ -1,5 +1,5 @@
 // 遊戲狀態與存檔
-import { HEROES, EQUIPS } from './data.js';
+import { HEROES, EQUIPS, SMUGGLE_CARGO } from './data.js';
 
 export const DIFF = {
   悠閒: { foe: 0.7, food: 0.5, fogBack: false, label: '悠閒：敵人較弱、補給消耗減半、霧不會回來' },
@@ -62,7 +62,8 @@ export function gainExp(h, n) {
   return msgs;
 }
 
-export function cargoUsed(g) { return Object.values(g.supply).reduce((a, b) => a + b, 0); }
+// 補給，加上黑市走私的貨箱
+export function cargoUsed(g) { return Object.values(g.supply).reduce((a, b) => a + b, 0) + (g.smuggle ? SMUGGLE_CARGO : 0); }
 
 // 舊的存檔（M1 雛形）補上新的欄位
 function migrate(d) {
