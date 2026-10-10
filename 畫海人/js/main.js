@@ -197,7 +197,8 @@ ctx.sail = async id => {
   // 甲板上的訓練：每趟出航一次，可以跳過
   const d = await ctx.ui.choose('甲板上', ['離登島還有一段路。海風很穩，甲板上空出了一塊地方。', `（訓練可以提振士氣。現在的士氣：${g.morale}・${moraleTier(g.morale).name}）`], [{ label: '在甲板上訓練一下' }, { label: '直接準備登島' }]);
   if (d === 0) await ctx.train('甲板');
-  await ctx.ui.story(lines(def.arrive));
+  // 拿過好結局的島：登島時多一段「之後的樣子」
+  await ctx.ui.story(lines([...def.arrive, ...(worldOf(g, id).good && def.after ? def.after.arrive : [])]));
   g.island = newIsland(g, id);
   g.phase = 'island';
   save(g);
