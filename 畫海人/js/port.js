@@ -139,7 +139,7 @@ export class Port {
   tavern() {
     const g = this.g, ctx = this.ctx;
     ctx.ui.sheet('酒館・告示板', (body, api) => {
-      body.append(el('p', { class: 'muted' }, `鹽姨：「一次最多接 ${JOBS_MAX} 個。做完了回來找我，我再把報酬給你們。」`));
+      body.append(el('p', { class: 'muted' }, `鹽姨：「一次最多接 ${JOBS_MAX} 個。做完了回來找我，我再把報酬給你們。」`), el('p', { class: 'small muted' }, '（擊退的委託：接下以後打倒的才算；打完仗會顯示進度）'));
       const taken = COMMISSIONS.filter(c => g.jobs[c.id] !== undefined);
       if (taken.length) body.append(el('h3', { class: 'sub-h' }, '進行中'));
       for (const c of taken) {

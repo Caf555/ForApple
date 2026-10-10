@@ -1,5 +1,5 @@
 // 戰鬥：前後兩排、換位、元素、地形、士氣、首領蓄力與第二階段
-import { HEROES, SKILLS, ENEMIES, ITEMS, elementMult, weaknessOf } from './data.js';
+import { HEROES, SKILLS, ENEMIES, ITEMS, COMMISSIONS, elementMult, weaknessOf } from './data.js';
 import { ISLANDS } from './islands.js';
 import { heroStats, gainExp, DIFF } from './state.js';
 import { el, $ } from './ui.js';
@@ -481,9 +481,9 @@ export class Battle {
     for (const f of this.foes) { exp += f.def.exp; silver += f.def.silver; }
     g.silver += silver;
     g.stats.kills += this.foes.length;
-    const drops = {};
+    const drops = {}, jobs = new Set();
     for (const f of this.foes) {
-      this.ctx.onKill && this.ctx.onKill(f.key);
+      for (const id of (this.ctx.onKill && this.ctx.onKill(f.key)) || []) jobs.add(id);
       for (const [m, p, n = 1] of f.def.drop || []) if (f.loot || Math.random() < p) drops[m] = (drops[m] || 0) + n + (f.loot ? 1 : 0);
     }
     for (const m in drops) this.ctx.gainMat(m, drops[m]);
@@ -496,7 +496,9 @@ export class Battle {
     this.ctx.audio.music(null);
     this.ctx.audio.sfx(msgs.length ? 'level' : 'win');
     const dl = Object.entries(drops).map(([m, n]) => `${m} ${n}`).join('、');
-    await this.ctx.ui.alert('戰鬥勝利', [`經驗 ${exp}　銀貝 ${silver}　士氣 ${g.morale}`, dl ? `素材：${dl}` : '', ...msgs].filter(Boolean));
+    // 酒館的委託：這一仗有算到的，顯示進度
+    const jl = [...jobs].map(id => { const c = COMMISSIONS.find(x => x.id === id), n = Math.min(c.n, g.jobs[id]); return `委託「${c.title}」：${c.target} ${n}/${c.n}${n >= c.n ? '（完成了！回酒館回報）' : ''}`; });
+    await this.ctx.ui.alert('戰鬥勝利', [`經驗 ${exp}　銀貝 ${silver}　士氣 ${g.morale}`, dl ? `素材：${dl}` : '', ...jl, ...msgs].filter(Boolean));
   }
 
   // ───────── 畫面 ─────────

@@ -50,6 +50,18 @@ for (const d of Object.values(ISLANDS)) for (const m of d.mats) matFrom.add(m);
 for (const m of Object.keys(MATS)) if (!matFrom.has(m)) bad(`素材 ${m} 沒有地方拿得到`);
 
 const ids = new Set();
+// 一般戰鬥會出現的敵人：跟 explore.js 一樣，依離登陸點的距離挑遇敵表的一段（登陸點可能有好幾個）
+function hexDist(a, b) { const cube = (c, r) => { const x = c - (r - (r & 1)) / 2; return [x, r, -x - r]; }; const p = cube(...a), q = cube(...b); return Math.max(...p.map((v, i) => Math.abs(v - q[i]))); }
+function reachableFoes(d) {
+  const E = d.encounters, out = new Set();
+  const starts = [d.start, ...Object.values((d.routes || {}).opts || {}).map(o => o.start).filter(Boolean)];
+  for (const st of starts) for (let r = 0; r < d.rows; r++) for (let c = 0; c < d.cols; c++) {
+    if ((c === st[0] && r === st[1]) || d.fixed[`${c},${r}`]) continue;
+    const depth = hexDist([c, r], st);
+    for (const g of E.slice(Math.min(E.length - 4, Math.max(0, (depth - 1) * 2)), Math.min(E.length, depth * 3 + 2))) g.forEach(e => out.add(e));
+  }
+  return out;
+}
 for (const c of COMMISSIONS) {
   if (ids.has(c.id)) bad(`委託編號 ${c.id} 重複`); ids.add(c.id);
   if (!ISLANDS[c.island]) bad(`委託 ${c.title} 的島「${c.island}」不存在`);
@@ -60,6 +72,10 @@ for (const c of COMMISSIONS) {
   if (c.reward.圖紙 && !EQUIPS[c.reward.圖紙]) bad(`委託 ${c.title} 的圖紙「${c.reward.圖紙}」不存在`);
   if (c.side && (!FACTIONS.includes(c.side) || !(c.rep > 0))) bad(`委託 ${c.title} 的勢力設定不對`);
   if (c.against && (!FACTIONS.includes(c.against) || c.against === c.side)) bad(`委託 ${c.title} 的對立勢力不對`);
+  // 委託要做得到：擊退的敵人，在那座島的一般戰鬥裡遇得到；帶回的素材，那座島的敵人會掉或寶箱開得到
+  const isl = ISLANDS[c.island];
+  if (isl && c.kind === 'kill' && !reachableFoes(isl).has(c.target)) bad(`委託 ${c.title} 要擊退的「${c.target}」在${c.island}的一般戰鬥裡遇不到`);
+  if (isl && c.kind === 'bring' && !(isl.mats || []).includes(c.target) && ![...reachableFoes(isl)].some(e => (ENEMIES[e].drop || []).some(([m]) => m === c.target))) bad(`委託 ${c.title} 要帶回的「${c.target}」在${c.island}拿不到`);
 }
 
 const checkEvents = (where, list) => list.forEach(ev => ev.opts.forEach(o => { for (const k in o.fx) if (!FX_OK(k)) bad(`${where}・${ev.title}：效果「${k}」不認得`); }));
