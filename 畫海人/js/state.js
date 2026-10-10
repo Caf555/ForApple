@@ -30,7 +30,7 @@ export function newGame(diff = '標準') {
     silver: 100,
     supply: { 糧: 10, 燈油: 0, 墨水: 0, 藥草: 1, 海靈露: 1, 醒神香: 0 },
     mats: {}, gear: {}, bps: Object.keys(EQUIPS).filter(k => EQUIPS[k].start),
-    ship: { 貨艙: 0, 船帆: 0, 船首像: 0 },
+    ship: { 貨艙: 0, 船帆: 0, 船首像: 0, 船身: 0, 小艇: 0 }, hull: 100,
     party: ['墨里', '阿潮', '蓮笙'].map((k, i) => makeHero(k, i)),
     morale: 50, flags: {}, island: null, phase: 'intro',
     // 勢力聲望（第三章開始）

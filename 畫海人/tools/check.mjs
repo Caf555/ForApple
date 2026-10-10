@@ -1,5 +1,5 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
-import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES } from '../js/data.js';
+import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
 import { PUZZLES } from '../js/puzzle.js';
 import { DIFF } from '../js/state.js';
@@ -32,6 +32,15 @@ for (const [k, e] of Object.entries(EQUIPS)) {
   for (const m in e.cost) if (m !== '銀貝' && !MATS[m]) bad(`裝備 ${k} 需要的素材「${m}」不存在`);
 }
 for (const [k, d] of Object.entries(SHIP)) for (const l of d.levels) for (const m in l.cost) if (m !== '銀貝' && !MATS[m]) bad(`船塢 ${k} 需要的素材「${m}」不存在`);
+// 船塢的改造：要到的章節只能是「焰」或「北」（船塢畫面認得的），而且後一級不能比前一級早開放
+const YARD_FLAGS = ['焰', '北'];
+for (const [k, d] of Object.entries(SHIP)) d.levels.forEach((l, i) => {
+  if (l.flag && !YARD_FLAGS.includes(l.flag)) bad(`船塢 ${k}「${l.label}」：章節旗標「${l.flag}」船塢畫面不認得`);
+  const prev = d.levels.slice(0, i).map(x => YARD_FLAGS.indexOf(x.flag)).reduce((a, b) => Math.max(a, b), -1);
+  if (YARD_FLAGS.indexOf(l.flag) < prev) bad(`船塢 ${k}「${l.label}」比前一級還早開放`);
+});
+// 港口突發事件：都要有標題和說明（老客人的說明是當場寫的）
+for (const [k, e] of Object.entries(PORT_EVENTS)) if (!e.title || (!e.text && k !== '老客人')) bad(`港口突發事件「${k}」缺少標題或說明`);
 
 // 每張圖紙都要拿得到：一開始就會、島上的寶箱或首領、委託報酬
 const bpFrom = new Set(Object.keys(EQUIPS).filter(k => EQUIPS[k].start));
