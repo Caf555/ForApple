@@ -1,5 +1,5 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
-import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS } from '../js/data.js';
+import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
 import { PUZZLES } from '../js/puzzle.js';
 import { DIFF } from '../js/state.js';
@@ -62,6 +62,23 @@ for (const [where, list] of [['黑市的換貨', BLACK_POOL], ['市場的舶來�
   if (!(it.price > 0)) bad(`${where}的「${it.name}」沒有價錢`);
 }
 for (const k of Object.keys(EQUIPS)) if (!bpFrom.has(k)) bad(`裝備 ${k} 的圖紙沒有地方拿得到`);
+// 裝備升級：每件裝備都在一條線上、只在一條線上；同一條線同一個欄位、同一個人，照價錢由便宜到貴
+const inLine = {};
+for (const [line, list] of Object.entries(GEAR_LINES)) {
+  if (!list.length) bad(`升級線「${line}」是空的`);
+  for (const [i, n] of list.entries()) {
+    if (!EQUIPS[n]) { bad(`升級線「${line}」的「${n}」不存在`); continue; }
+    if (inLine[n]) bad(`「${n}」同時在「${inLine[n]}」和「${line}」兩條升級線上`);
+    inLine[n] = line;
+    const a = EQUIPS[list[0]], e = EQUIPS[n];
+    if (e.slot !== a.slot || (e.who || '') !== (a.who || '')) bad(`升級線「${line}」的「${n}」欄位或使用者跟同一條線的不一樣`);
+    if (i && e.cost.銀貝 < EQUIPS[list[i - 1]].cost.銀貝) bad(`升級線「${line}」的「${n}」比前一件「${list[i - 1]}」便宜，順序不對`);
+    for (const from of list.slice(0, i)) { const c = upgradeCost(n, from); for (const [m, v] of Object.entries(c)) if (v > (e.cost[m] || 0) || (m !== '銀貝' && v < 1)) bad(`「${from}」升級成「${n}」的「${m}」數量不對`); }
+  }
+}
+for (const k of Object.keys(EQUIPS)) if (!LINE_OF[k]) bad(`裝備 ${k} 不在任何一條升級線上`);
+// 第 3 件以後要靠升級：線上前 ${DIRECT_CRAFT} 件裡，至少有一件拿得到圖紙或是一開始就有
+for (const [line, list] of Object.entries(GEAR_LINES)) if (list.length > DIRECT_CRAFT && !list.slice(0, DIRECT_CRAFT).some(n => bpFrom.has(n))) bad(`升級線「${line}」前 ${DIRECT_CRAFT} 件都拿不到，後面的裝備做不出來`);
 // 每種素材都要找得到
 const matFrom = new Set();
 for (const e of Object.values(ENEMIES)) for (const [m] of e.drop || []) matFrom.add(m);
@@ -238,4 +255,4 @@ for (const [k, v] of Object.entries({ ISLANDS, SEA_EVENTS, PORT_SCENES, CHAPTERS
 for (const [k, T] of Object.entries(TRAININGS)) { if (PUZZLES.includes(k)) bad(`訓練「${k}」和遺跡小遊戲同名`); for (const h of T.lead) if (!HEROES[h]) bad(`訓練「${k}」：帶隊的「${h}」不存在`); }
 
 if (errs.length) { console.log('發現問題：\n' + errs.map(e => '・' + e).join('\n')); process.exit(1); }
-console.log(`《畫海人》檢查通過：${Object.keys(ISLANDS).length} 座島、${Object.keys(ENEMIES).length} 種敵人、${Object.keys(EQUIPS).length} 件裝備、${COMMISSIONS.length} 個委託、${Object.keys(CINEMA).length} 段劇情動畫（${usedPics.length} 張圖）。`);
+console.log(`《畫海人》檢查通過：${Object.keys(ISLANDS).length} 座島、${Object.keys(ENEMIES).length} 種敵人、${Object.keys(EQUIPS).length} 件裝備（${Object.keys(GEAR_LINES).length} 條升級線）、${COMMISSIONS.length} 個委託、${Object.keys(CINEMA).length} 段劇情動畫（${usedPics.length} 張圖）。`);

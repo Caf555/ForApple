@@ -11,7 +11,7 @@ import { Port, statText } from './port.js';
 import { playPuzzle, PUZZLE_TIPS } from './puzzle.js';
 import { playTraining, trainingMorale, TRAININGS, TRAINING_KINDS } from './training.js';
 
-export const VERSION = 'M5 第五海域 v0.2（完結）';
+export const VERSION = 'M5 第五海域 v0.3（完結）';
 
 const ctx = { g: null, settings: loadSettings() };
 ctx.saveSettings = () => saveSettings(ctx.settings);
@@ -553,6 +553,7 @@ function help() {
     '・到「測」的格子可以測繪（用 2 份墨水）：沿著海岸線描一遍。描得越準，畫進書裡的範圍越大。測繪過的格子，霧就吞不回去，下次再來也會留著；上次畫得不夠準的測繪點，下次來可以重畫補上。每座島能畫的範圍有上限（測繪點周圍兩圈），畫滿以後測繪點就不會再出現；島上畫面下方會寫出這座島最高能畫到多少，畫滿了狀態列會顯示「測繪滿」。',
     '・目標：找到「霧眼」，打倒守門的東西拿到鑰匙，再打倒島上的首領。之後回到登陸點就能返航；測繪度 60% 以上，結局會不一樣。還沒打倒首領也可以先回港。',
     '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
+    '・打造和升級：每條裝備線前兩件可以從頭打，後面的要拿同一條線前面的裝備來升級。用前一件升級只要補原價的五成，前兩件七成，再更早的八成五。打的時候要玩「打鐵」（指針到金色區按「敲」，3 下中 2 下），船塢改造要玩「釘船板」（鐵鎚擺到釘子上按「釘」，4 根中 3 根）。全中會退 1 個素材；失敗可以付一半的銀貝再試一次，兩次都失敗退一半素材。不想玩可以在「設定」關掉，成功率固定八成。',
     '・隊伍：一次最多 4 個人出戰，其他人在船上待命。在「隊伍」裡點「出戰／待命」換人（{名}一定要出戰）。',
     '・委託：在酒館接下（最多 2 個），完成以後回酒館回報，拿報酬。',
     '・船塢：可以修船和改造船。船況會因為航海事件的壞結果、海上戰鬥和靠岸慢慢磨損；低於 50，壞事會更嚴重，低於 20 就不能出航。',
@@ -634,6 +635,8 @@ function settingsSheet() {
     row('音效與音樂', s.sound, [[true, '開'], [false, '關']], v => { s.sound = v; if (v) { ctx.audio.unlock(); ctx.audio.music(ctx.audio.want, true); } else ctx.audio.stop(); });
     row('戰鬥速度', s.speed, [[1, '1×'], [2, '2×'], [3, '3×']], v => { s.speed = v; });
     row('自動戰鬥', s.auto, [[false, '關'], [true, '開']], v => { s.auto = v; });
+    row('打造小遊戲', s.forgeGame !== false, [[true, '開'], [false, '關']], v => { s.forgeGame = v; });
+    body.append(el('p', { class: 'muted small' }, '關掉以後，鐵匠打造和船塢改造不用玩小遊戲，成功率固定八成。'));
     if (ctx.g) row('難度', ctx.g.diff, ['悠閒', '標準', '困難'].map(k => [k, k]), v => { ctx.g.diff = v; save(ctx.g); });
     if (ctx.g) body.append(el('p', { class: 'muted small' }, DIFF[ctx.g.diff].label));
     const seen = Object.keys(CINEMA).filter(k => (s.seen || []).includes(k));
