@@ -1020,6 +1020,54 @@
       "name": "幕_書的最後一頁",
       "seed": 5266,
       "prompt": "The last page of an old map book open on a desk under lamplight, a simple drawing of a group of friends standing together on a pier, the rest of the page still blank."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_礁上的醉鯨",
+      "seed": 5267,
+      "prompt": "At low tide, a huge sleeping whale lying half out of a shallow coral reef, its back covered in seaweed, small white flowers and barnacles, so large it looks like an island, a few empty wooden barrels stuck between the rocks, gentle mist, a faint pale moon, peaceful and a little sad."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_漂著的酒桶",
+      "seed": 5268,
+      "prompt": "Night sea seen close to the water surface, a line of old wooden barrels drifting slowly toward a misty horizon, on the horizon the faint dark silhouette of a whale spouting a thin plume of water, soft ripples catching moonlight, quiet and lonely."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_沙洲上的金船",
+      "seed": 5269,
+      "prompt": "A long white sandbar in the middle of a calm sea, on it lies the ruined skeleton of a large old sailing ship whose hull ribs and planks are made of real gold, glinting warmly in low evening sun through thin mist, small tents of salvagers in the far distance, wide view."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_數金幣的影子",
+      "seed": 5270,
+      "prompt": "Inside a cramped ship captain's cabin piled to the ceiling with gold coins, a dark translucent shadow figure in an old formal merchant coat sits on top of the coin pile hunched over a thick ledger, counting coins one by one, only warm candlelight, lonely and eerie."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_火山島的紅帆",
+      "seed": 5271,
+      "prompt": "A small red volcanic island shaped like a closed eye rising from a dark sea, faint smoke from its crater, on the black sand beach a single tall flagpole with a tattered crimson sail flapping hard in the wind, dramatic clouds, wide view from the sea."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_獨眼船長",
+      "seed": 5272,
+      "prompt": "Deep inside a hot volcanic cave lit by glowing red gems, a tall translucent ghost of an old pirate captain with a tricorn hat and one glowing ember-like eye sits on a heap of treasure and old red sails, holding a curved sword faintly burning, stern but lonely."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_撞開的冰層",
+      "seed": 5273,
+      "prompt": "A small wooden sailing ship with a heavy iron ice-breaking bow pushing through thick cracked sea ice in a frozen northern sea, shards of blue ice flying, below the broken ice a huge dark hollow cavern glows faintly, cold mist and pale light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_沒造完的船",
+      "seed": 5274,
+      "prompt": "A vast ice cavern under the frozen sea, in the center a huge unfinished wooden sailing ship sits on an old slipway, only half its hull planked, its white keel and ribs exposed like a skeleton, frozen hammers and tools hanging in the air, a tiny warm lamp in a cabin in the corner, solemn and quiet."
     }
   ]
 }

@@ -505,8 +505,13 @@ export class Explore {
           if (B.pick && picks.length) g.flags[B.pick] = picks[0];
           // 霧心：打倒公會長，就是最後的抉擇
           if (B.final) { this.record(); return this.ctx.finale(isl.id, surveyPct(isl)); }
-          const bp = this.ctx.newBlueprint(def.bps);
-          await ui.alert(B.place, [bp ? `（得到圖紙「${bp}」。回港以後，可以請鐵匠打造）` : '', '這座島的首領倒下了。', `現在可以繼續探索、測繪，回到登陸點（「起」）就能返航。目前測繪度 ${surveyPct(isl)}%：60% 以上，結局會不一樣。`].filter(Boolean));
+          // 隱藏島的首領：一定給那張圖紙（bp），還有別的禮物（gift）或記下一件事（setFlag）
+          const bp = this.ctx.newBlueprint(B.bp && !g.bps.includes(B.bp) ? [B.bp] : def.bps);
+          const gift = [];
+          if (B.gift) { this.ctx.applyFx(B.gift); gift.push(...(B.giftLines || []), this.ctx.fxText(B.gift)); }
+          if (B.setFlag) { g.flags[B.setFlag] = 1; if (B.setFlag === '龍骨') g.hull = 100; if (!B.gift) gift.push(...(B.giftLines || [])); }
+          save(g);
+          await ui.alert(B.place, [...gift, bp ? `（得到圖紙「${bp}」。回港以後，可以請鐵匠打造）` : '', '這座島的首領倒下了。', `現在可以繼續探索、測繪，回到登陸點（「起」）就能返航。目前測繪度 ${surveyPct(isl)}%：60% 以上，結局會不一樣。`].filter(Boolean));
         }
         break;
       }

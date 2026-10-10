@@ -4,6 +4,7 @@
 // 每座島的隊友事件、多的營火夜談、重訪好結局時「之後的樣子」寫在 story.js，在下面併進來
 // 事件的 fx：糧、燈油、墨水、藥草、海靈露、醒神香、銀貝、素材（數量）；hp（全隊比例，負數是受傷）；士氣；商會、紅帆、守霧人（聲望）
 import { STORY } from './story.js';
+import { HIDDEN, HIDDEN_CINEMA } from './hidden.js';
 
 export const TILE_INFO = {
   起: { name: '登陸點', tip: '船停在這裡。' },
@@ -1793,6 +1794,8 @@ export const ISLANDS = {
 
 // 第三批劇情補強：隊友事件（need：那個人在隊上才會抽到）、營火夜談、after（重訪拿過好結局的島，登島和村子多一段）
 for (const [id, s] of Object.entries(STORY)) { const d = ISLANDS[id]; d.events.push(...s.events); d.camp.push(...s.camp); d.after = s.after; }
+// 四座隱藏島（hidden.js）：要靠港口的設施才找得到
+Object.assign(ISLANDS, HIDDEN);
 export const ISLAND_ORDER = Object.keys(ISLANDS).sort((a, b) => ISLANDS[a].order - ISLANDS[b].order);
 export const SEAS = ['淺灘', '珊瑚環礁', '焰之群島', '北霧海', '霧心'];
 
@@ -2629,3 +2632,4 @@ export const CINEMA = {
     { art: 'lastpage', img: '幕_書的最後一頁', cam: 'in', sfx: 'pen', text: '繪圖師之書的最後一頁，畫著一群人，站在碼頭上。', title: '全劇終' },
   ] },
 };
+Object.assign(CINEMA, HIDDEN_CINEMA);

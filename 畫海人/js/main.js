@@ -83,8 +83,10 @@ ctx.applyFx = fx => {
   }
 };
 // 船況磨損：船身改造越好、難度越悠閒，磨損越少。回傳實際磨掉多少
+// 裝了冰下船塢的「公會的龍骨」：船況不會再下降
 ctx.wearHull = n => {
   const g = ctx.g, lv = (g.ship && g.ship.船身) || 0;
+  if (g.flags.龍骨) return 0;
   const k = Math.max(1, Math.round(n * (1 - 0.25 * lv) * (g.diff === '悠閒' ? 0.5 : 1)));
   const before = hullOf(g); g.hull = Math.max(0, before - k);
   return before - g.hull;
@@ -116,6 +118,15 @@ ctx.newBlueprint = list => {
   g.bps.push(n);
   if (g.trip) g.trip.bps.push(n);
   return n;
+};
+// 找到隱藏島：海圖上多一條航線（找過的不會再跳）
+ctx.discover = async id => {
+  const g = ctx.g, k = '隱:' + id;
+  if (g.flags[k]) return false;
+  g.flags[k] = 1; save(g);
+  ctx.audio.sfx('level');
+  await ctx.ui.alert('海圖上多了一條沒見過的航線', ISLANDS[id].found);
+  return true;
 };
 // 回傳這次有算到的委託編號（戰鬥結果顯示進度用）
 ctx.onKill = key => {
@@ -406,7 +417,7 @@ ctx.observatory = async () => {
 // 小遊戲間（通關後）：每座島的遺跡謎題，挑一個玩。不拿獎勵、不改劇情；難度只算這一次
 async function minigames(diff = ctx.g.diff) {
   const g = ctx.g;
-  const list = ISLAND_ORDER.filter(id => ISLANDS[id].ruin && ISLANDS[id].ruin.game).map(id => ({ id, kind: ISLANDS[id].ruin.game.kind, sea: ISLANDS[id].sea }));
+  const list = ISLAND_ORDER.filter(id => ISLANDS[id].ruin && ISLANDS[id].ruin.game && (!ISLANDS[id].hidden || g.flags['隱:' + id])).map(id => ({ id, kind: ISLANDS[id].ruin.game.kind, sea: ISLANDS[id].sea }));
   const seas = [...new Set(list.map(x => x.sea))];
   const solved = x => (g.practice || {})[x.kind] || g.flags['謎:' + x.id];
   const pick = await new Promise(res => {
@@ -455,7 +466,8 @@ function trueEndMissing(g) {
   if (low.length) miss.push(`${low.map(f => `${f}（現在「${REP_LEVELS[repLevel((g.rep || {})[f] || 0)]}」）`).join('、')}的聲望，還沒到「${REP_LEVELS[TRUE_REP]}」。`);
   const wish = Object.keys(WISHES).filter(k => !wishDone(k));
   if (wish.length) miss.push(`還有隊友的心願沒有完成：${wish.join('、')}。（在「隊伍」裡看得到）`);
-  const ids = Object.keys(ISLANDS), avg = ids.reduce((a, id) => a + Math.min(1, worldOf(g, id).best / surveyMax(id)), 0) / ids.length;
+  // 隱藏島不算在裡面
+  const ids = Object.keys(ISLANDS).filter(id => !ISLANDS[id].hidden), avg = ids.reduce((a, id) => a + Math.min(1, worldOf(g, id).best / surveyMax(id)), 0) / ids.length;
   if (avg < TRUE_SURVEY) miss.push(`全部 ${ids.length} 座島的測繪度，平均只畫到最多能畫的 ${Math.floor(avg * 100)}%，要到 ${TRUE_SURVEY * 100}%。`);
   return miss;
 }
@@ -558,6 +570,7 @@ function help() {
     '・船塢：可以修船和改造船。船況會因為航海事件的壞結果、海上戰鬥和靠岸慢慢磨損；低於 50，壞事會更嚴重，低於 20 就不能出航。',
     '・港口突發事件（第二章開始）：回港的時候偶爾會發生一些事，例如流感（一位隊友這一趟不能出戰，可以用醒神香或請醫生治好）、暴風季、罷市、祭典。只影響這一次回港到下一趟出航。',
     '・回港就是新的一天：酒館有新的流言（請酒客喝一杯，聽寶箱的位置或航海事件的訣竅），也可以玩「潮汐骰」；市場的行情會變，偶爾有舶來品；黑市有新貨、「紅帆牌桌」和走私的差事。骰子和牌每次回港能玩的局數有限。',
+    '・隱藏的島：海上還有四座不在海圖上的島。酒館的流言、市場的舶來品、黑市的貨、船塢的改造裡，藏著找到它們的方法。隱藏的島不算在章節和結局裡。',
     '・戰鬥分前後兩排。前排：近身攻擊 +15%，但敵人的近身攻擊只打前排。後排：前排還有人時受傷 −30%，近身攻擊威力減半，法術不受影響。',
     '・技能要花「靈」。防禦會回復一點靈；海靈露可以回復 15 點；營地休息、回港也會回復。',
     '・元素：潮剋焰、焰剋風、風剋石、石剋潮；星與影互剋。遺跡裡的文字，常常藏著首領的弱點。',

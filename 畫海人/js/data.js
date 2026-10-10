@@ -219,6 +219,24 @@ export const SKILLS = {
   影之筆: { cost: 0, type: 'mag', target: 'enemy', power: 48, element: '影', desc: '' },
   不要再忘記: { cost: 0, type: 'mag', target: 'allies', power: 42, element: '影', status: '迷惘', chance: 0.3, desc: '' },
   全部畫完: { cost: 0, type: 'mag', target: 'allies', power: 76, element: '影', status: '定身', chance: 0.3, desc: '' },
+  // 隱藏島
+  噴水柱: { cost: 0, type: 'mag', target: 'allies', power: 26, element: '潮', desc: '' },
+  甩尾: { cost: 0, type: 'phy', target: 'enemyFront', power: 1.15, desc: '' },
+  打呼: { cost: 0, type: 'heal', target: 'self', power: 65, desc: '' },
+  酒氣: { cost: 0, type: 'debuff', target: 'enemy', status: '迷惘', chance: 0.55, desc: '' },
+  醉鯨之歌: { cost: 0, type: 'mag', target: 'allies', power: 46, element: '潮', status: '迷惘', chance: 0.3, desc: '' },
+  數金幣: { cost: 0, type: 'debuff', target: 'enemy', status: '定身', chance: 0.5, desc: '' },
+  金幣雨: { cost: 0, type: 'mag', target: 'allies', power: 27, element: '石', desc: '' },
+  守財: { cost: 0, type: 'heal', target: 'self', power: 65, desc: '' },
+  一分都不給: { cost: 0, type: 'mag', target: 'allies', power: 47, element: '石', status: '定身', chance: 0.25, desc: '' },
+  獨眼瞄準: { cost: 0, type: 'phy', target: 'enemy', power: 1.7, desc: '' },
+  舷砲: { cost: 0, type: 'mag', target: 'allies', power: 30, element: '焰', desc: '' },
+  喝一口蘭姆: { cost: 0, type: 'heal', target: 'self', power: 80, desc: '' },
+  最後的砲擊: { cost: 0, type: 'mag', target: 'allies', power: 55, element: '焰', status: '迷惘', chance: 0.25, desc: '' },
+  釘板: { cost: 0, type: 'phy', target: 'enemy', power: 1.6, desc: '' },
+  龍骨撞擊: { cost: 0, type: 'phy', target: 'enemyFront', power: 1.15, element: '石', desc: '' },
+  再釘一塊: { cost: 0, type: 'heal', target: 'self', power: 95, desc: '' },
+  下水典禮: { cost: 0, type: 'mag', target: 'allies', power: 60, element: '潮', status: '定身', chance: 0.25, desc: '' },
   // 母親（第三階段來幫忙，不能控制）
   母親的筆: { cost: 0, type: 'mag', target: 'enemy', power: 52, element: '星', desc: '' },
   母親的結界: { cost: 0, type: 'buff', target: 'team', ward: 2, desc: '' },
@@ -418,7 +436,23 @@ export const ENEMIES = {
       talk: { who: '霧子', line: '公會長看著霧子，筆停了一下：「……妳回來了。回來吧，回到我身上。」霧子握緊了劍：「不要。」' } },
     phase3: { line: '霧心的白色裡，伸出了另一支筆。淡藍色的光，擋在{名}的前面。', soft: '公會長看著地上的五張舊圖碎片，手抖了一下：「……那是我年輕的時候畫的。」他的筆，慢了下來。',
       guest: { name: '母親', element: '星', color: '#9fd0e8', hp: 900, mp: 60, atk: 20, def: 30, mag: 60, spd: 14, line: '「{名}。」母親站在她身邊，舉起了筆，「我們一起畫。」' } },
-    desc: '五十年前帶著公會走進霧裡的人。他想把整片海畫完，讓任何地方都不再被忘記。' },
+    desc: '五十年前帶著公會走進霧裡的人。他想把整片海畫完，讓任何地方都不再被忘記。' },  // ───── 隱藏島 ─────
+  // 醉鯨礁
+  鯨背藤壺: { element: '石', row: 'front', rank: '精英', hp: 640, atk: 32, def: 26, mag: 18, spd: 7, exp: 125, silver: 90, skills: [['擁抱', 2], ['硬化', 1], ['攻擊', 1]], drop: [['珍珠', 1, 3], ['夜光珠', 1]], desc: '黏在鯨魚背上的大藤壺。它抓著一把鑰匙，抓了五十年，手都酸了，可是不肯放。' },
+  醉鯨: { element: '潮', row: 'front', rank: '首領', hp: 1400, atk: 33, def: 20, mag: 37, spd: 9, exp: 480, silver: 260, skills: [['噴水柱', 2], ['甩尾', 1], ['酒氣', 1], ['打呼', 1]], big: '醉鯨之歌', drop: [['珍珠', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '風', line: '醉鯨打了一個很大的嗝。嗝裡，傳出一整群小鯨魚的歌聲。牠的眼睛，更紅了。' }, desc: '以前替船帶路的鯨魚。牠的孩子們被霧吞掉以後，牠就一直喝酒，喝了五十年。' },
+  // 沉金船
+  會說話的金庫: { element: '石', row: 'front', rank: '精英', hp: 640, atk: 31, def: 25, mag: 24, spd: 9, exp: 125, silver: 120, skills: [['印章', 2], ['典當', 1], ['硬化', 1]], drop: [['帳紙', 1, 3], ['夜光珠', 1]], desc: '金船上的金庫。它一直在說：「密碼錯誤、密碼錯誤。」可是從來沒有人輸入過密碼。' },
+  守財的影子: { element: '石', row: 'front', rank: '首領', hp: 1450, atk: 32, def: 22, mag: 37, spd: 11, exp: 500, silver: 300, skills: [['金幣雨', 2], ['數金幣', 1], ['典當', 1], ['守財', 1]], big: '一分都不給', drop: [['閘石', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '影', line: '影子把金幣一枚一枚吞進肚子裡，越長越大。「這些都是我的。我的。我的。」' }, desc: '第一代會長留在金船上的影子。它捨不得放開金子，所以跟著船一起沉了。' },
+  // 紅帆藏寶島
+  咬人的寶箱: { element: '焰', row: 'front', rank: '精英', hp: 820, atk: 39, def: 27, mag: 22, spd: 10, exp: 150, silver: 110, skills: [['撕咬', 2], ['火藥桶', 1], ['硬化', 1]], drop: [['火藥', 1, 3], ['夜光珠', 1]], desc: '初代紅帆放在洞口的假寶箱。專門咬想偷寶藏的人。它很得意，因為五十年來，它一次都沒有輸過。' },
+  獨眼船長的亡魂: { element: '焰', row: 'front', rank: '首領', hp: 1950, atk: 40, def: 25, mag: 38, spd: 12, exp: 680, silver: 380, skills: [['獨眼瞄準', 2], ['舷砲', 1], ['劫掠', 1], ['喝一口蘭姆', 1]], big: '最後的砲擊', drop: [['熔岩玻璃', 1, 3], ['夜光珠', 1, 2]],
+    phase2: { element: '風', line: '亡魂吹了一聲口哨。洞裡所有的舊帆，一起鼓了起來，像一整支船隊。「兔崽子們，上！」' }, desc: '紅帆的第一任船長。他答應過要把寶藏分給每一艘船，可是還沒分完，霧就來了。' },
+  // 冰下船塢
+  凍住的鐵鎚: { element: '石', row: 'front', rank: '精英', hp: 1060, atk: 45, def: 30, mag: 24, spd: 8, exp: 190, silver: 130, skills: [['鍛打', 2], ['冰封', 1], ['硬化', 1]], drop: [['凍木', 1, 3], ['夜光珠', 1]], desc: '總船匠的大鐵鎚，凍在半空中，還在一下一下地敲。它在等主人回來握住它。' },
+  沒造完的船: { element: '石', row: 'front', rank: '首領', hp: 2500, atk: 44, def: 30, mag: 44, spd: 9, exp: 800, silver: 420, skills: [['釘板', 2], ['龍骨撞擊', 1], ['冰封', 1], ['再釘一塊', 1]], big: '下水典禮', drop: [['凍木', 1, 3], ['夜光珠', 1, 3]],
+    phase2: { element: '潮', line: '船身的冰全部裂開了。大船自己滑下了船台，衝進冰下的海水裡。「我要出海！我要出海！」' }, desc: '公會五十年前要開去霧心的大船。只造了一半，造它的人就再也沒有回來。' },
 };
 
 export const ITEMS = {
@@ -592,6 +626,10 @@ export const EQUIPS = {
   空白披風: { slot: '防具', stats: { def: 26, hp: 82, mag: 8, spd: 3 }, cost: { 銀貝: 460, 空白的紙: 4, 星石: 1 }, desc: '一件白色的披風。穿著它站在霧裡，霧會以為你是它的一部分。' },
   星石墜: { slot: '飾品', stats: { atk: 10, mag: 10, spd: 4 }, cost: { 銀貝: 440, 星石: 3, 墨漬: 1 }, desc: '一顆小小的星石。晚上把它舉起來，天上會多一顆星。' },
   舊畫紙護符: { slot: '飾品', stats: { hp: 60, mp: 20, def: 6 }, cost: { 銀貝: 420, 舊畫紙: 3, 空白的紙: 1 }, desc: '折成小方塊的舊畫紙。打開來，是五十年前的鹽灣島。' },
+  // 隱藏島的首領給的圖紙（只有這裡拿得到）
+  鯨骨長笛: { slot: '武器', who: '小鈴', stats: { mag: 25, spd: 6, mp: 8 }, cost: { 銀貝: 300, 珍珠: 3, 白珊瑚: 2, 夜光珠: 1 }, desc: '醉鯨送的鯨骨做的長笛。吹起來的聲音，像很遠很遠的地方，有一群鯨魚在唱歌。' },
+  金帳算盤: { slot: '飾品', who: '費米', stats: { atk: 9, spd: 7, hp: 24 }, cost: { 銀貝: 320, 帳紙: 3, 閘石: 2, 夜光珠: 1 }, desc: '金船上找到的金算盤。費米說，打得越快，箭射得越準。……沒有人知道為什麼。' },
+  初代紅帆: { slot: '防具', who: '葛蘿', stats: { def: 22, hp: 84, atk: 5 }, cost: { 銀貝: 380, 舊帆布: 3, 熔岩玻璃: 2, 夜光珠: 1 }, desc: '初代紅帆的旗，改成了一件斗篷。披著它站在甲板上，所有人都會安靜下來。' },
 };
 export const STAT_NAME = { hp: '體', mp: '靈', atk: '攻', def: '防', mag: '法', spd: '速' };
 
@@ -613,6 +651,8 @@ export const SHIP = {
     { label: '補強船身', cost: { 銀貝: 90, 漂流木: 4, 鏽鐵: 2 }, note: '船況的損耗少四分之一' },
     { label: '包鐵船身', cost: { 銀貝: 200, 鐵礦: 3, 礦工牌: 2 }, note: '船況的損耗少一半', flag: '焰' },
     { label: '凍木船身', cost: { 銀貝: 360, 凍木: 3, 古銅片: 2 }, note: '船況的損耗少四分之三', flag: '北' }] },
+  破冰船首: { desc: '撞開北霧海的冰', levels: [
+    { label: '破冰船首', cost: { 銀貝: 320, 凍木: 3, 鐵礦: 3 }, note: '北霧海結冰的海面撞得開了（說不定冰下面藏著什麼）', flag: '北', find: '冰下船塢' }] },
   小艇: { desc: '沿著海岸划小艇', levels: [
     { label: '裝一艘小艇', cost: { 銀貝: 150, 漂流木: 6, 船帆布: 2 }, note: '每次登島，前 5 步划小艇沿著海岸走，不吃糧', flag: '焰' }] },
 };
@@ -657,7 +697,10 @@ export const BLACK_MARKET = [
   { name: '夜光珠', kind: 'mat', n: 1, price: 60, need: 2 },
   { name: '圖紙：紅帆旗披風', kind: 'bp', bp: '紅帆旗披風', price: 220, need: 2 },
   { name: '圖紙：海盜望遠鏡', kind: 'bp', bp: '海盜望遠鏡', price: 260, need: 3 },
-  { name: '熔岩玻璃', kind: 'mat', n: 2, price: 70, need: 3 },
+  { name: '熔岩玻璃', kind: 'mat', n: 2, price: 70, need: 3 },  // 藏寶圖碎片：三片湊齊，就找得到隱藏島「紅帆藏寶島」
+  { name: '藏寶圖碎片（一）', kind: 'map', n: 1, price: 150, need: 1 },
+  { name: '藏寶圖碎片（二）', kind: 'map', n: 2, price: 200, need: 1 },
+  { name: '藏寶圖碎片（三）', kind: 'map', n: 3, price: 260, need: 2 },
 ];
 
 // ───────── 港口的每一天：每次回港，流言、行情、舶來品、黑市的貨都會換 ─────────
@@ -690,11 +733,18 @@ export const IMPORTS = [
   { name: '夜光珠', kind: 'mat', n: 2, price: 55, flag: '第一章' },
   { name: '熔岩玻璃', kind: 'mat', n: 2, price: 75, flag: '第三章' },
   { name: '古銅片', kind: 'mat', n: 2, price: 70, flag: '第四章' },
-  { name: '星石', kind: 'mat', n: 1, price: 80, flag: '霧心' },
+  { name: '星石', kind: 'mat', n: 1, price: 80, flag: '霧心' },  // 隱藏島「沉金船」的線索：買到它，海圖上就多一條航線
+  { name: '商會的舊航海日誌', kind: 'find', find: '沉金船', price: 200, flag: '第二章' },
 ];
 // 走私：黑市的一箱貨，佔貨艙 5 格，送到指定的島
 export const SMUGGLE_CARGO = 5;
 // 酒館裡講流言的人（flag：到哪一章才會出現）
+// 酒館的流言：醉鯨的線索（第二章以後才會聽到，湊齊 3 則就找得到隱藏島「醉鯨礁」）
+export const WHALE_CLUES = [
+  '「環礁東邊有一片淺礁，平常看不到，大退潮的時候才露出來。我年輕的時候，在那裡看過一座會動的島。」',
+  '「我跟你說，東邊漂過來的空酒桶，都是商會的。奇怪吧？那邊又沒有港口。誰會在海中間喝酒？」',
+  '「那天晚上我睡在船上，聽到東邊有人唱歌，唱了一整晚。聲音好低好低，不像人。……像鯨魚。喝醉的鯨魚。」',
+];
 export const RUMOR_FOLKS = [['老漁夫'], ['賣魚的阿嬸'], ['喝醉的水手'], ['路過的商人', '第一章'], ['紅帆的年輕人', '焰'], ['守霧人的信差', '北']];
 
 // ───────── 酒館的委託 ─────────
