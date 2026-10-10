@@ -95,9 +95,11 @@ ctx.newBlueprint = list => {
   if (g.trip) g.trip.bps.push(n);
   return n;
 };
+// 回傳這次有算到的委託編號（戰鬥結果顯示進度用）
 ctx.onKill = key => {
-  const g = ctx.g;
-  for (const id in g.jobs) { const c = COMMISSIONS.find(x => x.id === id); if (c && c.kind === 'kill' && c.target === key) g.jobs[id]++; }
+  const g = ctx.g, hit = [];
+  for (const id in g.jobs) { const c = COMMISSIONS.find(x => x.id === id); if (c && c.kind === 'kill' && c.target === key) { g.jobs[id]++; hit.push(id); } }
+  return hit;
 };
 
 // ───────── 標題 ─────────
