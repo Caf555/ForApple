@@ -1,5 +1,5 @@
 {
-  "說明": "《畫海人》主要角色的定稿立繪（不放進遊戲，只當插圖的參考圖）。looks 是每個角色的固定外觀描述，劇情清單的插圖用 chars 欄位引用。candidates 表示還沒選定：先畫幾張候選（種子連續），選好後把種子改成選中的那張、拿掉 candidates。執行：python 畫海人/tools/生圖/batch.py --list 清單_角色.json",
+  "說明": "《畫海人》主要角色的定稿立繪（不放進遊戲，只當插圖的參考圖）。looks 是每個角色的固定外觀描述，劇情清單的插圖用 chars 欄位引用。candidates 表示還沒選定（2026-10-11 全部已選定，picked 記錄選的是哪一張候選）：先畫幾張候選（種子連續），選好後把種子改成選中的那張、拿掉 candidates。執行：python 畫海人/tools/生圖/batch.py --list 清單_角色.json",
   "手動": true,
   "style": {
     "design": "Anime character design illustration in the same hand-painted anime film style as the game's scenes: clean crisp line art, cel shading with soft painterly highlights, highly detailed costume with visible fabric folds, stitching, buckles, straps and accessories, detailed hair strands and expressive eyes. Bright, neutral, even lighting with clear true colors, no dark color grading, no heavy shadows. Medieval European fantasy costume design. The character's signature color theme is clearly visible.",
@@ -23,7 +23,6 @@
       "kind": "design",
       "name": "立繪_墨里",
       "seed": 6110,
-      "candidates": 4,
       "size": [
         1104,
         1472
@@ -32,13 +31,13 @@
       "chars": [
         "墨里"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep navy blue and starlight gold with soft silver-white; small star-shaped brass buttons, a star-shaped clasp on the satchel, tiny gold-thread constellations embroidered on the coat cuffs."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep navy blue and starlight gold with soft silver-white; small star-shaped brass buttons, a star-shaped clasp on the satchel, tiny gold-thread constellations embroidered on the coat cuffs.",
+      "picked": "候選1"
     },
     {
       "kind": "design",
       "name": "立繪_阿潮",
       "seed": 6120,
-      "candidates": 4,
       "size": [
         1104,
         1472
@@ -47,13 +46,13 @@
       "chars": [
         "阿潮"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: sea teal and sand beige with one accent of faded red; wave-pattern stitching along the vest hem, a shark-tooth charm on a cord necklace, bandaged knuckles, the sword grip wrapped in tarred fishing line."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: sea teal and sand beige with one accent of faded red; wave-pattern stitching along the vest hem, a shark-tooth charm on a cord necklace, bandaged knuckles, the sword grip wrapped in tarred fishing line.",
+      "picked": "候選1"
     },
     {
       "kind": "design",
       "name": "立繪_蓮笙",
-      "seed": 6130,
-      "candidates": 4,
+      "seed": 6132,
       "size": [
         1104,
         1472
@@ -62,13 +61,13 @@
       "chars": [
         "蓮笙"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: misty grey and soft lavender with deep violet shadows; tiny silver bells and charms of shell and bone sewn along the hood edge, faint violet embroidery of swirling fog patterns on the robe, a woven grass bracelet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: misty grey and soft lavender with deep violet shadows; tiny silver bells and charms of shell and bone sewn along the hood edge, faint violet embroidery of swirling fog patterns on the robe, a woven grass bracelet.",
+      "picked": "候選3"
     },
     {
       "kind": "design",
       "name": "立繪_小鈴",
-      "seed": 6140,
-      "candidates": 4,
+      "seed": 6143,
       "size": [
         1104,
         1472
@@ -77,13 +76,13 @@
       "chars": [
         "小鈴"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: warm amber and honey yellow with fresh leaf green; feathers and ribbons fluttering from the lute neck, a wind-swirl embroidery on the cloak, small brass bells on her bracelets, colorful patched pockets."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: warm amber and honey yellow with fresh leaf green; feathers and ribbons fluttering from the lute neck, a wind-swirl embroidery on the cloak, small brass bells on her bracelets, colorful patched pockets.",
+      "picked": "候選4"
     },
     {
       "kind": "design",
       "name": "立繪_費米",
-      "seed": 6150,
-      "candidates": 4,
+      "seed": 6151,
       "size": [
         1104,
         1472
@@ -92,13 +91,13 @@
       "chars": [
         "費米"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: rust orange and ember red with polished silver; a flame-shaped silver brooch, fine gold trim on the doublet, leather bracers, fire arrows with red fletching in the quiver, a small brass abacus charm."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: rust orange and ember red with polished silver; a flame-shaped silver brooch, fine gold trim on the doublet, leather bracers, fire arrows with red fletching in the quiver, a small brass abacus charm.",
+      "picked": "候選2"
     },
     {
       "kind": "design",
       "name": "立繪_葛蘿",
-      "seed": 6160,
-      "candidates": 4,
+      "seed": 6163,
       "size": [
         1104,
         1472
@@ -107,13 +106,13 @@
       "chars": [
         "葛蘿"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep crimson and weathered stone grey with dark iron; a riveted iron pauldron on her right shoulder, a belt of heavy iron rings, an old red sash bearing a smoking-mountain emblem, granite-grey leather boots."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep crimson and weathered stone grey with dark iron; a riveted iron pauldron on her right shoulder, a belt of heavy iron rings, an old red sash bearing a smoking-mountain emblem, granite-grey leather boots.",
+      "picked": "候選4"
     },
     {
       "kind": "design",
       "name": "立繪_老洛",
-      "seed": 6170,
-      "candidates": 4,
+      "seed": 6171,
       "size": [
         1104,
         1472
@@ -122,13 +121,13 @@
       "chars": [
         "老洛"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: faded blue-grey and parchment beige with dull brass; ink-stained fingers, rolled sea charts tucked under his arm, a brass compass and dividers hanging on chains, many small pockets full of pencils."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: faded blue-grey and parchment beige with dull brass; ink-stained fingers, rolled sea charts tucked under his arm, a brass compass and dividers hanging on chains, many small pockets full of pencils.",
+      "picked": "候選2"
     },
     {
       "kind": "design",
       "name": "立繪_霧子",
-      "seed": 6180,
-      "candidates": 4,
+      "seed": 6183,
       "size": [
         1104,
         1472
@@ -137,13 +136,13 @@
       "chars": [
         "霧子"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: slate grey and cold steel blue with pure white; the coat hem dissolving slightly into wisps of mist, a thin silver chain at the collar, black fingerless gloves, the scabbard wrapped in pale grey cloth."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: slate grey and cold steel blue with pure white; the coat hem dissolving slightly into wisps of mist, a thin silver chain at the collar, black fingerless gloves, the scabbard wrapped in pale grey cloth.",
+      "picked": "候選4"
     },
     {
       "kind": "design",
       "name": "立繪_嘎嘎",
-      "seed": 6190,
-      "candidates": 4,
+      "seed": 6193,
       "size": [
         1104,
         1472
@@ -152,13 +151,13 @@
       "chars": [
         "嘎嘎"
       ],
-      "prompt": "Character design sheet, single creature, full body seen from a three-quarter front angle, plain light grey background, the whole turtle visible. Signature colors: mossy sea green and warm brown with barnacle white; small starfish and a tiny tide pool on top of his shell, a weathered rope harness, a faded old sailor's scarf around his neck."
+      "prompt": "Character design sheet, single creature, full body seen from a three-quarter front angle, plain light grey background, the whole turtle visible. Signature colors: mossy sea green and warm brown with barnacle white; small starfish and a tiny tide pool on top of his shell, a weathered rope harness, a faded old sailor's scarf around his neck.",
+      "picked": "候選4"
     },
     {
       "kind": "design",
       "name": "立繪_母親",
-      "seed": 6200,
-      "candidates": 4,
+      "seed": 6201,
       "size": [
         1104,
         1472
@@ -167,13 +166,13 @@
       "chars": [
         "母親"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: pale grey and soft ice blue with silver; a small star-shaped silver pin on the cloak, silver constellation embroidery on the apprentice coat, a leather map case at her hip."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: pale grey and soft ice blue with silver; a small star-shaped silver pin on the cloak, silver constellation embroidery on the apprentice coat, a leather map case at her hip.",
+      "picked": "候選2"
     },
     {
       "kind": "design",
       "name": "立繪_公會長",
       "seed": 6210,
-      "candidates": 4,
       "size": [
         1104,
         1472
@@ -182,7 +181,8 @@
       "chars": [
         "公會長"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep midnight blue and gold with ink black; elaborate gold embroidery of map lines and compass roses on the robe, a heavy gold chain of office, ink-stained fingers, a scroll case at his belt."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep midnight blue and gold with ink black; elaborate gold embroidery of map lines and compass roses on the robe, a heavy gold chain of office, ink-stained fingers, a scroll case at his belt.",
+      "picked": "候選1"
     }
   ],
   "themes": {
