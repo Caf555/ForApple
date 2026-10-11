@@ -33,7 +33,7 @@
       "kind": "scene",
       "name": "幕_群島夜海",
       "seed": 5301,
-      "prompt": "A vast night sea under a sky full of stars, no continent, dozens of tiny islands scattered to the horizon, each island with one small warm lamp glowing, thin mist on the water, calm and still, wide view from a high angle."
+      "prompt": "Aerial view from high up in the night sky looking straight down over the open sea, no land in the foreground, the bottom of the frame is only dark water, a sky full of stars reflected on the sea, dozens of tiny islands scattered to the horizon, each island with one small warm lamp glowing, thin mist on the water, calm and still."
     },
     {
       "kind": "scene",
@@ -193,7 +193,7 @@
       "kind": "scene",
       "name": "幕_日誌的星",
       "seed": 5126,
-      "prompt": "Close-up of the last page of an old water-stained ship logbook, lines of faded handwriting (illegible, abstract strokes), and at the bottom a small hand-drawn symbol of a pen whose nib is a five-pointed star, glowing softly gold."
+      "prompt": "Close-up from directly above of an open old water-stained ship logbook, both pages filled only with lines of faded handwriting drawn as abstract illegible strokes, no pictures on the pages; at the bottom of the right page a small hand-drawn symbol of a pen whose nib is a five-pointed star, glowing softly gold."
     },
     {
       "kind": "scene",
@@ -223,7 +223,7 @@
       "kind": "scene",
       "name": "幕_星圖上的環礁",
       "seed": 5131,
-      "prompt": "An antique star chart on dark navy paper, constellations connected by thin pale lines, and below them a hand-inked ring-shaped coral atoll glowing faintly gold, a faded compass rose around it."
+      "prompt": "Flat close-up from directly above of an antique star chart on dark navy paper lying on a dark wooden table and filling the whole frame, constellations connected by thin pale lines, and below them a hand-inked ring-shaped coral atoll glowing faintly gold, a faded compass rose around it."
     },
     {
       "kind": "scene",
@@ -345,7 +345,7 @@
       "kind": "scene",
       "name": "幕_一整面牆的冊子",
       "seed": 5150,
-      "prompt": "Inside a tall white stone tower, an indoor room: a whole wall of identical ledgers stacked from floor to ceiling, a wooden rolling ladder, a lone clerk writing at a desk at the foot of the wall, soft dusty light from a high narrow window, enclosed by walls and ceiling.",
+      "prompt": "Interior of a library room inside a stone tower, seen from inside the room with nothing of the outside visible: the back wall is entirely covered by wooden shelves full of identical ledgers from floor to ceiling, a wooden rolling ladder leaning on the shelves, a lone clerk writing at a desk at the foot of the shelves, stone floor and wooden beam ceiling, dusty light from one high narrow window.",
       "people": true
     },
     {
@@ -358,7 +358,7 @@
       "kind": "scene",
       "name": "幕_灰白的珊瑚",
       "seed": 5152,
-      "prompt": "An underwater reef where all the coral has turned pale grey and white, no fish, still water, a single faded red ribbon tied around one coral branch, cold and silent."
+      "prompt": "Underwater view deep below the sea surface, a reef where all the coral has turned pale grey and white, no fish, still water, lit only by faint cold blue light filtering down from the surface far above, a single faded red ribbon tied around one coral branch, cold and silent."
     },
     {
       "kind": "scene",
@@ -382,7 +382,7 @@
       "kind": "scene",
       "name": "幕_南方的紅帆",
       "seed": 5156,
-      "prompt": "A ship with red sails sailing away into the night toward the south, a column of dark smoke and a faint red glow of fire on the far horizon, stars above, calm dark sea."
+      "prompt": "Seen from out on the open sea at night, a ship with red sails sailing away toward the south, a column of dark smoke and a faint red glow of fire on the far horizon, stars above, the foreground is only calm dark water."
     },
     {
       "kind": "scene",
@@ -481,7 +481,7 @@
       "kind": "scene",
       "name": "幕_黑色的島",
       "seed": 5172,
-      "prompt": "A small black volcanic island at night with a single bright forge fire glowing at its center, white steam rising from vents in the ground, stars and dark sea around."
+      "prompt": "Seen from far out at sea at night, a small uninhabited black volcanic island with a single bright forge fire glowing at its center, white steam rising from vents in the ground, stars above, the foreground is only dark water."
     },
     {
       "kind": "scene",
@@ -525,7 +525,7 @@
       "kind": "scene",
       "name": "幕_別著號碼牌的人",
       "seed": 5179,
-      "prompt": "A line of villagers in plain clothes waiting at a fortress gate, each wearing a small metal number plate pinned to the chest, misty grey day, expressionless.",
+      "prompt": "A line of villagers in plain medieval clothes waiting at a fortress gate, each wearing a small blank metal tag marked only with scratched notches pinned to the chest, misty grey day, expressionless.",
       "people": true
     },
     {
@@ -582,7 +582,7 @@
       "kind": "scene",
       "name": "幕_霧邊的灰燈",
       "seed": 5188,
-      "prompt": "A long row of grey lanterns on poles standing in cold still water, receding into a thick wall of white fog, soft pale cyan light, quiet and still."
+      "prompt": "A long row of simple medieval iron-framed oil lanterns hanging from rough wooden posts driven into shallow sea water, no land or grass anywhere, the posts standing in cold still water, receding into a thick wall of white fog, the lanterns glowing a soft pale grey-cyan light, quiet and still."
     },
     {
       "kind": "scene",
@@ -623,7 +623,7 @@
       "kind": "scene",
       "name": "幕_投完信的人",
       "seed": 5194,
-      "prompt": "A person turning away from a mailbox at the end of a pier, face relaxed and empty as if they have just forgotten something, soft pale morning light, fog behind.",
+      "prompt": "A person in plain medieval clothes turning away from an old wooden post box, a small weathered wooden chest with a letter slot nailed to a pier post at the end of a wooden pier, face relaxed and empty as if they have just forgotten something, soft pale morning light, fog behind.",
       "people": true
     },
     {
