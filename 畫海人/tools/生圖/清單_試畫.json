@@ -1,119 +1,107 @@
 {
-  "說明": "《畫海人》試畫：三種畫風（A 動畫電影風、B 厚塗奇幻、C 繪本水彩＋動畫人物）× 三個場景，種子相同方便比較。看完選定畫風後，這份清單就不用了。執行：python 畫海人/tools/生圖/batch.py --list 清單_試畫.json",
+  "說明": "《畫海人》試畫第二輪（2026-10-11）：畫風 A 修正版（場景畫風不再寫物件；角色立繪改用明亮光線與專屬配色）。三個場景各 2 個種子，再加墨里的立繪 2 張。執行：python 畫海人/tools/生圖/batch.py --list 清單_試畫.json",
   "手動": true,
-  "style": {
-    "試畫A": "Anime film still, hand-painted background art with soft painterly brushwork, characters drawn in clean anime style with crisp line art and simple cel shading, medieval European fantasy archipelago: stone and timber houses with slate roofs, wooden piers, old sailing ships, guild halls with arched windows. Muted, slightly dark palette of slate grey, deep sea blue and moss green under overcast or night skies; the only strong colors are warm golden lights from oil lanterns, candles, hearths, sunset and glowing pen tips, casting soft warm glow and long shadows. Drifting sea fog, quiet melancholic atmosphere, cinematic composition, square frame with the main subject in the upper-middle and the bottom third darker and simple.",
-    "試畫B": "Dark fantasy anime illustration, thick painterly digital brushwork, dramatic chiaroscuro lighting, semi-realistic anime faces, medieval European fantasy archipelago: stone and timber houses with slate roofs, wooden piers, old sailing ships, guild halls with arched windows. Muted, slightly dark palette of slate grey, deep sea blue and moss green under overcast or night skies; the only strong colors are warm golden lights from oil lanterns, candles, hearths, sunset and glowing pen tips, casting soft warm glow and long shadows. Drifting sea fog, quiet melancholic atmosphere, cinematic composition, square frame with the main subject in the upper-middle and the bottom third darker and simple.",
-    "試畫C": "Hand-drawn picture-book illustration, watercolor washes with fine ink pen linework on textured cold-press paper, characters drawn in anime style, medieval European fantasy archipelago: stone and timber houses with slate roofs, wooden piers, old sailing ships, guild halls with arched windows. Muted, slightly dark palette of slate grey, deep sea blue and moss green under overcast or night skies; the only strong colors are warm golden lights from oil lanterns, candles, hearths, sunset and glowing pen tips, casting soft warm glow and long shadows. Drifting sea fog, quiet melancholic atmosphere, cinematic composition, square frame with the main subject in the upper-middle and the bottom third darker and simple."
-  },
+  "style": {},
   "items": [
     {
       "kind": "design",
-      "name": "試畫A_港口",
+      "name": "試畫2_港口_1",
       "seed": 6001,
       "size": [
         1328,
         1328
       ],
-      "style": "試畫A",
+      "style": "scene",
       "prompt": "A small humble fishing harbor town on an island at dusk, stone and timber houses with slate roofs climbing a hillside, warm lit windows, a wooden pier with small sailing boats, sea fog creeping in, a few tiny villagers carrying lanterns."
     },
     {
       "kind": "design",
-      "name": "試畫A_公會大廳",
+      "name": "試畫2_港口_2",
+      "seed": 6101,
+      "size": [
+        1328,
+        1328
+      ],
+      "style": "scene",
+      "prompt": "A small humble fishing harbor town on an island at dusk, stone and timber houses with slate roofs climbing a hillside, warm lit windows, a wooden pier with small sailing boats, sea fog creeping in, a few tiny villagers carrying lanterns."
+    },
+    {
+      "kind": "design",
+      "name": "試畫2_公會大廳_1",
       "seed": 6002,
       "size": [
         1328,
         1328
       ],
-      "style": "試畫A",
-      "prompt": "Interior of an old cartographers' guild hall at night, stone arches and tall arched windows, walls covered with framed parchment sea charts, a long wooden table with maps and brass instruments, oil lamps hanging overhead, dust in the warm light."
+      "style": "scene",
+      "prompt": "Indoors only: the interior of an old cartographers' guild hall at night, seen from inside the room. Stone arches and tall arched windows showing only dark night sky, walls covered with framed parchment sea charts, a long wooden table with maps, books and brass instruments, oil lamps hanging overhead, dust in the warm light. No buildings, boats or harbor inside the room."
     },
     {
       "kind": "design",
-      "name": "試畫A_墨里",
+      "name": "試畫2_公會大廳_2",
+      "seed": 6102,
+      "size": [
+        1328,
+        1328
+      ],
+      "style": "scene",
+      "prompt": "Indoors only: the interior of an old cartographers' guild hall at night, seen from inside the room. Stone arches and tall arched windows showing only dark night sky, walls covered with framed parchment sea charts, a long wooden table with maps, books and brass instruments, oil lamps hanging overhead, dust in the warm light. No buildings, boats or harbor inside the room."
+    },
+    {
+      "kind": "design",
+      "name": "試畫2_墨里_1",
       "seed": 6003,
       "size": [
         1328,
         1328
       ],
-      "style": "試畫A",
-      "prompt": "Half-body portrait of a girl standing at the end of a wooden pier at dusk, facing the viewer, sea fog behind her, warm lantern light on one side of her face.",
+      "style": "scene",
+      "prompt": "Half-body portrait of the girl standing at the end of a wooden pier at dusk, facing the viewer, sea fog behind her, warm lantern light on one side of her face.",
       "chars": [
         "墨里"
       ]
     },
     {
       "kind": "design",
-      "name": "試畫B_港口",
-      "seed": 6001,
+      "name": "試畫2_墨里_2",
+      "seed": 6103,
       "size": [
         1328,
         1328
       ],
-      "style": "試畫B",
-      "prompt": "A small humble fishing harbor town on an island at dusk, stone and timber houses with slate roofs climbing a hillside, warm lit windows, a wooden pier with small sailing boats, sea fog creeping in, a few tiny villagers carrying lanterns."
-    },
-    {
-      "kind": "design",
-      "name": "試畫B_公會大廳",
-      "seed": 6002,
-      "size": [
-        1328,
-        1328
-      ],
-      "style": "試畫B",
-      "prompt": "Interior of an old cartographers' guild hall at night, stone arches and tall arched windows, walls covered with framed parchment sea charts, a long wooden table with maps and brass instruments, oil lamps hanging overhead, dust in the warm light."
-    },
-    {
-      "kind": "design",
-      "name": "試畫B_墨里",
-      "seed": 6003,
-      "size": [
-        1328,
-        1328
-      ],
-      "style": "試畫B",
-      "prompt": "Half-body portrait of a girl standing at the end of a wooden pier at dusk, facing the viewer, sea fog behind her, warm lantern light on one side of her face.",
+      "style": "scene",
+      "prompt": "Half-body portrait of the girl standing at the end of a wooden pier at dusk, facing the viewer, sea fog behind her, warm lantern light on one side of her face.",
       "chars": [
         "墨里"
       ]
     },
     {
       "kind": "design",
-      "name": "試畫C_港口",
-      "seed": 6001,
+      "name": "試畫2_墨里立繪_1",
+      "seed": 6110,
       "size": [
-        1328,
-        1328
+        1104,
+        1472
       ],
-      "style": "試畫C",
-      "prompt": "A small humble fishing harbor town on an island at dusk, stone and timber houses with slate roofs climbing a hillside, warm lit windows, a wooden pier with small sailing boats, sea fog creeping in, a few tiny villagers carrying lanterns."
-    },
-    {
-      "kind": "design",
-      "name": "試畫C_公會大廳",
-      "seed": 6002,
-      "size": [
-        1328,
-        1328
-      ],
-      "style": "試畫C",
-      "prompt": "Interior of an old cartographers' guild hall at night, stone arches and tall arched windows, walls covered with framed parchment sea charts, a long wooden table with maps and brass instruments, oil lamps hanging overhead, dust in the warm light."
-    },
-    {
-      "kind": "design",
-      "name": "試畫C_墨里",
-      "seed": 6003,
-      "size": [
-        1328,
-        1328
-      ],
-      "style": "試畫C",
-      "prompt": "Half-body portrait of a girl standing at the end of a wooden pier at dusk, facing the viewer, sea fog behind her, warm lantern light on one side of her face.",
+      "style": "design",
       "chars": [
         "墨里"
-      ]
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep navy blue and starlight gold with soft silver-white; small star-shaped brass buttons, a star-shaped clasp on the satchel, tiny gold-thread constellations embroidered on the coat cuffs."
+    },
+    {
+      "kind": "design",
+      "name": "試畫2_墨里立繪_2",
+      "seed": 6111,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "墨里"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep navy blue and starlight gold with soft silver-white; small star-shaped brass buttons, a star-shaped clasp on the satchel, tiny gold-thread constellations embroidered on the coat cuffs."
     }
   ]
 }

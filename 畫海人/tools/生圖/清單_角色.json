@@ -2,10 +2,11 @@
   "說明": "《畫海人》主要角色的定稿立繪（不放進遊戲，只當插圖的參考圖）。looks 是每個角色的固定外觀描述，劇情清單的插圖用 chars 欄位引用。candidates 表示還沒選定：先畫幾張候選（種子連續），選好後把種子改成選中的那張、拿掉 candidates。執行：python 畫海人/tools/生圖/batch.py --list 清單_角色.json",
   "手動": true,
   "style": {
-    "design": "Anime film still, hand-painted background art with soft painterly brushwork, characters drawn in clean anime style with crisp line art and simple cel shading, medieval European fantasy archipelago: stone and timber houses with slate roofs, wooden piers, old sailing ships, guild halls with arched windows. Muted, slightly dark palette of slate grey, deep sea blue and moss green under overcast or night skies; the only strong colors are warm golden lights from oil lanterns, candles, hearths, sunset and glowing pen tips, casting soft warm glow and long shadows. Drifting sea fog, quiet melancholic atmosphere, cinematic composition."
+    "design": "Anime character design illustration in the same hand-painted anime film style as the game's scenes: clean crisp line art, cel shading with soft painterly highlights, highly detailed costume with visible fabric folds, stitching, buckles, straps and accessories, detailed hair strands and expressive eyes. Bright, neutral, even lighting with clear true colors, no dark color grading, no heavy shadows. Medieval European fantasy costume design. The character's signature color theme is clearly visible.",
+    "negative_design": "text, letters, words, signature, watermark, logo, border, frame, speech bubble, photograph, photorealistic, 3D render, CGI, chibi, dark gloomy lighting, low key lighting, heavy shadows, scenery background, blurry, low quality, jpeg artifacts, deformed, bad anatomy, extra fingers, extra limbs, missing fingers, duplicate figures, multiple views, collage, split image, cropped feet, modern clothing, guns, asian clothing, kimono"
   },
   "looks": {
-    "墨里": "a 17-year-old girl, short black chin-length bob hair with a single white streak on the right side, pale grey left eye and dark brown right eye, calm observant expression, weathered deep-blue sailor coat with many pockets and brass buttons, cream linen shirt, dark trousers, knee-high brown leather boots, brown leather satchel worn across her body, a slender pen with a softly glowing gold tip tucked behind her left ear.",
+    "墨里": "a 17-year-old girl (female, soft feminine face), short black chin-length bob hair with a single white streak on the right side, pale grey left eye and dark brown right eye, calm observant expression, weathered deep-blue sailor coat with many pockets and brass buttons, cream linen shirt, dark trousers, knee-high brown leather boots, brown leather satchel worn across her body, a slender pen with a softly glowing gold tip tucked behind her left ear.",
     "阿潮": "a 17-year-old fisherman's son, tanned skin, messy spiky short dark-brown hair, thick eyebrows, stubborn frowning mouth, rough linen shirt with rolled-up sleeves, worn brown leather vest, teal scarf around his neck, a faded red cloth strip tied around his left wrist, a broad single-edged sword at his hip.",
     "蓮笙": "a quiet 15-year-old girl, very long straight black hair with a blue tint, a single white flower pinned in her hair, pale skin, half-lowered pale violet-grey eyes, grey hooded robe of the fog keepers with lavender lining, bundles of dried herbs and small glass vials hanging at her waist, holding a long thin bone needle.",
     "小鈴": "a cheerful 20-year-old wandering bard woman, long wavy chestnut hair in a loose braid with a small brass bell tied at the end, freckles, amber eyes, mustard-yellow travelling cloak over an olive-brown vest, a lute slung on her back, a leather-bound songbook hanging at her belt.",
@@ -31,7 +32,7 @@
       "chars": [
         "墨里"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep navy blue and starlight gold with soft silver-white; small star-shaped brass buttons, a star-shaped clasp on the satchel, tiny gold-thread constellations embroidered on the coat cuffs."
     },
     {
       "kind": "design",
@@ -46,7 +47,7 @@
       "chars": [
         "阿潮"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: sea teal and sand beige with one accent of faded red; wave-pattern stitching along the vest hem, a shark-tooth charm on a cord necklace, bandaged knuckles, the sword grip wrapped in tarred fishing line."
     },
     {
       "kind": "design",
@@ -61,7 +62,7 @@
       "chars": [
         "蓮笙"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: misty grey and soft lavender with deep violet shadows; tiny silver bells and charms of shell and bone sewn along the hood edge, faint violet embroidery of swirling fog patterns on the robe, a woven grass bracelet."
     },
     {
       "kind": "design",
@@ -76,7 +77,7 @@
       "chars": [
         "小鈴"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: warm amber and honey yellow with fresh leaf green; feathers and ribbons fluttering from the lute neck, a wind-swirl embroidery on the cloak, small brass bells on her bracelets, colorful patched pockets."
     },
     {
       "kind": "design",
@@ -91,7 +92,7 @@
       "chars": [
         "費米"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: rust orange and ember red with polished silver; a flame-shaped silver brooch, fine gold trim on the doublet, leather bracers, fire arrows with red fletching in the quiver, a small brass abacus charm."
     },
     {
       "kind": "design",
@@ -106,7 +107,7 @@
       "chars": [
         "葛蘿"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep crimson and weathered stone grey with dark iron; a riveted iron pauldron on her right shoulder, a belt of heavy iron rings, an old red sash bearing a smoking-mountain emblem, granite-grey leather boots."
     },
     {
       "kind": "design",
@@ -121,7 +122,7 @@
       "chars": [
         "老洛"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: faded blue-grey and parchment beige with dull brass; ink-stained fingers, rolled sea charts tucked under his arm, a brass compass and dividers hanging on chains, many small pockets full of pencils."
     },
     {
       "kind": "design",
@@ -136,7 +137,7 @@
       "chars": [
         "霧子"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: slate grey and cold steel blue with pure white; the coat hem dissolving slightly into wisps of mist, a thin silver chain at the collar, black fingerless gloves, the scabbard wrapped in pale grey cloth."
     },
     {
       "kind": "design",
@@ -151,7 +152,7 @@
       "chars": [
         "嘎嘎"
       ],
-      "prompt": "Character design sheet, single creature, full body seen from a three-quarter front angle, plain light grey background, soft even lighting, the whole turtle visible."
+      "prompt": "Character design sheet, single creature, full body seen from a three-quarter front angle, plain light grey background, the whole turtle visible. Signature colors: mossy sea green and warm brown with barnacle white; small starfish and a tiny tide pool on top of his shell, a weathered rope harness, a faded old sailor's scarf around his neck."
     },
     {
       "kind": "design",
@@ -166,7 +167,7 @@
       "chars": [
         "母親"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: pale grey and soft ice blue with silver; a small star-shaped silver pin on the cloak, silver constellation embroidery on the apprentice coat, a leather map case at her hip."
     },
     {
       "kind": "design",
@@ -181,7 +182,20 @@
       "chars": [
         "公會長"
       ],
-      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose that shows the personality, plain light grey background, the whole body visible from head to feet. Signature colors: deep midnight blue and gold with ink black; elaborate gold embroidery of map lines and compass roses on the robe, a heavy gold chain of office, ink-stained fingers, a scroll case at his belt."
     }
-  ]
+  ],
+  "themes": {
+    "墨里": "Signature colors: deep navy blue and starlight gold with soft silver-white; small star-shaped brass buttons, a star-shaped clasp on the satchel, tiny gold-thread constellations embroidered on the coat cuffs.",
+    "阿潮": "Signature colors: sea teal and sand beige with one accent of faded red; wave-pattern stitching along the vest hem, a shark-tooth charm on a cord necklace, bandaged knuckles, the sword grip wrapped in tarred fishing line.",
+    "蓮笙": "Signature colors: misty grey and soft lavender with deep violet shadows; tiny silver bells and charms of shell and bone sewn along the hood edge, faint violet embroidery of swirling fog patterns on the robe, a woven grass bracelet.",
+    "小鈴": "Signature colors: warm amber and honey yellow with fresh leaf green; feathers and ribbons fluttering from the lute neck, a wind-swirl embroidery on the cloak, small brass bells on her bracelets, colorful patched pockets.",
+    "費米": "Signature colors: rust orange and ember red with polished silver; a flame-shaped silver brooch, fine gold trim on the doublet, leather bracers, fire arrows with red fletching in the quiver, a small brass abacus charm.",
+    "葛蘿": "Signature colors: deep crimson and weathered stone grey with dark iron; a riveted iron pauldron on her right shoulder, a belt of heavy iron rings, an old red sash bearing a smoking-mountain emblem, granite-grey leather boots.",
+    "老洛": "Signature colors: faded blue-grey and parchment beige with dull brass; ink-stained fingers, rolled sea charts tucked under his arm, a brass compass and dividers hanging on chains, many small pockets full of pencils.",
+    "霧子": "Signature colors: slate grey and cold steel blue with pure white; the coat hem dissolving slightly into wisps of mist, a thin silver chain at the collar, black fingerless gloves, the scabbard wrapped in pale grey cloth.",
+    "嘎嘎": "Signature colors: mossy sea green and warm brown with barnacle white; small starfish and a tiny tide pool on top of his shell, a weathered rope harness, a faded old sailor's scarf around his neck.",
+    "母親": "Signature colors: pale grey and soft ice blue with silver; a small star-shaped silver pin on the cloak, silver constellation embroidery on the apprentice coat, a leather map case at her hip.",
+    "公會長": "Signature colors: deep midnight blue and gold with ink black; elaborate gold embroidery of map lines and compass roses on the robe, a heavy gold chain of office, ink-stained fingers, a scroll case at his belt."
+  }
 }

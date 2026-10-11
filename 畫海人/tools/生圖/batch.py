@@ -31,7 +31,8 @@ except ImportError:
 
 HERE = Path(__file__).resolve().parent
 GAME = HERE.parent.parent            # 畫海人/
-WORKFLOWS = GAME.parent / '千秋硯' / 'tools' / '生圖' / 'workflows'
+# 工作流：畫海人自己的（新版 6 步）優先，沒有的話用《千秋硯》的
+WORKFLOWS = HERE / 'workflows' if (HERE / 'workflows' / 't2i.json').exists() else GAME.parent / '千秋硯' / 'tools' / '生圖' / 'workflows'
 IMG = GAME / 'img'
 RAW = HERE / '原圖'                  # 保存 ComfyUI 輸出的原始 PNG（供圖生圖參考與重新裁切）
 MANIFEST = IMG / 'manifest.json'
@@ -103,7 +104,8 @@ def build(item, cfg, templates, comfy, dry):
     style = cfg['style']
     # 各類別可以有自己的風格；沒有的話，頭像類沿用 char、大圖沿用 bg
     # item 的 style 可以指定用哪一段畫風（例如試畫的三種畫風、角色立繪）
-    style_text = style[item.get('style') or kind]
+    style_key = item.get('style') or kind
+    style_text = style[style_key]
     # chars：插圖裡出現的主要角色，自動接上角色清單裡的固定外觀描述
     looks = ' '.join(cfg['looks'][c] for c in item.get('chars', []))
     prompt = f"{style_text} {item['prompt']} {looks}".strip()
@@ -114,7 +116,8 @@ def build(item, cfg, templates, comfy, dry):
     wf = copy.deepcopy(templates['edit' if use_edit else 't2i'])
     text = wf[nodes['text']]['inputs']
     text['prompt'] = prompt
-    text['negative_prompt'] = style['negative']
+    # 負向提示詞也可以依畫風不同（例如角色立繪不要暗色調）：negative_<畫風名稱>
+    text['negative_prompt'] = style.get(f'negative_{style_key}', style['negative'])
     wf[nodes['seed']]['inputs']['noise_seed'] = item['_seed']
     wf[nodes['save']]['inputs']['filename_prefix'] = f"huahairen/{kind}_{item['seed']}"
     if use_edit:
