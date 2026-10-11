@@ -1,0 +1,187 @@
+{
+  "說明": "《畫海人》主要角色的定稿立繪（不放進遊戲，只當插圖的參考圖）。looks 是每個角色的固定外觀描述，劇情清單的插圖用 chars 欄位引用。candidates 表示還沒選定：先畫幾張候選（種子連續），選好後把種子改成選中的那張、拿掉 candidates。執行：python 畫海人/tools/生圖/batch.py --list 清單_角色.json",
+  "手動": true,
+  "style": {
+    "design": "Anime film still, hand-painted background art with soft painterly brushwork, characters drawn in clean anime style with crisp line art and simple cel shading, medieval European fantasy archipelago: stone and timber houses with slate roofs, wooden piers, old sailing ships, guild halls with arched windows. Muted, slightly dark palette of slate grey, deep sea blue and moss green under overcast or night skies; the only strong colors are warm golden lights from oil lanterns, candles, hearths, sunset and glowing pen tips, casting soft warm glow and long shadows. Drifting sea fog, quiet melancholic atmosphere, cinematic composition."
+  },
+  "looks": {
+    "墨里": "a 17-year-old girl, short black chin-length bob hair with a single white streak on the right side, pale grey left eye and dark brown right eye, calm observant expression, weathered deep-blue sailor coat with many pockets and brass buttons, cream linen shirt, dark trousers, knee-high brown leather boots, brown leather satchel worn across her body, a slender pen with a softly glowing gold tip tucked behind her left ear.",
+    "阿潮": "a 17-year-old fisherman's son, tanned skin, messy spiky short dark-brown hair, thick eyebrows, stubborn frowning mouth, rough linen shirt with rolled-up sleeves, worn brown leather vest, teal scarf around his neck, a faded red cloth strip tied around his left wrist, a broad single-edged sword at his hip.",
+    "蓮笙": "a quiet 15-year-old girl, very long straight black hair with a blue tint, a single white flower pinned in her hair, pale skin, half-lowered pale violet-grey eyes, grey hooded robe of the fog keepers with lavender lining, bundles of dried herbs and small glass vials hanging at her waist, holding a long thin bone needle.",
+    "小鈴": "a cheerful 20-year-old wandering bard woman, long wavy chestnut hair in a loose braid with a small brass bell tied at the end, freckles, amber eyes, mustard-yellow travelling cloak over an olive-brown vest, a lute slung on her back, a leather-bound songbook hanging at her belt.",
+    "費米": "a 19-year-old merchant's son with a sly half-smile, short sandy-blond hair, sharp green eyes, a wide-brimmed hat worn low, rust-orange short doublet fastened with small silver seashell buttons, holding a short bow, a quiver on his back, a small ledger book at his belt.",
+    "葛蘿": "a tall broad-shouldered 58-year-old woman, former pirate captain, cropped grey hair, old scars on her weathered face, calm heavy gaze, she has only her right arm and the empty left sleeve is covered by her cloak, deep crimson cloak over worn leather armor, a short hand axe in her right hand.",
+    "老洛": "a thin elderly cartographer about 75 years old, white stubble beard, a black eye patch over his right eye and a round monocle on his left eye, worn grey long coat, holding an old wooden measuring rod, a small grey lantern hanging at his belt.",
+    "霧子": "a young swordswoman about 20 years old, frost-white short hair, very pale skin, grey-blue eyes with an empty searching expression, long dark slate-grey coat, an old longsword whose hilt is engraved with a pen and a star.",
+    "嘎嘎": "an old talking sea turtle as big as a handcart, his shell covered in barnacles and strands of seaweed, wrinkled dark green-grey skin, droopy gentle slightly comical eyes, holding an old seaweed rope in his mouth.",
+    "母親": "the mother of the 17-year-old girl, a woman who looks about 38 years old, long black hair tied in a low ponytail with a single white streak on the right side, gentle but tired eyes, pale grey travelling cloak over a deep-blue guild apprentice coat, a slender pen glowing pale blue tucked behind her ear.",
+    "公會長": "the Guild Master, a tall gaunt old man who looks about 70, long silver hair tied back, neatly trimmed beard, tired but obsessive eyes, deep-blue robe with gold trim and ink-stained sleeves, a guild badge of a pen and a star on his chest, holding a long pen whose tip glows white-gold."
+  },
+  "items": [
+    {
+      "kind": "design",
+      "name": "立繪_墨里",
+      "seed": 6110,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "墨里"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_阿潮",
+      "seed": 6120,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "阿潮"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_蓮笙",
+      "seed": 6130,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "蓮笙"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_小鈴",
+      "seed": 6140,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "小鈴"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_費米",
+      "seed": 6150,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "費米"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_葛蘿",
+      "seed": 6160,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "葛蘿"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_老洛",
+      "seed": 6170,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "老洛"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_霧子",
+      "seed": 6180,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "霧子"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_嘎嘎",
+      "seed": 6190,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "嘎嘎"
+      ],
+      "prompt": "Character design sheet, single creature, full body seen from a three-quarter front angle, plain light grey background, soft even lighting, the whole turtle visible."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_母親",
+      "seed": 6200,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "母親"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    },
+    {
+      "kind": "design",
+      "name": "立繪_公會長",
+      "seed": 6210,
+      "candidates": 4,
+      "size": [
+        1104,
+        1472
+      ],
+      "style": "design",
+      "chars": [
+        "公會長"
+      ],
+      "prompt": "Character design sheet, single character, full-body standing pose, front view, relaxed natural pose, plain light grey background, soft even lighting, the whole body visible from head to feet."
+    }
+  ]
+}

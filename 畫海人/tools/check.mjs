@@ -5,7 +5,7 @@ import { PUZZLES } from '../js/puzzle.js';
 import { DIFF } from '../js/state.js';
 import { TRAININGS } from '../js/training.js';
 import { ART_KEYS } from '../js/cinema.js';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 
 const errs = [];
 const bad = m => errs.push(m);
@@ -248,6 +248,18 @@ for (const [k, c] of Object.entries(CINEMA)) {
   }
 }
 for (const n of picList) if (!usedPics.includes(n)) bad(`生圖清單裡的「${n}」沒有用到`);
+
+// 所有生圖清單（劇情、試畫、角色立繪）：名稱不能重複；chars 要有固定外觀；ref 要是清單裡的圖
+const genDir = new URL('./生圖/', import.meta.url);
+const genLists = readdirSync(genDir).filter(f => /^清單_.*\.json$/.test(f)).map(f => JSON.parse(readFileSync(new URL(f, genDir), 'utf8')));
+const looks = Object.assign({}, ...genLists.map(l => l.looks || {}));
+const genItems = genLists.flatMap(l => l.items);
+const genNames = genItems.flatMap(it => it.candidates ? [it.name, ...Array.from({ length: it.candidates }, (_, i) => `${it.name}_候選${i + 1}`)] : [it.name]);
+for (const n of new Set(genNames)) if (genNames.filter(x => x === n).length > 1) bad(`生圖清單之間的「${n}」重複了`);
+for (const it of genItems) {
+  for (const c of it.chars || []) if (!looks[c]) bad(`生圖「${it.name}」的角色「${c}」沒有固定外觀（清單_角色.json 的 looks）`);
+  for (const r of [it.ref || []].flat()) if (!genNames.includes(r)) bad(`生圖「${it.name}」的參考圖「${r}」不在生圖清單裡`);
+}
 
 // 台詞：混在文字裡的角色台詞 { who, need, text } 一定要有文字；need 要是存在的隊友
 // （視窗會把它排成「名字：台詞」，不會再出現 [object Object]）
