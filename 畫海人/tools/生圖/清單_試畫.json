@@ -34,7 +34,7 @@
         1328
       ],
       "style": "scene",
-      "prompt": "Indoors only: the interior of an old cartographers' guild hall at night, seen from inside the room. Stone arches and tall arched windows showing only dark night sky, walls covered with framed parchment sea charts, a long wooden table with maps, books and brass instruments, oil lamps hanging overhead, dust in the warm light. No buildings, boats or harbor inside the room."
+      "prompt": "Indoors only, and the room is completely empty with nobody in it: the interior of an old cartographers' guild hall at night, seen from inside the room. Stone arches and tall arched windows showing only dark night sky, walls covered with framed parchment sea charts, a long wooden table with maps, books and brass instruments, oil lamps hanging overhead, dust in the warm light. An empty unattended room: no people, no figures, no buildings, boats or harbor."
     },
     {
       "kind": "design",
@@ -45,7 +45,7 @@
         1328
       ],
       "style": "scene",
-      "prompt": "Indoors only: the interior of an old cartographers' guild hall at night, seen from inside the room. Stone arches and tall arched windows showing only dark night sky, walls covered with framed parchment sea charts, a long wooden table with maps, books and brass instruments, oil lamps hanging overhead, dust in the warm light. No buildings, boats or harbor inside the room."
+      "prompt": "Indoors only, and the room is completely empty with nobody in it: the interior of an old cartographers' guild hall at night, seen from inside the room. Stone arches and tall arched windows showing only dark night sky, walls covered with framed parchment sea charts, a long wooden table with maps, books and brass instruments, oil lamps hanging overhead, dust in the warm light. An empty unattended room: no people, no figures, no buildings, boats or harbor."
     },
     {
       "kind": "design",
