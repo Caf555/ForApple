@@ -21,8 +21,8 @@
     ]
   },
   "style": {
-    "scene": "Hand-drawn picture-book illustration, watercolor washes with fine ink pen linework on textured cold-press paper, cold mysterious palette of deep navy, slate blue, grey-green and misty white, only lamplight, candlelight and magical pen glow are warm gold, soft drifting fog, painterly storybook atmosphere, square composition with the main subject centered in the upper-middle, the bottom third darker and simple.",
-    "negative": "text, letters, words, readable writing, signature, watermark, logo, border, frame, photograph, photorealistic, 3D render, CGI, anime, chibi, manga panel, speech bubble, oversaturated neon colors, blurry, low quality, jpeg artifacts, deformed, bad anatomy, extra fingers, extra limbs, duplicate figures, collage, split image, gore, blood, modern objects, cars, electric lights"
+    "scene": "Anime film still, hand-painted background art with soft painterly brushwork, characters drawn in clean anime style with crisp line art and simple cel shading, medieval European fantasy archipelago: stone and timber houses with slate roofs, wooden piers, old sailing ships, guild halls with arched windows. Muted, slightly dark palette of slate grey, deep sea blue and moss green under overcast or night skies; the only strong colors are warm golden lights from oil lanterns, candles, hearths, sunset and glowing pen tips, casting soft warm glow and long shadows. Drifting sea fog, quiet melancholic atmosphere, cinematic composition, square frame with the main subject in the upper-middle and the bottom third darker and simple.",
+    "negative": "text, letters, words, readable writing, signature, watermark, logo, border, frame, speech bubble, manga panel, photograph, photorealistic, 3D render, CGI, chibi, oversaturated neon colors, bright cheerful daylight, blurry, low quality, jpeg artifacts, deformed, bad anatomy, extra fingers, extra limbs, missing fingers, duplicate figures, collage, split image, gore, blood, modern objects, guns, cars, electric lights, asian architecture, paper lanterns, pagoda, kimono"
   },
   "items": [
     {
@@ -83,7 +83,10 @@
       "kind": "scene",
       "name": "幕_碼頭的背影",
       "seed": 5110,
-      "prompt": "Back view of a 17-year-old girl standing at the end of a wooden pier facing a wall of fog over the sea, short black hair with one streak of white hair on the right side, a deep-blue old sailor coat with many pockets, a leather satchel worn across the body, a faintly glowing pen tucked behind her ear, we only see her from behind, face not visible."
+      "prompt": "Back view of the girl standing at the end of a wooden pier facing a wall of fog over the sea, we only see her from behind, face not visible. The girl:",
+      "chars": [
+        "墨里"
+      ]
     },
     {
       "kind": "scene",
@@ -215,7 +218,7 @@
       "kind": "scene",
       "name": "幕_千帆市的燈火",
       "seed": 5132,
-      "prompt": "A distant floating city made of hundreds of ships tied together on the sea at dusk, countless masts like a forest, thousands of warm paper lanterns glowing along the decks, reflections on the water, a little fog low on the horizon."
+      "prompt": "A distant floating city made of hundreds of ships tied together on the sea at dusk, countless masts like a forest, thousands of warm iron-framed oil lanterns glowing along the decks, reflections on the water, a little fog low on the horizon."
     },
     {
       "kind": "scene",
@@ -245,7 +248,7 @@
       "kind": "scene",
       "name": "幕_巷底的當鋪",
       "seed": 5137,
-      "prompt": "A narrow dark alley between tall wooden ship hulls, at the very end a tiny pawnshop with a single red paper lantern glowing, the lantern marked with a simple abstract symbol, fog creeping along the ground."
+      "prompt": "A narrow dark alley between tall wooden ship hulls, at the very end a tiny pawnshop with a single red-glass oil lantern hanging over its door, a small wooden sign with a simple coin-and-scale emblem, fog creeping along the ground."
     },
     {
       "kind": "scene",
@@ -389,7 +392,7 @@
       "kind": "scene",
       "name": "幕_帆上的刺繡",
       "seed": 5161,
-      "prompt": "Close-up of a weathered red sailcloth with a single embroidered character-like symbol stitched in white thread (abstract, unreadable), a needle and thread hanging from it, warm light."
+      "prompt": "Close-up of a weathered red sailcloth with a single small emblem of a stylized wave stitched in white thread, a needle and thread hanging from it, warm light."
     },
     {
       "kind": "scene",
@@ -557,7 +560,10 @@
       "kind": "scene",
       "name": "幕_提燈的獨眼老人",
       "seed": 5189,
-      "prompt": "An old one-eyed man in a worn grey coat standing at the end of a wooden pier in thick fog, holding up a grey lantern, as if waiting for someone, calm and weathered."
+      "prompt": "An old man standing at the end of a wooden pier in thick fog, holding up a grey lantern, as if waiting for someone, calm and weathered. The old man:",
+      "chars": [
+        "老洛"
+      ]
     },
     {
       "kind": "scene",
@@ -689,13 +695,19 @@
       "kind": "scene",
       "name": "幕_回頭的母親",
       "seed": 5211,
-      "prompt": "Seen from behind, a young woman with a pen tucked behind her ear walking into white fog beyond a gate, turning her head to look back one last time, warm faint glow from her pen."
+      "prompt": "Seen from behind, the woman walking into white fog beyond a gate, turning her head to look back one last time, faint glow from her pen. The woman:",
+      "chars": [
+        "母親"
+      ]
     },
     {
       "kind": "scene",
       "name": "幕_雪地上的劍客",
       "seed": 5212,
-      "prompt": "A young swordswoman with no memory lying unconscious in the snow before an ice gate, a sword with a pen engraved on its hilt stuck in the snow beside her, dawn light."
+      "prompt": "A young swordswoman with no memory lying unconscious in the snow before an ice gate, her sword stuck in the snow beside her, dawn light. The swordswoman:",
+      "chars": [
+        "霧子"
+      ]
     },
     {
       "kind": "scene",
@@ -713,7 +725,13 @@
       "kind": "scene",
       "name": "幕_醒來的劍客",
       "seed": 5215,
-      "prompt": "A young female swordswoman with frost-white short hair waking up on a small cot inside an old observatory, looking out of a round window at drifting fog, an old sword leaning against the bed, morning light."
+      "prompt": "The same swordswoman as in the reference image, waking up and sitting on a small cot inside an old stone observatory, looking out of a round window at drifting fog, her old sword leaning against the bed, morning light. Keep her face, hair and clothes the same as the reference. The swordswoman:",
+      "chars": [
+        "霧子"
+      ],
+      "ref": [
+        "立繪_霧子"
+      ]
     },
     {
       "kind": "scene",
@@ -731,7 +749,10 @@
       "kind": "scene",
       "name": "幕_開向冰門的船",
       "seed": 5218,
-      "prompt": "A girl with a satchel standing at the bow of a small sailing ship heading north through cold mist toward a distant towering gate made of ice, a faint gold light at the tip of her pen."
+      "prompt": "The girl standing at the bow of a small sailing ship heading north through cold mist toward a distant towering gate made of ice, seen from behind at a slight angle, a faint gold light at the tip of her pen. The girl:",
+      "chars": [
+        "墨里"
+      ]
     },
     {
       "kind": "scene",
@@ -869,19 +890,34 @@
       "kind": "scene",
       "name": "幕_停在半空的筆",
       "seed": 5241,
-      "prompt": "A very old man in a worn guild robe holding a pen with a star-shaped tip, the pen frozen in mid-air in the middle of a white void, just one stroke left to draw."
+      "prompt": "The same old man as in the reference image, standing in the middle of a white void, his glowing pen frozen in mid-air, just one stroke left to draw. Keep his face, hair and robe the same as the reference. The old man:",
+      "chars": [
+        "公會長"
+      ],
+      "ref": [
+        "立繪_公會長"
+      ]
     },
     {
       "kind": "scene",
       "name": "幕_擋在筆前的女人",
       "seed": 5242,
-      "prompt": "Back view of a woman in a pale grey traveling cloak with a faintly blue-glowing pen standing with one arm raised, blocking an old man's glowing golden pen in a white void, the blue and gold light pushing against each other."
+      "prompt": "Back view of the woman standing with one arm raised, blocking an old man's glowing golden pen in a white void, her pen glowing pale blue, the blue and gold light pushing against each other. The woman:",
+      "chars": [
+        "母親"
+      ]
     },
     {
       "kind": "scene",
       "name": "幕_回頭的女人",
       "seed": 5243,
-      "prompt": "A woman with long dark hair tied back, pale grey traveling cloak, turning around in a white misty void and giving a gentle tired smile, soft blue glow, face kindly visible."
+      "prompt": "The same woman as in the reference image, turning around in a white misty void and giving a gentle tired smile, soft blue glow, face kindly visible. Keep her face, hair and clothes the same as the reference. The woman:",
+      "chars": [
+        "母親"
+      ],
+      "ref": [
+        "立繪_母親"
+      ]
     },
     {
       "kind": "scene",
@@ -929,7 +965,15 @@
       "kind": "scene",
       "name": "幕_門前的母女",
       "seed": 5251,
-      "prompt": "Two figures, a 17-year-old girl with short black hair with one white streak, deep-blue old sailor coat, leather satchel and a woman in a pale grey traveling cloak with a faintly blue-glowing pen, standing side by side before a towering gate made of ice under a starry night, holding small lights, guardians of the gate."
+      "prompt": "The girl and the woman from the reference image standing side by side before a towering gate made of ice under a starry night, holding small lights, guardians of the gate. Keep their faces, hair and clothes the same as the reference. The girl:",
+      "chars": [
+        "墨里",
+        "母親"
+      ],
+      "ref": [
+        "立繪_墨里",
+        "立繪_母親"
+      ]
     },
     {
       "kind": "scene",
@@ -947,7 +991,10 @@
       "kind": "scene",
       "name": "幕_飛向港口的書頁",
       "seed": 5254,
-      "prompt": "Hundreds of pages torn from an old map book flying on the wind across the sea toward distant harbors, a girl with a satchel watching them from a cliff at dawn."
+      "prompt": "Hundreds of pages torn from an old map book flying on the wind across the sea toward distant harbors, a small figure of a girl watching them from a cliff at dawn. The girl:",
+      "chars": [
+        "墨里"
+      ]
     },
     {
       "kind": "scene",
@@ -995,13 +1042,24 @@
       "kind": "scene",
       "name": "幕_站在空白邊緣的母親",
       "seed": 5262,
-      "prompt": "A woman in a pale grey cloak standing at the edge of a large blank white circle on a giant map laid over the sea, looking toward the viewer, soft blue glow."
+      "prompt": "The woman standing at the edge of a large blank white circle on a giant map laid over the sea, looking toward the viewer, soft blue glow. The woman:",
+      "chars": [
+        "母親"
+      ]
     },
     {
       "kind": "scene",
       "name": "幕_母親叫她的名字",
       "seed": 5263,
-      "prompt": "A mother and her 17-year-old daughter with short black hair and a white streak standing face to face on a beach at sunrise, the mother's hand on the girl's cheek, warm emotional reunion."
+      "prompt": "The girl and the woman from the reference image, mother and daughter, standing face to face on a beach at sunrise, the mother's hand on the girl's cheek, warm emotional reunion. Keep their faces, hair and clothes the same as the reference. The girl:",
+      "chars": [
+        "墨里",
+        "母親"
+      ],
+      "ref": [
+        "立繪_墨里",
+        "立繪_母親"
+      ]
     },
     {
       "kind": "scene",
@@ -1013,7 +1071,11 @@
       "kind": "scene",
       "name": "幕_回家的船",
       "seed": 5265,
-      "prompt": "An old fishing ship named Swallow sailing home into a harbor at dawn, a father and his son standing at the bow, an old turtle and an old fisherman on the pier."
+      "prompt": "An old two-masted fishing ship sailing home into a harbor at dawn, a fisherman father and his teenage son standing at the bow, an old sea turtle and an old fisherman waiting on the pier. The son:",
+      "chars": [
+        "阿潮",
+        "嘎嘎"
+      ]
     },
     {
       "kind": "scene",

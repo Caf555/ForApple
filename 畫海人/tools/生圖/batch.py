@@ -8,12 +8,14 @@
   python 畫海人/tools/生圖/batch.py --names 幕_群島夜海 --force --seed-offset 1   # 換一個種子重畫
   python 畫海人/tools/生圖/batch.py --dry-run             # 只列出要做什麼，不實際生圖
   python 畫海人/tools/生圖/batch.py --rebuild             # 不生圖，只用已有的原圖重新產生網頁用檔案
+  python 畫海人/tools/生圖/batch.py --list 清單_試畫.json   # 只跑一份清單（標了「手動」的清單，只有這樣才會跑）
 
 需要：Python 3.9 以上、Pillow（pip install pillow）、正在執行的 ComfyUI（預設 http://127.0.0.1:8188）。
 """
 import argparse
 import copy
 import json
+import os
 import sys
 import time
 import urllib.error
@@ -35,6 +37,8 @@ RAW = HERE / '原圖'                  # 保存 ComfyUI 輸出的原始 PNG（�
 MANIFEST = IMG / 'manifest.json'
 WEB_WIDTHS = {'scene': (1200, 700)}   # 劇情動畫的正方形插圖
 SQUARE = {'char': 512, 'enemy': 512, 'item': 256}
+DESIGN = HERE / '定稿'               # 定稿圖（試畫、角色立繪）：不放進遊戲，只給人看和當參考圖
+REF_BG = (200, 200, 200)             # 參考圖補成正方形時用的淺灰底
 
 
 def log(msg):
@@ -98,8 +102,11 @@ def build(item, cfg, templates, comfy, dry):
     kind = item['kind']
     style = cfg['style']
     # 各類別可以有自己的風格；沒有的話，頭像類沿用 char、大圖沿用 bg
-    style_text = style[kind]
-    prompt = f"{style_text} {item['prompt']}"
+    # item 的 style 可以指定用哪一段畫風（例如試畫的三種畫風、角色立繪）
+    style_text = style[item.get('style') or kind]
+    # chars：插圖裡出現的主要角色，自動接上角色清單裡的固定外觀描述
+    looks = ' '.join(cfg['looks'][c] for c in item.get('chars', []))
+    prompt = f"{style_text} {item['prompt']} {looks}".strip()
     if item.get('transparent'):
         prompt += ' Transparent background with alpha channel.'
     use_edit = bool(item.get('ref'))
@@ -111,9 +118,7 @@ def build(item, cfg, templates, comfy, dry):
     wf[nodes['seed']]['inputs']['noise_seed'] = item['_seed']
     wf[nodes['save']]['inputs']['filename_prefix'] = f"huahairen/{kind}_{item['seed']}"
     if use_edit:
-        ref = RAW / f"{item['ref']}.png"
-        if not ref.exists():
-            raise RuntimeError(f"參考圖「{item['ref']}」還沒有產生，請先產生它")
+        ref = ref_image(item, dry)
         wf[nodes['image']]['inputs']['image'] = 'ref.png' if dry else comfy.upload(ref)
     else:
         w, h = item.get('size') or cfg['sizes'][kind]
@@ -122,8 +127,34 @@ def build(item, cfg, templates, comfy, dry):
     return wf, nodes['save']
 
 
+def ref_image(item, dry):
+    """參考圖：一張就直接用；插圖（正方形）或好幾個角色時，把立繪並排貼在正方形的淺灰底上"""
+    refs = item['ref'] if isinstance(item['ref'], list) else [item['ref']]
+    paths = [RAW / f'{r}.png' for r in refs]
+    for r, path in zip(refs, paths):
+        if not path.exists() and not dry:
+            raise RuntimeError(f"參考圖「{r}」還沒有產生，請先產生它")
+    if dry or (len(paths) == 1 and item['kind'] != 'scene'):
+        return paths[0]
+    ims = [Image.open(x).convert('RGB') for x in paths]
+    h = max(im.height for im in ims)
+    ims = [im.resize((round(im.width * h / im.height), h), Image.LANCZOS) for im in ims]
+    w = sum(im.width for im in ims)
+    side = max(w, h)
+    canvas = Image.new('RGB', (side, side), REF_BG)
+    x = (side - w) // 2
+    for im in ims:
+        canvas.paste(im, (x, (side - h) // 2))
+        x += im.width
+    out = RAW / '_參考圖.png'
+    canvas.save(out)
+    return out
+
+
 # ───────── 網頁用檔案 ─────────
 def web_files(kind, name):
+    if kind == 'design':
+        return [DESIGN / f'{name}.webp']
     if kind in WEB_WIDTHS:
         return [IMG / kind / f'{name}-{w}.webp' for w in WEB_WIDTHS[kind]]
     return [IMG / kind / f'{name}.webp']
@@ -131,6 +162,10 @@ def web_files(kind, name):
 
 def export(kind, name, raw_path):
     im = Image.open(raw_path)
+    if kind == 'design':   # 定稿圖：不裁切，原尺寸存成 WebP
+        DESIGN.mkdir(parents=True, exist_ok=True)
+        im.convert('RGB').save(DESIGN / f'{name}.webp', 'WEBP', quality=88, method=6)
+        return None
     (IMG / kind).mkdir(parents=True, exist_ok=True)
     if kind in WEB_WIDTHS:
         im = im.convert('RGB')
@@ -168,11 +203,11 @@ def update_manifest():
 def review_page(cfg, list_path):
     """產生審圖頁：在瀏覽器打開 審圖.html，逐張檢查"""
     rows = []
-    for it in reversed(cfg['items']):  # 新加的排在最前面
+    for it in reversed([x for x in cfg['items'] if x['_run']]):  # 新加的排在最前面
         files = web_files(it['kind'], it['name'])
-        src = '../../img/' + files[-1].relative_to(IMG).as_posix() if files[-1].exists() else ''
+        src = Path(os.path.relpath(files[-1], HERE)).as_posix() if files[-1].exists() else ''
         img = f'<img src="{urllib.parse.quote(src)}" loading="lazy">' if src else '<div class="none">尚未產生</div>'
-        rows.append(f'<figure class="{it["kind"]}">{img}<figcaption><b>{it["name"]}</b>　種子 {it["seed"]}{"　參考：" + it["ref"] if it.get("ref") else ""}<br><small>{it["prompt"]}</small></figcaption></figure>')
+        rows.append(f'<figure class="{it["kind"]}">{img}<figcaption><b>{it["name"]}</b>　種子 {it["seed"]}{"　參考：" + "、".join(it["ref"] if isinstance(it["ref"], list) else [it["ref"]]) if it.get("ref") else ""}<br><small>{it["prompt"]}</small></figcaption></figure>')
     html = f'''<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>審圖：{list_path.stem}</title>
 <style>body{{font-family:sans-serif;background:#222;color:#eee;margin:16px}}main{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}}
@@ -187,7 +222,7 @@ def main():
     ap = argparse.ArgumentParser(description='《畫海人》批次生圖')
     ap.add_argument('--list', help='只用這一份清單（預設：資料夾裡所有「清單_*.json」）')
     ap.add_argument('--server', default='http://127.0.0.1:8188')
-    ap.add_argument('--only', choices=list(WEB_WIDTHS))
+    ap.add_argument('--only', choices=[*WEB_WIDTHS, 'design'])
     ap.add_argument('--names', help='只產生這些名稱（逗號分隔）')
     ap.add_argument('--force', action='store_true', help='已經有的圖也重畫')
     ap.add_argument('--seed-offset', type=int, default=0, help='種子加上這個數字，用來重畫出不同的版本')
@@ -195,24 +230,35 @@ def main():
     ap.add_argument('--rebuild', action='store_true', help='只用已有的原圖重新產生網頁檔案')
     args = ap.parse_args()
 
-    # 每份清單都帶有自己的節點、尺寸與畫風；多份清單時合併 items
-    paths = [Path(args.list)] if args.list else sorted(HERE.glob('清單_*.json'))
-    cfg = None
+    # 所有清單都讀進來（畫風、角色外觀、參考圖要互相查得到）；節點以 清單_劇情.json 為準
+    chosen = None
+    if args.list:
+        chosen = Path(args.list) if Path(args.list).exists() else HERE / Path(args.list).name
+        if not chosen.exists():
+            sys.exit(f'找不到清單：{args.list}')
+    paths = sorted(HERE.glob('清單_*.json'), key=lambda x: x.name != '清單_劇情.json')
+    cfg = {'style': {}, 'sizes': {}, 'looks': {}, 'items': []}
     for path in paths:
         own = json.loads(path.read_text(encoding='utf-8'))
-        if cfg is None:
-            cfg = own
-        else:
-            cfg['style'].update(own.get('style', {}))
-            cfg['sizes'].update(own.get('sizes', {}))
-            cfg['items'] += own['items']
-    list_path = paths[0] if len(paths) == 1 else HERE / '清單_全部.json'
+        cfg.setdefault('nodes', own.get('nodes'))
+        for key in ('style', 'sizes', 'looks'):
+            cfg[key].update(own.get(key, {}))
+        # 標了「手動」的清單（試畫、角色立繪），只有用 --list 指定時才會跑
+        run = path.resolve() == chosen.resolve() if chosen else not own.get('手動')
+        for it in own['items']:
+            # candidates：還沒選定的圖，先用連續的種子畫幾張候選，選好以後把種子寫回清單、拿掉 candidates
+            for k in range(it.get('candidates', 0)) or [None]:
+                one = dict(it, _run=run)
+                if k is not None:
+                    one.update(name=f"{it['name']}_候選{k + 1}", seed=it['seed'] + k)
+                cfg['items'].append(one)
+    list_path = chosen or HERE / '清單_全部.json'
     dup = {it['name'] for it in cfg['items'] if [x['name'] for x in cfg['items']].count(it['name']) > 1}
     if dup:
         sys.exit(f'清單裡有重複的名稱：{"、".join(sorted(dup))}')
     templates = {k: json.loads((WORKFLOWS / f'{k}.json').read_text(encoding='utf-8')) for k in ('t2i', 'edit')}
     names = set(args.names.split(',')) if args.names else None
-    items = [it for it in cfg['items'] if (not args.only or it['kind'] == args.only) and (not names or it['name'] in names)]
+    items = [it for it in cfg['items'] if (it['_run'] or names) and (not args.only or it['kind'] == args.only) and (not names or it['name'] in names)]
     if names:
         missing = names - {it['name'] for it in cfg['items']}
         if missing:
@@ -241,7 +287,7 @@ def main():
         if not args.force and all(f.exists() for f in web_files(kind, name)):
             skipped += 1
             continue
-        tag = f'[{i}/{len(items)}] {kind} {name}' + (f'（參考 {it["ref"]}）' if it.get('ref') else '')
+        tag = f'[{i}/{len(items)}] {kind} {name}' + (f'（參考 {"、".join(it["ref"] if isinstance(it["ref"], list) else [it["ref"]])}）' if it.get('ref') else '')
         try:
             wf, save_node = build(it, cfg, templates, comfy, args.dry_run)
             if args.dry_run:
