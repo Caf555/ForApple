@@ -25,14 +25,15 @@
     "negative": "text, letters, words, readable writing, signature, watermark, logo, border, frame, speech bubble, manga panel, photograph, photorealistic, 3D render, CGI, chibi, oversaturated neon colors, bright cheerful daylight, blurry, low quality, jpeg artifacts, deformed, bad anatomy, extra fingers, extra limbs, missing fingers, duplicate figures, collage, split image, mixed indoor and outdoor scene, gore, blood, modern objects, guns, cars, electric lights, asian architecture, paper lanterns, pagoda, kimono",
     "scene_people": "Only the people mentioned in the description appear, drawn in clean anime style with crisp line art and cel shading.",
     "scene_empty": "The scene is completely empty of people: no humans, no figures and no human silhouettes anywhere in the picture.",
-    "scene_hands": "Only the hands and forearms mentioned are visible, reaching in from the edge of the frame and naturally attached to arms; no faces and no other people."
+    "scene_hands": "Only the hands and forearms mentioned are visible, reaching in from the edge of the frame and naturally attached to arms; no faces and no other people.",
+    "scene_empty_lead": "An uninhabited scene with no people in it."
   },
   "items": [
     {
       "kind": "scene",
       "name": "幕_群島夜海",
       "seed": 5101,
-      "prompt": "A vast night sea under a sky full of stars, no continent, dozens of tiny islands scattered to the horizon, each island with one small warm lamp glowing, thin mist on the water, calm and lonely, wide view from a high angle."
+      "prompt": "A vast night sea under a sky full of stars, no continent, dozens of tiny islands scattered to the horizon, each island with one small warm lamp glowing, thin mist on the water, calm and still, wide view from a high angle."
     },
     {
       "kind": "scene",
@@ -124,7 +125,7 @@
       "kind": "scene",
       "name": "幕_霧中的燈塔",
       "seed": 5115,
-      "prompt": "Present day, a lighthouse on a black reef almost lost in thick fog, its lamp blinking faintly, layers of mist drifting in different directions, lonely and mysterious."
+      "prompt": "Present day, a lighthouse on a black reef almost lost in thick fog, its lamp blinking faintly, layers of mist drifting in different directions, still and mysterious."
     },
     {
       "kind": "scene",
@@ -142,7 +143,7 @@
       "kind": "scene",
       "name": "幕_暴風雨的夜",
       "seed": 5118,
-      "prompt": "A violent storm at night over the sea, huge dark waves, slanting rain, a flash of lightning, far away the small silhouette of a capsized boat, no people visible, no gore, dramatic but not graphic."
+      "prompt": "A violent storm at night over the open sea, huge dark waves, slanting rain, a flash of lightning, far away a small overturned empty rowboat hull tossed by the waves, dramatic but not graphic."
     },
     {
       "kind": "scene",
@@ -228,7 +229,7 @@
       "kind": "scene",
       "name": "幕_千帆市的燈火",
       "seed": 5132,
-      "prompt": "A distant floating city made of hundreds of wooden ships tied together, all of them floating on the sea surface, at dusk, countless masts like a forest, thousands of warm iron-framed oil lanterns glowing along the decks, reflections on the water, a little fog low on the horizon."
+      "prompt": "A distant harbour town built on hundreds of wooden ships moored side by side and lashed together, every hull sitting low in the sea water with waves lapping against it, seen from the sea at dusk, countless masts like a forest, thousands of warm iron-framed oil lanterns glowing along the decks, reflections on the water, a little fog low on the horizon."
     },
     {
       "kind": "scene",
@@ -273,7 +274,7 @@
       "kind": "scene",
       "name": "幕_畫了兩次的島",
       "seed": 5139,
-      "prompt": "An old parchment register map showing the same island drawn twice, once in solid ink lines and once slightly shifted in faint dashed lines, surveyor's notes and measuring marks around it."
+      "prompt": "Close-up from directly above of an old parchment register map lying flat on a dark wooden desk and filling the frame, showing the same island drawn twice, once in solid ink lines and once slightly shifted in faint dashed lines, surveyor's notes as small squiggles and measuring marks around it."
     },
     {
       "kind": "scene",
@@ -326,7 +327,7 @@
       "kind": "scene",
       "name": "幕_湖面的哭聲",
       "seed": 5147,
-      "prompt": "A dark lagoon at night under stars, concentric ripples spreading from a single glowing pearl floating on the surface, a faint silhouette of stilt houses on the shore, lonely and sad."
+      "prompt": "A dark lagoon at night under stars, concentric ripples spreading from a single glowing pearl floating on the surface, a faint silhouette of stilt houses on the shore, sorrowful and still."
     },
     {
       "kind": "scene",
@@ -581,7 +582,7 @@
       "kind": "scene",
       "name": "幕_霧邊的灰燈",
       "seed": 5188,
-      "prompt": "A long row of grey lanterns on poles standing in cold still water, receding into a thick wall of white fog, soft pale cyan light, quiet and lonely."
+      "prompt": "A long row of grey lanterns on poles standing in cold still water, receding into a thick wall of white fog, soft pale cyan light, quiet and still."
     },
     {
       "kind": "scene",
@@ -868,7 +869,8 @@
       "kind": "scene",
       "name": "幕_牆上的水線",
       "seed": 5230,
-      "prompt": "An ancient city wall with a clear dark watermark line far above human height, a small traveler standing below looking up."
+      "prompt": "An ancient city wall with a clear dark watermark line far above human height, a small traveler standing below looking up.",
+      "people": true
     },
     {
       "kind": "scene",
@@ -1152,7 +1154,7 @@
       "kind": "scene",
       "name": "幕_漂著的酒桶",
       "seed": 5268,
-      "prompt": "Night sea seen close to the water surface, a line of old wooden barrels drifting slowly toward a misty horizon, on the horizon the faint dark silhouette of a whale spouting a thin plume of water, soft ripples catching moonlight, quiet and lonely."
+      "prompt": "Night sea seen close to the water surface, a line of old wooden barrels drifting slowly toward a misty horizon, on the horizon the faint dark silhouette of a whale spouting a thin plume of water, soft ripples catching moonlight, quiet and still."
     },
     {
       "kind": "scene",
