@@ -698,7 +698,7 @@
     {
       "kind": "enemy",
       "name": "怪_斷槳",
-      "seed": 8195,
+      "seed": 8198,
       "transparent": true,
       "prompt": "A broken wooden oar flying through the air on its own, tilted diagonally, its split splintered end jagged and sharp like a spearhead, a glowing amber crack in the wood like an angry eye, wood splinters flying off it. Accent colours: ochre brown and stone grey.",
       "style": "enemy_object"
@@ -924,7 +924,7 @@
     {
       "kind": "enemy",
       "name": "怪_安魂的合唱",
-      "seed": 8126,
+      "seed": 8128,
       "transparent": true,
       "prompt": "A small floating cluster of seven tiny round glowing spirit wisps, each a soft little ball of light like a candle flame with a small round open singing mouth, drifting close together in a loose circle, faint musical sparkles between them, soft starlight. Accent colours: starlight gold and soft silver.",
       "style": "enemy_object"
@@ -1013,7 +1013,7 @@
     {
       "kind": "enemy",
       "name": "怪_未完的線",
-      "seed": 8238,
+      "seed": 8241,
       "transparent": true,
       "prompt": "A glowing green ink line streaking diagonally like a comet across empty space, the front end a sharp bright pen-nib point, crackling sparks along the line. Accent colours: pale sage green and cloud white.",
       "style": "enemy_object"
