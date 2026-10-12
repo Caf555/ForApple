@@ -463,9 +463,9 @@
     {
       "kind": "enemy",
       "name": "怪_硫磺精",
-      "seed": 8063,
+      "seed": 8163,
       "transparent": true,
-      "prompt": "A living elemental spirit, just a floating mass of its element with no human body, no arms and no legs: a churning cloud of yellow sulfur smoke with a scowling glowing face, bubbling and spitting hot yellow sparks. Accent colours: ember orange and warm red."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a round billowing cloud of yellow sulfur smoke, only smoke and nothing else, with a scowling glowing face inside the smoke, hot yellow sparks bubbling off it. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -500,9 +500,9 @@
     {
       "kind": "enemy",
       "name": "怪_風箱鬼",
-      "seed": 8068,
+      "seed": 8168,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a torn leather blacksmith bellows floating in the air, its handles flapping like jaws, blasting a gust of air and sparks out of its nozzle, two glowing eyes on the leather. Accent colours: pale sage green and cloud white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: an old torn leather blacksmith bellows, just the bellows itself with its two wooden handles and metal nozzle, floating sideways, puffing a blast of air and orange sparks out of its nozzle, two glowing eyes painted on the leather. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -697,9 +697,9 @@
     {
       "kind": "enemy",
       "name": "怪_斷槳",
-      "seed": 8095,
+      "seed": 8195,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a broken wooden oar floating in the air and lunging forward diagonally, its split splintered end pointed like a spear tip, a glowing amber ink core in the wood, splinters and brown dust trailing behind. Accent colours: ochre brown and stone grey."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a single broken wooden oar flying through the air on its own, tilted diagonally as if thrusting forward, its split splintered end pointed like a spear tip, a glowing amber crack in the wood like an eye, splinters and brown dust trailing behind. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -901,9 +901,9 @@
     {
       "kind": "enemy",
       "name": "怪_水線",
-      "seed": 8123,
+      "seed": 8223,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a long floating ribbon of dark sea water lashing through the air like a whip, foam spraying from its tip, a glowing teal core in the middle of the water. Accent colours: sea teal and foam white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a long ribbon of dark sea water curving through the air like a lashing whip, only water, foam spraying from its tip, a glowing teal core in the middle of the water. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -915,9 +915,9 @@
     {
       "kind": "enemy",
       "name": "怪_鐘聲",
-      "seed": 8125,
+      "seed": 8225,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: an old bronze bell hanging in the air by itself, ringing violently, rings of visible golden sound waves blasting outward from its mouth, a glowing eye in the dark of the bell. Accent colours: pale sage green and cloud white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a single old bronze bell hanging in the air by itself, only the bell, rings of visible golden sound waves blasting outward from its mouth, one glowing eye in the dark inside of the bell. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -966,9 +966,9 @@
     {
       "kind": "enemy",
       "name": "怪_未乾的顏料",
-      "seed": 8132,
+      "seed": 8232,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a large splash of wet red paint flying forward, dripping and steaming hot, sharp paint spikes splattering out, two glowing orange eyes in the paint. Accent colours: ember orange and warm red."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a big splash of wet red paint flying forward, only liquid paint, dripping and steaming hot, sharp spikes of paint splattering out of it, two glowing orange eyes in the paint. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -1003,16 +1003,16 @@
     {
       "kind": "enemy",
       "name": "怪_纏繞的光",
-      "seed": 8137,
+      "seed": 8237,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: two ribbons of light, one gold and one blue, twisting tightly around each other and lashing out like whips, bright sparks where they cross. Accent colours: starlight gold and soft silver."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: two ribbons of light, one gold and one blue, twisting tightly around each other in a spiral and lashing outward like whips, only light, bright sparks where they cross. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
       "name": "怪_未完的線",
-      "seed": 8138,
+      "seed": 8238,
       "transparent": true,
-      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a glowing half-drawn pen line racing forward with a sharp bright nib-shaped tip like a spearhead, the line behind it crackling with green light. Accent colours: pale sage green and cloud white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: one glowing half-drawn ink line racing across the empty space, ending in a sharp bright pen-nib tip like a spearhead, the line behind it crackling with green light, only the line. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
