@@ -26,14 +26,14 @@
     "scene_people": "Only the people mentioned in the description appear, drawn in clean anime style with crisp line art and cel shading.",
     "scene_empty": "The scene is completely empty of people: no humans, no figures and no human silhouettes anywhere in the picture.",
     "scene_hands": "Only the hands and forearms mentioned are visible, reaching in from the edge of the frame and naturally attached to arms; no faces and no other people.",
-    "scene_empty_lead": "An uninhabited scene with no people in it."
+    "scene_empty_lead": "Pure environment art with no characters: an uninhabited place where no person, figure or traveler appears anywhere, not even a tiny one in the distance."
   },
   "items": [
     {
       "kind": "scene",
       "name": "幕_群島夜海",
       "seed": 5301,
-      "prompt": "Aerial view from high up in the night sky looking straight down over the open sea, no land in the foreground, the bottom of the frame is only dark water, a sky full of stars reflected on the sea, dozens of tiny islands scattered to the horizon, each island with one small warm lamp glowing, thin mist on the water, calm and still."
+      "prompt": "A starry night sky above a dark sea seen from very high above the clouds, like a map come alive: dozens of tiny islands scattered across the sea to the horizon, each island only a small dark shape with one tiny warm lamp glowing on it, thin mist drifting between them, stars reflected in the water, calm and still."
     },
     {
       "kind": "scene",
@@ -382,7 +382,7 @@
       "kind": "scene",
       "name": "幕_南方的紅帆",
       "seed": 5156,
-      "prompt": "Seen from out on the open sea at night, a ship with red sails sailing away toward the south, a column of dark smoke and a faint red glow of fire on the far horizon, stars above, the foreground is only calm dark water."
+      "prompt": "Seen from the deck height of a distant ship at night, nothing but open dark water between the viewer and the horizon: a ship with red sails sailing away toward the south, a column of dark smoke and a faint red glow of fire on the far horizon, stars above."
     },
     {
       "kind": "scene",
@@ -630,20 +630,20 @@
       "kind": "scene",
       "name": "幕_鏡子一樣的冰",
       "seed": 5195,
-      "prompt": "A vast frozen sea, perfectly flat and smooth like a mirror, clouds and pale dawn sky reflected in the ice, tiny dark islands on the horizon."
+      "prompt": "A vast frozen sea reaching to every edge of the frame, perfectly flat and smooth like a mirror, no rocks and no shore in view, clouds and pale dawn sky reflected in the ice, tiny dark islands on the far horizon."
     },
     {
       "kind": "scene",
       "name": "幕_冰裡的倒影",
       "seed": 5196,
-      "prompt": "An adult fisherman in a heavy coat looking down at mirror-like ice; his reflection in the ice is a small child instead, cold blue light, wonder and sadness.",
+      "prompt": "Close view of a sheet of mirror-like ice: at the top edge of the frame only the heavy boots and coat hem of an adult fisherman standing on the ice, and in the ice below him his reflection, which is not a man but a small child looking back up, the child exists only as a reflection inside the ice, cold blue light, wonder and sadness.",
       "people": true
     },
     {
       "kind": "scene",
       "name": "幕_冰下的屋頂",
       "seed": 5197,
-      "prompt": "Looking down through clear thick ice: faint shapes of ancient rooftops and a tall spire of a sunken city far below, cracks of light in the ice."
+      "prompt": "View looking straight down at a sheet of clear thick ice that fills the entire frame, with no horizon and no sky: deep beneath the transparent ice, faint blue-green shapes of ancient rooftops and the tall spire of a sunken city, thin cracks of light running through the ice surface."
     },
     {
       "kind": "scene",
@@ -662,7 +662,7 @@
       "kind": "scene",
       "name": "幕_冰封的船隊",
       "seed": 5200,
-      "prompt": "A whole fleet of old sailing ships frozen in the ice of a northern bay at night, their masts broken like a fallen forest, stars above."
+      "prompt": "Wide view across a northern bay at night: a whole fleet of old sailing ships frozen fast in the ice, their masts broken like a fallen forest, smooth empty snow-covered ice in the foreground, stars above."
     },
     {
       "kind": "scene",
@@ -674,7 +674,7 @@
       "kind": "scene",
       "name": "幕_亮起來的船艙",
       "seed": 5202,
-      "prompt": "At night, the cabin windows of empty frozen ships light up one by one with warm yellow light, no people on deck, eerie and quiet."
+      "prompt": "At night in a frozen bay, the hulls of old wooden sailing ships trapped in thick ice, masts and frosted rigging above them, and the small round cabin windows along their hulls lighting up one by one with warm yellow light, empty decks, eerie and quiet."
     },
     {
       "kind": "scene",
@@ -687,7 +687,7 @@
       "kind": "scene",
       "name": "幕_天亮熄燈",
       "seed": 5204,
-      "prompt": "Dawn over a frozen bay of ships, all the cabin lights going dark at the same time, pale golden light on the ice."
+      "prompt": "Dawn over a frozen bay full of old wooden sailing ships trapped in the ice, all their cabin windows going dark at the same moment, pale golden light spreading across the empty snow-covered ice."
     },
     {
       "kind": "scene",
@@ -699,7 +699,7 @@
       "kind": "scene",
       "name": "幕_冰做的門",
       "seed": 5206,
-      "prompt": "A towering gate made of ice, carved with ancient unreadable runes, standing in deep fog on a snowy plain, cold blue light within."
+      "prompt": "A towering gate carved entirely out of translucent blue ice, two huge ice doors carved with ancient unreadable runes, standing alone in deep fog on an empty snowy plain, cold blue light glowing within the ice, untouched snow in front of it."
     },
     {
       "kind": "scene",
@@ -712,7 +712,7 @@
       "kind": "scene",
       "name": "幕_走到門前的腳印",
       "seed": 5208,
-      "prompt": "A single line of small footprints in fresh snow leading all the way up to the foot of a giant ice gate, nobody in sight."
+      "prompt": "A single line of small human boot prints in fresh untouched snow, leading from the bottom of the frame all the way up to the foot of a towering gate carved out of translucent blue ice, fog around the gate, the snow otherwise empty."
     },
     {
       "kind": "scene",
@@ -724,7 +724,7 @@
       "kind": "scene",
       "name": "幕_門縫的光",
       "seed": 5210,
-      "prompt": "A giant ice gate opening a narrow crack, a beam of warm light pouring out across the snow and fog."
+      "prompt": "A towering gate carved out of translucent blue ice, its two ice doors opening a narrow crack, a beam of warm golden light pouring out across the empty untouched snow and the fog."
     },
     {
       "kind": "scene",
@@ -756,7 +756,7 @@
       "kind": "scene",
       "name": "幕_往回走的腳印",
       "seed": 5214,
-      "prompt": "On the far side of an ice gate, a fresh line of footprints in the snow leading back toward the viewer, soft hopeful light behind the fog."
+      "prompt": "Seen from behind a towering gate carved out of translucent blue ice: a fresh line of small human boot prints in the snow leading away from the gate toward the viewer, soft hopeful light glowing behind the fog, the snow otherwise empty."
     },
     {
       "kind": "scene",
@@ -857,7 +857,7 @@
       "kind": "scene",
       "name": "幕_刮掉的名字",
       "seed": 5228,
-      "prompt": "Close-up of rough tree bark where carved letters have been scraped away, only one small carved character mark left, white petals around it."
+      "prompt": "Close-up of rough tree bark where carved marks have been scraped away into pale raw wood, only a few small meaningless scratches left, no letters, white petals around it."
     },
     {
       "kind": "scene",
@@ -914,7 +914,7 @@
       "kind": "scene",
       "name": "幕_畫桌上的星筆",
       "seed": 5237,
-      "prompt": "A large wooden drawing desk with an unfinished map, an old pen with a star-shaped tip glowing warm gold resting on it, candle wax and ink stains."
+      "prompt": "Indoors, a large wooden drawing desk inside a dim workshop room with stone walls, an unfinished map spread on the desk, an old pen with a star-shaped tip glowing warm gold resting on the map, candle wax and ink stains, candlelight."
     },
     {
       "kind": "scene",
@@ -926,13 +926,13 @@
       "kind": "scene",
       "name": "幕_一片白",
       "seed": 5239,
-      "prompt": "A vast endless field of pure white mist at the center of the sea, nothing at all visible, soft and silent, only the faintest hint of a horizon."
+      "prompt": "Nothing but soft white mist filling the entire frame, an endless pale void with no ground, no shore, no objects and no shapes, only the faintest hint of a horizon line, silent."
     },
     {
       "kind": "scene",
       "name": "幕_纏在一起的光",
       "seed": 5240,
-      "prompt": "Inside a white void, two ribbons of light, one warm gold and one pale blue, twisting and coiling around each other like two strokes of a pen in a duel."
+      "prompt": "Abstract scene inside an empty white void with no ground, no buildings and no people: two long ribbons of pure light, one warm gold and one pale blue, twisting and coiling around each other in the air like two pen strokes fighting."
     },
     {
       "kind": "scene",
@@ -951,7 +951,7 @@
       "kind": "scene",
       "name": "幕_擋在筆前的女人",
       "seed": 5242,
-      "prompt": "Back view of the woman standing with one arm raised, blocking an old man's glowing golden pen in a white void, her pen glowing pale blue, the blue and gold light pushing against each other. The woman:",
+      "prompt": "Inside an empty white void with no ground, no buildings and no landscape: back view of the woman standing with one arm raised, facing a tall old man in a dark blue robe who thrusts a long pen with a glowing white-gold tip toward her; her own pen glows pale blue; the blue and gold light push against each other between them. The woman:",
       "chars": [
         "母親"
       ],
@@ -999,13 +999,13 @@
       "kind": "scene",
       "name": "幕_平靜的海",
       "seed": 5248,
-      "prompt": "A perfectly calm, flat, sunlit sea stretching to the horizon, peaceful but strangely still, no fog, no waves."
+      "prompt": "Open sea seen from the water itself, no land or shore anywhere in the frame: a perfectly calm, flat, sunlit sea stretching to the horizon under a clear sky, strangely still, no fog, no waves."
     },
     {
       "kind": "scene",
       "name": "幕_回來的薄霧",
       "seed": 5249,
-      "prompt": "A thin gentle mist returning over the sea at twilight, soft and quiet, grey lanterns glowing along the edge of the fog."
+      "prompt": "Open sea at twilight with no land in the frame, a thin gentle mist drifting back over the calm water, a row of grey lanterns on wooden posts standing in the water glowing softly along the edge of the fog."
     },
     {
       "kind": "scene",
@@ -1093,7 +1093,7 @@
       "kind": "scene",
       "name": "幕_太陽出來霧散了",
       "seed": 5261,
-      "prompt": "The morning sun rising over the sea and the light mist dissolving in golden sunlight, revealing calm water, hopeful and warm."
+      "prompt": "Open sea at sunrise with no land in the frame, the morning sun rising over the horizon and the light mist dissolving in golden sunlight, revealing calm sparkling water, hopeful and warm."
     },
     {
       "kind": "scene",
@@ -1131,10 +1131,9 @@
       "kind": "scene",
       "name": "幕_回家的船",
       "seed": 5265,
-      "prompt": "An old two-masted fishing ship sailing home into a harbor at dawn, a fisherman father and his teenage son standing at the bow, an old sea turtle and an old fisherman waiting on the pier. The son:",
+      "prompt": "An old two-masted fishing ship sailing into a harbor at dawn. At the bow of the ship stand two people side by side: a weathered grey-bearded fisherman father, and his teenage son. In the foreground, on the wooden pier and not on the ship, a big old sea turtle with a barnacle-covered shell waits beside an old fisherman. The son:",
       "chars": [
-        "阿潮",
-        "嘎嘎"
+        "阿潮"
       ],
       "people": true
     },
@@ -1160,13 +1159,13 @@
       "kind": "scene",
       "name": "幕_沙洲上的金船",
       "seed": 5269,
-      "prompt": "A long white sandbar in the middle of a calm sea, on it lies the ruined skeleton of a large old sailing ship whose hull ribs and planks are made of real gold, glinting warmly in low evening sun through thin mist, small tents of salvagers in the far distance, wide view."
+      "prompt": "A long white sandbar in the middle of a calm sea, on it lies the wrecked hull of a large old wooden sailing ship whose ribs and planks are made entirely of shining gold metal, the whole wreck gleaming bright gold in low evening sun through thin mist, small tents of salvagers in the far distance, wide view."
     },
     {
       "kind": "scene",
       "name": "幕_數金幣的影子",
       "seed": 5270,
-      "prompt": "Inside a cramped ship captain's cabin piled to the ceiling with gold coins, a dark translucent shadow figure in an old formal merchant coat sits on top of the coin pile hunched over a thick ledger, counting coins one by one, only warm candlelight, lonely and eerie.",
+      "prompt": "Inside a cramped ship captain's cabin piled to the ceiling with gold coins, a ghost made of dark translucent smoke, its body see-through so the coins behind it show through, shaped like a man in an old formal merchant coat, sits on top of the coin pile hunched over a thick ledger counting coins, only warm candlelight, eerie.",
       "people": true
     },
     {
