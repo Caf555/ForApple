@@ -533,7 +533,7 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 /* 霧心：空白格（紙還沒畫到的地方）、舊圖碎片 */
 .hex.seen.land-白 polygon { fill: #f6f1e4; stroke: #c9bca0; stroke-dasharray: 5 4; }
 .hex.seen.land-白.can polygon { fill: #fffaf0; }
-.hex .k-圖 { fill: #7a4a24; }
+.hex .k-圖 { fill: #7a4a24; } .hex .k-殘 { fill: #6a2a6a; }
 .hero .wish { color: var(--muted); } .hero .wish.done { color: var(--accent2); }
 /* 低語：找出說謊的聲音 */
 .pz-voices { display: flex; flex-direction: column; gap: 8px; width: 100%; }
@@ -655,3 +655,9 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .ng-nail.hit { background: #3c4347; border-color: #22282b; width: 10px; height: 10px; margin-left: -5px; top: 48px; }
 .ng-nail.miss { background: #c66a4e; border-color: #7a3424; transform: rotate(35deg) scaleY(.6); border-radius: 3px; }
 .ng-hammer { position: absolute; top: -40px; font-size: 40px; transform-origin: 50% 0; pointer-events: none; }
+/* 酒館：按章分頁、隱藏委託 */
+.job-tabs { margin: 4px 0 8px; }
+.job.secret { border-color: #7a4a8a; background: linear-gradient(135deg, rgba(122, 74, 138, .16), transparent 60%), var(--panel2); }
+.job.secret.ready { border-color: var(--accent); }
+.job.secret.done { opacity: .75; }
+.job.secret-back { border-style: dashed; opacity: .8; text-align: center; }

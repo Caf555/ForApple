@@ -1,5 +1,5 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
-import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost } from '../js/data.js';
+import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, SECRET_JOBS, SIXTH_PAGE, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
 import { PUZZLES } from '../js/puzzle.js';
 import { DIFF } from '../js/state.js';
@@ -46,7 +46,7 @@ for (const [k, e] of Object.entries(PORT_EVENTS)) if (!e.title || (!e.text && k 
 const bpFrom = new Set(Object.keys(EQUIPS).filter(k => EQUIPS[k].start));
 for (const h of Object.values(HEROES)) if (h.weapon) { if (!EQUIPS[h.weapon]) bad(`隊友自己的武器「${h.weapon}」不存在`); bpFrom.add(h.weapon); }
 for (const d of Object.values(ISLANDS)) { for (const b of d.bps) bpFrom.add(b); if (d.boss.bp) { if (!EQUIPS[d.boss.bp]) bad(`首領一定給的圖紙「${d.boss.bp}」不存在`); bpFrom.add(d.boss.bp); } }
-for (const c of COMMISSIONS) if (c.reward.圖紙) bpFrom.add(c.reward.圖紙);
+for (const c of [...COMMISSIONS, ...SECRET_JOBS]) if (c.reward.圖紙) bpFrom.add(c.reward.圖紙);
 for (const it of BLACK_MARKET) if (it.kind === 'bp') { if (!EQUIPS[it.bp]) bad(`黑市的圖紙「${it.bp}」不存在`); bpFrom.add(it.bp); }
 for (const it of BLACK_MARKET) {
   if (it.kind === 'mat' && !MATS[it.name]) bad(`黑市的素材「${it.name}」不存在`);
@@ -126,6 +126,22 @@ for (const c of COMMISSIONS) {
   if (isl && c.kind === 'kill' && !reachableFoes(isl).has(c.target)) bad(`委託 ${c.title} 要擊退的「${c.target}」在${c.island}的一般戰鬥裡遇不到`);
   if (isl && c.kind === 'bring' && !(isl.mats || []).includes(c.target) && ![...reachableFoes(isl)].some(e => (ENEMIES[e].drop || []).some(([m]) => m === c.target))) bad(`委託 ${c.title} 要帶回的「${c.target}」在${c.island}拿不到`);
 }
+
+// 酒館的隱藏委託：每一章剛好一張；島要在那一章、小遊戲要存在、守殘片的敵人要存在、圖紙只從這裡拿
+if (!TILE_INFO.殘) bad('格子種類「殘」（第六頁殘片）不存在');
+for (const sea of SEAS) if (SECRET_JOBS.filter(j => j.sea === sea).length !== 1) bad(`${sea}要剛好有一張隱藏委託`);
+for (const j of SECRET_JOBS) {
+  if (ids.has(j.id)) bad(`隱藏委託編號 ${j.id} 和別的委託重複`); ids.add(j.id);
+  const isl = ISLANDS[j.island];
+  if (!isl) bad(`隱藏委託 ${j.title} 的島「${j.island}」不存在`);
+  else if (isl.sea !== j.sea || isl.hidden) bad(`隱藏委託 ${j.title} 的島「${j.island}」不是${j.sea}的一般島`);
+  if (!PUZZLES.includes(j.game)) bad(`隱藏委託 ${j.title} 的小遊戲「${j.game}」不存在`);
+  for (const e of j.foes) if (!ENEMIES[e]) bad(`隱藏委託 ${j.title} 的敵人「${e}」不存在`);
+  if (!j.find || !j.find.length || !j.win || !j.win.length || !j.text) bad(`隱藏委託 ${j.title} 缺少說明或劇情`);
+  for (const k in j.reward) if (k !== '銀貝' && k !== '圖紙' && !MATS[k]) bad(`隱藏委託 ${j.title} 的報酬「${k}」不存在`);
+  if (j.reward.圖紙 && !EQUIPS[j.reward.圖紙]) bad(`隱藏委託 ${j.title} 的圖紙「${j.reward.圖紙}」不存在`);
+}
+if (!SIXTH_PAGE.length) bad('第六頁（五片殘片拼起來）的劇情是空的');
 
 const checkEvents = (where, list) => list.forEach(ev => ev.opts.forEach(o => { for (const k in o.fx) if (!FX_OK(k)) bad(`${where}・${ev.title}：效果「${k}」不認得`); }));
 checkEvents('航海', SEA_EVENTS);
@@ -235,7 +251,7 @@ for (const k of Object.keys(HEROES)) if (k !== '墨里' && !WISHES[k]) bad(`隊�
 const picList = JSON.parse(readFileSync(new URL('./生圖/清單_劇情.json', import.meta.url), 'utf8')).items.map(it => it.name);
 for (const n of new Set(picList)) if (picList.filter(x => x === n).length > 1) bad(`生圖清單裡的「${n}」重複了`);
 const usedPics = [];
-const EXTRA_CINE = ['開場', '第一章完', '第二章', '第二章完', '第三章', '第三章完', '第四章', '第四章完', '回來的腳印', '第五章', '尾聲', ...Object.values(ENDINGS).map(e => e.cine)];
+const EXTRA_CINE = [...SECRET_JOBS.map(j => j.id), '第六頁', '開場', '第一章完', '第二章', '第二章完', '第三章', '第三章完', '第四章', '第四章完', '回來的腳印', '第五章', '尾聲', ...Object.values(ENDINGS).map(e => e.cine)];
 for (const k of [...EXTRA_CINE, ...Object.keys(ISLANDS)]) if (!CINEMA[k]) bad(`缺少劇情動畫「${k}」`);
 for (const [k, c] of Object.entries(CINEMA)) {
   if (!EXTRA_CINE.includes(k) && !ISLANDS[k]) bad(`劇情動畫「${k}」對應的島不存在`);

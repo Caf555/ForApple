@@ -19,6 +19,7 @@ export const TILE_INFO = {
   聲: { name: '低語', tip: '霧裡有人在說話。可能是真的，也可能是陷阱。' },
   跡: { name: '星形的記號', tip: '地上有一個發著淡光的小星星。' },
   圖: { name: '舊圖碎片', tip: '地上壓著一張很舊的紙。' },
+  殘: { name: '第六頁殘片', tip: '酒館的隱藏委託說的那一頁，就在這附近。' },
   王: { name: '首領', tip: '' },
   空: { name: '', tip: '' },
 };
@@ -2633,3 +2634,26 @@ export const CINEMA = {
   ] },
 };
 Object.assign(CINEMA, HIDDEN_CINEMA);
+
+// 酒館的隱藏委託：拿到第六頁殘片（殘一～殘五）、五片拼成第六頁
+Object.assign(CINEMA, {
+  殘一: { name: '第六頁殘片・一', frames: [
+    { art: 'chest', img: '幕_鐵筒裡的殘頁', cam: 'in', text: '鏽掉的鐵筒裡，捲著一頁發黃的紙。紙上的海岸線，畫到一半就斷了。' },
+  ] },
+  殘二: { name: '第六頁殘片・二', frames: [
+    { art: 'ledgers', img: '幕_蓋滿作廢的殘頁', cam: 'in', text: '一頁紙，被蓋滿了「作廢」。可是印章底下，珊瑚礁的線還在。' },
+  ] },
+  殘三: { name: '第六頁殘片・三', frames: [
+    { art: 'forgeisle', img: '幕_白色爐火裡的紙', cam: 'in', text: '白色的爐火正中間，有一頁紙，燒了五十年，連邊邊都沒有焦。' },
+  ] },
+  殘四: { name: '第六頁殘片・四', frames: [
+    { art: 'mirrorice', img: '幕_冰鏡裡的紙', cam: 'in', text: '碎掉的冰鏡裡，飄起一頁紙。紙是乾的，一滴水都沒有。' },
+  ] },
+  殘五: { name: '第六頁殘片・五', frames: [
+    { art: 'maproom', img: '幕_畫了一半的島', cam: 'in', text: '影子消失的地方，留下了一頁紙。紙的正中間，是一座只畫了一半的島。' },
+  ] },
+  第六頁: { name: '第六頁・墨潮島', frames: [
+    { art: 'bookmap', img: '幕_五片殘頁拼合', cam: 'in', text: '五片紙攤在書上，一片接一片，邊緣剛好對得起來。' },
+    { art: 'lastpage', img: '幕_墨水流成的島', cam: 'l', sfx: 'whisper', text: '缺口合上的時候，紙上的墨水自己流了起來，流成一座島的形狀。' },
+  ] },
+});
