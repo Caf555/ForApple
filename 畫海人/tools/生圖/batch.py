@@ -109,6 +109,13 @@ def build(item, cfg, templates, comfy, dry):
     # chars：插圖裡出現的主要角色，自動接上角色清單裡的固定外觀描述
     looks = ' '.join(cfg['looks'][c] for c in item.get('chars', []))
     prompt = f"{style_text} {item['prompt']} {looks}".strip()
+    if kind == 'scene' and 'scene_empty' in style:
+        # 新工作流沒有負向提示詞，有沒有人物要用正面的句子講清楚
+        people = item.get('people')
+        prompt += ' ' + style['scene_hands' if people == 'hands' else 'scene_people' if people else 'scene_empty']
+        if not people and style.get('scene_empty_lead'):
+            # 接在長長的畫風後面模型不夠重視，沒有人的圖在最前面再講一次
+            prompt = f"{style['scene_empty_lead']} {prompt}"
     if item.get('transparent'):
         prompt += ' Transparent background with alpha channel.'
     use_edit = bool(item.get('ref'))
