@@ -5,6 +5,7 @@ import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS } from './islands.js';
 import { diceGame, cardGame } from './gamble.js';
 import { cargoUsed, save, heroStats } from './state.js';
 import { worldOf, surveyMax } from './explore.js';
+import { inkRec, inkCount, litTowers } from './inkplay.js';
 import { el, $ } from './ui.js';
 
 export const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, 醒神香: 20 };
@@ -228,15 +229,20 @@ export class Port {
       body.append(el('p', { class: 'muted' }, '完成一座島，下一座島的航線就會畫進海圖。完成過的島也可以再去：測繪過的地方會留著，其他的東西每次都不一樣。'));
       for (const id of ISLAND_ORDER) {
         const d = ISLANDS[id], r = worldOf(g, id), on = this.unlocked(id);
-        if (!this.seas.includes(d.sea) || !this.shown(id)) continue;
+        if (d.big || !this.seas.includes(d.sea) || !this.shown(id)) continue;
         if (ISLAND_ORDER.find(k => ISLANDS[k].sea === d.sea) === id) body.append(el('h3', { class: 'sub-h' }, d.sea));
         body.append(el('button', { class: 'btn wide chart-row', disabled: !on, onclick: () => { api.close(); this.sail(id); } },
           el('b', {}, on ? `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}` : '？？？'),
           el('small', {}, on ? `${d.hidden ? '隱藏的島・' : ''}${d.sub}・${d.cols}×${d.rows} 格・大約要 ${d.food} 份糧・航海事件 ${d.seaEvents} 個` + (r.visits ? `・最好的測繪度 ${r.best}%（最高 ${surveyMax(id)}%${r.best >= surveyMax(id) ? '，已畫滿' : ''}）` : `・測繪度最高 ${surveyMax(id)}%`) : this.lockText(id))));
       }
-      // 第六頁：五片殘片拼成的島（之後的更新才開得過去）
-      if (g.flags.第六頁) body.append(el('h3', { class: 'sub-h' }, '第六頁'),
-        el('button', { class: 'btn wide chart-row', disabled: true }, el('b', {}, '墨潮島'), el('small', {}, '五片殘片拼成的島。那裡的霧太濃了，船還靠不了岸。')));
+      // 第六頁：五片殘片拼成的島（超大地圖，一次走不完）
+      for (const id of ISLAND_ORDER.filter(k => ISLANDS[k].big && this.unlocked(k))) {
+        const d = ISLANDS[id], r = worldOf(g, id), ink = inkRec(g, id);
+        body.append(el('h3', { class: 'sub-h' }, '第六頁'),
+          el('button', { class: 'btn wide chart-row', onclick: () => { api.close(); this.sail(id); } },
+            el('b', {}, `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}`),
+            el('small', {}, `五片殘片拼成的島・${d.cols}×${d.rows} 格（一次走不完，進度會留著）・每一趟大約要 ${d.food} 份糧・` + (r.visits ? `門 ${Object.keys(ink.gates).length}／4・燈塔 ${litTowers(g, id).length}／4・四色墨 ${inkCount(ink)}／4・最好的測繪度 ${r.best}%` : `測繪度最高 ${surveyMax(id)}%`))));
+      }
     });
   }
 
@@ -245,6 +251,15 @@ export class Port {
     if (hullOf(g) < HULL_BROKEN) { await ctx.ui.alert('船況太差', [`船況只剩 ${hullOf(g)}，船底一直在進水。這樣出海太危險了。`, '先到「船塢」把船修好吧。']); return this.yard(); }
     const need = parseInt(d.food, 10);
     if (g.supply.糧 < need && !(await ctx.ui.confirm('確認', `糧食只有 ${g.supply.糧} 份。${id}大約要 ${d.food} 份，可能撐不完。還是要出航嗎？`, '出航', '再買一些'))) return this.dock();
+    // 墨潮島：點亮過的燈塔，可以直接從那裡登島
+    g.inkStart = null;
+    if (d.big) {
+      const towers = litTowers(g, id);
+      if (towers.length) {
+        const i = await ctx.ui.choose('從哪裡登島', ['墨潮島很大。點亮過的燈塔，可以直接把船開到那裡。'], [{ label: '登陸點（淺灘區）' }, ...towers.map(t => ({ label: `${t.name}的燈塔` }))]);
+        if (i > 0) g.inkStart = towers[i - 1].key;
+      }
+    }
     g.trip = { mats: {}, silver: g.silver, bps: [] };
     await ctx.sail(id);
   }

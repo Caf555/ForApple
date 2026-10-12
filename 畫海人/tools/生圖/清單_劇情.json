@@ -1172,6 +1172,24 @@
       "name": "幕_墨水流成的島",
       "seed": 5281,
       "prompt": "No people in the picture. Close-up of an old map book page where black ink is flowing by itself, swirling and spreading across the paper to form the shape of a large mysterious island surrounded by drawn waves, faint glow from the ink, warm lantern light on the edge of the page."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨潮島遠望",
+      "seed": 5282,
+      "prompt": "No people in the picture. Seen from the sea at dusk, a huge mysterious island stretches across the whole horizon, its coastline looks like it was drawn with ink lines, rivers of black ink run across it dividing it into five parts, a small wooden sailing ship with a warm lantern in the foreground."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨水的河",
+      "seed": 5283,
+      "prompt": "No people in the picture. A wide slow river of shining black ink winds through a strange island landscape, on one bank coral reefs and shallow sea, on the other bank volcanic rocks and snow fields, loose pages of old paper floating on the ink, soft warm sunset light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨心的書桌",
+      "seed": 5284,
+      "prompt": "No people in the picture. In the center of a dark island, a large old wooden writing desk stands alone on black ink that ripples like water, on the desk a single blank sheet of paper and an ink pot, an old quill pen standing upright, a single candle on the desk giving warm light, black ink slowly rising into the air around it."
     }
   ]
 }
