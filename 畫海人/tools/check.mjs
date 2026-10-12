@@ -1,7 +1,7 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
 import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, SECRET_JOBS, SIXTH_PAGE, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
-import { PUZZLES } from '../js/puzzle.js';
+import { PUZZLES, PUZZLE_TIPS } from '../js/puzzle.js';
 import { DIFF } from '../js/state.js';
 import { TRAININGS } from '../js/training.js';
 import { ART_KEYS } from '../js/cinema.js';
@@ -345,6 +345,7 @@ for (const [k, v] of Object.entries({ ISLANDS, SEA_EVENTS, PORT_SCENES, CHAPTERS
   if (D.pool.眼 !== 1) bad('墨潮島的淺灘區要有一個霧眼（潮門的鑰匙）');
 }
 
+for (const k of PUZZLES) if (!PUZZLE_TIPS[k]) bad(`小遊戲「${k}」在小遊戲間沒有一句話說明`);
 // 訓練：帶隊的人要存在，名字不能和遺跡小遊戲重複
 for (const [k, T] of Object.entries(TRAININGS)) { if (PUZZLES.includes(k)) bad(`訓練「${k}」和遺跡小遊戲同名`); for (const h of T.lead) if (!HEROES[h]) bad(`訓練「${k}」：帶隊的「${h}」不存在`); }
 

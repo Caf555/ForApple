@@ -677,3 +677,16 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .minimap .mm-k { font-size: 9px; text-anchor: middle; fill: #3a2a1a; font-weight: 700; }
 .minimap .mm-k.done { fill: #8a8070; font-weight: 400; }
 .minimap .mm-k.me { fill: #c0392b; font-size: 11px; }
+/* 墨潮島的新小遊戲：撈網、星圖連線 */
+.pz-net-lane { position: relative; width: 100%; max-width: 360px; height: 96px; margin: 6px auto; border-radius: 10px; overflow: hidden; background: linear-gradient(#2f6f94, #1d4f6e); }
+.pz-net-zone { position: absolute; left: 41%; width: 18%; top: 8px; bottom: 8px; border: 3px dashed rgba(255, 255, 255, .75); border-radius: 8px; transition: background .15s; }
+.pz-net-zone.pull { background: rgba(255, 255, 255, .28); }
+.pz-fish { position: absolute; top: 32px; width: 34px; height: 30px; margin-left: -17px; border-radius: 50% 40% 40% 50%; color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, .35); }
+.pz-fish-tag { display: inline-block; color: #fff; font-weight: 700; padding: 0 10px; border-radius: 10px; margin-left: 4px; }
+.pz-sky { background: radial-gradient(circle at 50% 40%, #1d2b4a, #0b1020); }
+.pz-sky .sk-hit { fill: transparent; cursor: pointer; }
+.pz-sky .sk-dot { fill: #f6efd6; }
+.pz-sky .sk-star.sel .sk-dot { fill: #f2c94c; }
+.pz-sky .sk-line { stroke: #9fc3ff; stroke-width: 1.1; stroke-linecap: round; }
+.pz-sky .sk-line.show { stroke: #f2c94c; stroke-width: 1.4; }
+.title-badge { text-align: center; font-family: var(--serif); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 4px 12px; margin: 2px auto 8px; width: fit-content; }
