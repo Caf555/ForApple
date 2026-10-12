@@ -1192,6 +1192,66 @@
       "name": "幕_沒造完的船",
       "seed": 5274,
       "prompt": "A vast ice cavern under the frozen sea, in the center a huge unfinished wooden sailing ship sits on an old slipway, only half its hull planked, its white keel and ribs exposed like a skeleton, frozen hammers and tools hanging in the air, a tiny warm lamp in a cabin in the corner, solemn and quiet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_鐵筒裡的殘頁",
+      "seed": 5275,
+      "prompt": "No people in the picture. On wet sand beside an old shipwreck at low tide, a rusty iron tube lies half-buried in a small pit, its cap open, a rolled yellowed sheet of paper sticking out showing a hand-drawn coastline that stops halfway, grey sea mist, faint warm light from a lantern on the sand."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_蓋滿作廢的殘頁",
+      "seed": 5276,
+      "prompt": "No people in the picture. Inside a dark stone cellar, an open iron cabinet holds a single old sheet of paper covered with many overlapping red ink stamps, under the stamps the faint outline of a coral reef map is still visible, dust in the air, a single candle giving warm light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_白色爐火裡的紙",
+      "seed": 5277,
+      "prompt": "No people in the picture. An ancient stone blacksmith forge on a volcanic island, burning with strange pure white fire, in the very center of the white flames floats a single sheet of paper with a drawing of a volcano, the paper is not burnt at all, glowing embers around, dark smoky workshop."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_冰鏡裡的紙",
+      "seed": 5278,
+      "prompt": "No people in the picture. Beneath a frozen lake, a huge broken mirror made of ice stands on the lake bed, shards of ice drifting, from the crack floats a single dry sheet of paper with a drawing of a frozen lake, pale blue light from above the ice, cold and silent."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_畫了一半的島",
+      "seed": 5279,
+      "prompt": "No people in the picture. The corner of an old painter's studio, an easel with a faded painting whose cloth cover has fallen to the floor, on the floor in front of it lies a single sheet of paper with an island drawn only halfway, spilled black ink around it, warm candlelight from a desk, dust and quiet."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_五片殘頁拼合",
+      "seed": 5280,
+      "prompt": "Only hands are visible: a girl's two hands placing five torn, yellowed pieces of paper together on an open old leather-bound map book on a wooden tavern table, their torn edges fitting perfectly, each piece shows part of a coastline, warm lantern light, mugs in the dark background."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨水流成的島",
+      "seed": 5281,
+      "prompt": "No people in the picture. Close-up of an old map book page where black ink is flowing by itself, swirling and spreading across the paper to form the shape of a large mysterious island surrounded by drawn waves, faint glow from the ink, warm lantern light on the edge of the page."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨潮島遠望",
+      "seed": 5282,
+      "prompt": "No people in the picture. Seen from the sea at dusk, a huge mysterious island stretches across the whole horizon, its coastline looks like it was drawn with ink lines, rivers of black ink run across it dividing it into five parts, a small wooden sailing ship with a warm lantern in the foreground."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨水的河",
+      "seed": 5283,
+      "prompt": "No people in the picture. A wide slow river of shining black ink winds through a strange island landscape, on one bank coral reefs and shallow sea, on the other bank volcanic rocks and snow fields, loose pages of old paper floating on the ink, soft warm sunset light."
+    },
+    {
+      "kind": "scene",
+      "name": "幕_墨心的書桌",
+      "seed": 5284,
+      "prompt": "No people in the picture. In the center of a dark island, a large old wooden writing desk stands alone on black ink that ripples like water, on the desk a single blank sheet of paper and an ink pot, an old quill pen standing upright, a single candle on the desk giving warm light, black ink slowly rising into the air around it."
     }
   ]
 }

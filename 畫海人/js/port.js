@@ -1,15 +1,17 @@
 // 港口：碼頭（補給）、酒館（委託、流言、潮汐骰）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（行情、買賣素材、舶來品）、黑市（第三章：換貨、紅帆牌桌、走私）
-import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, HULL_BROKEN, hullOf, repairCost, PORT_EVENTS, PORT_EVENT_CHANCE, RUMOR_FOLKS, WHALE_CLUES, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost, FORGE_AUTO_RATE, forgeTier, retryPrice, forgeRefund } from './data.js';
+import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, HULL_BROKEN, hullOf, repairCost, PORT_EVENTS, PORT_EVENT_CHANCE, RUMOR_FOLKS, SECRET_JOBS, SIXTH_PAGE, WHALE_CLUES, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost, FORGE_AUTO_RATE, forgeTier, retryPrice, forgeRefund } from './data.js';
 import { playForge } from './forge.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS } from './islands.js';
 import { diceGame, cardGame } from './gamble.js';
 import { cargoUsed, save, heroStats } from './state.js';
 import { worldOf, surveyMax } from './explore.js';
+import { inkRec, inkCount, litTowers } from './inkplay.js';
+import { INK_ID, INK_SALT, INK_SALT_GIFT } from './inkisle.js';
 import { el, $ } from './ui.js';
 
 export const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, 醒神香: 20 };
 const SUPPLY_TIP = { 糧: '每走一格吃 1 份。吃光了會又餓又累。', 燈油: '點燈時每走一格用 1 份：看得更遠，霧中不會打偏。', 墨水: '測繪要用 2 份。測繪過的地方，霧吞不回去。', 藥草: ITEMS.藥草.desc, 海靈露: ITEMS.海靈露.desc, 醒神香: ITEMS.醒神香.desc };
-const JOBS_MAX = 2, BOARD_N = 4;
+const JOBS_MAX = 3;
 const FLAG_NAME = { 焰: '去過焰之群島', 北: '去過北霧海' };
 // 市場收購素材的價錢（銀貝）
 const MAT_PRICE = { 漂流木: 3, 霧苔: 3, 鹽晶: 4, 燈芯: 4, 珊瑚枝: 5, 鐘銅: 6, 褪色羽: 6, 鏽鐵: 7, 船帆布: 7, 夜光珠: 20, 銀貝殼: 8, 帳紙: 8, 鏡砂: 9, 測繩: 9, 墨魚墨: 9, 珍珠: 12, 閘石: 10, 白珊瑚: 12,
@@ -158,7 +160,7 @@ export class Port {
     const fac = (name, sub, fn, on = true, lockText) => el('button', { class: 'fac' + (on ? '' : ' locked'), disabled: !on, onclick: () => { ctx.audio.sfx('tap'); fn(); } },
       el('b', {}, name), el('small', {}, on ? sub : lockText));
     const jobsN = Object.keys(g.jobs).length;
-    const ready = Object.keys(g.jobs).filter(id => this.jobState(COMMISSIONS.find(c => c.id === id)).ready).length;
+    const ready = Object.keys(g.jobs).filter(id => this.jobState(COMMISSIONS.find(c => c.id === id)).ready).length + SECRET_JOBS.filter(j => this.secretOf(j) === 'got').length;
     const matN = Object.values(g.mats).reduce((a, b) => a + b, 0);
     s.append(...[
       el('div', { class: 'p-head' }, el('h2', {}, '鹽灣島・港口'), el('span', { class: 'grow' }),
@@ -185,6 +187,7 @@ export class Port {
     // 該找到的隱藏島：跳出來說海圖上多了一條航線
     const find = this.newFind();
     if (find) ctx.discover(find).then(() => this.show());
+    else if (!g.flags.第六頁 && this.fragments() >= SECRET_JOBS.length) this.sixthPage().then(() => this.show());
   }
 
   supplyPrice(k) { return k === '糧' && this.ev('豐收') ? 1 : PRICES[k]; }
@@ -227,11 +230,19 @@ export class Port {
       body.append(el('p', { class: 'muted' }, '完成一座島，下一座島的航線就會畫進海圖。完成過的島也可以再去：測繪過的地方會留著，其他的東西每次都不一樣。'));
       for (const id of ISLAND_ORDER) {
         const d = ISLANDS[id], r = worldOf(g, id), on = this.unlocked(id);
-        if (!this.seas.includes(d.sea) || !this.shown(id)) continue;
+        if (d.big || !this.seas.includes(d.sea) || !this.shown(id)) continue;
         if (ISLAND_ORDER.find(k => ISLANDS[k].sea === d.sea) === id) body.append(el('h3', { class: 'sub-h' }, d.sea));
         body.append(el('button', { class: 'btn wide chart-row', disabled: !on, onclick: () => { api.close(); this.sail(id); } },
           el('b', {}, on ? `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}` : '？？？'),
           el('small', {}, on ? `${d.hidden ? '隱藏的島・' : ''}${d.sub}・${d.cols}×${d.rows} 格・大約要 ${d.food} 份糧・航海事件 ${d.seaEvents} 個` + (r.visits ? `・最好的測繪度 ${r.best}%（最高 ${surveyMax(id)}%${r.best >= surveyMax(id) ? '，已畫滿' : ''}）` : `・測繪度最高 ${surveyMax(id)}%`) : this.lockText(id))));
+      }
+      // 第六頁：五片殘片拼成的島（超大地圖，一次走不完）
+      for (const id of ISLAND_ORDER.filter(k => ISLANDS[k].big && this.unlocked(k))) {
+        const d = ISLANDS[id], r = worldOf(g, id), ink = inkRec(g, id);
+        body.append(el('h3', { class: 'sub-h' }, '第六頁'),
+          el('button', { class: 'btn wide chart-row', onclick: () => { api.close(); this.sail(id); } },
+            el('b', {}, `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}`),
+            el('small', {}, `五片殘片拼成的島・${d.cols}×${d.rows} 格（一次走不完，進度會留著）・每一趟大約要 ${d.food} 份糧・` + (r.visits ? `門 ${Object.keys(ink.gates).length}／4・燈塔 ${litTowers(g, id).length}／4・四色墨 ${inkCount(ink)}／4・最好的測繪度 ${r.best}%` : `測繪度最高 ${surveyMax(id)}%`))));
       }
     });
   }
@@ -241,6 +252,15 @@ export class Port {
     if (hullOf(g) < HULL_BROKEN) { await ctx.ui.alert('船況太差', [`船況只剩 ${hullOf(g)}，船底一直在進水。這樣出海太危險了。`, '先到「船塢」把船修好吧。']); return this.yard(); }
     const need = parseInt(d.food, 10);
     if (g.supply.糧 < need && !(await ctx.ui.confirm('確認', `糧食只有 ${g.supply.糧} 份。${id}大約要 ${d.food} 份，可能撐不完。還是要出航嗎？`, '出航', '再買一些'))) return this.dock();
+    // 墨潮島：點亮過的燈塔，可以直接從那裡登島
+    g.inkStart = null;
+    if (d.big) {
+      const towers = litTowers(g, id);
+      if (towers.length) {
+        const i = await ctx.ui.choose('從哪裡登島', ['墨潮島很大。點亮過的燈塔，可以直接把船開到那裡。'], [{ label: '登陸點（淺灘區）' }, ...towers.map(t => ({ label: `${t.name}的燈塔` }))]);
+        if (i > 0) g.inkStart = towers[i - 1].key;
+      }
+    }
     g.trip = { mats: {}, silver: g.silver, bps: [] };
     await ctx.sail(id);
   }
@@ -260,6 +280,11 @@ export class Port {
   tavern() {
     const g = this.g, ctx = this.ctx;
     const day = this.day;
+    // 墨潮島畫到 60% 以上：鹽姨有話要說（只有一次）
+    if (!g.flags.鹽姨第六頁 && (g.world[INK_ID] || {}).best >= 60) {
+      g.flags.鹽姨第六頁 = 1; ctx.applyFx(INK_SALT_GIFT); save(g);
+      return ctx.ui.story(ctx.storyLines(INK_SALT)).then(() => ctx.ui.alert('鹽姨', ['盒子裡是幾瓶海靈露和醒神香，還有一張鹽姨的爹憑想像畫的墨潮島，畫得歪歪扭扭的。', ctx.fxText(INK_SALT_GIFT)])).then(() => this.tavern());
+    }
     ctx.ui.sheet('酒館', (body, api) => {
       // 流言和潮汐骰
       const r = day.rumor;
@@ -269,9 +294,11 @@ export class Port {
             el('button', { class: 'btn small', disabled: g.silver < this.rumorPrice, onclick: async () => { g.silver -= this.rumorPrice; ctx.audio.sfx('tap'); const L = this.hearRumor(); api.rebuild(); await ctx.ui.alert('酒客的流言', L); } }, this.rumorPrice ? `請一杯 ${this.rumorPrice} 銀貝` : '祭典：免費')),
         el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, '潮汐骰'), el('small', {}, `跟老漁夫賭骰子。今天還能玩 ${day.dice} 局。連贏三局，他會偷偷告訴你一件事。`)),
           el('button', { class: 'btn small', onclick: () => { api.close(); diceGame(ctx, () => this.streakTip(), () => this.tavern()); } }, '坐下來')));
-      body.append(el('h3', { class: 'sub-h' }, '委託'), el('p', { class: 'muted' }, `鹽姨：「一次最多接 ${JOBS_MAX} 個。做完了回來找我，我再把報酬給你們。」`), el('p', { class: 'small muted' }, '（擊退的委託：接下以後打倒的才算；打完仗會顯示進度）'));
+      body.append(el('h3', { class: 'sub-h' }, '委託'), el('p', { class: 'muted' }, `鹽姨：「一次最多接 ${JOBS_MAX} 個。做完了回來找我，我再把報酬給你們。」`), el('p', { class: 'small muted' }, '（擊退的委託：接下以後打倒的才算；打完仗會顯示進度。每一章的委託全部做完，那一章會出現一張隱藏委託，不佔名額）'));
       const taken = COMMISSIONS.filter(c => g.jobs[c.id] !== undefined);
-      if (taken.length) body.append(el('h3', { class: 'sub-h' }, '進行中的委託'));
+      const secrets = SECRET_JOBS.filter(j => ['taken', 'got'].includes(this.secretOf(j)));
+      if (taken.length || secrets.length) body.append(el('h3', { class: 'sub-h' }, '進行中的委託'));
+      for (const j of secrets) body.append(this.secretCard(j, api));
       for (const c of taken) {
         const st = this.jobState(c);
         body.append(el('div', { class: 'job on' + (st.ready ? ' ready' : '') },
@@ -280,15 +307,80 @@ export class Port {
             el('button', { class: 'btn small', onclick: () => { delete g.jobs[c.id]; save(g); api.rebuild(); } }, '放棄'),
             el('button', { class: 'btn small primary', disabled: !st.ready, onclick: () => { this.finishJob(c); api.rebuild(); } }, c.kind === 'bring' ? '交出素材' : '回報'))));
       }
-      const open = COMMISSIONS.filter(c => g.jobs[c.id] === undefined && !g.jobsDone.includes(c.id) && this.unlocked(c.island)).slice(0, BOARD_N);
-      body.append(el('h3', { class: 'sub-h' }, '委託告示板'));
-      if (!open.length) body.append(el('p', { class: 'muted' }, '告示板上暫時沒有新的委託了。'));
+      // 告示板：按章分頁（還沒到的章不顯示）
+      const tabs = this.jobSeas();
+      if (!tabs.includes(this.tavTab)) this.tavTab = this.defaultTab(tabs);
+      const sea = this.tavTab;
+      body.append(el('h3', { class: 'sub-h' }, '委託告示板'),
+        el('div', { class: 'chips job-tabs' }, ...tabs.map(t => {
+          const p = this.seaProgress(t), done = p.done >= p.all && this.secretOf(this.secretFor(t)) === 'done';
+          return el('button', { class: 'btn small' + (t === sea ? ' primary' : ''), onclick: () => { this.tavTab = t; ctx.audio.sfx('tap'); api.rebuild(); } }, `第${SEAS.indexOf(t) + 1}章 ${p.done}/${p.all}${done ? ' ✓' : ''}`);
+        })));
+      const p = this.seaProgress(sea);
+      body.append(el('p', { class: 'small muted' }, `${sea}：完成 ${p.done}／${p.all} 個委託${p.locked ? `（還有 ${p.locked} 個，要等那座島畫進海圖才會出現）` : ''}`));
+      const open = COMMISSIONS.filter(c => ISLANDS[c.island].sea === sea && g.jobs[c.id] === undefined && !g.jobsDone.includes(c.id) && this.unlocked(c.island));
       for (const c of open) {
         body.append(el('div', { class: 'job' },
           el('b', {}, this.jobTitle(c)), el('small', {}, `${c.from}：${c.text}`), el('p', { class: 'small' }, this.jobState(c).text), el('p', { class: 'small muted' }, `報酬：${this.rewardText(c.reward, c)}`),
           el('div', { class: 'btns' }, el('button', { class: 'btn small', disabled: taken.length >= JOBS_MAX, onclick: () => { g.jobs[c.id] = 0; ctx.audio.sfx('tap'); save(g); api.rebuild(); } }, taken.length >= JOBS_MAX ? '接滿了' : '接下'))));
       }
+      if (!open.length && p.done < p.all) body.append(el('p', { class: 'muted' }, '這一章的委託，現在都接在手上了。'));
+      // 這一章的隱藏委託
+      const J = this.secretFor(sea), js = this.secretOf(J);
+      if (p.done < p.all) body.append(el('div', { class: 'job secret-back' }, el('b', {}, '？？？'), el('small', {}, `告示板最下面，有一張翻過去的紙，上面蓋著墨印。這一章的委託全部做完（${p.done}／${p.all}），鹽姨會告訴你一件事。`)));
+      else if (!js) body.append(this.secretCard(J, api));
+      else if (js === 'done') body.append(el('div', { class: 'job secret done' }, el('b', {}, `【隱藏】${J.title}　✓`), el('small', {}, `已經完成。第六頁殘片「${J.id.slice(1)}」收進了繪圖師之書。`)));
+      else body.append(el('p', { class: 'small muted' }, `這一章的隱藏委託「${J.title}」，在上面的「進行中的委託」。`));
     }, { onClose: () => this.show() });
+  }
+
+  // ───────── 酒館：按章分類、隱藏委託 ─────────
+  // 有委託的章（那一章至少一座島開放了）
+  jobSeas() { return SEAS.filter(sea => COMMISSIONS.some(c => ISLANDS[c.island].sea === sea && this.unlocked(c.island))); }
+  seaProgress(sea) {
+    const g = this.g, list = COMMISSIONS.filter(c => ISLANDS[c.island].sea === sea);
+    return { all: list.length, done: list.filter(c => g.jobsDone.includes(c.id)).length, locked: list.filter(c => !this.unlocked(c.island)).length };
+  }
+  // 打開酒館時停在哪一章：還有事情可做的章裡，最新的那一章
+  defaultTab(tabs) {
+    const g = this.g;
+    const busy = tabs.filter(sea => COMMISSIONS.some(c => ISLANDS[c.island].sea === sea && this.unlocked(c.island) && !g.jobsDone.includes(c.id) && g.jobs[c.id] === undefined)
+      || (this.seaProgress(sea).done >= this.seaProgress(sea).all && !this.secretOf(this.secretFor(sea))));
+    return busy.length ? busy[busy.length - 1] : tabs[tabs.length - 1];
+  }
+  secretFor(sea) { return SECRET_JOBS.find(j => j.sea === sea); }
+  // 隱藏委託的狀態：undefined（還沒接）、taken（接下了）、got（殘片拿到了）、done（回報了）
+  secretOf(j) { return j && (this.g.secret || {})[j.id]; }
+  fragments() { return SECRET_JOBS.filter(j => ['got', 'done'].includes(this.secretOf(j))).length; }
+  secretCard(j, api) {
+    const g = this.g, ctx = this.ctx, st = this.secretOf(j);
+    const line = st === 'got' ? '第六頁殘片拿到了！可以回報。' : st === 'taken' ? `到${j.island}去：登島以後，地圖上會多一格「殘」。` : `要去的島：${j.island}`;
+    return el('div', { class: 'job secret' + (st ? ' on' : '') + (st === 'got' ? ' ready' : '') },
+      el('b', {}, `【隱藏】${j.title}`), el('small', {}, `${j.from}：${j.text}`), el('p', { class: 'small' }, line),
+      el('p', { class: 'small muted' }, `報酬：第六頁殘片（1／${SECRET_JOBS.length}）、${this.rewardText(j.reward)}`),
+      el('div', { class: 'btns' }, ...(!st ? [el('button', { class: 'btn small primary', onclick: () => { (g.secret = g.secret || {})[j.id] = 'taken'; ctx.audio.sfx('tap'); save(g); api.rebuild(); } }, '接下（不佔名額）')]
+        : st === 'taken' ? [el('button', { class: 'btn small', onclick: () => { delete g.secret[j.id]; save(g); api.rebuild(); } }, '放棄')]
+        : [el('button', { class: 'btn small primary', onclick: () => { this.finishSecret(j); api.rebuild(); } }, '回報')])));
+  }
+  finishSecret(j) {
+    const g = this.g, ctx = this.ctx, got = [];
+    g.secret[j.id] = 'done';
+    for (const [k, v] of Object.entries(j.reward)) {
+      if (k === '銀貝') { g.silver += v; got.push(`銀貝 ${v}`); }
+      else if (k === '圖紙') { if (g.bps.includes(v)) { g.silver += 30; got.push('銀貝 30（圖紙已經有了）'); } else { g.bps.push(v); got.push(`圖紙「${v}」`); } }
+      else { g.mats[k] = (g.mats[k] || 0) + v; got.push(`${k} ${v}`); }
+    }
+    g.morale = Math.min(100, g.morale + 5);
+    ctx.audio.sfx('item'); save(g);
+    ctx.ui.toast(`隱藏委託完成：${got.join('、')}`);
+  }
+  // 五片殘片都拿到了：回港時拼成第六頁（只發生一次）
+  async sixthPage() {
+    const g = this.g, ctx = this.ctx;
+    g.flags.第六頁 = 1; save(g);
+    ctx.audio.sfx('level');
+    await ctx.cinema('第六頁');
+    await ctx.ui.story(ctx.storyLines(SIXTH_PAGE));
   }
 
   // 潮汐骰連贏三局：今天的流言免費聽；已經聽過的話，漁夫塞一點錢給你

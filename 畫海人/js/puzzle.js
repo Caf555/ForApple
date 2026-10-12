@@ -19,6 +19,10 @@
 // 祈願塔「搬鐘」：把整疊鐘搬到另一根柱子，小鐘上面不能放大鐘（河內塔）
 // 畫室「墨線」：同顏色的墨點連起來，線不能交叉，要填滿整張紙（連連看）
 // 霧心「四色地圖」：相鄰的區域不能同色，可是正中間那一塊要留白（著色）
+// 墨潮島（第六頁）的遺跡多了三種：
+//   「海岸線」：轉動方塊，把海岸線接成一整圈（轉片解謎）
+//   「撈網」：等指定的魚游進網子再收網（抓時機）
+//   「星圖連線」：星座亮一下就暗掉，把星星照記憶連回去（記憶）
 // 每個遊戲的外框上都掛著 solve()：只給自動試玩機器人用
 // 每個小遊戲都回傳 Promise<boolean>：過關是 true
 import { el, $ } from './ui.js';
@@ -44,8 +48,8 @@ export function frame(title, help) {
   return { box, stage, info, msg, btns };
 }
 // 小遊戲間（通關後）用：每種小遊戲的一句話說明
-export const PUZZLE_TIPS = { 燈號: '記住燈亮的順序', 門牌: '翻牌配對', 航海圖: '把碎片轉正', 天秤: '放砝碼讓秤平', 對照: '找不同', 潮閘: '撥閘門引水', 航線: '一筆畫', 旗語: '讀旗語密碼', 礦車: '推箱子', 鍛火: '抓時機', 熔岩: '關燈遊戲', 低語: '找出說謊的聲音', 冰滑: '滑行解謎', 密碼鎖: '猜數字', 光路: '轉稜鏡折光', 褪色的畫: '滑塊拼圖', 數織: '照數字塗格子', 搬鐘: '河內塔', 墨線: '連連看', 四色地圖: '四色著色' };
-export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路', '褪色的畫', '數織', '搬鐘', '墨線', '四色地圖'];
+export const PUZZLE_TIPS = { 燈號: '記住燈亮的順序', 門牌: '翻牌配對', 航海圖: '把碎片轉正', 天秤: '放砝碼讓秤平', 對照: '找不同', 潮閘: '撥閘門引水', 航線: '一筆畫', 旗語: '讀旗語密碼', 礦車: '推箱子', 鍛火: '抓時機', 熔岩: '關燈遊戲', 低語: '找出說謊的聲音', 冰滑: '滑行解謎', 密碼鎖: '猜數字', 光路: '轉稜鏡折光', 褪色的畫: '滑塊拼圖', 數織: '照數字塗格子', 搬鐘: '河內塔', 墨線: '連連看', 四色地圖: '四色著色', 海岸線: '轉方塊接海岸線', 撈網: '看準時機收網', 星圖連線: '記住星座連回去' };
+export const PUZZLES = ['燈號', '門牌', '航海圖', '天秤', '對照', '潮閘', '航線', '旗語', '礦車', '鍛火', '熔岩', '低語', '冰滑', '密碼鎖', '光路', '褪色的畫', '數織', '搬鐘', '墨線', '四色地圖', '海岸線', '撈網', '星圖連線'];
 
 // 遊戲結束：顯示結果，按下按鈕才關掉
 function finish(f, win, line, res) {
@@ -54,7 +58,7 @@ function finish(f, win, line, res) {
 }
 
 export function playPuzzle(ctx, kind, place) {
-  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath, 褪色的畫: fadedPicture, 數織: nonogram, 搬鐘: bells, 墨線: inkLines, 四色地圖: fourColor }[kind];
+  const game = { 燈號: lamps, 門牌: doors, 航海圖: chart, 天秤: balance, 對照: compare, 潮閘: sluice, 航線: route, 旗語: flags, 礦車: carts, 鍛火: forge, 熔岩: lava, 低語: whisper, 冰滑: iceSlide, 密碼鎖: lock, 光路: lightPath, 褪色的畫: fadedPicture, 數織: nonogram, 搬鐘: bells, 墨線: inkLines, 四色地圖: fourColor, 海岸線: coast, 撈網: net, 星圖連線: starMap }[kind];
   const p = game(ctx, place);
   if (!ctx.practice) return p;
   // 小遊戲間：右上角多一個「✕」，可以中途不玩
@@ -725,7 +729,7 @@ function carts(ctx) {
     };
     const dir = (label, dx, dy, area) => el('button', { class: 'btn pz-dir', style: { gridArea: area }, 'aria-label': label, onclick: () => step(dx, dy) }, label);
     pad.append(dir('↑', 0, -1, 'u'), dir('←', -1, 0, 'l'), dir('→', 1, 0, 'r'), dir('↓', 0, 1, 'd'));
-    f.box.solve = async () => { const p = solveCarts(L, me, cs); for (const [dx, dy] of p || []) { await step(dx, dy); await wait(40); } };
+    f.box.solve = async () => { while (round < plan.length && tries > 0) { while (busy && round < plan.length) await wait(40); if (round >= plan.length) break; const r0 = round, p = solveCarts(L, me, cs); for (const [dx, dy] of p || []) { if (round !== r0) break; await step(dx, dy); await wait(40); } await wait(60); } };
     setup();
   });
 }
@@ -1470,5 +1474,228 @@ function fourColor(ctx) {
     };
     f.box.solve = async () => { col = [...sol]; col[0] = null; draw(); await wait(200); judge(); };
     draw();
+  });
+}
+
+// ═════════ 海岸線：轉動方塊，把海岸線接成一圈 ═════════
+// 方塊的四個邊：1 上、2 右、4 下、8 左
+const turnBits = (m, k = 1) => { for (; k > 0; k--) m = ((m << 1) | (m >> 3)) & 15; return m; };
+const bitsOf = m => [1, 2, 4, 8].filter(b => m & b).length;
+const EDGE = { 1: [0, -1, 4], 2: [1, 0, 8], 4: [0, 1, 1], 8: [-1, 0, 2] };
+// 幾圈海岸線（每一格都要接到旁邊那一格；接不上的話回傳 -1）
+function coastLoops(N, m) {
+  for (let k = 0; k < N * N; k++) for (const b of [1, 2, 4, 8]) if (m[k] & b) {
+    const [dx, dy, back] = EDGE[b], x = k % N + dx, y = Math.floor(k / N) + dy;
+    if (x < 0 || y < 0 || x >= N || y >= N || !(m[y * N + x] & back)) return -1;
+  }
+  const seen = new Set(); let n = 0;
+  for (let k = 0; k < N * N; k++) if (m[k] && !seen.has(k)) {
+    n++; const q = [k]; seen.add(k);
+    while (q.length) { const u = q.pop(); for (const b of [1, 2, 4, 8]) if (m[u] & b) { const [dx, dy] = EDGE[b], v = (Math.floor(u / N) + dy) * N + u % N + dx; if (!seen.has(v)) { seen.add(v); q.push(v); } } }
+  }
+  return n;
+}
+// 出題：在方塊中心之間長出一塊陸地，陸地的邊就是海岸線（一圈、沒有洞、不會只碰到角）
+function makeCoast(N, size) {
+  const M = N - 1;
+  const masks = land => {
+    const m = Array(N * N).fill(0), T = (x, y) => y * N + x, sea = (x, y) => x < 0 || y < 0 || x >= M || y >= M || !land.has(y * M + x);
+    for (const k of land) {
+      const x = k % M, y = Math.floor(k / M);
+      if (sea(x, y - 1)) { m[T(x, y)] |= 2; m[T(x + 1, y)] |= 8; }
+      if (sea(x, y + 1)) { m[T(x, y + 1)] |= 2; m[T(x + 1, y + 1)] |= 8; }
+      if (sea(x - 1, y)) { m[T(x, y)] |= 4; m[T(x, y + 1)] |= 1; }
+      if (sea(x + 1, y)) { m[T(x + 1, y)] |= 4; m[T(x + 1, y + 1)] |= 1; }
+    }
+    return m;
+  };
+  const good = m => m.every(v => !v || bitsOf(v) === 2) && coastLoops(N, m) === 1;
+  const land = new Set([rnd(M * M)]);
+  for (let t = 0; t < 400 && land.size < size; t++) {
+    const front = [...land].flatMap(k => [k - M, k + M, k % M ? k - 1 : -1, k % M < M - 1 ? k + 1 : -1]).filter(k => k >= 0 && k < M * M && !land.has(k));
+    const k = front[rnd(front.length)];
+    land.add(k);
+    if (!good(masks(land))) land.delete(k);
+  }
+  return masks(land);
+}
+function coast(ctx) {
+  return new Promise(res => {
+    const N = byDiff(ctx, [4, 5, 6]);
+    let tries = byDiff(ctx, [3, 2, 2]);
+    const sol = makeCoast(N, Math.round((N - 1) * (N - 1) * 0.5));
+    const turnsTo = (a, b) => { for (let k = 0; k < 4; k++) if (turnBits(a, k) === b) return k; return 0; };
+    let start;
+    do start = sol.map(m => turnBits(m, rnd(4))); while (start.filter((m, k) => m !== sol[k]).length < Math.min(4, sol.filter(Boolean).length));
+    const need = start.reduce((a, m, k) => a + turnsTo(m, sol[k]), 0), limit = need + byDiff(ctx, [16, 10, 6]);
+    const f = frame('海岸線', '點一下方塊，它會轉 90 度。把所有的海岸線接起來，變成一整圈沒有斷掉的海岸。');
+    const S = 300, cell = S / N;
+    const svg = svgEl('svg', { viewBox: `0 0 ${S} ${S}`, class: 'pz-ink' });
+    f.stage.append(svg);
+    let cur = [...start], moves = 0, over = false;
+    const status = () => { f.info.textContent = `轉了 ${moves}／${limit} 次　還可以重來 ${tries - 1} 次`; };
+    const draw = () => {
+      svg.innerHTML = '';
+      const done = coastLoops(N, cur) === 1;
+      for (let k = 0; k < N * N; k++) {
+        const x = (k % N) * cell, y = Math.floor(k / N) * cell, cx = x + cell / 2, cy = y + cell / 2;
+        svg.append(svgEl('rect', { x: x + 1, y: y + 1, width: cell - 2, height: cell - 2, rx: 4, fill: cur[k] ? '#e9dcbc' : '#bcd9df' }));
+        if (!cur[k]) continue;
+        let d = '';
+        for (const b of [1, 2, 4, 8]) if (cur[k] & b) { const [dx, dy] = EDGE[b]; d += `M${cx} ${cy} L${cx + dx * cell / 2} ${cy + dy * cell / 2} `; }
+        svg.append(svgEl('path', { d, stroke: done ? '#2f7a4a' : '#6b4a2a', 'stroke-width': cell * 0.16, 'stroke-linecap': 'round', fill: 'none' }));
+      }
+      status();
+    };
+    const lose = async why => {
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { over = true; status(); return finish(f, false, why + '瓷磚碎了一角，海岸線再也接不起來了。', res); }
+      over = true; f.msg.textContent = why + '瓷磚轉回了原來的樣子。';
+      await wait(800); cur = [...start]; moves = 0; over = false; draw();
+    };
+    const turn = k => {
+      if (over || !cur[k]) return;
+      cur[k] = turnBits(cur[k]); moves++; ctx.audio.tone(k % 5); draw();
+      if (coastLoops(N, cur) === 1) { over = true; ctx.audio.sfx('win'); return finish(f, true, '最後一塊轉好的時候，海岸線接成了一整圈。瓷磚上的沙，好像真的被浪打濕了。', res); }
+      if (moves >= limit) lose('轉了太多次，');
+    };
+    svg.addEventListener('pointerdown', e => {
+      const b = svg.getBoundingClientRect(), c = Math.floor((e.clientX - b.left) / b.width * N), r = Math.floor((e.clientY - b.top) / b.height * N);
+      if (c >= 0 && r >= 0 && c < N && r < N) turn(r * N + c);
+    });
+    f.box.solve = async () => { for (let k = 0; k < N * N && !over; k++) while (cur[k] !== sol[k] && !over) { turn(k); await wait(40); } };
+    draw();
+  });
+}
+
+// ═════════ 撈網：看準時機收網，只撈指定的魚 ═════════
+const FISH = [['紅', '#c0392b'], ['藍', '#2e6da4'], ['金', '#b8901c'], ['灰', '#6f7c80']];
+function net(ctx) {
+  return new Promise(res => {
+    const need = byDiff(ctx, [3, 4, 5]), speed = byDiff(ctx, [0.32, 0.45, 0.6]);
+    let misses = byDiff(ctx, [4, 3, 2]), left = byDiff(ctx, [50, 45, 40]) * 1000;
+    const want = rnd(FISH.length), [wName, wColor] = FISH[want];
+    const f = frame('撈網', `魚會從左邊游過來。等「${wName}魚」游進中間的網子裡，按「收網」。網子裡有別的魚，或什麼都沒有，就算失手。`);
+    const lane = el('div', { class: 'pz-net-lane' }), zone = el('div', { class: 'pz-net-zone' });
+    lane.append(zone);
+    const btn = el('button', { class: 'btn primary pz-hit', onclick: () => pull() }, '收網');
+    f.stage.append(el('p', { class: 'small' }, '要撈的魚：', el('span', { class: 'pz-fish-tag', style: { background: wColor } }, wName)), lane);
+    f.btns.append(btn);
+    let fish = [], caught = 0, over = false, busy = false, gap = 0;
+    const status = () => { f.info.textContent = `撈到 ${caught}／${need} 條${wName}魚　還可以失手 ${misses - 1} 次　潮水還有 ${Math.ceil(left / 1000)} 秒`; };
+    const inNet = x => Math.abs(x - 50) <= 9;
+    const end = (win, line) => { over = true; clearInterval(timer); btn.remove(); status(); ctx.audio.sfx(win ? 'win' : 'fail'); finish(f, win, line, res); };
+    const timer = setInterval(() => {
+      if (over) return;
+      left -= 30;
+      if (left <= 0) return end(false, '潮水退了，魚都游走了。網子裡空空的。');
+      // 新的魚：和前一條隔開一點，才不會擠在一起
+      gap -= speed;
+      if (gap <= 0) {
+        const k = Math.random() < 0.42 ? want : [0, 1, 2, 3].filter(i => i !== want)[rnd(3)];
+        const node = el('span', { class: 'pz-fish', style: { background: FISH[k][1] } }, FISH[k][0]);
+        lane.append(node); fish.push({ x: -8, k, node });
+        gap = 17 + Math.random() * 14;
+      }
+      for (const o of fish) { o.x += speed; o.node.style.left = o.x + '%'; }
+      fish = fish.filter(o => { if (o.x > 108) { o.node.remove(); return false; } return true; });
+      if (Math.round(left) % 1000 < 30) status();
+    }, 30);
+    const pull = async () => {
+      if (over || busy) return;
+      busy = true; zone.classList.add('pull');
+      const got = fish.filter(o => inNet(o.x)), good = got.filter(o => o.k === want);
+      if (got.length && good.length === got.length) {
+        caught += good.length; ctx.audio.sfx('item');
+        good.forEach(o => o.node.remove()); fish = fish.filter(o => !good.includes(o));
+        f.msg.textContent = `撈到了！（${caught}／${need}）`;
+        if (caught >= need) return end(true, `網子沉甸甸的。${need} 條${wName}魚在網裡跳來跳去，鱗片在陽光下閃著光。`);
+      } else {
+        misses--; ctx.audio.sfx('fail');
+        f.msg.textContent = got.length ? '撈到了別的魚，只好放回海裡。' : '網子是空的。';
+        if (misses <= 0) return end(false, '網子破了一個大洞。今天，撈不到了。');
+      }
+      status();
+      await wait(450); zone.classList.remove('pull'); busy = false;
+    };
+    f.box.solve = async () => { while (!over) { const got = fish.filter(o => inNet(o.x)); if (!busy && got.length && got.every(o => o.k === want) && got.some(o => Math.abs(o.x - 50) < 4)) await pull(); await wait(15); } };
+    status();
+  });
+}
+
+// ═════════ 星圖連線：記住星座，把星星連回去 ═════════
+const CONSTELLATIONS = ['魚尾', '錨', '舵', '燈塔', '海鷗', '貝殼', '帆'];
+function starMap(ctx) {
+  return new Promise(res => {
+    const plan = byDiff(ctx, [[3, 4], [4, 5], [5, 6, 7]]), showMs = byDiff(ctx, [4200, 3400, 2800]);
+    let tries = byDiff(ctx, [3, 2, 2]);
+    const f = frame('星圖連線', '星座會亮一下。記住哪幾顆星連在一起，等它暗下來以後，點兩顆星把線連回去（再點一次那條線的兩顆星，可以擦掉）。');
+    const svg = svgEl('svg', { viewBox: '0 0 100 100', class: 'pz-ink pz-sky' });
+    f.stage.append(svg);
+    const ok = el('button', { class: 'btn primary', onclick: () => judge() }, '連好了');
+    const clr = el('button', { class: 'btn', onclick: () => { if (input) { lines.clear(); sel = null; draw(); } } }, '全部擦掉');
+    f.btns.append(clr, ok);
+    const names = shuffle([...CONSTELLATIONS]);
+    let round = 0, stars = [], target = new Set(), lines = new Set(), sel = null, input = false, showing = false, over = false;
+    const ek = (a, b) => a < b ? `${a}-${b}` : `${b}-${a}`;
+    const setup = () => {
+      const k = plan[round], n = Math.max(8, k + 4);
+      stars = [];
+      for (let t = 0; stars.length < n && t < 2000; t++) { const p = [10 + Math.random() * 80, 10 + Math.random() * 80]; if (stars.every(q => Math.hypot(p[0] - q[0], p[1] - q[1]) > 17)) stars.push(p); }
+      // 星座：從一顆星開始，每次接到附近還沒用過的星（像一條彎彎的線，偶爾分叉）
+      target = new Set(); const used = [rnd(stars.length)];
+      while (target.size < k) {
+        const from = used[Math.random() < 0.75 ? used.length - 1 : rnd(used.length)];
+        const near = stars.map((p, i) => [Math.hypot(p[0] - stars[from][0], p[1] - stars[from][1]), i]).filter(([, i]) => !used.includes(i)).sort((a, b) => a[0] - b[0]).slice(0, 3);
+        if (!near.length) break;
+        const to = near[rnd(near.length)][1]; used.push(to); target.add(ek(from, to));
+      }
+      lines = new Set(); sel = null;
+    };
+    const status = () => { f.info.textContent = `第 ${round + 1}／${plan.length} 個星座　連了 ${lines.size} 條線　還可以錯 ${tries - 1} 次`; };
+    const draw = () => {
+      svg.innerHTML = '';
+      const show = showing ? target : lines;
+      for (const e of show) { const [a, b] = e.split('-').map(Number); svg.append(svgEl('line', { x1: stars[a][0], y1: stars[a][1], x2: stars[b][0], y2: stars[b][1], class: showing ? 'sk-line show' : 'sk-line' })); }
+      stars.forEach((p, i) => {
+        const g = svgEl('g', { class: 'sk-star' + (sel === i ? ' sel' : '') });
+        g.append(svgEl('circle', { cx: p[0], cy: p[1], r: 7, class: 'sk-hit' }), svgEl('circle', { cx: p[0], cy: p[1], r: sel === i ? 3.4 : 2.4, class: 'sk-dot' }));
+        g.addEventListener('pointerdown', () => tap(i));
+        svg.append(g);
+      });
+      status();
+    };
+    const show = async () => {
+      input = false; showing = true; ok.disabled = clr.disabled = true;
+      f.msg.textContent = `「${names[round % names.length]}」座亮了起來……記住它的樣子。`;
+      draw(); await wait(showMs);
+      showing = false; lines = new Set(); sel = null; input = true; ok.disabled = clr.disabled = false;
+      f.msg.textContent = `星座暗下來了。把「${names[round % names.length]}」座的 ${target.size} 條線連回去。`;
+      draw();
+    };
+    const tap = i => {
+      if (!input || over) return;
+      if (sel === null) sel = i;
+      else if (sel === i) sel = null;
+      else { const e = ek(sel, i); lines.has(e) ? lines.delete(e) : lines.add(e); sel = null; }
+      ctx.audio.tone(i % 5); draw();
+    };
+    const judge = async () => {
+      if (!input || over) return;
+      input = false;
+      const right = lines.size === target.size && [...target].every(e => lines.has(e));
+      if (right) {
+        round++;
+        if (round >= plan.length) { over = true; ok.remove(); clr.remove(); ctx.audio.sfx('win'); f.info.textContent = '全部連對了！'; return finish(f, true, '最後一條線連好的時候，天上的星星好像都亮了一點。星圖的角落，畫著一座小小的島。', res); }
+        ctx.audio.sfx('item'); f.msg.textContent = '連對了！下一個星座，線多一條。';
+        await wait(900); setup(); return show();
+      }
+      tries--; ctx.audio.sfx('fail');
+      if (tries <= 0) { over = true; ok.remove(); clr.remove(); status(); return finish(f, false, '雲飄了過來，把星星都遮住了。今天晚上，看不到了。', res); }
+      f.msg.textContent = '不太對。星座再亮一次……';
+      await wait(800); show();
+    };
+    f.box.solve = async () => { while (!over) { if (input) { lines = new Set(target); draw(); await wait(150); await judge(); } await wait(60); } };
+    setup(); show();
   });
 }

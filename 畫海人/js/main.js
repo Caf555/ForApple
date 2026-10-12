@@ -10,6 +10,7 @@ import { Explore, newIsland, worldOf, surveyMax, helpers } from './explore.js';
 import { Port, statText } from './port.js';
 import { playPuzzle, PUZZLE_TIPS } from './puzzle.js';
 import { playTraining, trainingMorale, TRAININGS, TRAINING_KINDS } from './training.js';
+import { INK_ID, INK_SPOTS, INK_TITLE } from './inkisle.js';
 
 export const VERSION = 'M5 第五海域 v0.3（完結）';
 
@@ -418,15 +419,18 @@ ctx.observatory = async () => {
 async function minigames(diff = ctx.g.diff) {
   const g = ctx.g;
   const list = ISLAND_ORDER.filter(id => ISLANDS[id].ruin && ISLANDS[id].ruin.game && (!ISLANDS[id].hidden || g.flags['隱:' + id])).map(id => ({ id, kind: ISLANDS[id].ruin.game.kind, sea: ISLANDS[id].sea }));
+  // 墨潮島（第六頁）的遺跡：解開過的才會掛上牆（划船比賽在「訓練」裡）
+  const inkDone = ((g.world[INK_ID] || {}).ink || {}).ruins || {};
+  for (const sp of Object.values(INK_SPOTS)) if (sp.kind === '遺' && sp.game && inkDone[sp.key]) list.push({ id: INK_ID, kind: sp.game, sea: '第六頁', name: sp.title, ink: true });
   const seas = [...new Set(list.map(x => x.sea))];
-  const solved = x => (g.practice || {})[x.kind] || g.flags['謎:' + x.id];
+  const solved = x => (g.practice || {})[x.kind] || x.ink || g.flags['謎:' + x.id];
   const pick = await new Promise(res => {
     const api = ctx.ui.sheet('小遊戲間', body => {
       body.append(el('p', { class: 'para' }, '一路畫回來的遺跡謎題，都掛在天文台的牆上。挑一個來玩吧。（不拿獎勵，也不影響劇情和存檔）'),
         el('div', { class: 'set-row' }, el('b', {}, '這次的難度'), el('div', { class: 'chips' }, ...['悠閒', '標準', '困難'].map(k => el('button', { class: 'chip btn-chip' + (diff === k ? ' on' : ''), onclick: () => { diff = k; api.rebuild(); } }, k)))));
       for (const sea of seas) body.append(el('h3', { class: 'pg-sea' }, sea), el('div', { class: 'pg-list' }, ...list.filter(x => x.sea === sea).map(x =>
         el('button', { class: 'pg-game' + (solved(x) ? ' done' : ''), onclick: () => { res(x); api.close(); } },
-          el('b', {}, x.kind), el('small', {}, `${x.id}・${PUZZLE_TIPS[x.kind] || ''}${solved(x) ? '・✓' : ''}`)))));
+          el('b', {}, x.kind), el('small', {}, `${x.name || x.id}・${PUZZLE_TIPS[x.kind] || ''}${solved(x) ? '・✓' : ''}`)))));
       body.append(el('h3', { class: 'pg-sea' }, '訓練'), el('div', { class: 'pg-list' }, ...TRAINING_KINDS.map(k =>
         el('button', { class: 'pg-game' + ((g.practice || {})[k] ? ' done' : ''), onclick: () => { res({ kind: k, train: true }); api.close(); } },
           el('b', {}, k), el('small', {}, `${TRAININGS[k].lead[0]}・${TRAININGS[k].tip}${(g.practice || {})[k] ? '・✓' : ''}`)))));
@@ -567,7 +571,7 @@ function help() {
     '・素材：打倒妖物、打開寶箱會得到。帶回港口給鐵匠，照著圖紙打造裝備，再到「隊伍」裡穿上。用不到的素材，可以在「市場」賣掉。',
     '・打造和升級：每條裝備線前兩件可以從頭打，後面的要拿同一條線前面的裝備來升級。用前一件升級只要補原價的五成，前兩件七成，再更早的八成五。打的時候要玩「打鐵」（指針到金色區按「敲」，3 下中 2 下），船塢改造要玩「釘船板」（鐵鎚擺到釘子上按「釘」，4 根中 3 根）。全中會退 1 個素材；失敗可以付一半的銀貝再試一次，兩次都失敗退一半素材。不想玩可以在「設定」關掉，成功率固定八成。',
     '・隊伍：一次最多 4 個人出戰，其他人在船上待命。在「隊伍」裡點「出戰／待命」換人（{名}一定要出戰）。',
-    '・委託：在酒館接下（最多 2 個），完成以後回酒館回報，拿報酬。',
+    '・委託：在酒館接下（最多 3 個），完成以後回酒館回報，拿報酬。告示板按章分頁；一章的委託全部做完，會出現那一章的「隱藏委託」（不佔名額），報酬是「第六頁殘片」。五片都拿到，會拼成一頁新的海圖。',
     '・船塢：可以修船和改造船。船況會因為航海事件的壞結果、海上戰鬥和靠岸慢慢磨損；低於 50，壞事會更嚴重，低於 20 就不能出航。',
     '・港口突發事件（第二章開始）：回港的時候偶爾會發生一些事，例如流感（一位隊友這一趟不能出戰，可以用醒神香或請醫生治好）、暴風季、罷市、祭典。只影響這一次回港到下一趟出航。',
     '・回港就是新的一天：酒館有新的流言（請酒客喝一杯，聽寶箱的位置或航海事件的訣竅），也可以玩「潮汐骰」；市場的行情會變，偶爾有舶來品；黑市有新貨、「紅帆牌桌」和走私的差事。骰子和牌每次回港能玩的局數有限。',
@@ -581,6 +585,7 @@ function help() {
     '・霧心：白色的格子是「空白」，紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去；空白後面，有時候藏著寶箱，有時候藏著妖物。「圖」是公會長五十年前留下的舊圖碎片，每座島一張。',
     '・心願（第五章開始）：每個隊友都有一個心願，在「隊伍」裡看得到。大部分的心願，要在那個人的島上拿到好結局（測繪度 60% 以上返航）才會完成；沒完成的，可以回去那座島再玩一次。',
     '・霧心的最後一座島：商會、紅帆、守霧人的聲望到「信任」以上，就會來幫忙。打倒公會長以後，是最後的抉擇，有四種結局。「留白」要三方聲望都到「信任」、8 個隊友的心願都完成、全部的島平均畫到最多能畫的九成才選得到。看完結局可以繼續玩，到天文台可以重新選，也可以進「小遊戲間」，挑任何一座島的遺跡謎題來玩（可以選難度，不拿獎勵）。',
+    '・墨潮島（第六頁）：五片殘片拼成的超大島，16×16 格，被墨水的河分成五區，每一區像一片海。畫面只顯示附近一塊，右上角的「小地圖」看得到整座島。區和區之間的「門」要一道一道打開，每一道的條件都不一樣（地圖下方會寫現在要做什麼）。島的配置固定，打開的門、點亮的燈、拿到的墨，下次來都還在；點亮的燈塔，下次出航可以直接從那裡登島，也可以從那裡返航。島上的遺跡謎題解開以後，也會掛進天文台的「小遊戲間」。',
     '・守霧人（第四章開始）：聲望到「信任」，出航可以走祕密航道，不會遇到航海事件；到「夥伴」，點燈的時候用的是灰燈：霧不會回來，也聽得出低語是真是假。',
   ], '知道了');
 }
@@ -590,6 +595,7 @@ ctx.partySheet = () => {
   const refresh = () => { save(g); if (g.phase === 'island') ctx.explore.draw(); };
   ctx.ui.sheet('隊伍與裝備', (body, api) => {
     const mt = moraleTier(g.morale);
+    if (g.flags.第六頁畫完) body.append(el('p', { class: 'title-badge' }, ctx.ui.fmt(`{名}的稱號：「${INK_TITLE}」`)));
     body.append(el('p', { class: 'muted' }, `士氣 ${g.morale}・${mt.name}：越高，攻擊越痛、受到的傷害越少。打贏、營地休息、訓練會提高；有人倒下、斷糧會降低。`),
       el('p', { class: 'muted small' }, MORALE_TIERS.map(t => `${t.name}（${t.min}以上）：${t.tip}`).join('　')));
     const out = g.party.filter(x => !x.bench).length, max = ctx.partyMax(), sick = g.party.find(h => h.sick);

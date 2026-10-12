@@ -1,11 +1,12 @@
 // 《畫海人》資料檢查：改了 js/data.js 或 js/islands.js 以後，執行 node 畫海人/tools/check.mjs
-import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost } from '../js/data.js';
+import { HEROES, SKILLS, ENEMIES, ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, SECRET_JOBS, SIXTH_PAGE, ELEMENTS, FACTIONS, REP_LEVELS, BLACK_MARKET, BLACK_POOL, IMPORTS, WISHES, PORT_EVENTS, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost } from '../js/data.js';
 import { ISLANDS, TILE_INFO, SEA_EVENTS, PORT_SCENES, CHAPTER_END, CHAPTER2_END, CHAPTER3_END, CHAPTER4_END, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, INTRO, CINEMA, SEAS, ISLAND_ORDER, FINALE_ASK, ENDINGS, EPILOGUE } from '../js/islands.js';
-import { PUZZLES } from '../js/puzzle.js';
+import { PUZZLES, PUZZLE_TIPS } from '../js/puzzle.js';
 import { DIFF } from '../js/state.js';
 import { TRAININGS } from '../js/training.js';
 import { ART_KEYS } from '../js/cinema.js';
 import { readFileSync, readdirSync } from 'node:fs';
+import { INK_ID, inkRegion, INK_REGIONS, INK_SPOTS, INK_LANDS } from '../js/inkisle.js';
 
 const errs = [];
 const bad = m => errs.push(m);
@@ -45,8 +46,9 @@ for (const [k, e] of Object.entries(PORT_EVENTS)) if (!e.title || (!e.text && k 
 // 每張圖紙都要拿得到：一開始就會、島上的寶箱或首領、委託報酬
 const bpFrom = new Set(Object.keys(EQUIPS).filter(k => EQUIPS[k].start));
 for (const h of Object.values(HEROES)) if (h.weapon) { if (!EQUIPS[h.weapon]) bad(`隊友自己的武器「${h.weapon}」不存在`); bpFrom.add(h.weapon); }
+for (const d of Object.values(ISLANDS)) for (const sp of Object.values(d.spots || {})) if (sp.bp) { if (!EQUIPS[sp.bp]) bad(`小首領給的圖紙「${sp.bp}」不存在`); bpFrom.add(sp.bp); }
 for (const d of Object.values(ISLANDS)) { for (const b of d.bps) bpFrom.add(b); if (d.boss.bp) { if (!EQUIPS[d.boss.bp]) bad(`首領一定給的圖紙「${d.boss.bp}」不存在`); bpFrom.add(d.boss.bp); } }
-for (const c of COMMISSIONS) if (c.reward.圖紙) bpFrom.add(c.reward.圖紙);
+for (const c of [...COMMISSIONS, ...SECRET_JOBS]) if (c.reward.圖紙) bpFrom.add(c.reward.圖紙);
 for (const it of BLACK_MARKET) if (it.kind === 'bp') { if (!EQUIPS[it.bp]) bad(`黑市的圖紙「${it.bp}」不存在`); bpFrom.add(it.bp); }
 for (const it of BLACK_MARKET) {
   if (it.kind === 'mat' && !MATS[it.name]) bad(`黑市的素材「${it.name}」不存在`);
@@ -67,7 +69,9 @@ const FIND_BY = { 醉鯨礁: '酒館', 紅帆藏寶島: '黑市' };
 for (const it of IMPORTS) if (it.kind === 'find') FIND_BY[it.find] = '市場';
 for (const d of Object.values(SHIP)) for (const l of d.levels) if (l.find) { if (!(ISLANDS[l.find] || {}).hidden) bad(`船塢「${l.label}」要找的「${l.find}」不是隱藏島`); FIND_BY[l.find] = '船塢'; }
 if (BLACK_MARKET.filter(it => it.kind === 'map').map(it => it.n).sort().join() !== '1,2,3') bad('黑市的藏寶圖碎片要剛好 1、2、3 三片');
-for (const [id, d] of Object.entries(ISLANDS)) if (d.hidden) {
+// 墨潮島（第六頁）：五片殘片拼起來才找得到
+for (const [id, d] of Object.entries(ISLANDS)) if (d.big && d.flag !== '第六頁') bad(`超大地圖的島「${id}」要用五片殘片拼成的「第六頁」打開`);
+for (const [id, d] of Object.entries(ISLANDS)) if (d.hidden && !d.big) {
   if (!FIND_BY[id]) bad(`隱藏島「${id}」沒有找到的方法`);
   if (d.flag !== '隱:' + id) bad(`隱藏島「${id}」的 flag 要寫成「隱:${id}」`);
   if (!(d.found || []).length) bad(`隱藏島「${id}」缺少找到時的文字`);
@@ -126,6 +130,22 @@ for (const c of COMMISSIONS) {
   if (isl && c.kind === 'kill' && !reachableFoes(isl).has(c.target)) bad(`委託 ${c.title} 要擊退的「${c.target}」在${c.island}的一般戰鬥裡遇不到`);
   if (isl && c.kind === 'bring' && !(isl.mats || []).includes(c.target) && ![...reachableFoes(isl)].some(e => (ENEMIES[e].drop || []).some(([m]) => m === c.target))) bad(`委託 ${c.title} 要帶回的「${c.target}」在${c.island}拿不到`);
 }
+
+// 酒館的隱藏委託：每一章剛好一張；島要在那一章、小遊戲要存在、守殘片的敵人要存在、圖紙只從這裡拿
+if (!TILE_INFO.殘) bad('格子種類「殘」（第六頁殘片）不存在');
+for (const sea of SEAS) if (SECRET_JOBS.filter(j => j.sea === sea).length !== 1) bad(`${sea}要剛好有一張隱藏委託`);
+for (const j of SECRET_JOBS) {
+  if (ids.has(j.id)) bad(`隱藏委託編號 ${j.id} 和別的委託重複`); ids.add(j.id);
+  const isl = ISLANDS[j.island];
+  if (!isl) bad(`隱藏委託 ${j.title} 的島「${j.island}」不存在`);
+  else if (isl.sea !== j.sea || isl.hidden) bad(`隱藏委託 ${j.title} 的島「${j.island}」不是${j.sea}的一般島`);
+  if (!PUZZLES.includes(j.game)) bad(`隱藏委託 ${j.title} 的小遊戲「${j.game}」不存在`);
+  for (const e of j.foes) if (!ENEMIES[e]) bad(`隱藏委託 ${j.title} 的敵人「${e}」不存在`);
+  if (!j.find || !j.find.length || !j.win || !j.win.length || !j.text) bad(`隱藏委託 ${j.title} 缺少說明或劇情`);
+  for (const k in j.reward) if (k !== '銀貝' && k !== '圖紙' && !MATS[k]) bad(`隱藏委託 ${j.title} 的報酬「${k}」不存在`);
+  if (j.reward.圖紙 && !EQUIPS[j.reward.圖紙]) bad(`隱藏委託 ${j.title} 的圖紙「${j.reward.圖紙}」不存在`);
+}
+if (!SIXTH_PAGE.length) bad('第六頁（五片殘片拼起來）的劇情是空的');
 
 const checkEvents = (where, list) => list.forEach(ev => ev.opts.forEach(o => { for (const k in o.fx) if (!FX_OK(k)) bad(`${where}・${ev.title}：效果「${k}」不認得`); }));
 checkEvents('航海', SEA_EVENTS);
@@ -235,7 +255,7 @@ for (const k of Object.keys(HEROES)) if (k !== '墨里' && !WISHES[k]) bad(`隊�
 const picList = JSON.parse(readFileSync(new URL('./生圖/清單_劇情.json', import.meta.url), 'utf8')).items.map(it => it.name);
 for (const n of new Set(picList)) if (picList.filter(x => x === n).length > 1) bad(`生圖清單裡的「${n}」重複了`);
 const usedPics = [];
-const EXTRA_CINE = ['開場', '第一章完', '第二章', '第二章完', '第三章', '第三章完', '第四章', '第四章完', '回來的腳印', '第五章', '尾聲', ...Object.values(ENDINGS).map(e => e.cine)];
+const EXTRA_CINE = [...SECRET_JOBS.map(j => j.id), '第六頁', '開場', '第一章完', '第二章', '第二章完', '第三章', '第三章完', '第四章', '第四章完', '回來的腳印', '第五章', '尾聲', ...Object.values(ENDINGS).map(e => e.cine)];
 for (const k of [...EXTRA_CINE, ...Object.keys(ISLANDS)]) if (!CINEMA[k]) bad(`缺少劇情動畫「${k}」`);
 for (const [k, c] of Object.entries(CINEMA)) {
   if (!EXTRA_CINE.includes(k) && !ISLANDS[k]) bad(`劇情動畫「${k}」對應的島不存在`);
@@ -276,6 +296,56 @@ for (const [k, v] of Object.entries({ ISLANDS, SEA_EVENTS, PORT_SCENES, CHAPTERS
   if (k === 'ISLANDS') for (const [id, d] of Object.entries(v)) walkLines(d, `島「${id}」`); else walkLines(v, k);
 }
 
+// 墨潮島：每個固定格子在對的區；門一道一道開，每一道門的條件，在還沒開的時候就做得到；全部開了以後，每一格都走得到
+{
+  const D = ISLANDS[INK_ID], key = (c, r) => `${c},${r}`;
+  const nbr = (c, r) => (r % 2 ? [[1, 0], [-1, 0], [1, -1], [0, -1], [1, 1], [0, 1]] : [[1, 0], [-1, 0], [0, -1], [-1, -1], [0, 1], [-1, 1]]).map(([a, b]) => [c + a, r + b]).filter(([x, y]) => x >= 0 && y >= 0 && x < D.cols && y < D.rows);
+  for (const [k, sp] of Object.entries(INK_SPOTS)) {
+    const [c, r] = k.split(',').map(Number), reg = inkRegion(c, r);
+    if ((sp.kind === '門') !== (reg === 0)) bad(`墨潮島 ${k}「${sp.kind}」${sp.kind === '門' ? '不在墨水的河上' : '在墨水的河上，走不到'}`);
+    if (sp.region && sp.region !== reg) bad(`墨潮島 ${k}「${sp.kind}」寫的是第 ${sp.region} 區，可是在第 ${reg} 區`);
+    if (sp.foes) for (const f of sp.foes) if (!ENEMIES[f]) bad(`墨潮島 ${k} 的敵人「${f}」不存在`);
+    if (sp.bp && !EQUIPS[sp.bp]) bad(`墨潮島 ${k} 的圖紙「${sp.bp}」不存在`);
+    if (sp.kind === '遺' && !(sp.train ? TRAININGS[sp.train] : PUZZLES.includes(sp.game))) bad(`墨潮島 ${k} 的小遊戲「${sp.train || sp.game}」不存在`);
+    if (sp.need && !HEROES[sp.need]) bad(`墨潮島 ${k} 要的隊友「${sp.need}」不存在`);
+    if (INK_LANDS[k] === '墨') bad(`墨潮島 ${k} 放了「${sp.kind}」，可是那裡是墨潭`);
+  }
+  for (const R of INK_REGIONS.slice(1)) for (const e of R.encounters.flat()) if (!ENEMIES[e]) bad(`墨潮島「${R.name}」的妖物「${e}」不存在`);
+  const spotsOf = kind => Object.entries(INK_SPOTS).filter(([, s]) => s.kind === kind).map(([k]) => k);
+  // gates：打開了哪幾道門；wall：冰牆開了沒
+  const reach = (gates, wall) => {
+    const seen = new Set([key(...D.start)]), q = [D.start];
+    while (q.length) for (const [c, r] of nbr(...q.shift())) {
+      const k = key(c, r), sp = INK_SPOTS[k];
+      if (seen.has(k) || INK_LANDS[k] === '墨') continue;
+      if (inkRegion(c, r) === 0 && !(sp && sp.kind === '門')) continue;
+      seen.add(k);
+      if (sp && sp.kind === '門' && !gates.includes(sp.gate)) continue;   // 關著的門：走得到門口，過不去
+      if (sp && sp.kind === '牆' && !wall) continue;
+      q.push([c, r]);
+    }
+    return seen;
+  };
+  const need = { 1: () => [], 2: () => Object.keys(INK_SPOTS).filter(k => INK_SPOTS[k].pillar), 3: () => [...spotsOf('礦'), ...spotsOf('爐')], 4: () => spotsOf('燈') };
+  const opened = [];
+  for (const n of [1, 2, 3, 4]) {
+    const got = reach(opened, n >= 4), gate = spotsOf('門').find(k => INK_SPOTS[k].gate === n);
+    if (!gate) { bad(`墨潮島沒有第 ${n} 道門`); continue; }
+    if (!got.has(gate)) bad(`墨潮島：第 ${n} 道門在前面的門打開以後還是走不到`);
+    for (const k of need[n]()) if (!got.has(k)) bad(`墨潮島：第 ${n} 道門要的「${INK_SPOTS[k].kind}」（${k}）在門打開以前走不到`);
+    if (n === 1 && !Object.keys(INK_SPOTS).some(k => got.has(k)) ) bad('墨潮島：登陸點附近什麼都沒有');
+    opened.push(n);
+  }
+  const all = reach(opened, true);
+  for (let r = 0; r < D.rows; r++) for (let c = 0; c < D.cols; c++) if (inkRegion(c, r) && INK_LANDS[key(c, r)] !== '墨' && !all.has(key(c, r))) bad(`墨潮島 ${key(c, r)} 走不到`);
+  if (spotsOf('霸').length !== 4 || new Set(spotsOf('霸').map(k => INK_SPOTS[k].region)).size !== 4) bad('墨潮島要有四區各一隻小首領（霸）');
+  if (spotsOf('燈').length !== 4) bad('墨潮島北霧區要有四盞燈');
+  if (spotsOf('牆').length && reach(opened, false).has(spotsOf('燈').find(k => nbr(...k.split(',').map(Number)).some(([c, r]) => INK_SPOTS[key(c, r)] && INK_SPOTS[key(c, r)].kind === '牆')) || '')) bad('墨潮島：冰牆後面的燈，沒有老洛也走得到');
+  if (!spotsOf('王').every(k => inkRegion(...k.split(',').map(Number)) === 5)) bad('墨潮島的首領要在墨心');
+  if (D.pool.眼 !== 1) bad('墨潮島的淺灘區要有一個霧眼（潮門的鑰匙）');
+}
+
+for (const k of PUZZLES) if (!PUZZLE_TIPS[k]) bad(`小遊戲「${k}」在小遊戲間沒有一句話說明`);
 // 訓練：帶隊的人要存在，名字不能和遺跡小遊戲重複
 for (const [k, T] of Object.entries(TRAININGS)) { if (PUZZLES.includes(k)) bad(`訓練「${k}」和遺跡小遊戲同名`); for (const h of T.lead) if (!HEROES[h]) bad(`訓練「${k}」：帶隊的「${h}」不存在`); }
 

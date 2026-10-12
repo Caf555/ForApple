@@ -533,7 +533,7 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 /* 霧心：空白格（紙還沒畫到的地方）、舊圖碎片 */
 .hex.seen.land-白 polygon { fill: #f6f1e4; stroke: #c9bca0; stroke-dasharray: 5 4; }
 .hex.seen.land-白.can polygon { fill: #fffaf0; }
-.hex .k-圖 { fill: #7a4a24; }
+.hex .k-圖 { fill: #7a4a24; } .hex .k-殘 { fill: #6a2a6a; }
 .hero .wish { color: var(--muted); } .hero .wish.done { color: var(--accent2); }
 /* 低語：找出說謊的聲音 */
 .pz-voices { display: flex; flex-direction: column; gap: 8px; width: 100%; }
@@ -655,3 +655,38 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .ng-nail.hit { background: #3c4347; border-color: #22282b; width: 10px; height: 10px; margin-left: -5px; top: 48px; }
 .ng-nail.miss { background: #c66a4e; border-color: #7a3424; transform: rotate(35deg) scaleY(.6); border-radius: 3px; }
 .ng-hammer { position: absolute; top: -40px; font-size: 40px; transform-origin: 50% 0; pointer-events: none; }
+/* 酒館：按章分頁、隱藏委託 */
+.job-tabs { margin: 4px 0 8px; }
+.job.secret { border-color: #7a4a8a; background: linear-gradient(135deg, rgba(122, 74, 138, .16), transparent 60%), var(--panel2); }
+.job.secret.ready { border-color: var(--accent); }
+.job.secret.done { opacity: .75; }
+.job.secret-back { border-style: dashed; opacity: .8; text-align: center; }
+
+/* 第六頁・墨潮島：墨水的河、門、潮水、新的格子、小地圖 */
+.hex.land-墨 polygon, .hex.seen.land-墨 polygon { fill: #1f1d2b; stroke: #2e2b40; }
+.hex.seen.land-門 polygon { fill: #4a4466; stroke: #b9a8e0; stroke-width: 2; }
+.hex.seen.tide polygon { fill: #bfe0e0; stroke: #6aa7b0; stroke-dasharray: 3 3; }
+.hex.seen.tide.flood polygon { fill: #2f6f94; stroke: #1d4f6e; }
+.hex.seen.tower polygon { stroke: #e8c25a; stroke-width: 3; }
+.hex .k-門 { fill: #e9e0ff; } .hex .k-塔 { fill: #8a6414; } .hex .k-霸 { fill: #6a1a3a; } .hex .k-燈 { fill: #b88a1a; }
+.hex .k-牆 { fill: #3c6c84; } .hex .k-礦 { fill: #2f2f3f; } .hex .k-爐 { fill: #a8401a; }
+.minimap { display: block; width: 100%; max-width: 520px; margin: 0 auto 8px; height: auto; }
+.minimap .hex polygon { stroke: rgba(0, 0, 0, .25); stroke-width: 1; }
+.minimap .hex.fog polygon { fill: #8d9aa5; fill-opacity: .35; }
+.minimap .hex.land-墨 polygon { fill: #1f1d2b; }
+.minimap .mm-k { font-size: 9px; text-anchor: middle; fill: #3a2a1a; font-weight: 700; }
+.minimap .mm-k.done { fill: #8a8070; font-weight: 400; }
+.minimap .mm-k.me { fill: #c0392b; font-size: 11px; }
+/* 墨潮島的新小遊戲：撈網、星圖連線 */
+.pz-net-lane { position: relative; width: 100%; max-width: 360px; height: 96px; margin: 6px auto; border-radius: 10px; overflow: hidden; background: linear-gradient(#2f6f94, #1d4f6e); }
+.pz-net-zone { position: absolute; left: 41%; width: 18%; top: 8px; bottom: 8px; border: 3px dashed rgba(255, 255, 255, .75); border-radius: 8px; transition: background .15s; }
+.pz-net-zone.pull { background: rgba(255, 255, 255, .28); }
+.pz-fish { position: absolute; top: 32px; width: 34px; height: 30px; margin-left: -17px; border-radius: 50% 40% 40% 50%; color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0, 0, 0, .35); }
+.pz-fish-tag { display: inline-block; color: #fff; font-weight: 700; padding: 0 10px; border-radius: 10px; margin-left: 4px; }
+.pz-sky { background: radial-gradient(circle at 50% 40%, #1d2b4a, #0b1020); }
+.pz-sky .sk-hit { fill: transparent; cursor: pointer; }
+.pz-sky .sk-dot { fill: #f6efd6; }
+.pz-sky .sk-star.sel .sk-dot { fill: #f2c94c; }
+.pz-sky .sk-line { stroke: #9fc3ff; stroke-width: 1.1; stroke-linecap: round; }
+.pz-sky .sk-line.show { stroke: #f2c94c; stroke-width: 1.4; }
+.title-badge { text-align: center; font-family: var(--serif); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 4px 12px; margin: 2px auto 8px; width: fit-content; }

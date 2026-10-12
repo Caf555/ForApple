@@ -5,6 +5,7 @@
 // 事件的 fx：糧、燈油、墨水、藥草、海靈露、醒神香、銀貝、素材（數量）；hp（全隊比例，負數是受傷）；士氣；商會、紅帆、守霧人（聲望）
 import { STORY } from './story.js';
 import { HIDDEN, HIDDEN_CINEMA } from './hidden.js';
+import { INK_ISLAND, INK_CINEMA, INK_TILES } from './inkisle.js';
 
 export const TILE_INFO = {
   起: { name: '登陸點', tip: '船停在這裡。' },
@@ -19,6 +20,7 @@ export const TILE_INFO = {
   聲: { name: '低語', tip: '霧裡有人在說話。可能是真的，也可能是陷阱。' },
   跡: { name: '星形的記號', tip: '地上有一個發著淡光的小星星。' },
   圖: { name: '舊圖碎片', tip: '地上壓著一張很舊的紙。' },
+  殘: { name: '第六頁殘片', tip: '酒館的隱藏委託說的那一頁，就在這附近。' },
   王: { name: '首領', tip: '' },
   空: { name: '', tip: '' },
 };
@@ -1795,7 +1797,8 @@ export const ISLANDS = {
 // 第三批劇情補強：隊友事件（need：那個人在隊上才會抽到）、營火夜談、after（重訪拿過好結局的島，登島和村子多一段）
 for (const [id, s] of Object.entries(STORY)) { const d = ISLANDS[id]; d.events.push(...s.events); d.camp.push(...s.camp); d.after = s.after; }
 // 四座隱藏島（hidden.js）：要靠港口的設施才找得到
-Object.assign(ISLANDS, HIDDEN);
+Object.assign(ISLANDS, HIDDEN, INK_ISLAND);
+Object.assign(TILE_INFO, INK_TILES);
 export const ISLAND_ORDER = Object.keys(ISLANDS).sort((a, b) => ISLANDS[a].order - ISLANDS[b].order);
 export const SEAS = ['淺灘', '珊瑚環礁', '焰之群島', '北霧海', '霧心'];
 
@@ -2632,4 +2635,27 @@ export const CINEMA = {
     { art: 'lastpage', img: '幕_書的最後一頁', cam: 'in', sfx: 'pen', text: '繪圖師之書的最後一頁，畫著一群人，站在碼頭上。', title: '全劇終' },
   ] },
 };
-Object.assign(CINEMA, HIDDEN_CINEMA);
+Object.assign(CINEMA, HIDDEN_CINEMA, INK_CINEMA);
+
+// 酒館的隱藏委託：拿到第六頁殘片（殘一～殘五）、五片拼成第六頁
+Object.assign(CINEMA, {
+  殘一: { name: '第六頁殘片・一', frames: [
+    { art: 'chest', img: '幕_鐵筒裡的殘頁', cam: 'in', text: '鏽掉的鐵筒裡，捲著一頁發黃的紙。紙上的海岸線，畫到一半就斷了。' },
+  ] },
+  殘二: { name: '第六頁殘片・二', frames: [
+    { art: 'ledgers', img: '幕_蓋滿作廢的殘頁', cam: 'in', text: '一頁紙，被蓋滿了「作廢」。可是印章底下，珊瑚礁的線還在。' },
+  ] },
+  殘三: { name: '第六頁殘片・三', frames: [
+    { art: 'forgeisle', img: '幕_白色爐火裡的紙', cam: 'in', text: '白色的爐火正中間，有一頁紙，燒了五十年，連邊邊都沒有焦。' },
+  ] },
+  殘四: { name: '第六頁殘片・四', frames: [
+    { art: 'mirrorice', img: '幕_冰鏡裡的紙', cam: 'in', text: '碎掉的冰鏡裡，飄起一頁紙。紙是乾的，一滴水都沒有。' },
+  ] },
+  殘五: { name: '第六頁殘片・五', frames: [
+    { art: 'maproom', img: '幕_畫了一半的島', cam: 'in', text: '影子消失的地方，留下了一頁紙。紙的正中間，是一座只畫了一半的島。' },
+  ] },
+  第六頁: { name: '第六頁・墨潮島', frames: [
+    { art: 'bookmap', img: '幕_五片殘頁拼合', cam: 'in', text: '五片紙攤在書上，一片接一片，邊緣剛好對得起來。' },
+    { art: 'lastpage', img: '幕_墨水流成的島', cam: 'l', sfx: 'whisper', text: '缺口合上的時候，紙上的墨水自己流了起來，流成一座島的形狀。' },
+  ] },
+});
