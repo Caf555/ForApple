@@ -488,14 +488,14 @@
       "name": "怪_炭蜥",
       "seed": 8066,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A lizard whose back scales glow red-hot like charcoal. Accent colours: ember orange and warm red."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real lizard: a low flat scaly reptile body close to the ground, four short legs splayed out to the sides, a long tapering tail and a lizard head. A lizard whose back scales glow red-hot like charcoal. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
       "name": "怪_鐵砧龜",
       "seed": 8067,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A tortoise whose shell is a heavy iron anvil. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real tortoise: four short stumpy scaly legs under a heavy shell, a small wrinkled tortoise head poking out at the front. A tortoise whose shell is a heavy iron anvil. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -1172,7 +1172,7 @@
       "name": "怪_吐紅墨的火蜥",
       "seed": 8158,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A big lizard beside lava, its blood red ink dripping. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real lizard: a low flat scaly reptile body close to the ground, four short legs splayed out to the sides, a long tapering tail and a lizard head. A big lizard beside lava, its blood red ink dripping. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
