@@ -90,6 +90,7 @@ python 畫海人/tools/生圖/batch.py --names 幕_碼頭的背影 --force --see
 - `kind: "design"`：定稿圖。存在 `定稿/`（WebP，不裁切），**不放進遊戲、不上傳**（已列在 `.gitignore`）。原始 PNG 和其他圖一樣在 `原圖/`。
 - `style`：指定用 `style` 裡哪一段畫風（沒寫就用 `kind`）。負向提示詞預設用 `negative`，畫風另有 `negative_<畫風名稱>` 時改用那一段（角色立繪用 `negative_design`，不排除明亮光線）。
 - 新版工作流（Qwen-Image 2.1 + viggle-turbo v0.3 6 步 LoRA）不用 CFG，**負向提示詞實際上不起作用**；不要的東西要在正向描述裡講清楚（例如「Indoors only」「single character」）。
+- `people`（劇情插圖）：`true` 表示畫面裡有人，`"hands"` 表示只露出手，沒寫就是完全沒有人。批次程式會依此在提示詞最後接上 `style` 裡的 `scene_people`／`scene_hands`／`scene_empty`。沒寫 `people` 的圖模型常自己加人，所以要有人的圖記得寫 `true`。
 - 畫風提示詞只寫畫法、色調和光線，**不要寫任何場景物件**（房子、碼頭、船……），否則會跑進不相干的畫面（第一輪試畫的室內出現了港口的房子）。場景物件寫在每張圖自己的描述裡；室內場景寫明「Indoors only」。
 - 角色立繪：明亮、色彩清楚、細節多，不套用場景的暗色調；每人的專屬配色與小配件寫在 `清單_角色.json` 的 `themes`，依角色屬性設計（星、潮、影、風、焰、石）。
 - `chars`：插圖裡出現的主要角色，會自動在描述最後接上 `清單_角色.json` 的固定外觀。新增有主要角色的插圖時，描述裡用「the girl」「the woman」等代稱，外觀不要另外寫，以免和固定外觀打架。
