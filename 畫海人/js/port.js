@@ -6,6 +6,7 @@ import { diceGame, cardGame } from './gamble.js';
 import { cargoUsed, save, heroStats } from './state.js';
 import { worldOf, surveyMax } from './explore.js';
 import { inkRec, inkCount, litTowers } from './inkplay.js';
+import { INK_ID, INK_SALT, INK_SALT_GIFT } from './inkisle.js';
 import { el, $ } from './ui.js';
 
 export const PRICES = { 糧: 2, 燈油: 6, 墨水: 5, 藥草: 8, 海靈露: 7, 醒神香: 20 };
@@ -279,6 +280,11 @@ export class Port {
   tavern() {
     const g = this.g, ctx = this.ctx;
     const day = this.day;
+    // 墨潮島畫到 60% 以上：鹽姨有話要說（只有一次）
+    if (!g.flags.鹽姨第六頁 && (g.world[INK_ID] || {}).best >= 60) {
+      g.flags.鹽姨第六頁 = 1; ctx.applyFx(INK_SALT_GIFT); save(g);
+      return ctx.ui.story(ctx.storyLines(INK_SALT)).then(() => ctx.ui.alert('鹽姨', ['盒子裡是幾瓶海靈露和醒神香，還有一張鹽姨的爹憑想像畫的墨潮島，畫得歪歪扭扭的。', ctx.fxText(INK_SALT_GIFT)])).then(() => this.tavern());
+    }
     ctx.ui.sheet('酒館', (body, api) => {
       // 流言和潮汐骰
       const r = day.rumor;
