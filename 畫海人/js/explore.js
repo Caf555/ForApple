@@ -1,6 +1,6 @@
 // 島嶼探索：六角格地圖、霧、補給、格子上的事件
 import { ISLANDS, TILE_INFO } from './islands.js';
-import { EQUIPS, MATS, PARTY_MAX, FACTIONS, repLevel, repOn, MIST_LAMP, cargoMax } from './data.js';
+import { EQUIPS, MATS, PARTY_MAX, FACTIONS, repLevel, repOn, MIST_LAMP, cargoMax, SECRET_JOBS } from './data.js';
 import { heroStats, makeHero, DIFF, save, cargoUsed, moraleTier } from './state.js';
 import { survey } from './survey.js';
 import { playPuzzle } from './puzzle.js';
@@ -81,6 +81,14 @@ export function newIsland(g, id) {
     const t = shuffle(free.filter(x => x.kind === '空' && dist([x.c, x.r], start) > 1))[0];
     if (t) { t.kind = '寶'; t.done = false; }
     g.tip = null;
+  }
+  // 酒館的隱藏委託：接下了、殘片還沒拿到的話，這座島多一格「殘」（離登陸點遠一點，一開始就看得到）
+  const sj = SECRET_JOBS.find(j => j.island === id && (g.secret || {})[j.id] === 'taken');
+  if (sj) {
+    const cand = free.filter(x => x.kind === '空');
+    const far = cand.filter(x => dist([x.c, x.r], start) >= 3);
+    const t = shuffle(far.length ? far : cand)[0];
+    if (t) { t.kind = '殘'; t.done = false; t.seen = true; t.job = sj.id; }
   }
   // 火山的地形：熱地（走上去會受傷）、噴氣口（每走三步噴一次）。登陸點、首領、村子、營地、測繪點不會是
   const open = shuffle(tiles.filter(t => !['起', '王', '村', '火', '測'].includes(t.kind) && dist([t.c, t.r], start) > 1));
@@ -463,6 +471,29 @@ export class Explore {
         if (got >= all.length) g.flags.舊圖 = 1;
         await ui.alert('公會的舊圖碎片', [`找到了 ${got}／${all.length} 張公會長留下的舊圖碎片。（墨水 +2、士氣 +8）`, got >= all.length ? '五張都找到了。最後的那一戰，也許會有一點不一樣。' : '霧心的其他島上，可能還有。']);
         t.done = true;
+        break;
+      }
+      case '殘': {
+        // 酒館的隱藏委託：加強版的小遊戲 → 守著殘片的東西 → 拿到第六頁殘片（回酒館回報）
+        const J = SECRET_JOBS.find(j => j.id === t.job);
+        if (!J || (g.secret || {})[J.id] !== 'taken') { t.done = true; break; }
+        const i = await ui.choose(J.title, [...J.find, '（小遊戲比平常難一點。解不開可以再試；離開這一格，下次再來也可以）'], [{ label: '試試看' }, { label: '先不要' }]);
+        if (i !== 0) break;
+        // 加強版：難度往上調一級（困難就維持困難）
+        const was = g.diff;
+        g.diff = { 悠閒: '標準', 標準: '困難' }[was] || '困難';
+        let win;
+        try { win = await playPuzzle(this.ctx, J.game, isl.id); } finally { g.diff = was; }
+        if (!win) { await ui.alert(J.title, ['沒有解開。東西還在原地，可以再試一次。']); break; }
+        await ui.alert(J.title, ['解開了！有東西從暗處走了出來。它守著那一頁紙，守了五十年。']);
+        if (!(await this.fight(t, from, J.foes, '精英'))) break;
+        g.secret[J.id] = 'got';
+        t.done = true;
+        g.morale = Math.min(100, g.morale + 10);
+        save(g);
+        await this.ctx.cinema(J.id);
+        const got = SECRET_JOBS.filter(j => ['got', 'done'].includes(g.secret[j.id])).length;
+        await ui.story(this.ctx.storyLines([...J.win, `（拿到了第六頁殘片「${J.id.slice(1)}」。殘片 ${got}／${SECRET_JOBS.length}。士氣 +10。回到港口以後，到酒館回報）`]));
         break;
       }
       case '遺': {
