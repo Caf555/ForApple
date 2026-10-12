@@ -690,3 +690,37 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .pz-sky .sk-line { stroke: #9fc3ff; stroke-width: 1.1; stroke-linecap: round; }
 .pz-sky .sk-line.show { stroke: #f2c94c; stroke-width: 1.4; }
 .title-badge { text-align: center; font-family: var(--serif); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 4px 12px; margin: 2px auto 8px; width: fit-content; }
+
+/* ═════ 地形紋理（js/terrain.js）與生好的圖（js/art.js） ═════ */
+.hex polygon.tex { stroke: none !important; animation: none !important; fill-opacity: 1 !important; pointer-events: none; }
+.hex.fog polygon.tex { display: none; }
+
+/* 小圖示：怪物、裝備、物品。透明背景的圖放在深色圓底上；沒有透明背景的圖也會被裁成圓形 */
+.pic { display: block; flex: none; object-fit: cover; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #2c4256, #142230 72%); }
+.shop-row > .pic { width: 52px; height: 52px; margin-right: 10px; }
+.shop-row.fg-row { align-items: flex-start; }
+.pic.mini { display: inline-block; width: 22px; height: 22px; vertical-align: -6px; margin-right: 4px; }
+.eq-slot .pic.mini { width: 28px; height: 28px; margin: 2px auto; display: block; }
+.btn.wide > .pic.mini { float: left; width: 40px; height: 40px; margin: 0 10px 0 0; }
+
+/* 戰鬥：有圖的怪物，臉的圓圈放大一點；首領、精英再大一點 */
+.unit .face.has-pic { width: 46px; height: 46px; padding: 0; overflow: hidden; background: transparent !important; }
+.unit.rank .face.has-pic { width: 60px; height: 60px; }
+.unit .face.has-pic .pic { width: 100%; height: 100%; }
+@media (max-width: 400px) { .unit .face.has-pic { width: 38px; height: 38px; } .unit.rank .face.has-pic { width: 48px; height: 48px; } }
+
+/* 橫幅：港口、設施、海圖每一頁 */
+.banner { position: relative; margin: 4px 0 12px; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 7; background: #142230; }
+.banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 24px rgba(8, 16, 24, .7); pointer-events: none; }
+.banner-chart { aspect-ratio: 16 / 5; }
+/* 設施按鈕：淡淡的設施圖當底 */
+.fac { position: relative; overflow: hidden; }
+.fac > .banner.fac-bg { position: absolute; inset: 0; margin: 0; border-radius: 0; aspect-ratio: auto; opacity: .28; pointer-events: none; }
+.fac > .banner.fac-bg::after { box-shadow: none; background: linear-gradient(90deg, rgba(15, 26, 36, .85), rgba(15, 26, 36, .2)); }
+.fac > b, .fac > small { position: relative; }
+/* 島嶼地圖：遠景淡淡地鋪在格子後面 */
+.mapwrap { position: relative; }
+.mapwrap > .banner.map-bg { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; opacity: .22; pointer-events: none; }
+.mapwrap > .hexmap { position: relative; }
+.shop-row > .pic + div { flex: 1; }

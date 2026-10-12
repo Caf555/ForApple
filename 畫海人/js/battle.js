@@ -1,4 +1,5 @@
 // 戰鬥：前後兩排、換位、元素、地形、士氣、首領蓄力與第二階段
+import { icon } from './art.js';
 import { HEROES, SKILLS, ENEMIES, ITEMS, COMMISSIONS, elementMult, weaknessOf } from './data.js';
 import { ISLANDS } from './islands.js';
 import { heroStats, gainExp, DIFF, moraleTier } from './state.js';
@@ -545,7 +546,8 @@ export class Battle {
 
   card(u) {
     const ally = u.side === 'ally';
-    const face = el('span', { class: 'face', style: { background: ally ? u.color || HEROES[u.key].color : 'var(--foe)' } }, u.name.slice(0, 1));
+    const pic = ally ? null : icon('enemy', u.key);
+    const face = el('span', { class: 'face' + (pic ? ' has-pic' : ''), style: { background: ally ? u.color || HEROES[u.key].color : 'var(--foe)' } }, pic || u.name.slice(0, 1));
     return el('div', { class: 'unit ' + u.side + (u.def && u.def.rank ? ' rank' : '') },
       face, el('div', { class: 'u-main' },
         el('div', { class: 'u-name' }, el('span', { class: 'elem e-' + u.el }, u.el), u.name),

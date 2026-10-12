@@ -36,8 +36,8 @@ WORKFLOWS = HERE / 'workflows' if (HERE / 'workflows' / 't2i.json').exists() els
 IMG = GAME / 'img'
 RAW = HERE / '原圖'                  # 保存 ComfyUI 輸出的原始 PNG（供圖生圖參考與重新裁切）
 MANIFEST = IMG / 'manifest.json'
-WEB_WIDTHS = {'scene': (1200, 700)}   # 劇情動畫的正方形插圖
-SQUARE = {'char': 512, 'enemy': 512, 'item': 256}
+WEB_WIDTHS = {'scene': (1200, 700), 'place': (1600, 800)}   # 劇情動畫的正方形插圖；港口、設施、島嶼與海圖的橫幅
+SQUARE = {'char': 512, 'enemy': 512, 'gear': 256, 'item': 256}   # 怪物、裝備、物品：正方形（透明背景）
 DESIGN = HERE / '定稿'               # 定稿圖（試畫、角色立繪）：不放進遊戲，只給人看和當參考圖
 REF_BG = (200, 200, 200)             # 參考圖補成正方形時用的淺灰底
 
@@ -188,7 +188,7 @@ def export(kind, name, raw_path):
 
 
 def update_manifest():
-    man = {k: [] for k in WEB_WIDTHS}
+    man = {k: [] for k in [*WEB_WIDTHS, *SQUARE] if k != 'char'}
     for kind in man:
         for f in sorted((IMG / kind).glob('*.webp')) if (IMG / kind).exists() else []:
             stem = f.stem
@@ -215,7 +215,7 @@ def review_page(cfg, list_path):
 <title>審圖：{list_path.stem}</title>
 <style>body{{font-family:sans-serif;background:#222;color:#eee;margin:16px}}main{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}}
 figure{{margin:0;background:#333;border-radius:8px;overflow:hidden}}img{{width:100%;display:block;background:repeating-conic-gradient(#555 0 25%,#444 0 50%) 0 0/20px 20px}}
-figure.char img,figure.enemy img,figure.item img{{aspect-ratio:1}}figcaption{{padding:8px;font-size:13px}}small{{color:#aaa}}.none{{padding:40px;text-align:center;color:#888}}</style>
+figure.char img,figure.enemy img,figure.gear img,figure.item img{{aspect-ratio:1}}figure.gear,figure.item{{max-width:300px}}figcaption{{padding:8px;font-size:13px}}small{{color:#aaa}}.none{{padding:40px;text-align:center;color:#888}}</style>
 <h1>審圖：{list_path.stem}</h1><p>棋盤格底紋代表透明背景。不滿意的圖，記下名稱，用 --names 名稱 --force --seed-offset 1 重畫。</p>
 <main>{"".join(rows)}</main>'''
     (HERE / '審圖.html').write_text(html, encoding='utf-8')
@@ -225,7 +225,8 @@ def main():
     ap = argparse.ArgumentParser(description='《畫海人》批次生圖')
     ap.add_argument('--list', help='只用這一份清單（預設：資料夾裡所有「清單_*.json」）')
     ap.add_argument('--server', default='http://127.0.0.1:8188')
-    ap.add_argument('--only', choices=[*WEB_WIDTHS, 'design'])
+    ap.add_argument('--only', choices=[*WEB_WIDTHS, *SQUARE, 'design'])
+    ap.add_argument('--rank', help='只畫這些等級的怪物（逗號分隔，例如 首領,精英）')
     ap.add_argument('--names', help='只產生這些名稱（逗號分隔）')
     ap.add_argument('--force', action='store_true', help='已經有的圖也重畫')
     ap.add_argument('--seed-offset', type=int, default=0, help='種子加上這個數字，用來重畫出不同的版本')
@@ -261,7 +262,8 @@ def main():
         sys.exit(f'清單裡有重複的名稱：{"、".join(sorted(dup))}')
     templates = {k: json.loads((WORKFLOWS / f'{k}.json').read_text(encoding='utf-8')) for k in ('t2i', 'edit')}
     names = set(args.names.split(',')) if args.names else None
-    items = [it for it in cfg['items'] if (it['_run'] or names) and (not args.only or it['kind'] == args.only) and (not names or it['name'] in names)]
+    ranks = set(args.rank.split(',')) if args.rank else None
+    items = [it for it in cfg['items'] if (it['_run'] or names) and (not args.only or it['kind'] == args.only) and (not names or it['name'] in names) and (not ranks or it.get('rank') in ranks)]
     if names:
         missing = names - {it['name'] for it in cfg['items']}
         if missing:

@@ -1,3 +1,7 @@
 {
-  "scene": []
+  "scene": [],
+  "place": [],
+  "enemy": [],
+  "gear": [],
+  "item": []
 }

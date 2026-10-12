@@ -5,6 +5,8 @@ import { heroStats, makeHero, DIFF, save, cargoUsed, moraleTier } from './state.
 import { survey } from './survey.js';
 import { playPuzzle } from './puzzle.js';
 import { el, $ } from './ui.js';
+import { banner } from './art.js';
+import { terrainDefs, textureOf } from './terrain.js';
 import { buildInk, inkSight, blocked, flooded, inkGoal, inkTileInfo, inkEnter, inkMinimap, regionOf } from './inkplay.js';
 import { INK_REGIONS, TIDE_EVERY } from './inkisle.js';
 
@@ -174,7 +176,7 @@ export class Explore {
       el('div', { class: 'isl-head' }, el('b', {}, this.isl.id), el('span', { class: 'grow' }), mini, this.$lamp,
         el('button', { class: 'btn small', onclick: () => this.ctx.partySheet() }, '隊伍'),
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => this.ctx.menu() }, '☰')),
-      this.$status, el('div', { class: 'mapwrap' }, this.svg), this.$info, this.$party);
+      this.$status, el('div', { class: 'mapwrap' }, banner('place', this.isl.id, 'map-bg'), this.svg), this.$info, this.$party);
     this.draw();
   }
 
@@ -204,6 +206,7 @@ export class Explore {
   draw() {
     const g = this.g, isl = this.isl, def = this.def, svg = this.svg;
     svg.innerHTML = '';
+    terrainDefs(svg);
     const nb = neighbors(...isl.pos, def).filter(p => !(def.big && blocked(isl, tileAt(isl, ...p)))).map(p => p.join(','));
     // 超大地圖：鏡頭跟著隊伍，只畫附近一塊（碰到地圖邊緣就停住）
     let view = null;
@@ -221,6 +224,8 @@ export class Explore {
       const grp = document.createElementNS(NS, 'g');
       grp.setAttribute('class', 'hex' + (t.seen ? ' seen land-' + t.land : ' fog') + (t.surveyed ? ' surveyed' : '') + (here ? ' here' : '') + (can ? ' can' : '') + (t.tide && t.seen ? ' tide' + (flooded(isl, t) ? ' flood' : '') : '') + (t.tower ? ' tower' : ''));
       const poly = document.createElementNS(NS, 'polygon'); poly.setAttribute('points', pts); grp.append(poly);
+      const tex = textureOf(t, t.tide && flooded(isl, t));
+      if (tex) { const tp = document.createElementNS(NS, 'polygon'); tp.setAttribute('points', pts); tp.setAttribute('class', 'tex'); tp.style.fill = `url(#tx-${tex})`; grp.append(tp); }
       const vent = t.seen && t.land === '噴' && !here && (t.done || t.kind === '空') && t.kind !== '起' && t.kind !== '村';
       const label = here || vent ? '' : !t.seen || t.land === '白' ? '' : t.kind === '王' ? def.boss.label[isl.key ? 1 : 0] : t.done && t.kind !== '村' && t.kind !== '起' ? '·' : t.kind === '空' ? '' : t.kind;
       if (label) { const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', x); tx.setAttribute('y', y + 7); tx.setAttribute('class', 'k k-' + t.kind + (t.done ? ' done' : '')); tx.textContent = label; grp.append(tx); }

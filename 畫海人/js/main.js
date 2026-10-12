@@ -1,4 +1,5 @@
 // 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章 → 霧心：最後的抉擇 → 結局 → 尾聲（之後可以繼續玩）
+import { icon } from './art.js';
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES, HULL_WEAR, HULL_WORN, hullOf } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
@@ -611,7 +612,7 @@ ctx.partySheet = () => {
         el('div', { class: 'h-bars' }, ctx.ui.bar(h.hp, st.hp, 'hp'), el('small', {}, `體 ${h.hp}/${st.hp}`), ctx.ui.bar(h.mp, st.mp, 'mp'), el('small', {}, `靈 ${h.mp}/${st.mp}`), ctx.ui.bar(h.exp, expNeed(h.lv), 'exp'), el('small', {}, `經驗 ${h.exp}/${expNeed(h.lv)}`)),
         el('p', { class: 'small stats' }, `攻 ${st.atk}・防 ${st.def}・法 ${st.mag}・速 ${st.spd}`),
         el('div', { class: 'eq' }, ...SLOTS.map(slot => el('button', { class: 'eq-slot', onclick: () => equipSheet(h, slot, api) },
-          el('small', {}, slot), el('b', {}, h.eq[slot] || '—')))),
+          el('small', {}, slot), h.eq[slot] ? icon('gear', h.eq[slot], 'mini') : null, el('b', {}, h.eq[slot] || '—')))),
         el('p', { class: 'muted small' }, ctx.ui.fmt(d.desc)),
         el('p', { class: 'small' }, '技能：' + d.skills.join('、')),
         g.flags.霧心 && WISHES[h.key] ? el('p', { class: 'small wish' + (wishDone(h.key) ? ' done' : '') }, `心願：${WISHES[h.key].text}　` + (wishDone(h.key) ? '✓ 完成了' : WISHES[h.key].isle ? `（在「${WISHES[h.key].isle}」拿到好結局）` : `（${WISHES[h.key].hint || '第五章的最後揭曉'}）`)) : null,
@@ -642,7 +643,7 @@ function equipSheet(h, slot, parent) {
       g.gear[n]--; h.eq[slot] = n;
       const s = heroStats(h); h.hp = Math.min(h.hp, s.hp); h.mp = Math.min(h.mp, s.mp);
       ctx.audio.sfx('item'); save(g); api.close(); parent.rebuild(); if (g.phase === 'island') ctx.explore.draw();
-    } }, el('b', {}, `${n}　×${g.gear[n]}`), el('small', {}, `${statText(EQUIPS[n].stats)}・${EQUIPS[n].desc}`)));
+    } }, icon('gear', n, 'mini'), el('b', {}, `${n}　×${g.gear[n]}`), el('small', {}, `${statText(EQUIPS[n].stats)}・${EQUIPS[n].desc}`)));
     if (cur) body.append(el('button', { class: 'btn', onclick: () => { g.gear[cur] = (g.gear[cur] || 0) + 1; delete h.eq[slot]; const s = heroStats(h); h.hp = Math.min(h.hp, s.hp); h.mp = Math.min(h.mp, s.mp); save(g); api.close(); parent.rebuild(); } }, '卸下'));
   });
 }
@@ -667,5 +668,5 @@ function settingsSheet() {
 
 // ───────── 啟動 ─────────
 title();
-loadPics();
+loadPics();   // 也一起讀進怪物、裝備、物品、場景的圖片清單（js/art.js）
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});

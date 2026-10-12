@@ -281,6 +281,22 @@ for (const it of genItems) {
   for (const r of [it.ref || []].flat()) if (!genNames.includes(r)) bad(`生圖「${it.name}」的參考圖「${r}」不在生圖清單裡`);
 }
 
+// 怪物、裝備、物品、場景、海圖的圖（js/art.js）：遊戲裡的每一樣都要在清單裡，清單裡的每一張都要對得到遊戲裡的東西
+const SUPPLIES = ['糧', '燈油', '墨水', '藥草', '海靈露', '醒神香'];
+const ART_WANT = {
+  enemy: Object.keys(ENEMIES).map(k => '怪_' + k),
+  gear: Object.keys(EQUIPS).map(k => '裝_' + k),
+  item: [...SUPPLIES, ...Object.keys(ITEMS), ...Object.keys(MATS), '銀貝', '圖紙', '藏寶圖碎片', '第六頁殘片', ...IMPORTS.filter(x => x.kind === 'find').map(x => x.name)].map(k => '物_' + k),
+  place: [...['港口', '碼頭', '酒館', '鐵匠', '船塢', '市場', '黑市', '天文台'], ...ISLAND_ORDER].map(k => '景_' + k).concat([...SEAS, '第六頁'].map(k => '圖_' + k)),
+};
+for (const [kind, want] of Object.entries(ART_WANT)) {
+  const have = genItems.filter(it => it.kind === kind).map(it => it.name);
+  for (const n of new Set(want)) if (!have.includes(n)) bad(`生圖清單少了「${n}」（${kind}）`);
+  for (const n of have) if (!want.includes(n)) bad(`生圖清單的「${n}」在遊戲裡找不到對應的東西（${kind}）`);
+}
+const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url), 'utf8'));
+for (const [kind, names] of Object.entries(manifest)) for (const n of names) if (!genNames.includes(n)) bad(`img/manifest.json 的「${n}」不在生圖清單裡`);
+
 // 台詞：混在文字裡的角色台詞 { who, need, text } 一定要有文字；need 要是存在的隊友
 // （視窗會把它排成「名字：台詞」，不會再出現 [object Object]）
 const walkLines = (v, where) => {
