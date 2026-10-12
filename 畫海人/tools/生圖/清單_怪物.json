@@ -50,7 +50,7 @@
       "name": "怪_霧鰻",
       "seed": 8006,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A long sea eel coiled in an S shape, its front half solid dark green, its tail fading into pale mist. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real eel: a long limbless body with a small fin along its back. A long sea eel coiled in an S shape, its front half solid dark green, its tail fading into pale mist. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -145,7 +145,7 @@
       "name": "怪_鏽刃魚",
       "seed": 8019,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A sleek fish with fins shaped like rusty iron blades, orange rust streaks on dark scales. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real fish body, short and streamlined, with fins and a forked tail fin, seen swimming side-on. A sleek fish with fins shaped like rusty iron blades, orange rust streaks on dark scales. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -189,7 +189,7 @@
       "name": "怪_帳蟲",
       "seed": 8025,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A pale bookworm grub the size of a cat, its body made of rolled ledger paper with faint scribbled lines, nibbling a paper corner. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real fat grub: a short plump segmented body with tiny stubby legs underneath. A pale bookworm grub the size of a cat, its body made of rolled ledger paper with faint scribbled lines, nibbling a paper corner. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -247,7 +247,7 @@
       "name": "怪_量尺蛇",
       "seed": 8033,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A long snake whose body is a wooden measuring rule with tick marks along it, coiled. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real snake: a long limbless body with a snake head. A long snake whose body is a wooden measuring rule with tick marks along it, coiled. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -268,7 +268,7 @@
       "name": "怪_墨魚",
       "seed": 8036,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A cuttlefish with deep indigo skin, a cloud of black ink drifting from it. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real cuttlefish: an oval body with a rippling fin skirt and short tentacles at the front. A cuttlefish with deep indigo skin, a cloud of black ink drifting from it. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -291,7 +291,7 @@
       "name": "怪_珠蚌",
       "seed": 8039,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A large freshwater clam slightly open, a pearl inside glistening with a single tear. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real clam: just two hinged shell halves resting on their own, slightly open, nothing else attached. A large freshwater clam slightly open, a pearl inside glistening with a single tear. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -305,7 +305,7 @@
       "name": "怪_白線水母",
       "seed": 8041,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A translucent jellyfish with a single glowing white thread running through its bell. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real jellyfish: a round translucent bell with long thin tentacles trailing beneath it. A translucent jellyfish with a single glowing white thread running through its bell. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -509,7 +509,7 @@
       "name": "怪_熔渣魚",
       "seed": 8069,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A fish with scales of black volcanic glass, swimming through cooling lava. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real fish body, short and streamlined, with fins and a forked tail fin, seen swimming side-on. A fish with scales of black volcanic glass, swimming through cooling lava. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -655,7 +655,7 @@
       "name": "怪_霜鯨幼",
       "seed": 8089,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A baby whale with frosty white-blue skin, wide worried eyes. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real whale body, round and heavy, with two side flippers and a wide horizontal tail fluke. A baby whale with frosty white-blue skin, wide worried eyes. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -1060,7 +1060,7 @@
       "name": "怪_醉鯨",
       "seed": 8144,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A huge old whale with a bottle-shaped glow of rum in its belly, sad drooping eyes, barnacles on its back. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real whale body, round and heavy, with two side flippers and a wide horizontal tail fluke. A huge old whale with a bottle-shaped glow of rum in its belly, sad drooping eyes, barnacles on its back. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
       "rank": "首領"
     },
     {
@@ -1156,7 +1156,7 @@
       "name": "怪_吐藍墨的海蛇",
       "seed": 8156,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. A long sea serpent coiled on a rock, spitting blue ink water. Accent colours: sea teal and foam white. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real snake: a long limbless body with a snake head. A long sea serpent coiled on a rock, spitting blue ink water. Accent colours: sea teal and foam white. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
@@ -1164,7 +1164,7 @@
       "name": "怪_吐綠墨的老蚌",
       "seed": 8157,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real sea creature or serpent body with fins, tentacles, a shell or a long limbless body as the animal naturally has. An enormous old clam leaking green ink from its shell seam. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real clam: just two hinged shell halves resting on their own, slightly open, nothing else attached. An enormous old clam leaking green ink from its shell seam. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
