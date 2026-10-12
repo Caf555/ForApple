@@ -699,7 +699,7 @@
       "name": "怪_斷槳",
       "seed": 8195,
       "transparent": true,
-      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a single broken wooden oar flying through the air on its own, tilted diagonally as if thrusting forward, its split splintered end pointed like a spear tip, a glowing amber crack in the wood like an eye, splinters and brown dust trailing behind. Accent colours: ochre brown and stone grey."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a broken wooden oar spinning through the air, its split splintered end jagged and sharp like a spearhead, a glowing amber crack in the wood like an angry eye, wood splinters flying off it. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -903,7 +903,7 @@
       "name": "怪_水線",
       "seed": 8223,
       "transparent": true,
-      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a long ribbon of dark sea water curving through the air like a lashing whip, only water, foam spraying from its tip, a glowing teal core in the middle of the water. Accent colours: sea teal and foam white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a curling crest of dark sea water like a breaking wave rearing up, only water and foam, a glowing teal eye inside the curl of the wave, spray flying forward. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -1005,14 +1005,14 @@
       "name": "怪_纏繞的光",
       "seed": 8237,
       "transparent": true,
-      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: two ribbons of light, one gold and one blue, twisting tightly around each other in a spiral and lashing outward like whips, only light, bright sparks where they cross. Accent colours: starlight gold and soft silver."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a glowing vortex of two light ribbons, one gold and one blue, braided together into a tight spiral knot, bright sparks flying outward from the knot. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
       "name": "怪_未完的線",
       "seed": 8238,
       "transparent": true,
-      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: one glowing half-drawn ink line racing across the empty space, ending in a sharp bright pen-nib tip like a spearhead, the line behind it crackling with green light, only the line. Accent colours: pale sage green and cloud white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a glowing green ink line streaking diagonally like a comet, the front end a sharp bright pen-nib point, crackling sparks along the line. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
