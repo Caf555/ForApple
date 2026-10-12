@@ -1,0 +1,819 @@
+{
+  "說明": "《畫海人》裝備圖示（115 件，一件一張）。名稱是「裝_」加上 畫海人/js/data.js 的 EQUIPS 名稱。存成 img/gear/名稱.webp（256×256，透明背景）。",
+  "sizes": {
+    "gear": [
+      1024,
+      1024
+    ]
+  },
+  "style": {
+    "gear": "Anime film game item icon: exactly one object, centred, filling about two thirds of the frame, seen from a slight three-quarter angle, in the same hand-painted anime film style as the game's scenes: clean crisp line art, cel shading, soft painterly highlights. Medieval European craftsmanship. Bright, clear true colours with a soft rim light so it reads at small size; a muted base palette with warm highlights on metal, glass and anything that glows. Nothing else in the frame: no hands, no people, no table, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background."
+  },
+  "items": [
+    {
+      "kind": "gear",
+      "name": "裝_海鷗羽筆",
+      "seed": 8301,
+      "transparent": true,
+      "prompt": "A quill pen cut from a white seagull feather."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鹽晶筆",
+      "seed": 8302,
+      "transparent": true,
+      "prompt": "A drawing pen whose nib is a small glowing salt crystal, wooden barrel."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鐘銅筆",
+      "seed": 8303,
+      "transparent": true,
+      "prompt": "A pen with a green-patinated bronze barrel shaped like a tiny bell tower, glowing nib."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_漂流木刀",
+      "seed": 8304,
+      "transparent": true,
+      "prompt": "A hand-carved wooden sword made of smooth grey driftwood, rope-wrapped grip."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_珊瑚刃",
+      "seed": 8305,
+      "transparent": true,
+      "prompt": "A short sword with a blade ground from red coral, glowing like a sunset."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鏽錨刀",
+      "seed": 8306,
+      "transparent": true,
+      "prompt": "A heavy broadsword forged from a rusty ship anchor, anchor fluke shapes at the guard."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_霧苔杖",
+      "seed": 8307,
+      "transparent": true,
+      "prompt": "A wooden staff wrapped in pale white fog moss."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_燈芯鈴杖",
+      "seed": 8308,
+      "transparent": true,
+      "prompt": "A staff with a cluster of small bells at the top, each bell holding a tiny glowing wick."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_貝殼琴",
+      "seed": 8309,
+      "transparent": true,
+      "prompt": "A small lyre made from a large spiral seashell, a few strings."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_夜光琴",
+      "seed": 8310,
+      "transparent": true,
+      "prompt": "A lyre whose strings are fine glowing threads of luminous pearl, dark wood body."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_霧苔斗篷",
+      "seed": 8311,
+      "transparent": true,
+      "prompt": "A grey-green hooded cloak stitched with patches of soft fog moss, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_珊瑚甲",
+      "seed": 8312,
+      "transparent": true,
+      "prompt": "A breastplate made of pieces of red and white coral strung together."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_帆布大衣",
+      "seed": 8313,
+      "transparent": true,
+      "prompt": "A long sailcloth coat with many pockets, patched canvas, on a hanger-free display."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_燈芯護符",
+      "seed": 8314,
+      "transparent": true,
+      "prompt": "A small cloth charm pouch tied with string, a glowing wick peeking out."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鹽晶墜子",
+      "seed": 8315,
+      "transparent": true,
+      "prompt": "A clear salt crystal pendant on a leather cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_褪色羽飾",
+      "seed": 8316,
+      "transparent": true,
+      "prompt": "A hair ornament of grey feathers tied with a thin ribbon."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_夜光錨墜",
+      "seed": 8317,
+      "transparent": true,
+      "prompt": "A tiny silver anchor pendant with a glowing pearl set in its tip."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_帳房短弓",
+      "seed": 8318,
+      "transparent": true,
+      "prompt": "A plain short bow with a leather grip, a small brass merchant guild badge on it."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_測繩弓",
+      "seed": 8319,
+      "transparent": true,
+      "prompt": "A bow whose string is a knotted surveyor’s cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白珊瑚弓",
+      "seed": 8320,
+      "transparent": true,
+      "prompt": "A long bow carved from white coral."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_珍珠筆",
+      "seed": 8321,
+      "transparent": true,
+      "prompt": "A pen with a pearl set in the nib, silver barrel, moonlight sheen."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白頁筆",
+      "seed": 8322,
+      "transparent": true,
+      "prompt": "A pen carved from white coral, pale and smooth."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_銀貝刀",
+      "seed": 8323,
+      "transparent": true,
+      "prompt": "A sword with a row of shiny silver seashells set along its spine."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_閘石大刀",
+      "seed": 8324,
+      "transparent": true,
+      "prompt": "A huge blade made of polished grey sluice-gate stone, iron bands."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_珊瑚母杖",
+      "seed": 8325,
+      "transparent": true,
+      "prompt": "A staff of pink mother-of-pearl coral with a spiral top."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鏡砂琴",
+      "seed": 8326,
+      "transparent": true,
+      "prompt": "A lyre with its body sprinkled with glittering mirror sand."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_帳紙披風",
+      "seed": 8327,
+      "transparent": true,
+      "prompt": "A cape made of layers of pale ledger paper, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_測繩外套",
+      "seed": 8328,
+      "transparent": true,
+      "prompt": "A surveyor’s coat with knotted cords on the cuffs, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_珍珠鱗甲",
+      "seed": 8329,
+      "transparent": true,
+      "prompt": "Scale armour made of small pearls, faint glow."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_銀貝耳環",
+      "seed": 8330,
+      "transparent": true,
+      "prompt": "A pair of earrings made of small silver seashells."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鏡砂護符",
+      "seed": 8331,
+      "transparent": true,
+      "prompt": "A tiny glass vial full of glittering mirror sand on a cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_墨魚墨瓶",
+      "seed": 8332,
+      "transparent": true,
+      "prompt": "A small corked glass bottle of deep indigo cuttlefish ink on a cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_珍珠墜",
+      "seed": 8333,
+      "transparent": true,
+      "prompt": "A single pearl pendant on a fine chain."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白珊瑚戒",
+      "seed": 8334,
+      "transparent": true,
+      "prompt": "A ring carved from white coral."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_紅帆短斧",
+      "seed": 8335,
+      "transparent": true,
+      "prompt": "A short hand axe with a strip of red cloth wrapped around the handle."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_錨鏈斧",
+      "seed": 8336,
+      "transparent": true,
+      "prompt": "An axe with a length of anchor chain attached to the end of its handle."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_熔岩斧",
+      "seed": 8337,
+      "transparent": true,
+      "prompt": "An axe with a blade of black volcanic glass, a red glow inside."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_熔岩玻璃筆",
+      "seed": 8338,
+      "transparent": true,
+      "prompt": "A pen ground from black volcanic glass, red glint in the nib."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鍛火刀",
+      "seed": 8339,
+      "transparent": true,
+      "prompt": "A sword fresh from the forge, its blade still glowing orange at the edge."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_硫磺鈴杖",
+      "seed": 8340,
+      "transparent": true,
+      "prompt": "A staff topped with bells melted from copper miner tags, yellow sulfur crystals."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_紅帆琴",
+      "seed": 8341,
+      "transparent": true,
+      "prompt": "A lyre with its body covered in red sailcloth."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_火藥長弓",
+      "seed": 8342,
+      "transparent": true,
+      "prompt": "A long bow beside a quiver of arrows with small gunpowder pouches tied to them."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_舊帆布外套",
+      "seed": 8343,
+      "transparent": true,
+      "prompt": "A coat sewn from an old red pirate sail, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_礦工皮甲",
+      "seed": 8344,
+      "transparent": true,
+      "prompt": "Leather miner’s armour with a copper plate sewn on the chest."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_熔岩鱗甲",
+      "seed": 8345,
+      "transparent": true,
+      "prompt": "Scale armour of black volcanic glass plates with red light glowing between them."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鐵喉大盾",
+      "seed": 8346,
+      "transparent": true,
+      "prompt": "A large shield hammered from a mine cart bucket, riveted iron."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_紅赭護符",
+      "seed": 8347,
+      "transparent": true,
+      "prompt": "A small leather pouch of red ochre earth tied with a cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_礦工牌項鍊",
+      "seed": 8348,
+      "transparent": true,
+      "prompt": "A necklace of small copper miner tags on a chain."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_硫磺香囊",
+      "seed": 8349,
+      "transparent": true,
+      "prompt": "A small cloth scent pouch with yellow sulfur crystals."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_炭火戒",
+      "seed": 8350,
+      "transparent": true,
+      "prompt": "A ring set with a small glowing ember of charcoal."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_紅帆旗披風",
+      "seed": 8351,
+      "transparent": true,
+      "prompt": "A cape made from a whole red pirate flag, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_海盜望遠鏡",
+      "seed": 8352,
+      "transparent": true,
+      "prompt": "A brass pirate spyglass with a black volcanic glass lens."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_南洋絲綢衣",
+      "seed": 8353,
+      "transparent": true,
+      "prompt": "A thin flowing silk garment from southern islands, folded, teal and gold."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_商隊護身鈴",
+      "seed": 8354,
+      "transparent": true,
+      "prompt": "A brass caravan bell on a woven cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_舶來星盤",
+      "seed": 8355,
+      "transparent": true,
+      "prompt": "A brass astrolabe with unfamiliar star engravings."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_遠洋鯨皮甲",
+      "seed": 8356,
+      "transparent": true,
+      "prompt": "Oiled whale-hide armour, glossy dark grey."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_舊量尺",
+      "seed": 8357,
+      "transparent": true,
+      "prompt": "An old worn wooden ruler with faded tick marks."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_公會圓規",
+      "seed": 8358,
+      "transparent": true,
+      "prompt": "A drafting compass with one brass leg and one leg of glowing starlight."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_霜晶筆",
+      "seed": 8359,
+      "transparent": true,
+      "prompt": "A pen with a nib of frost crystal, icy blue."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_古銅筆",
+      "seed": 8360,
+      "transparent": true,
+      "prompt": "An ancient bronze pen with worn engraved patterns."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鏡冰刀",
+      "seed": 8361,
+      "transparent": true,
+      "prompt": "A sword with a blade of mirror-clear ice."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_灰燈杖",
+      "seed": 8362,
+      "transparent": true,
+      "prompt": "A staff with a small grey iron-framed oil lantern hanging from the top."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鯨骨琴",
+      "seed": 8363,
+      "transparent": true,
+      "prompt": "A lyre with a frozen wood body and whale bone arms."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_凍木弓",
+      "seed": 8364,
+      "transparent": true,
+      "prompt": "A bow carved from an old frosty ship plank."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_古銅斧",
+      "seed": 8365,
+      "transparent": true,
+      "prompt": "An axe with an ancient bronze blade covered in engraved patterns."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白狐皮襖",
+      "seed": 8366,
+      "transparent": true,
+      "prompt": "A short white fox-fur jacket, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鯨油斗篷",
+      "seed": 8367,
+      "transparent": true,
+      "prompt": "A cloak glossy with whale oil, snowflakes sliding off."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_霜晶甲",
+      "seed": 8368,
+      "transparent": true,
+      "prompt": "Armour of frost crystal plates, icy blue."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_守霧人長袍",
+      "seed": 8369,
+      "transparent": true,
+      "prompt": "A long grey mist-warden robe, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_舊信封護符",
+      "seed": 8370,
+      "transparent": true,
+      "prompt": "An old unsent sealed envelope tied on a string as a charm."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鏡冰墜",
+      "seed": 8371,
+      "transparent": true,
+      "prompt": "A small shard of mirror ice as a pendant."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_灰燈籠飾",
+      "seed": 8372,
+      "transparent": true,
+      "prompt": "A tiny grey iron-framed oil lantern charm that hangs from a belt."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_古銅羅盤",
+      "seed": 8373,
+      "transparent": true,
+      "prompt": "An ancient bronze compass, its needle pointing toward a swirl of mist."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_霜晶戒",
+      "seed": 8374,
+      "transparent": true,
+      "prompt": "A ring cut from frost crystal."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_無名劍",
+      "seed": 8375,
+      "transparent": true,
+      "prompt": "A plain sword with a pen and a star carved on its hilt, the blade blank."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_霧影劍",
+      "seed": 8376,
+      "transparent": true,
+      "prompt": "A slim sword whose blade fades into mist."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_老海草繩",
+      "seed": 8377,
+      "transparent": true,
+      "prompt": "A coil of thick old seaweed rope."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_潮痕殼",
+      "seed": 8378,
+      "transparent": true,
+      "prompt": "A turtle shell bound with a striped tide-mark stone."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_海燕刀",
+      "seed": 8379,
+      "transparent": true,
+      "prompt": "A sword with iron mast hoops from an old ship as its guard."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白花杖",
+      "seed": 8380,
+      "transparent": true,
+      "prompt": "A staff topped with a single white blossom that never wilts."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_安魂琴",
+      "seed": 8381,
+      "transparent": true,
+      "prompt": "A lyre inlaid with old prayer-bell bronze."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_船票弓",
+      "seed": 8382,
+      "transparent": true,
+      "prompt": "A bow with old ferry tickets pasted along its limbs."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_潮痕斧",
+      "seed": 8383,
+      "transparent": true,
+      "prompt": "An axe with a dark waterline stripe across its blade."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白頁量尺",
+      "seed": 8384,
+      "transparent": true,
+      "prompt": "A blank pale ruler with no tick marks."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_褪色布斗篷",
+      "seed": 8385,
+      "transparent": true,
+      "prompt": "A faded grey cloth cloak, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_潮痕甲",
+      "seed": 8386,
+      "transparent": true,
+      "prompt": "Armour of striped tide-mark stones strung together."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白花冠",
+      "seed": 8387,
+      "transparent": true,
+      "prompt": "A crown woven of white blossom petals."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_船票護符",
+      "seed": 8388,
+      "transparent": true,
+      "prompt": "Three old ferry tickets tied together with string."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_祈願銅戒",
+      "seed": 8389,
+      "transparent": true,
+      "prompt": "A ring of old prayer-bell bronze."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_星辰筆",
+      "seed": 8390,
+      "transparent": true,
+      "prompt": "A pen with a nib of glowing star stone."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_歸航刀",
+      "seed": 8391,
+      "transparent": true,
+      "prompt": "A sword with a hilt wrapped in old sailcloth."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_名字之杖",
+      "seed": 8392,
+      "transparent": true,
+      "prompt": "A staff with engraved abstract patterns and a small white flower."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_終曲琴",
+      "seed": 8393,
+      "transparent": true,
+      "prompt": "A small elegant lyre with a single glowing string."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白帳弓",
+      "seed": 8394,
+      "transparent": true,
+      "prompt": "A bow with a blank ledger page pasted on its limb."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_回家的斧",
+      "seed": 8395,
+      "transparent": true,
+      "prompt": "An axe whose handle is covered with many small engraved marks."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_未畫完的尺",
+      "seed": 8396,
+      "transparent": true,
+      "prompt": "A ruler with tick marks on only half of it."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_有名字的劍",
+      "seed": 8397,
+      "transparent": true,
+      "prompt": "A sword with an engraved mark on the blade and a faint shadow of its own."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_名字的殼",
+      "seed": 8398,
+      "transparent": true,
+      "prompt": "A turtle shell with a painted abstract emblem."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_畫室長袍",
+      "seed": 8399,
+      "transparent": true,
+      "prompt": "A long painter’s robe with ink-stained cuffs, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_空白披風",
+      "seed": 8400,
+      "transparent": true,
+      "prompt": "A pure white cloak, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_星石墜",
+      "seed": 8401,
+      "transparent": true,
+      "prompt": "A small glowing star stone pendant."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_舊畫紙護符",
+      "seed": 8402,
+      "transparent": true,
+      "prompt": "A small square of old folded drawing paper on a cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鯨骨長笛",
+      "seed": 8403,
+      "transparent": true,
+      "prompt": "A long flute carved from whale bone."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_金帳算盤",
+      "seed": 8404,
+      "transparent": true,
+      "prompt": "A small golden abacus."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_藍墨護符",
+      "seed": 8405,
+      "transparent": true,
+      "prompt": "A small bottle of blue ink sealed inside a seashell."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_綠墨披風",
+      "seed": 8406,
+      "transparent": true,
+      "prompt": "A cloak dyed with green ink, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_紅墨戒",
+      "seed": 8407,
+      "transparent": true,
+      "prompt": "A ring set with a drop of hardened red ink."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_白墨長袍",
+      "seed": 8408,
+      "transparent": true,
+      "prompt": "A white robe painted with white ink like fresh snow, folded."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_墨潮之筆",
+      "seed": 8409,
+      "transparent": true,
+      "prompt": "An ancient pen whose nib is stained with four colours of ink: blue, green, red and white."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_鹽姨的貝殼墜",
+      "seed": 8410,
+      "transparent": true,
+      "prompt": "An old seashell pendant on a cord."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_帳房的硃砂印",
+      "seed": 8411,
+      "transparent": true,
+      "prompt": "A small seal stamp with a vermilion ink pad."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_不熄的爐心石",
+      "seed": 8412,
+      "transparent": true,
+      "prompt": "A warm stone glowing softly orange from within."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_冰鏡片",
+      "seed": 8413,
+      "transparent": true,
+      "prompt": "A small shard of mirror ice."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_第一支筆",
+      "seed": 8414,
+      "transparent": true,
+      "prompt": "An ancient pen with worn-off lacquer, a finger-shaped groove on the barrel."
+    },
+    {
+      "kind": "gear",
+      "name": "裝_初代紅帆",
+      "seed": 8415,
+      "transparent": true,
+      "prompt": "A cloak made from an ancient red pirate flag, folded."
+    }
+  ]
+}

@@ -1,0 +1,399 @@
+{
+  "說明": "《畫海人》補給、道具與素材的圖示。名稱是「物_」加上名稱（素材＝data.js 的 MATS；補給＝糧、燈油、墨水、藥草、海靈露、醒神香；另有銀貝、圖紙、藏寶圖碎片、第六頁殘片等）。存成 img/item/名稱.webp（256×256，透明背景）。",
+  "sizes": {
+    "item": [
+      1024,
+      1024
+    ]
+  },
+  "style": {
+    "item": "Anime film game item icon: exactly one object, centred, filling about two thirds of the frame, seen from a slight three-quarter angle, in the same hand-painted anime film style as the game's scenes: clean crisp line art, cel shading, soft painterly highlights. Medieval European craftsmanship. Bright, clear true colours with a soft rim light so it reads at small size; a muted base palette with warm highlights on metal, glass and anything that glows. Nothing else in the frame: no hands, no people, no table, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background."
+  },
+  "items": [
+    {
+      "kind": "item",
+      "name": "物_糧",
+      "seed": 8501,
+      "transparent": true,
+      "prompt": "A small sack of ship biscuits with dried fish tied to it with rope."
+    },
+    {
+      "kind": "item",
+      "name": "物_燈油",
+      "seed": 8502,
+      "transparent": true,
+      "prompt": "A small clay jug of lamp oil with a cork stopper."
+    },
+    {
+      "kind": "item",
+      "name": "物_墨水",
+      "seed": 8503,
+      "transparent": true,
+      "prompt": "A small glass bottle of dark blue drawing ink."
+    },
+    {
+      "kind": "item",
+      "name": "物_藥草",
+      "seed": 8504,
+      "transparent": true,
+      "prompt": "A bundle of fresh green seaside herbs tied with twine."
+    },
+    {
+      "kind": "item",
+      "name": "物_海靈露",
+      "seed": 8505,
+      "transparent": true,
+      "prompt": "A small glass vial of glowing pale blue sea dew."
+    },
+    {
+      "kind": "item",
+      "name": "物_醒神香",
+      "seed": 8506,
+      "transparent": true,
+      "prompt": "A stick of incense in a small brass holder with a thin curl of smoke."
+    },
+    {
+      "kind": "item",
+      "name": "物_銀貝",
+      "seed": 8507,
+      "transparent": true,
+      "prompt": "A small pile of shiny silver seashell coins."
+    },
+    {
+      "kind": "item",
+      "name": "物_圖紙",
+      "seed": 8508,
+      "transparent": true,
+      "prompt": "A rolled-up equipment blueprint scroll tied with a red ribbon, a glimpse of abstract diagram lines."
+    },
+    {
+      "kind": "item",
+      "name": "物_藏寶圖碎片",
+      "seed": 8509,
+      "transparent": true,
+      "prompt": "A torn corner of an old parchment treasure map with a red cross mark."
+    },
+    {
+      "kind": "item",
+      "name": "物_第六頁殘片",
+      "seed": 8510,
+      "transparent": true,
+      "prompt": "A torn fragment of an old sea chart page glowing faintly at its edges."
+    },
+    {
+      "kind": "item",
+      "name": "物_商會的舊航海日誌",
+      "seed": 8511,
+      "transparent": true,
+      "prompt": "An old water-stained leather logbook with a brass clasp."
+    },
+    {
+      "kind": "item",
+      "name": "物_漂流木",
+      "seed": 8521,
+      "transparent": true,
+      "prompt": "A piece of smooth grey driftwood."
+    },
+    {
+      "kind": "item",
+      "name": "物_霧苔",
+      "seed": 8522,
+      "transparent": true,
+      "prompt": "A clump of soft white fog moss."
+    },
+    {
+      "kind": "item",
+      "name": "物_鹽晶",
+      "seed": 8523,
+      "transparent": true,
+      "prompt": "A cluster of white salt crystals."
+    },
+    {
+      "kind": "item",
+      "name": "物_燈芯",
+      "seed": 8524,
+      "transparent": true,
+      "prompt": "A small pile of glowing amber moth dust with a twisted wick."
+    },
+    {
+      "kind": "item",
+      "name": "物_珊瑚枝",
+      "seed": 8525,
+      "transparent": true,
+      "prompt": "A branch of red coral."
+    },
+    {
+      "kind": "item",
+      "name": "物_鐘銅",
+      "seed": 8526,
+      "transparent": true,
+      "prompt": "A chunk of green-patinated bronze."
+    },
+    {
+      "kind": "item",
+      "name": "物_褪色羽",
+      "seed": 8527,
+      "transparent": true,
+      "prompt": "A single grey feather."
+    },
+    {
+      "kind": "item",
+      "name": "物_鏽鐵",
+      "seed": 8528,
+      "transparent": true,
+      "prompt": "A heavy chunk of rusty iron from a shipwreck."
+    },
+    {
+      "kind": "item",
+      "name": "物_船帆布",
+      "seed": 8529,
+      "transparent": true,
+      "prompt": "A folded piece of weathered sailcloth."
+    },
+    {
+      "kind": "item",
+      "name": "物_夜光珠",
+      "seed": 8530,
+      "transparent": true,
+      "prompt": "A small softly glowing luminous pearl."
+    },
+    {
+      "kind": "item",
+      "name": "物_銀貝殼",
+      "seed": 8531,
+      "transparent": true,
+      "prompt": "A few shiny silver seashells."
+    },
+    {
+      "kind": "item",
+      "name": "物_帳紙",
+      "seed": 8532,
+      "transparent": true,
+      "prompt": "A small stack of ledger paper with faint abstract lines."
+    },
+    {
+      "kind": "item",
+      "name": "物_鏡砂",
+      "seed": 8533,
+      "transparent": true,
+      "prompt": "A small pile of glittering mirror sand."
+    },
+    {
+      "kind": "item",
+      "name": "物_測繩",
+      "seed": 8534,
+      "transparent": true,
+      "prompt": "A coil of knotted surveyor’s rope."
+    },
+    {
+      "kind": "item",
+      "name": "物_墨魚墨",
+      "seed": 8535,
+      "transparent": true,
+      "prompt": "A small jar of dark indigo ink."
+    },
+    {
+      "kind": "item",
+      "name": "物_珍珠",
+      "seed": 8536,
+      "transparent": true,
+      "prompt": "A single lustrous pearl."
+    },
+    {
+      "kind": "item",
+      "name": "物_閘石",
+      "seed": 8537,
+      "transparent": true,
+      "prompt": "A block of grey stone with a water stain."
+    },
+    {
+      "kind": "item",
+      "name": "物_白珊瑚",
+      "seed": 8538,
+      "transparent": true,
+      "prompt": "A branch of bleached white coral."
+    },
+    {
+      "kind": "item",
+      "name": "物_紅赭土",
+      "seed": 8539,
+      "transparent": true,
+      "prompt": "A small mound of red ochre earth."
+    },
+    {
+      "kind": "item",
+      "name": "物_舊帆布",
+      "seed": 8540,
+      "transparent": true,
+      "prompt": "A folded piece of old red sail cloth with embroidery."
+    },
+    {
+      "kind": "item",
+      "name": "物_火藥",
+      "seed": 8541,
+      "transparent": true,
+      "prompt": "A small cloth pouch of black gunpowder."
+    },
+    {
+      "kind": "item",
+      "name": "物_鐵礦",
+      "seed": 8542,
+      "transparent": true,
+      "prompt": "A chunk of iron ore."
+    },
+    {
+      "kind": "item",
+      "name": "物_礦工牌",
+      "seed": 8543,
+      "transparent": true,
+      "prompt": "A copper miner’s tag on a string."
+    },
+    {
+      "kind": "item",
+      "name": "物_炭",
+      "seed": 8544,
+      "transparent": true,
+      "prompt": "A few pieces of charcoal."
+    },
+    {
+      "kind": "item",
+      "name": "物_硫磺",
+      "seed": 8545,
+      "transparent": true,
+      "prompt": "A chunk of yellow sulfur."
+    },
+    {
+      "kind": "item",
+      "name": "物_熔岩玻璃",
+      "seed": 8546,
+      "transparent": true,
+      "prompt": "A shard of black volcanic glass with a red glow inside."
+    },
+    {
+      "kind": "item",
+      "name": "物_霜晶",
+      "seed": 8547,
+      "transparent": true,
+      "prompt": "A cold blue frost crystal."
+    },
+    {
+      "kind": "item",
+      "name": "物_灰燈油",
+      "seed": 8548,
+      "transparent": true,
+      "prompt": "A small clay flask of lamp oil."
+    },
+    {
+      "kind": "item",
+      "name": "物_舊信紙",
+      "seed": 8549,
+      "transparent": true,
+      "prompt": "A folded old letter with faded abstract lines."
+    },
+    {
+      "kind": "item",
+      "name": "物_白狐毛",
+      "seed": 8550,
+      "transparent": true,
+      "prompt": "A tuft of white fox fur."
+    },
+    {
+      "kind": "item",
+      "name": "物_鏡冰",
+      "seed": 8551,
+      "transparent": true,
+      "prompt": "A shard of mirror-clear ice."
+    },
+    {
+      "kind": "item",
+      "name": "物_鯨油",
+      "seed": 8552,
+      "transparent": true,
+      "prompt": "A small glass bottle of golden whale oil."
+    },
+    {
+      "kind": "item",
+      "name": "物_凍木",
+      "seed": 8553,
+      "transparent": true,
+      "prompt": "A frosty plank of old ship wood."
+    },
+    {
+      "kind": "item",
+      "name": "物_古銅片",
+      "seed": 8554,
+      "transparent": true,
+      "prompt": "A piece of ancient bronze with engraved patterns."
+    },
+    {
+      "kind": "item",
+      "name": "物_褪色布",
+      "seed": 8555,
+      "transparent": true,
+      "prompt": "A folded piece of faded grey cloth."
+    },
+    {
+      "kind": "item",
+      "name": "物_舊船票",
+      "seed": 8556,
+      "transparent": true,
+      "prompt": "An old yellowed ferry ticket."
+    },
+    {
+      "kind": "item",
+      "name": "物_白花瓣",
+      "seed": 8557,
+      "transparent": true,
+      "prompt": "A few white blossom petals."
+    },
+    {
+      "kind": "item",
+      "name": "物_潮痕石",
+      "seed": 8558,
+      "transparent": true,
+      "prompt": "A stone with a dark waterline stripe across it."
+    },
+    {
+      "kind": "item",
+      "name": "物_祈願銅",
+      "seed": 8559,
+      "transparent": true,
+      "prompt": "A piece of bronze broken from a bell."
+    },
+    {
+      "kind": "item",
+      "name": "物_石像灰",
+      "seed": 8560,
+      "transparent": true,
+      "prompt": "A small pile of grey stone dust."
+    },
+    {
+      "kind": "item",
+      "name": "物_舊畫紙",
+      "seed": 8561,
+      "transparent": true,
+      "prompt": "A thick sheet of old drawing paper with a painted sea."
+    },
+    {
+      "kind": "item",
+      "name": "物_墨漬",
+      "seed": 8562,
+      "transparent": true,
+      "prompt": "A blob of dried black ink scraped off."
+    },
+    {
+      "kind": "item",
+      "name": "物_星石",
+      "seed": 8563,
+      "transparent": true,
+      "prompt": "A small stone glowing with soft starlight."
+    },
+    {
+      "kind": "item",
+      "name": "物_空白的紙",
+      "seed": 8564,
+      "transparent": true,
+      "prompt": "A single blank sheet of white paper."
+    }
+  ]
+}

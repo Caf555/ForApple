@@ -1,5 +1,6 @@
 // 劇情動畫：一張圖配一兩句字，鏡頭慢慢推近，字一個一個浮現，自動換頁；右上角可以略過
 // 圖：有生好的插圖（img/manifest.json 的 scene）就用插圖，沒有就用這裡程式畫的剪影場景
+import { loadArt } from './art.js';
 import { el, $ } from './ui.js';
 
 // ───────── 剪影場景（畫布 400×400，重要的東西放在中間） ─────────
@@ -1032,7 +1033,7 @@ function art(key, arg) {
 let pics = null; // 已經生好的插圖名稱
 export function loadPics() {
   if (pics) return Promise.resolve(pics);
-  return fetch('img/manifest.json').then(r => r.ok ? r.json() : {}).then(m => (pics = new Set(m.scene || []))).catch(() => (pics = new Set()));
+  return loadArt().then(m => (pics = m.scene || new Set()));
 }
 
 export async function playCinema(ctx, cine) {

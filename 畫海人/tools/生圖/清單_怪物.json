@@ -1,0 +1,1195 @@
+{
+  "說明": "《畫海人》戰鬥裡的怪物圖（160 隻，一隻一張）。名稱是「怪_」加上 畫海人/js/data.js 的 ENEMIES 名稱。存成 img/enemy/名稱.webp（512×512，透明背景）。rank 是精英或首領，試畫與排順序用。",
+  "sizes": {
+    "enemy": [
+      1024,
+      1024
+    ]
+  },
+  "style": {
+    "enemy": "Anime film creature design for a fantasy game: exactly one creature or figure shown whole, centred, filling about two thirds of the frame, seen from a slight three-quarter angle. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no ground, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background."
+  },
+  "items": [
+    {
+      "kind": "enemy",
+      "name": "怪_霧蟹",
+      "seed": 8001,
+      "transparent": true,
+      "prompt": "A stocky grey shore crab whose shell is overgrown with soft white fog moss, raised pincers. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鹽靈",
+      "seed": 8002,
+      "transparent": true,
+      "prompt": "A small floating spirit made of crystallised sea salt, a translucent white body with salt crystals growing on it like frost, faint glowing eyes. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_礁鼠",
+      "seed": 8003,
+      "transparent": true,
+      "prompt": "A lean, fast reef rat with wind-swept grey fur and a long tail, mid-leap. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_低語者",
+      "seed": 8004,
+      "transparent": true,
+      "prompt": "A thin wisp of dark mist shaped like a hooded figure with no face, curling tendrils of smoke for hands, leaning forward as if whispering. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_漂流骨",
+      "seed": 8005,
+      "transparent": true,
+      "prompt": "A skeleton made of sun-bleached driftwood-coloured bones washed up from the sea, standing upright, draped with seaweed and small shells. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霧鰻",
+      "seed": 8006,
+      "transparent": true,
+      "prompt": "A long sea eel coiled in an S shape, its front half solid dark green, its tail fading into pale mist. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_燈蛾",
+      "seed": 8007,
+      "transparent": true,
+      "prompt": "A large moth with dusty amber wings that glow faintly like an ember, glowing powder drifting from its wings. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_珊瑚獸",
+      "seed": 8008,
+      "transparent": true,
+      "prompt": "A hulking beast whose whole body is a chunk of coral reef with four stubby stone legs, branches of coral growing from its back. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_溺者之影",
+      "seed": 8009,
+      "transparent": true,
+      "prompt": "A tall drowned ghost, a dark silhouette of a man dripping with sea water, long wet hair covering the face, pale cold mist around its feet, chains of kelp hanging from its arms. Accent colours: dusky violet and shadow grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_燈守",
+      "seed": 8010,
+      "transparent": true,
+      "prompt": "An old lighthouse keeper in a long weathered oilskin coat, holding up an iron-framed oil lantern with a bright warm flame, grey beard, a tall shadow behind him. Accent colours: ember orange and warm red. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_褪影",
+      "seed": 8011,
+      "transparent": true,
+      "prompt": "A faded half-transparent copy of a sleepy villager in a nightshirt, colours washed out to grey, blurred edges. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鐘蟲",
+      "seed": 8012,
+      "transparent": true,
+      "prompt": "A round beetle whose shell is a small bronze bell with green patina, little legs underneath. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_遺忘蝶",
+      "seed": 8013,
+      "transparent": true,
+      "prompt": "A butterfly with pale wings whose patterns look like tiny blurred painted memories of a village morning. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_晨露精",
+      "seed": 8014,
+      "transparent": true,
+      "prompt": "A tiny spirit made of morning dew, a clear water droplet body with a soft glow, standing on a blade of grass. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_灰雀群",
+      "seed": 8015,
+      "transparent": true,
+      "prompt": "A small flock of five grey sparrows flying together in a tight swirl. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_無臉的報時人",
+      "seed": 8016,
+      "transparent": true,
+      "prompt": "A tall village time-caller in a long grey coat and hat, holding a hand bell and a wooden staff, his face a smooth blank with no features. Accent colours: pale sage green and cloud white. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_晨鐘",
+      "seed": 8017,
+      "transparent": true,
+      "prompt": "A huge cracked bronze church bell with green patina, floating, faint pale light leaking out of the crack, rope hanging from it. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_藤壺人",
+      "seed": 8018,
+      "transparent": true,
+      "prompt": "A hunched humanoid encrusted all over with barnacles and ship planks, so that it is hard to tell where the wood ends and the man begins. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鏽刃魚",
+      "seed": 8019,
+      "transparent": true,
+      "prompt": "A sleek fish with fins shaped like rusty iron blades, orange rust streaks on dark scales. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_船燈鬼",
+      "seed": 8020,
+      "transparent": true,
+      "prompt": "A ghostly ship lantern floating by itself, a green-gold ghost flame inside, an iron-framed oil lantern with tattered rope hanging below. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霧帆蝠",
+      "seed": 8021,
+      "transparent": true,
+      "prompt": "A bat made of a torn grey ship sail, ragged canvas wings with rope veins, foggy edges. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_溺水的水手",
+      "seed": 8022,
+      "transparent": true,
+      "prompt": "A drowned sailor ghost in a striped shirt, pale grey-blue skin, pulling on a broken mooring rope. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_斷錨",
+      "seed": 8023,
+      "transparent": true,
+      "prompt": "A broken iron anchor crawling like a creature on its flukes, rusty chain trailing behind, barnacles on it. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霧中的船長",
+      "seed": 8024,
+      "transparent": true,
+      "prompt": "A ship captain in an old long yellow-grey rain coat and hood standing beside a wooden ship wheel, his face hidden in shadow and mist. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_帳蟲",
+      "seed": 8025,
+      "transparent": true,
+      "prompt": "A pale bookworm grub the size of a cat, its body made of rolled ledger paper with faint scribbled lines, nibbling a paper corner. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_銀貝蟹",
+      "seed": 8026,
+      "transparent": true,
+      "prompt": "A crab whose shell is covered with shiny silver seashells like coins. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_空殼人",
+      "seed": 8027,
+      "transparent": true,
+      "prompt": "A hollow person made like an empty porcelain shell, a merchant-town coat, a crack in the chest showing it is empty inside. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_當票鬼",
+      "seed": 8028,
+      "transparent": true,
+      "prompt": "A ghost made of an old pawn ticket, a fluttering paper slip with a torn corner, a face of two ink blots, drifting in the wind. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_算盤精",
+      "seed": 8029,
+      "transparent": true,
+      "prompt": "A living wooden abacus with stubby legs and beads that move by themselves, two little eyes in the frame. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_收帳人",
+      "seed": 8030,
+      "transparent": true,
+      "prompt": "A thin debt collector in a tall hat and dark coat, holding a thick ledger book under his arm and a quill, cold narrow eyes. Accent colours: pale sage green and cloud white. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_典當師",
+      "seed": 8031,
+      "transparent": true,
+      "prompt": "An old pawnbroker in a velvet waistcoat and spectacles, sitting behind a heap of glass jars, each jar holding a little glowing memory. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_雙影鷗",
+      "seed": 8032,
+      "transparent": true,
+      "prompt": "A white seagull in flight with two dark shadows below it flying in opposite directions. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_量尺蛇",
+      "seed": 8033,
+      "transparent": true,
+      "prompt": "A long snake whose body is a wooden measuring rule with tick marks along it, coiled. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_錯線",
+      "seed": 8034,
+      "transparent": true,
+      "prompt": "A living line of dark ink drawn by mistake, a wriggling brush stroke with a small pointed head, searching. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鏡中人",
+      "seed": 8035,
+      "transparent": true,
+      "prompt": "A young cartographer figure reflected in a tall silver mirror frame, a mirrored silhouette in a navy coat with its face hidden by a cold silver sheen. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_墨魚",
+      "seed": 8036,
+      "transparent": true,
+      "prompt": "A cuttlefish with deep indigo skin, a cloud of black ink drifting from it. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_量天尺",
+      "seed": 8037,
+      "transparent": true,
+      "prompt": "A giant brass surveying instrument standing on three legs like a creature, measuring rods for arms, a ring of keys hanging from it. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冊上的測量員",
+      "seed": 8038,
+      "transparent": true,
+      "prompt": "A merchant guild surveyor from fifty years ago in an old coat, carrying a theodolite on his shoulder and rolled charts, his outline fading into fog. Accent colours: pale sage green and cloud white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_珠蚌",
+      "seed": 8039,
+      "transparent": true,
+      "prompt": "A large freshwater clam slightly open, a pearl inside glistening with a single tear. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_閘門守",
+      "seed": 8040,
+      "transparent": true,
+      "prompt": "A stone guardian built from tide-gate blocks, mossy granite body, holding a heavy stone bar. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_白線水母",
+      "seed": 8041,
+      "transparent": true,
+      "prompt": "A translucent jellyfish with a single glowing white thread running through its bell. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_淚珠精",
+      "seed": 8042,
+      "transparent": true,
+      "prompt": "A small floating spirit shaped like a teardrop pearl, soft starry glow, tiny arms. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_閘門獸",
+      "seed": 8043,
+      "transparent": true,
+      "prompt": "A huge beast made of a whole stone tide gate with wooden sluice doors for a mouth, an iron key visible inside its belly grate. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_珠母",
+      "seed": 8044,
+      "transparent": true,
+      "prompt": "A great mother of pearl, a giant ancient shell opened like a throne, a pale weeping figure of nacre inside, coral growing around. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_印章兵",
+      "seed": 8045,
+      "transparent": true,
+      "prompt": "A small soldier whose head is a big wooden rubber stamp, carrying a quill like a spear. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_帳房書記",
+      "seed": 8046,
+      "transparent": true,
+      "prompt": "A hunched clerk at a tall writing desk, endlessly writing with a quill, ink-stained sleeves. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_白頁蛾",
+      "seed": 8047,
+      "transparent": true,
+      "prompt": "A moth whose two wings are blank sheets of white paper, pale dust falling behind it. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_灰珊瑚",
+      "seed": 8048,
+      "transparent": true,
+      "prompt": "A clump of dead grey coral with an angry face formed in its branches. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_登記的影子",
+      "seed": 8049,
+      "transparent": true,
+      "prompt": "A flat dark shadow of a person peeled off the ground, standing up, a paper tag pinned to it. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_金庫鎖",
+      "seed": 8050,
+      "transparent": true,
+      "prompt": "A giant iron padlock with a fanged keyhole mouth and little legs, gold trim. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_白頁",
+      "seed": 8051,
+      "transparent": true,
+      "prompt": "A huge floating blank page torn from a great sea chart, its edges sharp, cold white light, everything it touches turning blank. Accent colours: starlight gold and soft silver. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_灰鴉",
+      "seed": 8052,
+      "transparent": true,
+      "prompt": "A crow blackened with volcanic ash, holding a shiny trinket in its beak. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_帆影",
+      "seed": 8053,
+      "transparent": true,
+      "prompt": "The dark shadow of a ship sail standing up from a deck by itself, a ragged triangular silhouette. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_火藥蟹",
+      "seed": 8054,
+      "transparent": true,
+      "prompt": "A crab carrying a wooden gunpowder barrel as its shell, a short fuse sticking out. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_繩結蛇",
+      "seed": 8055,
+      "transparent": true,
+      "prompt": "A thick ship rope tied in many knots, moving like a snake, a frayed end for a head. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_舊旗鬼",
+      "seed": 8056,
+      "transparent": true,
+      "prompt": "A faded tattered red pirate flag fluttering like a ghost, empty where its emblem used to be. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_桅頂守望",
+      "seed": 8057,
+      "transparent": true,
+      "prompt": "An old pirate lookout with a spyglass, clinging to the top of a mast crow’s nest, cloudy blind eyes. Accent colours: pale sage green and cloud white. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_無名帆",
+      "seed": 8058,
+      "transparent": true,
+      "prompt": "A huge crimson sail with no emblem billowing by itself, ropes trailing like tentacles, ember-red glow. Accent colours: pale sage green and cloud white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_礦燈蟲",
+      "seed": 8059,
+      "transparent": true,
+      "prompt": "A beetle with a small glowing miner’s lamp for a tail, light only around itself. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_坑道的手",
+      "seed": 8060,
+      "transparent": true,
+      "prompt": "A pale stony hand and arm reaching out from a rough rock wall fragment. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_碎岩",
+      "seed": 8061,
+      "transparent": true,
+      "prompt": "A walking chunk of iron ore rock with glints of metal, stubby legs. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鐵喉鼠",
+      "seed": 8062,
+      "transparent": true,
+      "prompt": "A mine rat with iron-grey fur and a soot-blackened nose, alert ears. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_硫磺精",
+      "seed": 8063,
+      "transparent": true,
+      "prompt": "A puff of yellow sulfur smoke with a grumpy face, bubbling. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_失控的礦車",
+      "seed": 8064,
+      "transparent": true,
+      "prompt": "A runaway rusty mine cart rolling on a short piece of rail, sparks flying, an iron key rattling in its bucket. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_敲壁的人",
+      "seed": 8065,
+      "transparent": true,
+      "prompt": "A gaunt old miner swinging a pickaxe, dozens of blank metal miner tags hanging around his neck and belt. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_炭蜥",
+      "seed": 8066,
+      "transparent": true,
+      "prompt": "A lizard whose back scales glow red-hot like charcoal. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鐵砧龜",
+      "seed": 8067,
+      "transparent": true,
+      "prompt": "A tortoise whose shell is a heavy iron anvil. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_風箱鬼",
+      "seed": 8068,
+      "transparent": true,
+      "prompt": "A torn leather blacksmith bellows with a ghostly face, puffing air and sparks. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_熔渣魚",
+      "seed": 8069,
+      "transparent": true,
+      "prompt": "A fish with scales of black volcanic glass, swimming through cooling lava. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_火花精",
+      "seed": 8070,
+      "transparent": true,
+      "prompt": "A single bright spark from an anvil that became a tiny fiery spirit. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_燒紅的鐵鉗",
+      "seed": 8071,
+      "transparent": true,
+      "prompt": "A huge pair of blacksmith tongs glowing red-hot, walking on its two handles, gripping an iron key. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_爐心",
+      "seed": 8072,
+      "transparent": true,
+      "prompt": "A great forge fire spirit rising from an old stone furnace, a figure of flame and embers with a sorrowful face. Accent colours: ember orange and warm red. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_號碼兵",
+      "seed": 8073,
+      "transparent": true,
+      "prompt": "A fortress soldier in grey armour with a metal number plate nailed to his chest, blank stare. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_紅岩蠍",
+      "seed": 8074,
+      "transparent": true,
+      "prompt": "A scorpion of red volcanic rock, its tail pointing up. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冷灰",
+      "seed": 8075,
+      "transparent": true,
+      "prompt": "A heap of cold grey volcanic ash shaped like a crouching creature, faint embers deep inside. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_熔岩精",
+      "seed": 8076,
+      "transparent": true,
+      "prompt": "A small blob of glowing molten lava with a sleepy face. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鎖鏈犬",
+      "seed": 8077,
+      "transparent": true,
+      "prompt": "A gaunt hound with a heavy iron chain collar far too big for it. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_第七號的門",
+      "seed": 8078,
+      "transparent": true,
+      "prompt": "A massive fortress gate door painted with a big red numeral seven, walking on iron hinges, a key stuck in its bolt. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_第七號",
+      "seed": 8079,
+      "transparent": true,
+      "prompt": "A volcanic island turned into a giant stone colossus, a big painted number seven on its chest, sleeping crater on its head, chains of the fortress around it. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霜鴉",
+      "seed": 8080,
+      "transparent": true,
+      "prompt": "A crow with frost on its feathers. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_信紙蛾",
+      "seed": 8081,
+      "transparent": true,
+      "prompt": "A moth whose wings are two letters covered in tiny abstract scribbles. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_灰燈鬼",
+      "seed": 8082,
+      "transparent": true,
+      "prompt": "A lost grey lantern floating by itself, an iron-framed oil lantern with a pale cold light. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_白狐",
+      "seed": 8083,
+      "transparent": true,
+      "prompt": "A snow-white fox with misty tail tips. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_投信的人",
+      "seed": 8084,
+      "transparent": true,
+      "prompt": "A shadowy figure in a winter coat holding a sealed letter, frozen in front of an iron mailbox. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_守燈的影子",
+      "seed": 8085,
+      "transparent": true,
+      "prompt": "The shadow of an old mist-warden in a hooded coat, lighting a lamp on a pole, an iron key ring on his belt. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_沒人讀的信",
+      "seed": 8086,
+      "transparent": true,
+      "prompt": "A towering figure made of thousands of stacked unread letters and envelopes, paper rustling. Accent colours: pale sage green and cloud white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冰鏡人",
+      "seed": 8087,
+      "transparent": true,
+      "prompt": "A figure carved of clear ice, a blurred familiar face. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冰柱蟹",
+      "seed": 8088,
+      "transparent": true,
+      "prompt": "A crab with icicles growing all over its back. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霜鯨幼",
+      "seed": 8089,
+      "transparent": true,
+      "prompt": "A baby whale with frosty white-blue skin, wide worried eyes. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_跪著的人",
+      "seed": 8090,
+      "transparent": true,
+      "prompt": "A kneeling human silhouette of frozen shadow, looking up. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冰下的光",
+      "seed": 8091,
+      "transparent": true,
+      "prompt": "A shard of light escaping from a crack in ice, a glowing star-shaped spirit with faint ghostly faces in it. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冰面的裂縫",
+      "seed": 8092,
+      "transparent": true,
+      "prompt": "A jagged crack in ice rising up like a creature with a mouth, a bronze key deep inside the crack. Accent colours: sea teal and foam white. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_祈禱的人",
+      "seed": 8093,
+      "transparent": true,
+      "prompt": "An ancient priest kneeling in prayer, robes frozen stiff with frost, a halo of cold blue light. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_凍帆",
+      "seed": 8094,
+      "transparent": true,
+      "prompt": "A frozen ship sail cracked and full of ice, with icy claws. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_斷槳",
+      "seed": 8095,
+      "transparent": true,
+      "prompt": "A broken wooden oar standing on its own like a creature. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_吵架的影子",
+      "seed": 8096,
+      "transparent": true,
+      "prompt": "Two dark shadow figures facing each other, pounding a small table in an argument. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霜水手",
+      "seed": 8097,
+      "transparent": true,
+      "prompt": "A sailor frozen solid in ice, still holding a pen in his hand. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冰燈蛾",
+      "seed": 8098,
+      "transparent": true,
+      "prompt": "A moth with frosted wings flying toward a small iron-framed oil lantern. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_旗艦的舵",
+      "seed": 8099,
+      "transparent": true,
+      "prompt": "A great guild flagship wheel spinning by itself, a key hanging from one handle, ice crusted on the wood. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_那一夜",
+      "seed": 8100,
+      "transparent": true,
+      "prompt": "A frozen storm of a night scene trapped inside a giant block of ice shaped like a hulking figure, shadows of arguing people inside. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_冰像",
+      "seed": 8101,
+      "transparent": true,
+      "prompt": "An ice statue of an old gate guardian holding a spear. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_門前的雪",
+      "seed": 8102,
+      "transparent": true,
+      "prompt": "A drift of snow rising into a soft shapeless creature with two dark eye holes. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霧行者",
+      "seed": 8103,
+      "transparent": true,
+      "prompt": "A wanderer wrapped in a long ragged cloak walking through fog, face hidden. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_守霧的狼",
+      "seed": 8104,
+      "transparent": true,
+      "prompt": "A large grey wolf with misty fur. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_霜靈",
+      "seed": 8105,
+      "transparent": true,
+      "prompt": "A glowing ball of frost crystals floating, soft starry light. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_第一道門",
+      "seed": 8106,
+      "transparent": true,
+      "prompt": "A small ice gate walking on stubby icy legs, an ice key frozen in its crack. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_守門人",
+      "seed": 8107,
+      "transparent": true,
+      "prompt": "An ancient gatekeeper in a long grey cloak with a tall staff, beard frozen, ancient patient eyes. Accent colours: pale sage green and cloud white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_等船的影子",
+      "seed": 8108,
+      "transparent": true,
+      "prompt": "A shadow figure sitting on the edge of a short wooden pier fragment, looking out. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_褪色的漁夫",
+      "seed": 8109,
+      "transparent": true,
+      "prompt": "A fisherman whose clothes, net and face are all faded to grey, mending a net. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_沒有臉的貓",
+      "seed": 8110,
+      "transparent": true,
+      "prompt": "A grey harbour cat with a smooth blank face. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_舊船票",
+      "seed": 8111,
+      "transparent": true,
+      "prompt": "An old yellowed ferry ticket fluttering in the wind like a little ghost. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_碼頭的燈",
+      "seed": 8112,
+      "transparent": true,
+      "prompt": "A tall dock lamp post with an iron-framed oil lantern burning, a sad face in the glass. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_收票的人",
+      "seed": 8113,
+      "transparent": true,
+      "prompt": "A stern ticket collector in a conductor’s cap and coat, a ticket punch in one hand. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_等船的人",
+      "seed": 8114,
+      "transparent": true,
+      "prompt": "A tall figure made of many waiting people’s silhouettes layered together, hats and coats, holding luggage. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_刮掉的名字",
+      "seed": 8115,
+      "transparent": true,
+      "prompt": "A scraped-off wooden name plaque with no letters left, scuttling like a crab. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_半沉的屋子",
+      "seed": 8116,
+      "transparent": true,
+      "prompt": "A small half-sunken stone cottage standing up like a creature, its open door a mouth, a bowl still on the table inside. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_潮痕",
+      "seed": 8117,
+      "transparent": true,
+      "prompt": "A dark wavy waterline stain peeled off a wall, creeping upward like a living stripe. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_白花精",
+      "seed": 8118,
+      "transparent": true,
+      "prompt": "A tiny figure made of white blossom petals swirling in the wind. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_灰鷺",
+      "seed": 8119,
+      "transparent": true,
+      "prompt": "A grey heron standing on one leg on a broken roof ridge tile. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_白花樹的根",
+      "seed": 8120,
+      "transparent": true,
+      "prompt": "Gnarled roots of a white-blossom tree tangled like a beast, a small wooden key caught in the middle. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_被忘掉的島",
+      "seed": 8121,
+      "transparent": true,
+      "prompt": "A small forgotten island rising as a giant figure, white blossom trees on its shoulders, a sunken village, its face blurred like a forgotten name. Accent colours: pale sage green and cloud white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_跪著的石像",
+      "seed": 8122,
+      "transparent": true,
+      "prompt": "A kneeling stone statue of a townsperson looking up. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_水線",
+      "seed": 8123,
+      "transparent": true,
+      "prompt": "A long horizontal line of dark sea water floating in the air, shaped like a serpent. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_塔的影子",
+      "seed": 8124,
+      "transparent": true,
+      "prompt": "The long dark shadow of a white tower standing up, pointing one way. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鐘聲",
+      "seed": 8125,
+      "transparent": true,
+      "prompt": "A ripple of sound waves shaped into a floating creature, rings of faint golden light. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_安魂的合唱",
+      "seed": 8126,
+      "transparent": true,
+      "prompt": "A cluster of small faint glowing spirits singing together, open mouths, soft starlight. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_守鐘人",
+      "seed": 8127,
+      "transparent": true,
+      "prompt": "An old bell-ringer in a long robe holding a bell rope, a key at his belt. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_最初的祈禱",
+      "seed": 8128,
+      "transparent": true,
+      "prompt": "A radiant spirit made of a prayer, glowing white-gold light shaped like praying hands inside a great bell. Accent colours: starlight gold and soft silver. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_畫框",
+      "seed": 8129,
+      "transparent": true,
+      "prompt": "An empty ornate gilded picture frame walking on its corners. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_墨跡",
+      "seed": 8130,
+      "transparent": true,
+      "prompt": "A creeping blob of black ink dripping from a desk edge. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_灰色的風景",
+      "seed": 8131,
+      "transparent": true,
+      "prompt": "A small grey painted landscape - mountain and sea - torn from a canvas, standing as a creature, completely still and colourless. Accent colours: ochre brown and stone grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_未乾的顏料",
+      "seed": 8132,
+      "transparent": true,
+      "prompt": "A splash of wet red paint shaped like a hot creature, steaming. Accent colours: ember orange and warm red."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_剪下的影子",
+      "seed": 8133,
+      "transparent": true,
+      "prompt": "A paper-cut shadow figure of a person, sharp scissor edges, running. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_守畫的人",
+      "seed": 8134,
+      "transparent": true,
+      "prompt": "A studio guard in a paint-stained apron, his face covered with a layer of grey paint, a key in his apron pocket. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_畫完的海",
+      "seed": 8135,
+      "transparent": true,
+      "prompt": "A colossal figure made of many stacked painted sea canvases, grey and lifeless, frames sticking out. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_空白",
+      "seed": 8136,
+      "transparent": true,
+      "prompt": "A floating patch of pure blankness with soft torn paper edges, a quiet glow. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_纏繞的光",
+      "seed": 8137,
+      "transparent": true,
+      "prompt": "Two intertwined ribbons of light, one gold and one blue, twisting around each other. Accent colours: starlight gold and soft silver."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_未完的線",
+      "seed": 8138,
+      "transparent": true,
+      "prompt": "A glowing pen line running forward, a half-drawn stroke with a bright tip. Accent colours: pale sage green and cloud white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_最後的霧",
+      "seed": 8139,
+      "transparent": true,
+      "prompt": "A small frightened cloud of fog with scared eyes, shrinking. Accent colours: dusky violet and shadow grey."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_被畫掉的人",
+      "seed": 8140,
+      "transparent": true,
+      "prompt": "A grey brush stroke in the shape of a person, half erased. Accent colours: sea teal and foam white."
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_最後一筆",
+      "seed": 8141,
+      "transparent": true,
+      "prompt": "A giant glowing brush stroke suspended in the air, a key dangling from its tip. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_公會長",
+      "seed": 8142,
+      "transparent": true,
+      "prompt": "The man raising a long glowing pen like a staff, cold gold light, a great sea chart unrolling behind him. Accent colours: starlight gold and soft silver. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領",
+      "chars": [
+        "公會長"
+      ]
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_鯨背藤壺",
+      "seed": 8143,
+      "transparent": true,
+      "prompt": "A giant barnacle with clutching tendrils, gripping an old key. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_醉鯨",
+      "seed": 8144,
+      "transparent": true,
+      "prompt": "A huge old whale with a bottle-shaped glow of rum in its belly, sad drooping eyes, barnacles on its back. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_會說話的金庫",
+      "seed": 8145,
+      "transparent": true,
+      "prompt": "A big golden vault safe with a mouth-like combination dial, sitting on stubby legs, gold coins spilling. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_守財的影子",
+      "seed": 8146,
+      "transparent": true,
+      "prompt": "A miserly shadow clutching a pile of gold coins, an old merchant hat. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_咬人的寶箱",
+      "seed": 8147,
+      "transparent": true,
+      "prompt": "A treasure chest mimic with sharp teeth inside its lid, gold coins as bait, grinning. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_獨眼船長的亡魂",
+      "seed": 8148,
+      "transparent": true,
+      "prompt": "The ghost of a one-eyed pirate captain in a red coat and tricorn hat, cutlass in hand, ghostly green-red glow. Accent colours: ember orange and warm red. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_凍住的鐵鎚",
+      "seed": 8149,
+      "transparent": true,
+      "prompt": "A giant shipwright’s hammer frozen mid-swing in a block of ice. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_沒造完的船",
+      "seed": 8150,
+      "transparent": true,
+      "prompt": "A half-built great sailing ship skeleton rising up like a beast, bare ribs of timber, scaffolding. Accent colours: ochre brown and stone grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_抱著頁子的老寄居蟹",
+      "seed": 8151,
+      "transparent": true,
+      "prompt": "A giant old hermit crab carrying a rolled iron tube on its back instead of a shell, a page of paper sticking out of the tube. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_改帳的印章將軍",
+      "seed": 8152,
+      "transparent": true,
+      "prompt": "A general with a giant stamp for a head and red ink-stained armour, holding a large stamp like a hammer. Accent colours: dusky violet and shadow grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_不肯熄的爐靈",
+      "seed": 8153,
+      "transparent": true,
+      "prompt": "An ancient furnace fire spirit holding a single page of paper that refuses to burn. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_照不出人的冰鏡",
+      "seed": 8154,
+      "transparent": true,
+      "prompt": "A tall ice mirror standing on its own, reflecting sky and lake but no figure, a page of paper caught inside the ice. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_第一位繪圖師的影子",
+      "seed": 8155,
+      "transparent": true,
+      "prompt": "The shadow of an ancient cartographer bent over, drawing with a glowing pen on an endless page, a long cloak. Accent colours: starlight gold and soft silver. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_吐藍墨的海蛇",
+      "seed": 8156,
+      "transparent": true,
+      "prompt": "A long sea serpent coiled on a rock, spitting blue ink water. Accent colours: sea teal and foam white. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_吐綠墨的老蚌",
+      "seed": 8157,
+      "transparent": true,
+      "prompt": "An enormous old clam leaking green ink from its shell seam. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_吐紅墨的火蜥",
+      "seed": 8158,
+      "transparent": true,
+      "prompt": "A big lizard beside lava, its blood red ink dripping. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_吐白墨的冰梟",
+      "seed": 8159,
+      "transparent": true,
+      "prompt": "A great white owl perched on an icicle, its white feathers dripping white ink. Accent colours: pale sage green and cloud white. An elite monster: imposing, with extra detail.",
+      "rank": "精英"
+    },
+    {
+      "kind": "enemy",
+      "name": "怪_墨潮",
+      "seed": 8160,
+      "transparent": true,
+      "prompt": "A huge tidal wave of black ink rising into the shape of a person, splashes of blue, green, red and white ink. Accent colours: dusky violet and shadow grey. A boss monster: large, imposing and richly detailed.",
+      "rank": "首領"
+    }
+  ]
+}

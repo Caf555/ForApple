@@ -1,4 +1,5 @@
 // 港口：碼頭（補給）、酒館（委託、流言、潮汐骰）、鐵匠（打造裝備）、船塢（改造船）、海圖（出航）、天文台（下一片海）、市場（行情、買賣素材、舶來品）、黑市（第三章：換貨、紅帆牌桌、走私）
+import { banner, icon } from './art.js';
 import { ITEMS, MATS, EQUIPS, SLOTS, STAT_NAME, SHIP, COMMISSIONS, cargoMax, FACTIONS, REP_LEVELS, repLevel, repOn, againstOf, BLACK_MARKET, BLACK_POOL, IMPORTS, RUMOR_PRICE, HULL_BROKEN, hullOf, repairCost, PORT_EVENTS, PORT_EVENT_CHANCE, RUMOR_FOLKS, SECRET_JOBS, SIXTH_PAGE, WHALE_CLUES, DICE_PLAYS, CARD_PLAYS, SMUGGLE_CARGO, GEAR_LINES, LINE_OF, DIRECT_CRAFT, upgradeCost, FORGE_AUTO_RATE, forgeTier, retryPrice, forgeRefund } from './data.js';
 import { playForge } from './forge.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS } from './islands.js';
@@ -158,7 +159,7 @@ export class Port {
       : g.flags.第二章 ? '環礁的四座島都畫進書裡了。可以回去補完測繪、接委託、打造裝備。'
       : '可以回去補完測繪、接委託、打造裝備。';
     const fac = (name, sub, fn, on = true, lockText) => el('button', { class: 'fac' + (on ? '' : ' locked'), disabled: !on, onclick: () => { ctx.audio.sfx('tap'); fn(); } },
-      el('b', {}, name), el('small', {}, on ? sub : lockText));
+      on ? banner('place', name, 'fac-bg') : null, el('b', {}, name), el('small', {}, on ? sub : lockText));
     const jobsN = Object.keys(g.jobs).length;
     const ready = Object.keys(g.jobs).filter(id => this.jobState(COMMISSIONS.find(c => c.id === id)).ready).length + SECRET_JOBS.filter(j => this.secretOf(j) === 'got').length;
     const matN = Object.values(g.mats).reduce((a, b) => a + b, 0);
@@ -166,6 +167,7 @@ export class Port {
       el('div', { class: 'p-head' }, el('h2', {}, '鹽灣島・港口'), el('span', { class: 'grow' }),
         el('button', { class: 'btn small', onclick: () => ctx.partySheet() }, '隊伍'),
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => ctx.menu() }, '☰')),
+      banner('place', '港口'),
       el('p', { class: 'p-tip' }, tip),
       this.eventBox(),
       el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`), ctx.ui.bar(cargoUsed(g), cargoMax(g), 'cargo')),
@@ -210,11 +212,11 @@ export class Port {
     const g = this.g, ctx = this.ctx;
     ctx.ui.sheet('碼頭・補給', (body, api) => {
       const used = cargoUsed(g), max = cargoMax(g);
-      body.append(el('p', { class: 'muted' }, '出航以前，用銀貝買補給。船的貨艙有上限（素材不佔貨艙）。'),
+      body.append(banner('place', '碼頭') || '', el('p', { class: 'muted' }, '出航以前，用銀貝買補給。船的貨艙有上限（素材不佔貨艙）。'),
         el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `貨艙 ${used} / ${max}`), ctx.ui.bar(used, max, 'cargo')));
       for (const k of Object.keys(PRICES)) {
         body.append(el('div', { class: 'shop-row big' },
-          el('div', {}, el('b', {}, `${k}　×${g.supply[k] || 0}`), el('small', {}, SUPPLY_TIP[k])),
+          icon('item', k), el('div', {}, el('b', {}, `${k}　×${g.supply[k] || 0}`), el('small', {}, SUPPLY_TIP[k])),
           el('div', { class: 'qty' },
             el('button', { class: 'btn small', 'aria-label': '賣回一份', disabled: !(g.supply[k] > 0), onclick: () => { g.supply[k]--; g.silver += this.supplyPrice(k); api.rebuild(); } }, '−'),
             el('span', {}, `${this.supplyPrice(k)} 銀貝`),
@@ -231,7 +233,7 @@ export class Port {
       for (const id of ISLAND_ORDER) {
         const d = ISLANDS[id], r = worldOf(g, id), on = this.unlocked(id);
         if (d.big || !this.seas.includes(d.sea) || !this.shown(id)) continue;
-        if (ISLAND_ORDER.find(k => ISLANDS[k].sea === d.sea) === id) body.append(el('h3', { class: 'sub-h' }, d.sea));
+        if (ISLAND_ORDER.find(k => ISLANDS[k].sea === d.sea) === id) body.append(el('h3', { class: 'sub-h' }, d.sea), banner('chart', d.sea) || '');
         body.append(el('button', { class: 'btn wide chart-row', disabled: !on, onclick: () => { api.close(); this.sail(id); } },
           el('b', {}, on ? `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}` : '？？？'),
           el('small', {}, on ? `${d.hidden ? '隱藏的島・' : ''}${d.sub}・${d.cols}×${d.rows} 格・大約要 ${d.food} 份糧・航海事件 ${d.seaEvents} 個` + (r.visits ? `・最好的測繪度 ${r.best}%（最高 ${surveyMax(id)}%${r.best >= surveyMax(id) ? '，已畫滿' : ''}）` : `・測繪度最高 ${surveyMax(id)}%`) : this.lockText(id))));
@@ -239,7 +241,7 @@ export class Port {
       // 第六頁：五片殘片拼成的島（超大地圖，一次走不完）
       for (const id of ISLAND_ORDER.filter(k => ISLANDS[k].big && this.unlocked(k))) {
         const d = ISLANDS[id], r = worldOf(g, id), ink = inkRec(g, id);
-        body.append(el('h3', { class: 'sub-h' }, '第六頁'),
+        body.append(el('h3', { class: 'sub-h' }, '第六頁'), banner('chart', '第六頁') || '',
           el('button', { class: 'btn wide chart-row', onclick: () => { api.close(); this.sail(id); } },
             el('b', {}, `${id}　${r.cleared ? (r.good ? '★★' : '★') : ''}`),
             el('small', {}, `五片殘片拼成的島・${d.cols}×${d.rows} 格（一次走不完，進度會留著）・每一趟大約要 ${d.food} 份糧・` + (r.visits ? `門 ${Object.keys(ink.gates).length}／4・燈塔 ${litTowers(g, id).length}／4・四色墨 ${inkCount(ink)}／4・最好的測繪度 ${r.best}%` : `測繪度最高 ${surveyMax(id)}%`))));
@@ -286,6 +288,7 @@ export class Port {
       return ctx.ui.story(ctx.storyLines(INK_SALT)).then(() => ctx.ui.alert('鹽姨', ['盒子裡是幾瓶海靈露和醒神香，還有一張鹽姨的爹憑想像畫的墨潮島，畫得歪歪扭扭的。', ctx.fxText(INK_SALT_GIFT)])).then(() => this.tavern());
     }
     ctx.ui.sheet('酒館', (body, api) => {
+      body.append(banner('place', '酒館') || '');
       // 流言和潮汐骰
       const r = day.rumor;
       body.append(el('h3', { class: 'sub-h' }, '酒客的流言'),
@@ -471,9 +474,9 @@ export class Port {
     const again = () => this.smith();
     const run = async (api, name, cost, apply) => { api.close(); await this.forge('鐵匠', name, cost, apply); again(); };
     ctx.ui.sheet('鐵匠・打造', (body, api) => {
-      body.append(el('p', { class: 'muted' }, '石伯：「有圖紙，我才打得出來。每條線前兩件可以從頭打，後面的，要拿同一條線前面的裝備來升級：越接近的，要補的越少。打的時候你來敲，敲得準才打得成。」'));
+      body.append(banner('place', '鐵匠') || '', el('p', { class: 'muted' }, '石伯：「有圖紙，我才打得出來。每條線前兩件可以從頭打，後面的，要拿同一條線前面的裝備來升級：越接近的，要補的越少。打的時候你來敲，敲得準才打得成。」'));
       const mats = Object.entries(g.mats).filter(([, n]) => n > 0);
-      body.append(el('div', { class: 'matbox' }, el('b', {}, '素材'), mats.length ? el('div', { class: 'chips' }, ...mats.map(([k, n]) => el('span', { class: 'chip', title: MATS[k] }, `${k} ${n}`))) : el('small', { class: 'muted' }, '還沒有素材。打倒妖物、打開寶箱就會得到。')));
+      body.append(el('div', { class: 'matbox' }, el('b', {}, '素材'), mats.length ? el('div', { class: 'chips' }, ...mats.map(([k, n]) => el('span', { class: 'chip', title: MATS[k] }, icon('item', k, 'mini'), `${k} ${n}`))) : el('small', { class: 'muted' }, '還沒有素材。打倒妖物、打開寶箱就會得到。')));
       body.append(el('p', { class: 'small muted' }, `銀貝 ${g.silver}`));
       for (const slot of SLOTS) {
         body.append(el('h3', { class: 'sub-h' }, slot));
@@ -491,7 +494,7 @@ export class Port {
           }
           if (!rows.length) rows.push(el('small', { class: 'muted' }, `要先有同一條線前面的裝備（例如「${list[i - 1]}」），才能升級成這件。`));
           body.append(el('div', { class: 'shop-row fg-row' },
-            el('div', {}, el('b', {}, name + (e.who ? `（${e.who}）` : '')), el('small', {}, `${statText(e.stats)}・${e.desc}`),
+            icon('gear', name), el('div', {}, el('b', {}, name + (e.who ? `（${e.who}）` : '')), el('small', {}, `${statText(e.stats)}・${e.desc}`),
               el('small', { class: 'muted' }, `${line}・第 ${i + 1}／${list.length} 件${i ? `・前一件「${list[i - 1]}」` : ''}${own ? `・已經有 ${own} 件` : ''}`), ...rows)));
         }
       }
@@ -505,7 +508,7 @@ export class Port {
   market(tab = '賣') {
     const g = this.g, ctx = this.ctx, day = this.day;
     ctx.ui.sheet('市場', (body, api) => {
-      body.append(el('p', { class: 'muted' }, '費米：「素材拿來，我照千帆市的價錢收。……打造要用的，自己記得留著喔。」'),
+      body.append(banner('place', '市場') || '', el('p', { class: 'muted' }, '費米：「素材拿來，我照千帆市的價錢收。……打造要用的，自己記得留著喔。」'),
         el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), this.priceRate > 1 ? el('span', {}, `商會「${REP_LEVELS[repLevel(this.rep('商會'))]}」：收購價 +${Math.round((this.priceRate - 1) * 100)}%`) : null),
         el('p', { class: 'small' }, `今天的行情：${day.hot.length ? `搶手 ${day.hot.join('、')}（收購價 ×2）` : ''}${day.cold.length ? `；滯銷 ${day.cold.join('、')}（收購價 ×½）` : ''}。每次回港都會變。`));
       // 舶來品
@@ -526,7 +529,7 @@ export class Port {
         if (!mats.length) body.append(el('p', { class: 'para' }, '手上沒有素材。'));
         for (const [k, n] of mats) {
           const price = this.matPrice(k), tag = day.hot.includes(k) ? '（搶手）' : day.cold.includes(k) ? '（滯銷）' : '';
-          body.append(el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, `${k}　×${n}${tag}`), el('small', {}, MATS[k])),
+          body.append(el('div', { class: 'shop-row' }, icon('item', k), el('div', {}, el('b', {}, `${k}　×${n}${tag}`), el('small', {}, MATS[k])),
             el('button', { class: 'btn small', onclick: () => { g.mats[k]--; g.silver += price; ctx.audio.sfx('item'); save(g); api.rebuild(); } }, `賣 ${price} 銀貝`)));
         }
       } else {
@@ -536,7 +539,7 @@ export class Port {
         if (!been.length) body.append(el('p', { class: 'para' }, '還沒有去過任何一座島。'));
         for (const k of been) {
           const price = (MAT_PRICE[k] || 5) * 3;
-          body.append(el('div', { class: 'shop-row' }, el('div', {}, el('b', {}, `${k}　（有 ${g.mats[k] || 0} 個）`), el('small', {}, MATS[k])),
+          body.append(el('div', { class: 'shop-row' }, icon('item', k), el('div', {}, el('b', {}, `${k}　（有 ${g.mats[k] || 0} 個）`), el('small', {}, MATS[k])),
             el('button', { class: 'btn small', disabled: g.silver < price, onclick: () => { g.silver -= price; g.mats[k] = (g.mats[k] || 0) + 1; ctx.audio.sfx('item'); save(g); api.rebuild(); } }, `買 ${price} 銀貝`)));
         }
       }
@@ -548,7 +551,7 @@ export class Port {
     const g = this.g, ctx = this.ctx, day = this.day;
     ctx.ui.sheet('黑市', (body, api) => {
       const lv = repLevel(this.rep('紅帆'));
-      body.append(el('p', { class: 'muted' }, '葛蘿：「這裡不看銀貝，看你是誰。紅帆越信你，櫃子後面的東西就拿得越多。」'),
+      body.append(banner('place', '黑市') || '', el('p', { class: 'muted' }, '葛蘿：「這裡不看銀貝，看你是誰。紅帆越信你，櫃子後面的東西就拿得越多。」'),
         el('div', { class: 'p-meter' }, el('span', {}, `銀貝 ${g.silver}`), el('span', {}, `紅帆「${REP_LEVELS[lv]}」`), el('span', {}, `貨艙 ${cargoUsed(g)} / ${cargoMax(g)}`)));
       const row = (it, key) => {
         const locked = lv < it.need, owned = (it.kind === 'bp' && g.bps.includes(it.bp)) || (it.kind === 'map' && g.flags['藏寶圖:' + it.n]), sold = key && day.sold.includes(key);
@@ -556,7 +559,7 @@ export class Port {
         const full = it.kind === 'supply' && cargoUsed(g) + it.n > cargoMax(g);
         const sub = it.kind === 'map' ? `一張很舊的藏寶圖的一角。三片湊齊，就知道紅帆的寶藏藏在哪裡（已經有 ${[1, 2, 3].filter(n => g.flags['藏寶圖:' + n]).length}／3 片）` : it.kind === 'bp' ? `${EQUIPS[it.bp].slot}・${statText(EQUIPS[it.bp].stats)}` : it.kind === 'mat' ? `${MATS[it.name]}　×${it.n}` : `${SUPPLY_TIP[it.name]}　×${it.n}`;
         return el('div', { class: 'shop-row' + (locked ? ' locked' : '') },
-          el('div', {}, el('b', {}, locked ? '？？？' : it.name), el('small', {}, locked ? `紅帆的聲望到「${REP_LEVELS[it.need]}」才拿得出來` : sub)),
+          locked ? null : icon('item', it.kind === 'bp' ? '圖紙' : it.kind === 'map' ? '藏寶圖碎片' : it.name), el('div', {}, el('b', {}, locked ? '？？？' : it.name), el('small', {}, locked ? `紅帆的聲望到「${REP_LEVELS[it.need]}」才拿得出來` : sub)),
           el('button', { class: 'btn small', disabled: locked || owned || sold || full || g.silver < price, onclick: () => {
             g.silver -= price;
             if (key) day.sold.push(key);
@@ -597,7 +600,7 @@ export class Port {
     const g = this.g, ctx = this.ctx;
     ctx.ui.sheet('船塢', (body, api) => {
       const hull = hullOf(g), rc = repairCost(g);
-      body.append(el('p', { class: 'muted' }, '大副：「船好，人才回得來。改造的時候你來釘船板，釘得準才改得成。」'),
+      body.append(banner('place', '船塢') || '', el('p', { class: 'muted' }, '大副：「船好，人才回得來。改造的時候你來釘船板，釘得準才改得成。」'),
         el('h3', { class: 'sub-h' }, '修船'),
         el('div', { class: 'p-meter' }, el('span', {}, `船況 ${hull} / 100`), el('span', {}, hull < HULL_BROKEN ? '不修不能出航！' : hull < 50 ? '破破爛爛：航海事件的壞事會更嚴重' : hull < 100 ? '還撐得住' : '完好'), ctx.ui.bar(hull, 100, 'hull')),
         el('p', { class: 'small muted' }, g.flags.龍骨 ? '船裡裝著冰下船塢的「公會的龍骨」：船況不會再下降了。' : '航海事件的壞結果、海上戰鬥、每次靠岸，都會磨損船況。改造「船身」可以少磨損一些。'),

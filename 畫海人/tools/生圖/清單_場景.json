@@ -1,0 +1,255 @@
+{
+  "說明": "《畫海人》港口、港口設施、各島的遠景（景_），和海圖每一頁的裝飾（圖_）。畫面沒有人。橫的 16:9，存成 img/place/名稱-1600.webp 與 -800.webp。景_ 的名稱是港口設施名或島名（畫海人/js/islands.js 的 ISLANDS），圖_ 的名稱是海域名（SEAS）或「第六頁」。",
+  "sizes": {
+    "place": [
+      1664,
+      928
+    ]
+  },
+  "style": {
+    "place": "Pure environment art with no characters: an uninhabited place where no person, figure or traveler appears anywhere, not even a tiny one in the distance. Anime film background art, hand-painted with soft painterly brushwork and rich environmental detail. Medieval European fantasy setting. Muted, slightly dark color grading: desaturated slate grey, deep sea blue and moss green in the shadows and skies; warm amber-gold light comes only from the light sources that the description below mentions (for example a lantern, a hearth, a forge or a sunset), with soft bloom. Atmospheric haze, quiet melancholic mood. One single continuous wide establishing shot filling the whole 16:9 frame, the main subject in the middle, the top and bottom edges calm and simple. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Show only what the description below asks for.",
+    "chart": "Illustration of an antique hand-drawn sea chart on aged parchment, seen flat from above and filling the whole 16:9 frame, in the same hand-painted anime film style as the game's scenes: ink line work with pale watercolour washes, slightly dark and muted, warm candle-gold tint on the parchment. Medieval European cartography style with decorative waves and a compass rose. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. No hands, no people, no table."
+  },
+  "items": [
+    {
+      "kind": "place",
+      "name": "景_港口",
+      "seed": 8701,
+      "prompt": "A small medieval European harbour town on a grey island at dusk: stone and timber houses with slate roofs climbing a hillside, a stone quay with moored sailing ships, a lighthouse on the point, warm windows lighting up, gulls, mist over the sea."
+    },
+    {
+      "kind": "place",
+      "name": "景_碼頭",
+      "seed": 8702,
+      "prompt": "A wooden supply dock: crates, barrels, coiled ropes and sacks stacked along the pier, a moored sailing ship, an iron-framed oil lantern on a post glowing warm, grey sea mist."
+    },
+    {
+      "kind": "place",
+      "name": "景_酒館",
+      "seed": 8703,
+      "prompt": "Indoors only. A cosy harbour tavern interior: dark timber beams, a long wooden bar with mugs, round tables, a crackling hearth, a notice board covered with pinned papers showing only abstract scribbles, iron-framed oil lanterns."
+    },
+    {
+      "kind": "place",
+      "name": "景_鐵匠",
+      "seed": 8704,
+      "prompt": "Indoors only. A blacksmith’s forge interior: a glowing stone furnace, an anvil with a hammer, tongs and tools hanging on the wall, sparks, warm orange firelight against dark stone."
+    },
+    {
+      "kind": "place",
+      "name": "景_船塢",
+      "seed": 8705,
+      "prompt": "A covered shipyard: a sailing ship hull on wooden slipways under a timber roof, scaffolding, stacks of planks, tools, an iron-framed oil lantern, grey sea beyond the open end."
+    },
+    {
+      "kind": "place",
+      "name": "景_市場",
+      "seed": 8706,
+      "prompt": "An open-air harbour market street: stalls with striped awnings, baskets of shells, fish, cloth and coral, stone houses behind, overcast sky, a few warm lamps."
+    },
+    {
+      "kind": "place",
+      "name": "景_黑市",
+      "seed": 8707,
+      "prompt": "Indoors only. A hidden smugglers’ cellar: low stone vault, crates with red cloth, barrels, a pirate flag hanging on the wall, candlelight, dark corners."
+    },
+    {
+      "kind": "place",
+      "name": "景_天文台",
+      "seed": 8708,
+      "prompt": "Indoors only. An old observatory dome interior: a large brass telescope pointing through an opening in the roof to a starry sky, star charts with abstract lines pinned on the walls, a brass orrery, candlelight."
+    },
+    {
+      "kind": "place",
+      "name": "景_低語礁",
+      "seed": 8709,
+      "prompt": "A rocky reef islet with an old stone lighthouse on top, whispering mist curling around the rocks, grey sea, the lighthouse lamp glowing warm."
+    },
+    {
+      "kind": "place",
+      "name": "景_晨忘島",
+      "seed": 8710,
+      "prompt": "A small village island at dawn: stone cottages around a bell tower with a large bronze bell, dew on the grass, pale morning mist, first warm sunrise light."
+    },
+    {
+      "kind": "place",
+      "name": "景_沉船灣",
+      "seed": 8711,
+      "prompt": "A grey bay full of shipwrecks: broken masts and hulls of sunken ships sticking out of the water, rusted anchors on the shore, thick fog."
+    },
+    {
+      "kind": "place",
+      "name": "景_千帆市",
+      "seed": 8712,
+      "prompt": "A busy trading city on a coral island: hundreds of moored sailing ships with furled sails, warehouses, a counting house with a clock tower, canals, overcast sky."
+    },
+    {
+      "kind": "place",
+      "name": "景_雙影嶼",
+      "seed": 8713,
+      "prompt": "Twin islands mirrored in calm water, a narrow sandbar between them, surveying poles and measuring stakes on the beach, two shadows on the water."
+    },
+    {
+      "kind": "place",
+      "name": "景_珠母潟湖",
+      "seed": 8714,
+      "prompt": "A turquoise-grey lagoon inside a coral ring, a great old stone tide gate closing the lagoon off from the sea, giant pearl shells in the shallows."
+    },
+    {
+      "kind": "place",
+      "name": "景_帳房島",
+      "seed": 8715,
+      "prompt": "An island with a tall stone counting tower full of windows, stone stairs, white bleached coral reefs around it, everything strangely still and pale."
+    },
+    {
+      "kind": "place",
+      "name": "景_紅帆港",
+      "seed": 8716,
+      "prompt": "A pirate harbour under a smoking volcano: ships with red sails, a wooden fortress of piers and rope bridges, ash-grey sky, warm firelight."
+    },
+    {
+      "kind": "place",
+      "name": "景_鐵喉礦坑",
+      "seed": 8717,
+      "prompt": "A mine entrance cut into a dark mountainside: rail tracks for mine carts, wooden supports, miner lamps glowing, piles of ore, smoke."
+    },
+    {
+      "kind": "place",
+      "name": "景_鍛火嶼",
+      "seed": 8718,
+      "prompt": "A volcanic island with an old stone forge building whose chimney glows, black lava rocks, cooling lava streams, embers in the air."
+    },
+    {
+      "kind": "place",
+      "name": "景_紅岬",
+      "seed": 8719,
+      "prompt": "A red rock cape with a grey stone fortress on top, a sleeping volcano behind, red cliffs above a dark sea."
+    },
+    {
+      "kind": "place",
+      "name": "景_灰燈渡",
+      "seed": 8720,
+      "prompt": "A misty ferry crossing in the north: a long wooden jetty lined with grey iron-framed oil lanterns, a small ferry boat, snow on the posts, thick fog."
+    },
+    {
+      "kind": "place",
+      "name": "景_鏡冰湖",
+      "seed": 8721,
+      "prompt": "A frozen lake as smooth as a mirror, the roofs of a sunken city faintly visible under the ice, snowy hills, pale cold light."
+    },
+    {
+      "kind": "place",
+      "name": "景_斷桅灣",
+      "seed": 8722,
+      "prompt": "A frozen bay where a fleet of old sailing ships is locked in the ice, broken masts, frost on the rigging, grey snowy sky."
+    },
+    {
+      "kind": "place",
+      "name": "景_霧門",
+      "seed": 8723,
+      "prompt": "A colossal ancient stone gate standing alone in the frozen sea, a wall of white fog beyond it, ice statues before it, snow."
+    },
+    {
+      "kind": "place",
+      "name": "景_忘人港",
+      "seed": 8724,
+      "prompt": "A faded grey harbour where all the colour has drained away: empty piers, benches facing the sea, a single dock lamp glowing."
+    },
+    {
+      "kind": "place",
+      "name": "景_無名島",
+      "seed": 8725,
+      "prompt": "A half-sunken island village: stone cottages half under water, a great white-blossom tree on the hill, petals on the water, soft mist."
+    },
+    {
+      "kind": "place",
+      "name": "景_祈願塔",
+      "seed": 8726,
+      "prompt": "A tall white stone tower with a bell at its top rising from a drowned old city, a high waterline stain on the walls, kneeling stone statues around its base."
+    },
+    {
+      "kind": "place",
+      "name": "景_畫室",
+      "seed": 8727,
+      "prompt": "Indoors only. A vast painter’s studio: walls covered with framed grey seascape paintings stacked to the ceiling, a huge drawing table, ink pots, a tall window with fog."
+    },
+    {
+      "kind": "place",
+      "name": "景_霧心",
+      "seed": 8728,
+      "prompt": "The heart of the fog: a calm sea under a blank white sky, a single small island of white blank paper-like ground in the middle, faint gold and blue pen lights."
+    },
+    {
+      "kind": "place",
+      "name": "景_醉鯨礁",
+      "seed": 8729,
+      "prompt": "A reef where a huge old whale sleeps half out of the water like an island, barnacles on its back, empty bottles floating, moonlight."
+    },
+    {
+      "kind": "place",
+      "name": "景_沉金船",
+      "seed": 8730,
+      "prompt": "A great golden merchant ship sunk in clear shallow water on a sandbar, gold coins scattered on the sand, sunset light."
+    },
+    {
+      "kind": "place",
+      "name": "景_紅帆藏寶島",
+      "seed": 8731,
+      "prompt": "A small tropical-grey island with a sea cave entrance, a tattered red pirate flag on a pole, palm-like trees, a hidden cove."
+    },
+    {
+      "kind": "place",
+      "name": "景_冰下船塢",
+      "seed": 8732,
+      "prompt": "Indoors only. A secret shipyard frozen under ice: a half-built great ship on wooden slipways, ice ceiling glowing blue, frozen tools and scaffolding."
+    },
+    {
+      "kind": "place",
+      "name": "景_墨潮島",
+      "seed": 8733,
+      "prompt": "A strange island drawn in ink: its coastline in blue ink, coral reefs in green ink, volcano in red ink and snow in white ink, flowing ink streams, painted mist."
+    },
+    {
+      "kind": "place",
+      "style": "chart",
+      "name": "圖_淺灘",
+      "seed": 8761,
+      "prompt": "An old parchment sea chart of three small islands in shallow waters: a reef with a lighthouse, a bell tower island and a bay of shipwrecks, drawn with ink lines, a compass rose, waves drawn as little curls."
+    },
+    {
+      "kind": "place",
+      "style": "chart",
+      "name": "圖_珊瑚環礁",
+      "seed": 8762,
+      "prompt": "An old parchment sea chart of a ring-shaped coral atoll with four islands inside, drawn with ink lines and pale watercolour, a compass rose, small ship drawings."
+    },
+    {
+      "kind": "place",
+      "style": "chart",
+      "name": "圖_焰之群島",
+      "seed": 8763,
+      "prompt": "An old parchment sea chart of volcanic islands in the south with small smoking volcano drawings, red-tinted ink lines, a compass rose."
+    },
+    {
+      "kind": "place",
+      "style": "chart",
+      "name": "圖_北霧海",
+      "seed": 8764,
+      "prompt": "An old parchment sea chart of the cold northern sea with icy islands and a great gate drawn in the north, pale blue ink lines, frost on the edges of the parchment."
+    },
+    {
+      "kind": "place",
+      "style": "chart",
+      "name": "圖_霧心",
+      "seed": 8765,
+      "prompt": "An old parchment sea chart where the ink lines fade toward a blank empty centre, faint islands at the edges, a glowing spot in the middle."
+    },
+    {
+      "kind": "place",
+      "style": "chart",
+      "name": "圖_第六頁",
+      "seed": 8766,
+      "prompt": "A glowing extra page of an old sea chart, one large island drawn in four colours of ink: blue, green, red and white, torn edges sewn together."
+    }
+  ]
+}
