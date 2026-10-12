@@ -246,8 +246,8 @@ button { font: inherit; color: inherit; }
    手機（直式）：由上往下排，整個畫面可以捲動，行動選項固定貼在最下面
    寬螢幕（電腦、平板橫放）：左邊是戰場，右邊是行動選項與戰鬥紀錄 */
 #battle { position: fixed; left: 0; right: 0; top: 0; bottom: 0; max-width: 720px; margin: 0 auto; overflow-y: auto; overscroll-behavior: contain; }
-#battle.open { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "foes" "log" "mine" "cmd"; grid-template-rows: auto auto auto auto 1fr; align-content: start; gap: 6px; }
-#battle .b-top { grid-area: top; } #battle .field.foes { grid-area: foes; } #battle .b-log { grid-area: log; } #battle .field.mine { grid-area: mine; }
+#battle.open { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "stage" "mine" "cmd"; grid-template-rows: auto auto auto 1fr; align-content: start; gap: 6px; }
+#battle .b-top { grid-area: top; } #battle .b-stage { grid-area: stage; } #battle .field.mine { grid-area: mine; }
 /* 手機：右欄的外框不存在，指令和紀錄直接排進格子裡 */
 #battle .b-side { display: contents; }
 #battle .b-cmd { grid-area: cmd; align-self: end; position: sticky; bottom: calc(-8px - env(safe-area-inset-bottom)); margin: 0 -10px calc(-8px - env(safe-area-inset-bottom)); padding: 8px 10px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 14px); z-index: 2; }
@@ -272,17 +272,13 @@ button { font: inherit; color: inherit; }
   #app { max-width: 1180px; }
   #battle { max-width: 1180px; padding: 14px 18px; overflow: hidden; }
   /* 右欄自成一欄：道具、技能清單再長，也不會把左邊的戰場往下擠 */
-  #battle.open { grid-template-columns: minmax(0, 1fr) 340px; grid-template-rows: auto auto auto minmax(0, 1fr); grid-template-areas: "top top" "foes side" "mine side" ". side"; column-gap: 18px; row-gap: 10px; }
+  #battle.open { grid-template-columns: minmax(0, 1fr) 340px; grid-template-rows: auto auto auto minmax(0, 1fr); grid-template-areas: "top top" "stage side" "mine side" ". side"; column-gap: 18px; row-gap: 10px; }
   #battle .b-side { grid-area: side; display: flex; flex-direction: column; gap: 10px; min-height: 0; max-height: 100%; overflow: hidden; }
-  #battle .b-side .b-cmd { flex: none; max-height: 70%; align-self: stretch; } #battle .b-side .b-log { flex: 0 1 auto; min-height: 6em; }
+  #battle .b-side .b-cmd { flex: none; max-height: 100%; align-self: stretch; }
   #battle .field.mine { align-self: start; }
   #battle .b-cmd { position: static; margin: 0; padding: 12px; background: var(--panel); border-radius: 12px; align-self: start; max-height: 100%; overflow-y: auto; }
-  .b-log { height: auto; max-height: 100%; min-height: 8em; align-self: start; }
-  .b-log div { white-space: normal; }
   .cmd-list { max-height: 52vh; }
-  .row { min-height: 70px; }
-  .unit { max-width: 360px; }
-  .row.foe .unit { max-width: 320px; }
+  .b-stage { min-height: 60vh; --vk: .62; }
 }
 
 /* 寬螢幕：島嶼也改成兩欄（左邊地圖，右邊狀態與說明） */
@@ -703,12 +699,6 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .eq-slot .pic.mini { width: 28px; height: 28px; margin: 2px auto; display: block; }
 .btn.wide > .pic.mini { float: left; width: 40px; height: 40px; margin: 0 10px 0 0; }
 
-/* 戰鬥：有圖的怪物，臉的圓圈放大一點；首領、精英再大一點 */
-.unit .face.has-pic { width: 46px; height: 46px; padding: 0; overflow: hidden; background: transparent !important; }
-.unit.rank .face.has-pic { width: 60px; height: 60px; }
-.unit .face.has-pic .pic { width: 100%; height: 100%; }
-@media (max-width: 400px) { .unit .face.has-pic { width: 38px; height: 38px; } .unit.rank .face.has-pic { width: 48px; height: 48px; } }
-
 /* 橫幅：港口、設施、海圖每一頁 */
 .banner { position: relative; margin: 4px 0 12px; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 7; background: #142230; }
 .banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -724,3 +714,62 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .mapwrap > .banner.map-bg { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; opacity: .22; pointer-events: none; }
 .mapwrap > .hexmap { position: relative; }
 .shop-row > .pic + div { flex: 1; }
+
+/* ═════ 戰鬥：戰場（和《千秋硯》一樣，怪物放大站在島的遠景上） ═════ */
+.b-stage { position: relative; min-height: 46vh; border-radius: 12px; overflow: hidden; border: 1px solid rgba(31, 65, 82, .9);
+  background: linear-gradient(180deg, rgba(5, 12, 18, .15), rgba(5, 12, 18, .55)), var(--stage-img, radial-gradient(ellipse at 50% 120%, #20384a 0%, #0c1822 55%, #060d13 100%)) center / cover no-repeat; }
+/* 沒有遠景圖時：一條淡淡的海平線，分出遠近 */
+.b-stage:not([style*="--stage-img"])::before { content: ""; position: absolute; left: 0; right: 0; top: 48%; height: 1px; background: linear-gradient(90deg, transparent, rgba(120, 208, 200, .25), transparent); }
+.b-stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(transparent, rgba(0, 0, 0, .5)); pointer-events: none; }
+.b-stage.boss { box-shadow: inset 0 0 60px rgba(184, 67, 47, .45); }
+.st-lab { position: absolute; left: 8px; font-size: 11px; color: rgba(230, 240, 245, .45); letter-spacing: .2em; pointer-events: none; z-index: 3; }
+.st-lab.back { top: 8px; } .st-lab.front { top: 44%; }
+.foe-u { position: absolute; width: min(calc(var(--w) * 1%), calc(var(--w) * var(--vk, .85) * 1vh)); transform: translate(-50%, -50%); cursor: zoom-in; transition: opacity .3s; text-align: center; }
+.foe-u.back { filter: saturate(.85) brightness(.9); }
+.foe-u .foe-img { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 0; background: none; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .6)); animation: idle 3.2s ease-in-out infinite; }
+.foe-u:nth-of-type(2n) .foe-img { animation-delay: -1.3s; }
+@keyframes idle { 50% { transform: translateY(-3%); } }
+.foe-blob { width: 62%; aspect-ratio: 1; margin: 0 auto 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 900; font-size: 24px; color: #fff; box-shadow: 0 0 0 3px rgba(255, 255, 255, .15), 0 6px 14px rgba(0, 0, 0, .6); }
+.foe-tag { display: inline-flex; align-items: center; gap: 4px; max-width: 120%; margin-top: -4%; padding: 2px 7px 3px 3px; border-radius: 10px; background: rgba(8, 14, 20, .72); position: relative; left: 50%; transform: translateX(-50%); }
+.foe-tag .elem { margin: 0; }
+.foe-tagr { min-width: 0; text-align: left; }
+.foe-u .u-name { font-size: 11px; font-weight: 700; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 8.5em; color: #eef3f5; }
+.foe-u .u-hp { display: flex; align-items: center; gap: 4px; width: 6.5em; }
+.foe-u .u-hp .bar { flex: 1; height: 4px; } .foe-u .u-hp small { display: none; }
+.foe-u.rank-首領 .foe-tag { background: rgba(120, 30, 20, .75); } .foe-u.rank-首領 .u-hp { width: 9em; }
+.foe-u.rank-精英 .foe-tag { box-shadow: 0 0 0 1px rgba(232, 184, 106, .5); }
+.foe-u .u-st { position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-size: 11px; color: #ffb3a6; text-shadow: 0 1px 3px #000; white-space: nowrap; }
+.foe-u.dead { pointer-events: none; }
+.foe-u.dead .foe-img, .foe-u.dead .foe-blob { animation: dissolve 1.1s ease forwards; }
+.foe-u.dead .foe-tag, .foe-u.dead .u-st { opacity: 0; transition: opacity .4s; }
+@keyframes dissolve { to { opacity: 0; filter: blur(6px) grayscale(1); transform: translateY(6%) scale(.92); } }
+.foe-u.pickable { cursor: pointer; }
+.foe-u.pickable .foe-img, .foe-u.pickable .foe-blob { animation: foeglow 1.2s ease-in-out infinite; }
+@keyframes foeglow { 50% { filter: drop-shadow(0 0 10px rgba(255, 217, 138, .95)) brightness(1.15); } }
+.foe-u.pickable::before { content: "▼"; position: absolute; left: 0; right: 0; top: -4%; font-size: 14px; color: #ffd98a; text-shadow: 0 0 6px rgba(255, 200, 100, .9), 0 1px 2px #000; animation: tmark 1s ease-in-out infinite; pointer-events: none; z-index: 3; }
+@keyframes tmark { 50% { transform: translateY(4px); } }
+.foe-u.nohit { opacity: .45; cursor: default; }
+.foe-u.nohit::after { content: "打不到"; position: absolute; left: 50%; top: 35%; transform: translateX(-50%); font-size: 12px; color: #f0a49c; text-shadow: 0 1px 3px #000; white-space: nowrap; }
+.foe-u.shake .foe-img, .foe-u.shake .foe-blob { animation: hitshake .3s ease; }
+.foe-u.charging .foe-img, .foe-u.charging .foe-blob { animation: idle 3.2s ease-in-out infinite, charging 1s ease-in-out infinite; }
+@keyframes charging { 50% { filter: drop-shadow(0 0 14px rgba(224, 83, 58, .95)); } }
+.foe-u.charging .foe-tag { box-shadow: 0 0 0 2px #e0533a, 0 0 14px rgba(224, 83, 58, .7); }
+.foe-u .float { top: 20%; font-size: 22px; } .foe-u .float.crit { font-size: 28px; }
+.pic.foe-big { width: min(80vw, 360px); height: auto; aspect-ratio: 1; margin: 0 auto 8px; border-radius: 14px; }
+/* 戰鬥紀錄：疊在戰場最下面，點一下展開 */
+.b-stage .b-log { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; height: auto; max-height: calc(3 * 1.5em + 8px); overflow: hidden; border: 0; border-radius: 0; background: linear-gradient(transparent, rgba(0, 0, 0, .55) 30%); padding: 10px 10px 4px; display: flex; flex-direction: column; justify-content: flex-end; line-height: 1.5; color: rgba(225, 232, 236, .75); text-shadow: 0 1px 2px #000; cursor: pointer; }
+.b-stage .b-log div { flex: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.b-stage .b-log div:last-child { color: #fff4dc; }
+.b-stage .b-log.full { max-height: 75%; overflow-y: auto; justify-content: flex-start; background: rgba(0, 0, 0, .8); }
+.b-stage .b-log.full div { white-space: normal; }
+/* 我方：兩欄的小卡片，前排在前面 */
+.b-party { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.b-party.one { grid-template-columns: 1fr; }
+.b-party .unit { padding: 5px 6px; }
+.b-party .unit .face { width: 30px; height: 30px; font-size: 14px; }
+.b-party .u-name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.u-row { margin-left: 5px; padding: 0 5px; border-radius: 6px; font-size: 10px; font-weight: 400; vertical-align: 1px; }
+.u-row.front { background: rgba(201, 167, 122, .25); color: #e6c99a; } .u-row.back { background: rgba(108, 159, 214, .2); color: #a9c8ea; }
+.field.mine .rlabel { margin: 4px 2px 0; line-height: 1.5; }
+@media (max-height: 760px) { .b-stage { min-height: 38vh; } .field.mine .rlabel { display: none; } }
+@media (prefers-reduced-motion: reduce) { .foe-u .foe-img, .foe-u.pickable .foe-img, .foe-u.charging .foe-img { animation: none; } }

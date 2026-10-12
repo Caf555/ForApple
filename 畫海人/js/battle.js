@@ -1,5 +1,5 @@
 // 戰鬥：前後兩排、換位、元素、地形、士氣、首領蓄力與第二階段
-import { icon } from './art.js';
+import { icon, artSrc } from './art.js';
 import { HEROES, SKILLS, ENEMIES, ITEMS, COMMISSIONS, elementMult, weaknessOf } from './data.js';
 import { ISLANDS } from './islands.js';
 import { heroStats, gainExp, DIFF, moraleTier } from './state.js';
@@ -530,36 +530,78 @@ export class Battle {
       el('span', { class: 'grow' }),
       this.$auto = el('button', { class: 'chip btn-chip' + (s.auto ? ' on' : ''), onclick: () => { s.auto = !s.auto; this.ctx.saveSettings(); this.$auto.classList.toggle('on', s.auto); if (s.auto && this.resolve) { const u = this.allies.find(a => a.hl); if (u) this.resolve(this.allyAI(u)); } } }, '自動'),
       this.$speed = el('button', { class: 'chip btn-chip', onclick: () => { s.speed = s.speed % 3 + 1; this.ctx.saveSettings(); this.$speed.textContent = ['1×', '2×', '3×'][s.speed - 1]; } }, ['1×', '2×', '3×'][s.speed - 1]));
-    this.$foeBack = el('div', { class: 'row foe back' }); this.$foeFront = el('div', { class: 'row foe front' });
-    this.$allyFront = el('div', { class: 'row ally front' }); this.$allyBack = el('div', { class: 'row ally back' });
+    // 戰場：島的遠景當背景（還沒有圖就是深色的海），怪物站在上面：後排在遠處、前排在近處
+    this.$stage = el('div', { class: 'b-stage' + (this.opt.kind === '首領' ? ' boss' : '') },
+      el('div', { class: 'st-lab back' }, '後排'), el('div', { class: 'st-lab front' }, '前排'));
+    const bg = this.g.island && artSrc('place', this.g.island.id, 800);
+    if (bg) this.$stage.style.setProperty('--stage-img', `url("${new URL(bg, location.href).href}")`);
+    this.$mine = el('div', { class: 'b-party' });
     for (const f of this.foes) this.nodes[f.id] = this.card(f);
     for (const a of this.allies) this.nodes[a.id] = this.card(a);
-    this.$log = el('div', { class: 'b-log', 'aria-live': 'polite' });
+    this.$log = el('div', { class: 'b-log', 'aria-live': 'polite', onclick: () => this.$log.classList.toggle('full') });
+    this.$stage.append(this.$log);
     this.$cmd = el('div', { class: 'b-cmd' });
     this.idle();
-    r.append(top,
-      el('div', { class: 'field foes' }, el('div', { class: 'rlabel' }, '敵方後排　近身打不到・受傷 −30%'), this.$foeBack, el('div', { class: 'rlabel front' }, '敵方前排　近身攻擊只能打這一排'), this.$foeFront),
-      el('div', { class: 'field mine' }, el('div', { class: 'rlabel front' }, '我方前排　近身 +15%・敵人的近身攻擊只打這一排'), this.$allyFront, el('div', { class: 'rlabel' }, '我方後排　受傷 −30%・近身攻擊威力減半'), this.$allyBack),
-      el('div', { class: 'b-side' }, this.$cmd, this.$log));
+    r.append(top, this.$stage,
+      el('div', { class: 'field mine' }, this.$mine,
+        el('p', { class: 'rlabel' }, '前排：近身 +15%，敵人的近身攻擊只打前排。後排：受傷 −30%，近身攻擊威力減半，近身打不到敵方後排。')),
+      el('div', { class: 'b-side' }, this.$cmd));
     this.renderRows();
   }
 
   card(u) {
-    const ally = u.side === 'ally';
-    const pic = ally ? null : icon('enemy', u.key);
-    const face = el('span', { class: 'face' + (pic ? ' has-pic' : ''), style: { background: ally ? u.color || HEROES[u.key].color : 'var(--foe)' } }, pic || u.name.slice(0, 1));
-    return el('div', { class: 'unit ' + u.side + (u.def && u.def.rank ? ' rank' : '') },
+    if (u.side === 'foe') {
+      // 怪物：有圖就放大站在戰場上，沒有圖就是一個寫著名字第一個字的圓
+      const pic = icon('enemy', u.key, 'foe-img');
+      const n = el('div', { class: 'foe-u' + (u.def.rank ? ' rank-' + u.def.rank : '') + (pic ? '' : ' no-art') },
+        pic || el('div', { class: 'foe-blob e-' + u.el }, u.key.slice(0, 1)),
+        el('div', { class: 'foe-tag' }, el('span', { class: 'elem e-' + u.el }, u.el),
+          el('div', { class: 'foe-tagr' }, el('div', { class: 'u-name' }, u.name), el('div', { class: 'u-hp' }))),
+        el('div', { class: 'u-st' }));
+      // 點怪物（不是在選目標的時候）：看大圖和說明
+      n.addEventListener('click', () => { if (!n.classList.contains('pickable') && !n.classList.contains('nohit')) this.foeInfo(u); });
+      return n;
+    }
+    const face = el('span', { class: 'face', style: { background: u.color || HEROES[u.key].color } }, u.name.slice(0, 1));
+    return el('div', { class: 'unit ally' },
       face, el('div', { class: 'u-main' },
-        el('div', { class: 'u-name' }, el('span', { class: 'elem e-' + u.el }, u.el), u.name),
-        el('div', { class: 'u-hp' }), ally ? el('div', { class: 'u-mp' }) : null, el('div', { class: 'u-st' })));
+        el('div', { class: 'u-name' }, el('span', { class: 'elem e-' + u.el }, u.el), u.name, el('span', { class: 'u-row' })),
+        el('div', { class: 'u-hp' }), el('div', { class: 'u-mp' }), el('div', { class: 'u-st' })));
+  }
+
+  foeInfo(f) {
+    const d = f.def, ui = this.ctx.ui;
+    ui.sheet(f.name, body => body.append(...[
+      icon('enemy', f.key, 'foe-big'),
+      el('p', { class: 'muted' }, `${d.rank || '一般'}・${f.el}屬性・${f.row === 'back' ? '後排' : '前排'}・體 ${f.hp}／${f.maxhp}`),
+      el('p', { class: 'para' }, d.desc)].filter(Boolean)));
   }
 
   renderRows() {
-    const put = (box, list) => { box.innerHTML = ''; list.forEach(u => box.append(this.nodes[u.id])); if (!list.length) box.append(el('div', { class: 'empty' }, '—')); };
-    put(this.$foeBack, this.foes.filter(f => f.row === 'back'));
-    put(this.$foeFront, this.foes.filter(f => f.row === 'front'));
-    put(this.$allyFront, this.allies.filter(a => a.row === 'front'));
-    put(this.$allyBack, this.allies.filter(a => a.row === 'back'));
+    // 怪物：同一排平均排開；首領、精英比較大
+    for (const row of ['back', 'front']) {
+      const list = this.foes.filter(f => f.row === row), n = list.length;
+      list.forEach((f, k) => {
+        let w = row === 'back' ? 27 : 33;
+        if (f.def.rank === '首領') w = n === 1 ? 58 : w * 1.45; else if (f.def.rank === '精英') w *= 1.15;
+        w = Math.min(w, 98 / n);
+        const node = this.nodes[f.id];
+        const m = w / 2 + 1;   // 最左、最右的一隻不要超出畫面
+        Object.assign(node.style, { left: (n === 1 ? 50 : m + (100 - 2 * m) * k / (n - 1)) + '%', top: (row === 'back' ? 27 : 58) + '%', zIndex: row === 'back' ? '1' : '2' });
+        node.style.setProperty('--w', w);
+        node.classList.toggle('back', row === 'back');
+        if (node.parentNode !== this.$stage) this.$stage.insertBefore(node, this.$log);
+      });
+    }
+    // 我方：前排在前面
+    this.$mine.innerHTML = '';
+    this.$mine.classList.toggle('one', this.allies.length === 1);
+    for (const a of [...this.allies.filter(x => x.row === 'front'), ...this.allies.filter(x => x.row !== 'front')]) {
+      const node = this.nodes[a.id];
+      const tag = node.querySelector('.u-row');
+      tag.textContent = a.row === 'front' ? '前排' : '後排'; tag.className = 'u-row ' + (a.row === 'front' ? 'front' : 'back');
+      this.$mine.append(node);
+    }
     this.renderAll();
   }
 

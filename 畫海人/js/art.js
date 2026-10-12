@@ -15,6 +15,13 @@ const PREFIX = { enemy: '怪_', gear: '裝_', item: '物_', place: '景_', chart
 const FOLDER = { chart: 'place' };
 export function hasArt(kind, name) { const f = FOLDER[kind] || kind; return !!(man && man[f] && man[f].has(PREFIX[kind] + name)); }
 
+// 圖檔網址（戰鬥的背景要用）。沒有圖就回傳 null
+export function artSrc(kind, name, w) {
+  if (!hasArt(kind, name)) return null;
+  const f = FOLDER[kind] || kind;
+  return encodeURI(`img/${f}/${PREFIX[kind]}${name}${f === 'place' ? '-' + (w || 800) : ''}.webp`);
+}
+
 // 小圖示：怪物（戰鬥）、裝備、物品。沒有圖就回傳 null
 export function icon(kind, name, cls = '') {
   if (!hasArt(kind, name)) return null;
