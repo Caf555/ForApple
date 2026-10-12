@@ -254,7 +254,7 @@
       "name": "怪_錯線",
       "seed": 8034,
       "transparent": true,
-      "prompt": "A living line of dark ink drawn by mistake, a wriggling brush stroke with a small pointed head, searching. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a thick wriggling brush stroke of dark ink coiled like a whip about to lash out, its pointed tip glowing with two small violet eyes, dripping ink mist around it. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
@@ -312,7 +312,7 @@
       "name": "怪_淚珠精",
       "seed": 8042,
       "transparent": true,
-      "prompt": "A small floating spirit shaped like a teardrop pearl, soft starry glow, tiny arms. Accent colours: starlight gold and soft silver."
+      "prompt": "A living elemental spirit, just a floating mass of its element with no human body, no arms and no legs: a large floating teardrop of shining water with a starry glow inside, two sad glowing eyes, small sharp droplets orbiting it like needles. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
@@ -393,7 +393,7 @@
       "name": "怪_帆影",
       "seed": 8053,
       "transparent": true,
-      "prompt": "The dark shadow of a ship sail standing up from a deck by itself, a ragged triangular silhouette. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a ragged triangular sail made of dark shadow billowing forward like a huge pouncing wave, two glowing violet eyes in the cloth, dark ink mist swirling around its torn edges. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
@@ -407,7 +407,7 @@
       "name": "怪_繩結蛇",
       "seed": 8055,
       "transparent": true,
-      "prompt": "A thick ship rope tied in many knots, moving like a snake, a frayed end for a head. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a thick knotted ship rope coiled up like a snake, its frayed rope end raised high like a striking head with two glowing amber eyes, ready to snap forward. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -465,7 +465,7 @@
       "name": "怪_硫磺精",
       "seed": 8063,
       "transparent": true,
-      "prompt": "A puff of yellow sulfur smoke with a grumpy face, bubbling. Accent colours: ember orange and warm red."
+      "prompt": "A living elemental spirit, just a floating mass of its element with no human body, no arms and no legs: a churning cloud of yellow sulfur smoke with a scowling glowing face, bubbling and spitting hot yellow sparks. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -502,7 +502,7 @@
       "name": "怪_風箱鬼",
       "seed": 8068,
       "transparent": true,
-      "prompt": "A torn leather blacksmith bellows with a ghostly face, puffing air and sparks. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a torn leather blacksmith bellows floating in the air, its handles flapping like jaws, blasting a gust of air and sparks out of its nozzle, two glowing eyes on the leather. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -560,7 +560,7 @@
       "name": "怪_熔岩精",
       "seed": 8076,
       "transparent": true,
-      "prompt": "A small blob of glowing molten lava with a sleepy face. Accent colours: ember orange and warm red."
+      "prompt": "A living elemental spirit, just a floating mass of its element with no human body, no arms and no legs: a round blob of glowing molten lava with angry glowing eyes, its surface cracked and dripping, splashing small drops of lava around it. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -692,14 +692,14 @@
       "name": "怪_凍帆",
       "seed": 8094,
       "transparent": true,
-      "prompt": "A frozen ship sail cracked and full of ice, with icy claws. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a frozen ship sail torn loose and flying forward, its cracked icy edges jagged like teeth, two glowing pale eyes in the frosted cloth, icy shards whirling around it. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_斷槳",
       "seed": 8095,
       "transparent": true,
-      "prompt": "A broken wooden oar standing on its own like a creature. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a broken wooden oar floating in the air and lunging forward diagonally, its split splintered end pointed like a spear tip, a glowing amber ink core in the wood, splinters and brown dust trailing behind. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -815,7 +815,7 @@
       "name": "怪_舊船票",
       "seed": 8111,
       "transparent": true,
-      "prompt": "An old yellowed ferry ticket fluttering in the wind like a little ghost. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a swirling stack of old yellowed ferry tickets spinning through the air like sharp paper blades, a glowing green eye on the top ticket, paper edges cutting the air. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -859,7 +859,7 @@
       "name": "怪_潮痕",
       "seed": 8117,
       "transparent": true,
-      "prompt": "A dark wavy waterline stain peeled off a wall, creeping upward like a living stripe. Accent colours: sea teal and foam white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a long dark wavy waterline stain peeled off a wall, rearing up like a striking eel shape made of watermark, two glowing teal eyes, dripping sea water. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -903,21 +903,21 @@
       "name": "怪_水線",
       "seed": 8123,
       "transparent": true,
-      "prompt": "A long horizontal line of dark sea water floating in the air, shaped like a serpent. Accent colours: sea teal and foam white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a long floating ribbon of dark sea water lashing through the air like a whip, foam spraying from its tip, a glowing teal core in the middle of the water. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
       "name": "怪_塔的影子",
       "seed": 8124,
       "transparent": true,
-      "prompt": "The long dark shadow of a white tower standing up, pointing one way. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a tall narrow black shadow of a tower leaning forward over the viewer as if to fall on them, two thin glowing violet window-slit eyes near its top, dark mist pooling at its base. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
       "name": "怪_鐘聲",
       "seed": 8125,
       "transparent": true,
-      "prompt": "A ripple of sound waves shaped into a floating creature, rings of faint golden light. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: an old bronze bell hanging in the air by itself, ringing violently, rings of visible golden sound waves blasting outward from its mouth, a glowing eye in the dark of the bell. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -947,7 +947,7 @@
       "name": "怪_畫框",
       "seed": 8129,
       "transparent": true,
-      "prompt": "An empty ornate gilded picture frame walking on its corners. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: an ornate gilded picture frame floating upright, the inside of the frame a swirling black vortex like a hungry mouth pulling things in, gold flakes being sucked into it. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -961,14 +961,14 @@
       "name": "怪_灰色的風景",
       "seed": 8131,
       "transparent": true,
-      "prompt": "A small grey painted landscape - mountain and sea - torn from a canvas, standing as a creature, completely still and colourless. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a torn piece of canvas with a grey painted landscape of mountain and sea, curling forward like a wave about to swallow, its painted sea spilling out of the canvas, a cold glowing grey eye in the painted sky. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_未乾的顏料",
       "seed": 8132,
       "transparent": true,
-      "prompt": "A splash of wet red paint shaped like a hot creature, steaming. Accent colours: ember orange and warm red."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a large splash of wet red paint flying forward, dripping and steaming hot, sharp paint spikes splattering out, two glowing orange eyes in the paint. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -998,35 +998,35 @@
       "name": "怪_空白",
       "seed": 8136,
       "transparent": true,
-      "prompt": "A floating patch of pure blankness with soft torn paper edges, a quiet glow. Accent colours: starlight gold and soft silver."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a floating hole of pure white blankness with torn paper edges, the paper around it peeling and crumbling into the blank, a faint golden glow, a dangerous empty stare. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
       "name": "怪_纏繞的光",
       "seed": 8137,
       "transparent": true,
-      "prompt": "Two intertwined ribbons of light, one gold and one blue, twisting around each other. Accent colours: starlight gold and soft silver."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: two ribbons of light, one gold and one blue, twisting tightly around each other and lashing out like whips, bright sparks where they cross. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
       "name": "怪_未完的線",
       "seed": 8138,
       "transparent": true,
-      "prompt": "A glowing pen line running forward, a half-drawn stroke with a bright tip. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a glowing half-drawn pen line racing forward with a sharp bright nib-shaped tip like a spearhead, the line behind it crackling with green light. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_最後的霧",
       "seed": 8139,
       "transparent": true,
-      "prompt": "A small frightened cloud of fog with scared eyes, shrinking. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a small dense cloud of dark fog curling in on itself, two frightened glowing eyes, thin tendrils of mist striking out in panic. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
       "name": "怪_被畫掉的人",
       "seed": 8140,
       "transparent": true,
-      "prompt": "A grey brush stroke in the shape of a person, half erased. Accent colours: sea teal and foam white."
+      "prompt": "A grey ink-drawn person half scribbled out by thick dark brush strokes, the crossed-out half dissolving into dripping ink, one glowing teal eye still visible, reaching forward. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
