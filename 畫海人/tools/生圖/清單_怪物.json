@@ -7,7 +7,8 @@
     ]
   },
   "style": {
-    "enemy": "Anime film creature design for a fantasy game: exactly one creature or figure shown whole, centred, filling about two thirds of the frame, seen from a slight three-quarter angle. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no ground, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background."
+    "enemy": "Anime film creature design for a fantasy game: exactly one creature or figure shown whole, centred, filling about two thirds of the frame, seen from a slight three-quarter angle. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no ground, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background.",
+    "enemy_object": "Anime film prop and spirit design for a fantasy game: exactly one magical object or glowing spirit shown whole and alone, centred, filling about two thirds of the frame, floating in empty space. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no character, no hands, no ground, no scenery, no frame, no border. No text, letters or numbers anywhere. Isolated on a fully transparent background."
   },
   "items": [
     {
@@ -699,7 +700,8 @@
       "name": "怪_斷槳",
       "seed": 8195,
       "transparent": true,
-      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a broken wooden oar spinning through the air, its split splintered end jagged and sharp like a spearhead, a glowing amber crack in the wood like an angry eye, wood splinters flying off it. Accent colours: ochre brown and stone grey."
+      "prompt": "A broken wooden oar flying through the air on its own, tilted diagonally, its split splintered end jagged and sharp like a spearhead, a glowing amber crack in the wood like an angry eye, wood splinters flying off it. Accent colours: ochre brown and stone grey.",
+      "style": "enemy_object"
     },
     {
       "kind": "enemy",
@@ -901,7 +903,7 @@
     {
       "kind": "enemy",
       "name": "怪_水線",
-      "seed": 8223,
+      "seed": 8225,
       "transparent": true,
       "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a curling crest of dark sea water like a breaking wave rearing up, only water and foam, a glowing teal eye inside the curl of the wave, spray flying forward. Accent colours: sea teal and foam white."
     },
@@ -924,7 +926,8 @@
       "name": "怪_安魂的合唱",
       "seed": 8126,
       "transparent": true,
-      "prompt": "No animal, no dragon, no beast and no person in the image. Only a small floating cluster of seven tiny round glowing spirit wisps, each a soft little ball of light like a candle flame with a small round open singing mouth, drifting close together in a loose circle, faint musical sparkles between them, soft starlight. Accent colours: starlight gold and soft silver."
+      "prompt": "A small floating cluster of seven tiny round glowing spirit wisps, each a soft little ball of light like a candle flame with a small round open singing mouth, drifting close together in a loose circle, faint musical sparkles between them, soft starlight. Accent colours: starlight gold and soft silver.",
+      "style": "enemy_object"
     },
     {
       "kind": "enemy",
@@ -1003,7 +1006,7 @@
     {
       "kind": "enemy",
       "name": "怪_纏繞的光",
-      "seed": 8237,
+      "seed": 8239,
       "transparent": true,
       "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a glowing vortex of two light ribbons, one gold and one blue, braided together into a tight spiral knot, bright sparks flying outward from the knot. Accent colours: starlight gold and soft silver."
     },
@@ -1012,7 +1015,8 @@
       "name": "怪_未完的線",
       "seed": 8238,
       "transparent": true,
-      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a glowing green ink line streaking diagonally like a comet, the front end a sharp bright pen-nib point, crackling sparks along the line. Accent colours: pale sage green and cloud white."
+      "prompt": "A glowing green ink line streaking diagonally like a comet across empty space, the front end a sharp bright pen-nib point, crackling sparks along the line. Accent colours: pale sage green and cloud white.",
+      "style": "enemy_object"
     },
     {
       "kind": "enemy",
