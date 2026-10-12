@@ -1227,7 +1227,8 @@
       "kind": "scene",
       "name": "幕_五片殘頁拼合",
       "seed": 5280,
-      "prompt": "Only hands are visible: a girl's two hands placing five torn, yellowed pieces of paper together on an open old leather-bound map book on a wooden tavern table, their torn edges fitting perfectly, each piece shows part of a coastline, warm lantern light, mugs in the dark background."
+      "prompt": "Only hands are visible: a girl's two hands placing five torn, yellowed pieces of paper together on an open old leather-bound map book on a wooden tavern table, their torn edges fitting perfectly, each piece shows part of a coastline, warm lantern light, mugs in the dark background.",
+      "people": "hands"
     },
     {
       "kind": "scene",
