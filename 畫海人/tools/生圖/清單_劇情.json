@@ -32,7 +32,7 @@
     {
       "kind": "scene",
       "name": "幕_群島夜海",
-      "seed": 5301,
+      "seed": 5304,
       "prompt": "A starry night sky above a dark sea seen from very high above the clouds, like a map come alive: dozens of tiny islands scattered across the sea to the horizon, each island only a small dark shape with one tiny warm lamp glowing on it, thin mist drifting between them, stars reflected in the water, calm and still."
     },
     {
@@ -629,13 +629,13 @@
     {
       "kind": "scene",
       "name": "幕_鏡子一樣的冰",
-      "seed": 5195,
+      "seed": 5197,
       "prompt": "A vast frozen sea reaching to every edge of the frame, perfectly flat and smooth like a mirror, no rocks and no shore in view, clouds and pale dawn sky reflected in the ice, tiny dark islands on the far horizon."
     },
     {
       "kind": "scene",
       "name": "幕_冰裡的倒影",
-      "seed": 5196,
+      "seed": 5199,
       "prompt": "Close view of a sheet of mirror-like ice: at the top edge of the frame only the heavy boots and coat hem of one adult fisherman standing on the ice, and in the ice below him exactly one reflection, a single small child with one face looking back up, only one child in the whole picture, the child exists only as a reflection inside the ice, cold blue light, wonder and sadness.",
       "people": true
     },
@@ -723,7 +723,7 @@
     {
       "kind": "scene",
       "name": "幕_門縫的光",
-      "seed": 5210,
+      "seed": 5213,
       "prompt": "A towering gate carved out of translucent blue ice, its two ice doors opening a narrow crack, a beam of warm golden light pouring out across the empty untouched snow and the fog."
     },
     {
@@ -925,7 +925,7 @@
     {
       "kind": "scene",
       "name": "幕_一片白",
-      "seed": 5239,
+      "seed": 5242,
       "prompt": "Nothing but soft white mist filling the entire frame, an endless pale void with no ground, no shore, no objects and no shapes, only the faintest hint of a horizon line, silent."
     },
     {
@@ -1092,7 +1092,7 @@
     {
       "kind": "scene",
       "name": "幕_太陽出來霧散了",
-      "seed": 5261,
+      "seed": 5263,
       "prompt": "Open sea at sunrise with no land in the frame, the morning sun rising over the horizon and the light mist dissolving in golden sunlight, revealing calm sparkling water, hopeful and warm."
     },
     {
