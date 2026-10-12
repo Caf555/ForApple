@@ -19,7 +19,7 @@ export class Battle {
   constructor(ctx) { this.ctx = ctx; }
   get g() { return this.ctx.g; }
 
-  // opt：{ enemies: [名稱], terrain, lit, kind: '一般'|'精英'|'首領' }
+  // opt：{ enemies: [名稱], terrain, lit, kind: '一般'|'精英'|'首領', scale: 墨潮島的妖物變強幾倍 }
   start(opt) {
     this.opt = opt;
     return new Promise(res => { this.finish = res; this.run(); });
@@ -42,9 +42,11 @@ export class Battle {
       const calm = d.rank === '精英' && (g.world.祈願塔 || {}).cleared && g.island && ISLANDS[g.island.id].sea !== '霧心' ? 0.85 : 1;
       // 航海時遇到濃霧：霧眼的守門妖物比較弱
       const fog = d.rank === '精英' && g.island && g.island.weather === '濃霧' ? 0.85 : 1;
-      const hp = Math.round(d.hp * diff.foe * calm * fog);
+      // 墨潮島：被墨染過的妖物，比原本的海強 scale 倍（島上本來就有的 ink 妖物不加）
+      const sc = d.ink ? 1 : this.opt.scale || 1;
+      const hp = Math.round(d.hp * diff.foe * calm * fog * sc);
       return { side: 'foe', id: 'f' + i, key: k, name: k + (dup ? ' ' + '甲乙丙'[count[k] - 1] : ''), def: d, el: d.element,
-        st: { atk: Math.round(d.atk * diff.foe), def: d.def, mag: Math.round(d.mag * diff.foe), spd: d.spd },
+        st: { atk: Math.round(d.atk * diff.foe * sc), def: Math.round(d.def * sc), mag: Math.round(d.mag * diff.foe * sc), spd: d.spd },
         maxhp: hp, hp, row: d.row, alive: true, status: {}, fx: {} };
     });
     this.render();
@@ -490,7 +492,7 @@ export class Battle {
   async rewards() {
     const g = this.g;
     let exp = 0, silver = 0;
-    for (const f of this.foes) { exp += f.def.exp; silver += f.def.silver; }
+    for (const f of this.foes) { const sc = f.def.ink ? 1 : this.opt.scale || 1; exp += Math.round(f.def.exp * sc); silver += Math.round(f.def.silver * sc); }
     // 士氣高昂（打這一仗以前）：經驗 +10%
     if (this.morale0 >= 80) exp = Math.round(exp * 1.1);
     g.silver += silver;

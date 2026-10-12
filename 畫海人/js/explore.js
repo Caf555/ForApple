@@ -5,9 +5,13 @@ import { heroStats, makeHero, DIFF, save, cargoUsed, moraleTier } from './state.
 import { survey } from './survey.js';
 import { playPuzzle } from './puzzle.js';
 import { el, $ } from './ui.js';
+import { buildInk, inkSight, blocked, flooded, inkGoal, inkTileInfo, inkEnter, inkMinimap, regionOf } from './inkplay.js';
+import { INK_REGIONS, TIDE_EVERY } from './inkisle.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const R = 40, W = Math.sqrt(3) * R;
+// 超大地圖（墨潮島）：畫面只顯示隊伍附近這麼大一塊，跟著隊伍移動
+const VIEW_C = 9, VIEW_R = 9;
 const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
 const pick = a => a[Math.floor(Math.random() * a.length)];
 
@@ -51,7 +55,10 @@ export function villageStock(g, id) {
 }
 
 export function newIsland(g, id) {
-  const def = ISLANDS[id], rec = worldOf(g, id), route = routeOf(g, id);
+  const def = ISLANDS[id];
+  // 第六頁・墨潮島：固定配置的超大地圖（js/inkplay.js）
+  if (def.big) return buildInk(g, id);
+  const rec = worldOf(g, id), route = routeOf(g, id);
   const start = (route && route.start) || def.start;
   const tiles = [];
   const free = [];
@@ -134,8 +141,8 @@ function placeBlank(def, tiles, start, n) {
 }
 
 export function pointDone(tiles, t) { return tiles.every(x => x.surveyed || dist([x.c, x.r], [t.c, t.r]) > 2); }
-function tileAt(isl, c, r) { return isl.tiles[r * ISLANDS[isl.id].cols + c]; }
-function reveal(isl, p, rad) { for (const t of isl.tiles) if (dist([t.c, t.r], p) <= rad) t.seen = true; }
+export function tileAt(isl, c, r) { return isl.tiles[r * ISLANDS[isl.id].cols + c]; }
+export function reveal(isl, p, rad) { for (const t of isl.tiles) if (dist([t.c, t.r], p) <= rad) t.seen = true; }
 export function surveyPct(isl) { return Math.round(isl.tiles.filter(t => t.surveyed).length * 100 / isl.tiles.length); }
 // 這座島最多畫得到多少：每個測繪點都畫到最準（周圍兩圈）的時候
 export function surveyMax(id) {
@@ -162,8 +169,9 @@ export class Explore {
     this.svg.setAttribute('viewBox', `-4 -4 ${def.cols * W + W / 2 + 8} ${def.rows * R * 1.5 + R / 2 + 8}`);
     this.$info = el('div', { class: 'info' });
     this.$lamp = el('button', { class: 'btn small', onclick: () => this.toggleLamp() }, '');
+    const mini = def.big ? el('button', { class: 'btn small', onclick: () => inkMinimap(this.ctx, this.isl) }, '小地圖') : null;
     s.append(
-      el('div', { class: 'isl-head' }, el('b', {}, this.isl.id), el('span', { class: 'grow' }), this.$lamp,
+      el('div', { class: 'isl-head' }, el('b', {}, this.isl.id), el('span', { class: 'grow' }), mini, this.$lamp,
         el('button', { class: 'btn small', onclick: () => this.ctx.partySheet() }, '隊伍'),
         el('button', { class: 'icon', 'aria-label': '選單', onclick: () => this.ctx.menu() }, '☰')),
       this.$status, el('div', { class: 'mapwrap' }, this.svg), this.$info, this.$party);
@@ -178,12 +186,16 @@ export class Explore {
     if (!isl.lit && this.g.supply.燈油 <= 0) { this.ctx.ui.toast('沒有燈油了。'); return; }
     isl.lit = !isl.lit;
     this.ctx.audio.sfx('tap');
-    if (isl.lit) reveal(isl, isl.pos, sight(this.def, true));
+    if (isl.lit) reveal(isl, isl.pos, this.sight(true));
     this.draw();
   }
 
+  // 看得見幾格：墨潮島看站的那一區（北霧區比較暗）
+  sight(lit) { return this.def.big ? inkSight(this.isl, tileAt(this.isl, ...this.isl.pos), lit) : sight(this.def, lit); }
+
   tileInfo(t) {
     const def = this.def;
+    if (def.big) { const s = inkTileInfo(t); if (s) return s; }
     if (t.kind === '王') return { name: def.boss.place, tip: def.boss.tip };
     if (t.kind === '眼') return { name: '霧眼', tip: def.eyeTip };
     return TILE_INFO[t.kind] || TILE_INFO.空;
@@ -192,14 +204,22 @@ export class Explore {
   draw() {
     const g = this.g, isl = this.isl, def = this.def, svg = this.svg;
     svg.innerHTML = '';
-    const nb = neighbors(...isl.pos, def).map(p => p.join(','));
+    const nb = neighbors(...isl.pos, def).filter(p => !(def.big && blocked(isl, tileAt(isl, ...p)))).map(p => p.join(','));
+    // 超大地圖：鏡頭跟著隊伍，只畫附近一塊（碰到地圖邊緣就停住）
+    let view = null;
+    if (def.big) {
+      const c0 = Math.max(0, Math.min(def.cols - VIEW_C, isl.pos[0] - (VIEW_C >> 1))), r0 = Math.max(0, Math.min(def.rows - VIEW_R, isl.pos[1] - (VIEW_R >> 1)));
+      view = { c0, r0, c1: c0 + VIEW_C - 1, r1: r0 + VIEW_R - 1 };
+      svg.setAttribute('viewBox', `${c0 * W - 4} ${r0 * R * 1.5 - 4} ${VIEW_C * W + W / 2 + 8} ${VIEW_R * R * 1.5 + R / 2 + 8}`);
+    }
     for (const t of isl.tiles) {
+      if (view && (t.c < view.c0 || t.c > view.c1 || t.r < view.r0 || t.r > view.r1)) continue;
       const x = t.c * W + (t.r % 2 ? W / 2 : 0) + W / 2, y = t.r * R * 1.5 + R;
       const pts = [...Array(6).keys()].map(i => { const a = Math.PI / 180 * (60 * i - 30); return `${(x + R * 0.96 * Math.cos(a)).toFixed(1)},${(y + R * 0.96 * Math.sin(a)).toFixed(1)}`; }).join(' ');
       const here = t.c === isl.pos[0] && t.r === isl.pos[1];
       const can = nb.includes(`${t.c},${t.r}`);
       const grp = document.createElementNS(NS, 'g');
-      grp.setAttribute('class', 'hex' + (t.seen ? ' seen land-' + t.land : ' fog') + (t.surveyed ? ' surveyed' : '') + (here ? ' here' : '') + (can ? ' can' : ''));
+      grp.setAttribute('class', 'hex' + (t.seen ? ' seen land-' + t.land : ' fog') + (t.surveyed ? ' surveyed' : '') + (here ? ' here' : '') + (can ? ' can' : '') + (t.tide && t.seen ? ' tide' + (flooded(isl, t) ? ' flood' : '') : '') + (t.tower ? ' tower' : ''));
       const poly = document.createElementNS(NS, 'polygon'); poly.setAttribute('points', pts); grp.append(poly);
       const vent = t.seen && t.land === '噴' && !here && (t.done || t.kind === '空') && t.kind !== '起' && t.kind !== '村';
       const label = here || vent ? '' : !t.seen || t.land === '白' ? '' : t.kind === '王' ? def.boss.label[isl.key ? 1 : 0] : t.done && t.kind !== '村' && t.kind !== '起' ? '·' : t.kind === '空' ? '' : t.kind;
@@ -233,14 +253,18 @@ export class Explore {
     const info = this.tileInfo(cur);
     this.$info.innerHTML = '';
     const pct = surveyPct(isl), max = surveyMax(isl.id), full = pct >= max;
-    const goal = isl.boss ? (worldOf(g, isl.id).cleared && !isl.bossNow ? `這座島已經完成了。${full ? '' : '可以繼續測繪、'}找素材，回到登陸點就能返航。` : def.goal.done) : isl.key ? def.goal.key : def.goal.none;
+    const goal = def.big ? inkGoal(g, isl) : isl.boss ? (worldOf(g, isl.id).cleared && !isl.bossNow ? `這座島已經完成了。${full ? '' : '可以繼續測繪、'}找素材，回到登陸點就能返航。` : def.goal.done) : isl.key ? def.goal.key : def.goal.none;
+    const rg = def.big ? regionOf(cur) : -1, reg = INK_REGIONS[rg];
     this.$info.append(...[el('p', { class: 'goal' }, goal),
       el('p', {}, cur.kind === '起' ? '船停在登陸點。點旁邊的格子前進；每走一格吃掉 1 份糧。' : info.name ? `${info.name}：${cur.done ? '已經處理過了。' : info.tip}` : '霧裡什麼都沒有。點旁邊的格子繼續前進。'),
       el('p', { class: 'muted' }, full ? `測繪度 ${pct}%：這座島已經畫滿了（最高就是 ${max}%），測繪點不會再出現。` : `測繪度 ${pct}%，這座島最高可以畫到 ${max}%。`),
       el('p', { class: 'muted' }, (isl.lit ? '燈亮著：看得更遠、霧中不會打偏；每走一格用掉 1 份燈油。' : '點燈可以看得更遠（每走一格用 1 份燈油）。') + (def.dark ? def.darkTip || '這裡很暗，看得見的範圍比較小。' : '') + (isl.lit && this.grey ? '點的是守霧人的灰燈：霧不會回來，也聽得出低語是真是假。' : '')),
-      def.ice ? el('p', { class: 'muted' }, '淡藍色的格子結了冰：走上去會一直往同一個方向滑，滑到冰的盡頭才停。滑行不吃糧。') : null,
-      def.blank ? el('p', { class: 'muted' }, '白色的格子是「空白」：紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去。空白後面，有時候藏著東西。') : null,
-      def.hot || def.vents ? el('p', { class: 'muted' }, (def.hot ? '發紅的格子是熱地：走上去，全隊會掉一點體力。' : '') + (def.vents ? `噴氣口每走三步噴一次火：寫著「噴！」的時候，下一步不要踩上去。` : '')) : null].filter(Boolean));
+      reg ? el('p', { class: 'muted' }, `你們在「${reg.name}」。${reg.tip || ''}`) : null,
+      rg === 2 ? el('p', { class: 'muted' }, `有波紋的格子是潮水：每走 ${TIDE_EVERY} 步漲一次、退一次，深藍色的那一組淹在水裡，走不過去。（再走 ${TIDE_EVERY - isl.steps % TIDE_EVERY} 步換邊）`) : null,
+      def.big ? el('p', { class: 'muted' }, '黑色的是墨水的河，走不過去，只有「門」打得開。地圖很大，畫面只顯示附近一塊；右上角的「小地圖」看得到整座島。') : null,
+      def.ice || rg === 4 ? el('p', { class: 'muted' }, '淡藍色的格子結了冰：走上去會一直往同一個方向滑，滑到冰的盡頭才停。滑行不吃糧。') : null,
+      def.blank || rg === 5 ? el('p', { class: 'muted' }, '白色的格子是「空白」：紙還沒畫到的地方。點它，花 1 份墨水畫成路，才走得過去。空白後面，有時候藏著東西。') : null,
+      def.hot || def.vents || rg === 3 ? el('p', { class: 'muted' }, (def.hot || rg === 3 ? '發紅的格子是熱地：走上去，全隊會掉一點體力。' : '') + (def.vents || rg === 3 ? `噴氣口每走三步噴一次火：寫著「噴！」的時候，下一步不要踩上去。` : '')) : null].filter(Boolean));
     if (cur.kind === '村') this.$info.append(el('button', { class: 'btn small', onclick: () => this.village() }, '進村子'));
     if (cur.kind === '起') this.$info.append(el('button', { class: 'btn small' + (isl.boss ? ' primary' : ''), onclick: () => this.sailHome(!isl.boss) }, isl.boss ? '返航' : '先回港口'));
   }
@@ -248,6 +272,8 @@ export class Explore {
   async move(t) {
     const g = this.g, isl = this.isl, diff = DIFF[g.diff] || DIFF.標準;
     if (this.busy) return;
+    // 墨潮島：墨水的河、淹水的潮走不過去
+    if (this.def.big && blocked(isl, t)) { this.ctx.ui.toast(t.land === '墨' ? '墨水的河，走不過去。' : '潮水淹過來了，現在走不過去。'); return; }
     // 空白格：花 1 份墨水，把它畫成路
     if (t.land === '白') {
       this.busy = true;
@@ -292,7 +318,7 @@ export class Explore {
     // 燈油
     if (isl.lit) { g.supply.燈油--; if (g.supply.燈油 <= 0) { g.supply.燈油 = 0; isl.lit = false; this.ctx.ui.toast('燈油用完了，燈熄了。'); } }
     const wasSeen = t.seen;
-    reveal(isl, isl.pos, sight(this.def, isl.lit));
+    reveal(isl, isl.pos, this.sight(isl.lit));
     // 冰面：一直往同一個方向滑，滑到不是冰的地方（或撞到岩石、地圖邊緣）才停。滑行不吃糧
     let slid = 0;
     while (t.land === '冰') {
@@ -300,8 +326,10 @@ export class Explore {
       if (nc < 0 || nr < 0 || nc >= this.def.cols || nr >= this.def.rows) break;
       const n = tileAt(isl, nc, nr);
       if (n.land === '岩' || n.land === '白') break;
+      // 墨潮島：墨水的河、淹水的潮、還沒打開的門和冰牆擋得住
+      if (this.def.big && (blocked(isl, n) || (!n.done && ['門', '牆'].includes(n.kind)))) break;
       from = [t.c, t.r]; t = n; isl.pos = [t.c, t.r]; slid++;
-      reveal(isl, isl.pos, sight(this.def, isl.lit));
+      reveal(isl, isl.pos, this.sight(isl.lit));
     }
     if (slid) { this.ctx.ui.toast(`冰面好滑！一口氣滑了 ${slid} 格。`); this.ctx.audio.sfx('tide'); }
     // 火山的地形
@@ -328,13 +356,14 @@ export class Explore {
 
   terrainOf(t) { return t.land === '灘' ? '潮間帶' : t.land === '岩' ? '高地' : this.isl.lit ? '林' : Math.random() < 0.5 ? '林' : '霧中'; }
 
-  async fight(t, from, enemies, kind) {
+  // scale：墨潮島的妖物被墨染過，比原本的海強（血、攻擊、經驗、銀貝都乘上去）
+  async fight(t, from, enemies, kind, scale = 1) {
     const g = this.g;
     const snap = g.party.map(h => [h.hp, h.mp]), morale = g.morale, supply = { ...g.supply };
     let lost = 0;
     for (;;) {
       g.stats.battles++;
-      const r = await this.ctx.battle.start({ enemies, terrain: this.terrainOf(t), lit: this.isl.lit, kind });
+      const r = await this.ctx.battle.start({ enemies, terrain: this.terrainOf(t), lit: this.isl.lit, kind, scale });
       this.ctx.audio.music('島');
       if (r === 'win') return true;
       if (r === 'flee') { this.isl.pos = from; return false; }
@@ -371,6 +400,7 @@ export class Explore {
 
   async enter(t, from) {
     const g = this.g, ui = this.ctx.ui, isl = this.isl, def = this.def;
+    if (def.big && await inkEnter(this, t, from)) return;
     switch (t.kind) {
       case '怪': {
         const depth = dist([t.c, t.r], isl.start || def.start), E = def.encounters;
@@ -530,7 +560,7 @@ export class Explore {
         const i = await ui.choose(B.place, B.enter, [{ label: `進入${B.place}` }, { label: '再準備一下' }]);
         if (i !== 0) { isl.pos = from; break; }
         await ui.story(this.ctx.storyLines(B.intro));
-        if (await this.fight(t, from, B.foes, '首領')) {
+        if (await this.fight(t, from, B.foes, '首領', def.big ? INK_REGIONS[5].scale : 1)) {
           t.done = true; isl.boss = true; isl.bossNow = true;
           const picks = await ui.story(this.ctx.storyLines(B.down));
           if (B.pick && picks.length) g.flags[B.pick] = picks[0];

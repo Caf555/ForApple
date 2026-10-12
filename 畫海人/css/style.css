@@ -661,3 +661,19 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .job.secret.ready { border-color: var(--accent); }
 .job.secret.done { opacity: .75; }
 .job.secret-back { border-style: dashed; opacity: .8; text-align: center; }
+
+/* 第六頁・墨潮島：墨水的河、門、潮水、新的格子、小地圖 */
+.hex.land-墨 polygon, .hex.seen.land-墨 polygon { fill: #1f1d2b; stroke: #2e2b40; }
+.hex.seen.land-門 polygon { fill: #4a4466; stroke: #b9a8e0; stroke-width: 2; }
+.hex.seen.tide polygon { fill: #bfe0e0; stroke: #6aa7b0; stroke-dasharray: 3 3; }
+.hex.seen.tide.flood polygon { fill: #2f6f94; stroke: #1d4f6e; }
+.hex.seen.tower polygon { stroke: #e8c25a; stroke-width: 3; }
+.hex .k-門 { fill: #e9e0ff; } .hex .k-塔 { fill: #8a6414; } .hex .k-霸 { fill: #6a1a3a; } .hex .k-燈 { fill: #b88a1a; }
+.hex .k-牆 { fill: #3c6c84; } .hex .k-礦 { fill: #2f2f3f; } .hex .k-爐 { fill: #a8401a; }
+.minimap { display: block; width: 100%; max-width: 520px; margin: 0 auto 8px; height: auto; }
+.minimap .hex polygon { stroke: rgba(0, 0, 0, .25); stroke-width: 1; }
+.minimap .hex.fog polygon { fill: #8d9aa5; fill-opacity: .35; }
+.minimap .hex.land-墨 polygon { fill: #1f1d2b; }
+.minimap .mm-k { font-size: 9px; text-anchor: middle; fill: #3a2a1a; font-weight: 700; }
+.minimap .mm-k.done { fill: #8a8070; font-weight: 400; }
+.minimap .mm-k.me { fill: #c0392b; font-size: 11px; }

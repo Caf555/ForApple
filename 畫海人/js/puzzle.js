@@ -725,7 +725,7 @@ function carts(ctx) {
     };
     const dir = (label, dx, dy, area) => el('button', { class: 'btn pz-dir', style: { gridArea: area }, 'aria-label': label, onclick: () => step(dx, dy) }, label);
     pad.append(dir('↑', 0, -1, 'u'), dir('←', -1, 0, 'l'), dir('→', 1, 0, 'r'), dir('↓', 0, 1, 'd'));
-    f.box.solve = async () => { const p = solveCarts(L, me, cs); for (const [dx, dy] of p || []) { await step(dx, dy); await wait(40); } };
+    f.box.solve = async () => { while (round < plan.length && tries > 0) { while (busy && round < plan.length) await wait(40); if (round >= plan.length) break; const r0 = round, p = solveCarts(L, me, cs); for (const [dx, dy] of p || []) { if (round !== r0) break; await step(dx, dy); await wait(40); } await wait(60); } };
     setup();
   });
 }
