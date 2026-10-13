@@ -167,7 +167,7 @@
       "name": "怪_溺水的水手",
       "seed": 8022,
       "transparent": true,
-      "prompt": "A drowned sailor ghost in a striped shirt, pale grey-blue skin, pulling on a broken mooring rope. Accent colours: dusky violet and shadow grey."
+      "prompt": "A drowned sailor ghost in a striped shirt, pale grey-blue skin, standing upright in a simple natural pose seen from the front, chest, hips and feet all facing the same direction as one straight body with correct human proportions, holding a broken mooring rope in both hands in front of him, water dripping from his clothes. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
@@ -722,7 +722,8 @@
       "name": "怪_冰燈蛾",
       "seed": 8098,
       "transparent": true,
-      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real moth or butterfly body seen flying from a three-quarter top view, wings spread wide, a slim insect body with six tiny thin insect legs tucked under it, two feathery antennae. A moth with frosted wings flying toward a small iron-framed oil lantern. Accent colours: ember orange and warm red."
+      "style": "enemy_object",
+      "prompt": "A hanging lantern carved entirely out of clear blue ice, a small orange flame glowing inside it, with a pair of large frosted moth wings growing from its sides and two feathery moth antennae on its top, flying by itself. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -780,7 +781,8 @@
       "name": "怪_第一道門",
       "seed": 8106,
       "transparent": true,
-      "prompt": "A small ice gate walking on stubby icy legs, an ice key frozen in its crack. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "style": "enemy_object",
+      "prompt": "A tall arched door made of thick ice standing alone, clearly a door: two door panels in an arched stone frame, big iron hinges, a door handle and a keyhole, frost cracks glowing with cold light, an ice key frozen in its keyhole. No legs, no face. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
