@@ -253,7 +253,7 @@
       "name": "物_炭",
       "seed": 8544,
       "transparent": true,
-      "prompt": "A few pieces of charcoal."
+      "prompt": "Three lumps of black charcoal, burnt wood pieces that are matte black with grey ash cracks and a faint wood grain, lying in a small pile. Not a plank, not brown wood."
     },
     {
       "kind": "item",
@@ -344,7 +344,7 @@
       "name": "物_白花瓣",
       "seed": 8557,
       "transparent": true,
-      "prompt": "A few white blossom petals."
+      "prompt": "A small heap of soft white flower petals, five or six loose rounded petals like cherry or apple blossom petals, pure white with a faint pink base. No leaf, no stem, no pod."
     },
     {
       "kind": "item",
@@ -372,7 +372,7 @@
       "name": "物_舊畫紙",
       "seed": 8561,
       "transparent": true,
-      "prompt": "A thick sheet of old drawing paper with a painted sea."
+      "prompt": "A single rectangular sheet of old thick paper, slightly curled at the corners and yellowed, with a small watercolor painting of blue sea waves on it. Flat paper only, no frame, no metal, no ornament."
     },
     {
       "kind": "item",
@@ -393,7 +393,7 @@
       "name": "物_空白的紙",
       "seed": 8564,
       "transparent": true,
-      "prompt": "A single blank sheet of white paper."
+      "prompt": "A single flat rectangular sheet of plain white paper, completely blank with nothing written on it, one corner slightly bent. Paper only, not a coin, not round, no metal."
     }
   ]
 }
