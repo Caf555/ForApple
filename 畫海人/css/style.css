@@ -85,6 +85,8 @@ button { font: inherit; color: inherit; }
 .story .line { margin: 0; font-family: var(--serif); font-size: 1.08em; line-height: 1.9; animation: linein .5s ease both; }
 .story .line.say b { display: block; color: var(--accent2); font-size: .85em; letter-spacing: .1em; }
 .story .line.picked { color: var(--accent2); }
+.story-pic { position: relative; flex: 0 1 auto; min-height: 0; display: flex; justify-content: center; margin-bottom: 14px; animation: linein .8s ease both; }
+.story-pic img { display: block; width: min(100%, 52vh); max-height: 52vh; aspect-ratio: 1; object-fit: cover; object-position: 50% 30%; border-radius: 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, .55); }
 .story-hint { position: relative; margin-top: 18px; text-align: center; font-size: 12px; color: var(--muted); animation: blink 1.6s ease-in-out infinite; }
 .story-choices { position: relative; display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
 @keyframes linein { from { opacity: 0; transform: translateY(6px); filter: blur(2px); } }

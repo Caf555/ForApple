@@ -30,6 +30,15 @@ export function icon(kind, name, cls = '') {
   return im;
 }
 
+// 劇情插圖（img/scene，和劇情動畫同一種正方形圖）：劇情對話裡人物登場時用。沒有圖就回傳 null
+export function scenePic(name) {
+  if (!(man && man.scene && man.scene.has(name))) return null;
+  const w = Math.min(innerWidth, 720) * (devicePixelRatio || 1) > 700 ? 1200 : 700;
+  const im = el('img', { src: encodeURI(`img/scene/${name}-${w}.webp`), alt: '' });
+  im.onerror = () => im.remove();
+  return im;
+}
+
 // 橫幅：港口、設施、島嶼的遠景（place）或海圖（chart）。沒有圖就回傳 null
 export function banner(kind, name, cls = '') {
   if (!hasArt(kind, name)) return null;

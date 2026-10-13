@@ -267,6 +267,10 @@ for (const [k, c] of Object.entries(CINEMA)) {
     usedPics.push(F.img);
   }
 }
+// 劇情對話裡人物登場的插圖 { pic }：也要在生圖清單裡（村子遇到、錯過以後回港遇到，同一張可以用兩次）
+const storyPics = [...readFileSync(new URL('../js/islands.js', import.meta.url), 'utf8').matchAll(/\bpic: '([^']+)'/g)].map(m => m[1]);
+for (const n of storyPics) { if (!picList.includes(n)) bad(`劇情對話的插圖「${n}」不在生圖清單裡`); }
+for (const n of new Set(storyPics)) { if (usedPics.includes(n)) bad(`插圖「${n}」劇情動畫已經用過了`); usedPics.push(n); }
 for (const n of picList) if (!usedPics.includes(n)) bad(`生圖清單裡的「${n}」沒有用到`);
 
 // 所有生圖清單（劇情、試畫、角色立繪）：名稱不能重複；chars 要有固定外觀；ref 要是清單裡的圖
