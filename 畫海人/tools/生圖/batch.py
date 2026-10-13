@@ -195,7 +195,7 @@ def export(kind, name, raw_path):
 
 
 def update_manifest():
-    man = {k: [] for k in [*WEB_WIDTHS, *SQUARE] if k != 'char'}
+    man = {k: [] for k in [*WEB_WIDTHS, *SQUARE]}   # char：戰鬥的半身小圖（半身小圖.py 裁的），也要留著
     for kind in man:
         for f in sorted((IMG / kind).glob('*.webp')) if (IMG / kind).exists() else []:
             stem = f.stem

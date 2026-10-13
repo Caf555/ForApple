@@ -1,4 +1,5 @@
 // 介面小工具：產生元素、面板、提示、劇情文字
+import { scenePic } from './art.js';
 export const $ = id => document.getElementById(id);
 
 export function el(tag, attrs = {}, ...kids) {
@@ -71,7 +72,7 @@ export class UI {
     setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2400);
   }
 
-  // 劇情：一行一行點下去。行可以是字串、{ who, text }、{ bg }、{ choice: [[文字, 值], …] }
+  // 劇情：一行一行點下去。行可以是字串、{ who, text }、{ bg }、{ pic }（人物登場的插圖）、{ choice: [[文字, 值], …] }
   story(lines) {
     return new Promise(res => {
       const box = el('div', { class: 'story' });
@@ -87,6 +88,11 @@ export class UI {
         const L = typeof lines[i] === 'string' ? { text: lines[i] } : lines[i];
         i++;
         if (L.bg) box.dataset.bg = L.bg;
+        if (L.pic) {
+          // 人物登場：上方淡入一張插圖（還沒畫好就照舊只有字）
+          const im = scenePic(L.pic);
+          if (im) { box.querySelector('.story-pic')?.remove(); box.insertBefore(el('div', { class: 'story-pic' }, im), scroll); box.classList.add('has-pic'); }
+        }
         if (L.choice) {
           hint.style.visibility = 'hidden';
           waiting = el('div', { class: 'story-choices' }, ...L.choice.map(([t, v]) => el('button', { class: 'btn', onclick: e => {
@@ -104,7 +110,7 @@ export class UI {
         if (!L.text) return next();
         const p = el('p', { class: 'line' + (L.who ? ' say' : '') }, L.who ? el('b', {}, this.fmt(L.who)) : null, this.fmt(L.text));
         scroll.append(p);
-        while (scroll.children.length > 7) scroll.firstChild.remove();
+        while (scroll.children.length > (box.classList.contains('has-pic') ? 4 : 7)) scroll.firstChild.remove();
       };
       box.addEventListener('click', next);
       next();
