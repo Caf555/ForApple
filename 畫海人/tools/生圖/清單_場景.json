@@ -51,7 +51,7 @@
       "kind": "place",
       "name": "景_黑市",
       "seed": 8707,
-      "prompt": "Indoors only. A hidden smugglers’ cellar: low stone vault, crates with red cloth, barrels, a pirate flag hanging on the wall, candlelight, dark corners."
+      "prompt": "Indoors only. An empty, deserted hidden smugglers’ cellar after closing time: low stone vault, crates with red cloth, barrels, an empty wooden stool, a pirate flag hanging on the wall, candlelight, dark corners."
     },
     {
       "kind": "place",
@@ -147,7 +147,7 @@
       "kind": "place",
       "name": "景_霧門",
       "seed": 8723,
-      "prompt": "A colossal ancient stone gate standing alone in the frozen sea, a wall of white fog beyond it, ice statues before it, snow."
+      "prompt": "A colossal ancient stone gate standing alone in the frozen sea, a wall of white fog beyond it, two broken ice-covered stone pillars before it, bare snowy ice in front, snow."
     },
     {
       "kind": "place",

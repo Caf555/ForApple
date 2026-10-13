@@ -7,7 +7,8 @@
     ]
   },
   "style": {
-    "enemy": "Anime film creature design for a fantasy game: exactly one creature or figure shown whole, centred, filling about two thirds of the frame, seen from a slight three-quarter angle. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no ground, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background."
+    "enemy": "Anime film creature design for a fantasy game: exactly one creature or figure shown whole, centred, filling about two thirds of the frame, seen from a slight three-quarter angle. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no ground, no scenery, no frame, no border. No text, letters or numbers anywhere; any writing is drawn as abstract squiggles. Isolated on a fully transparent background.",
+    "enemy_object": "Anime film prop and spirit design for a fantasy game: exactly one magical object or glowing spirit shown whole and alone, centred, filling about two thirds of the frame, floating in empty space. Clean crisp anime line art with cel shading and soft painterly texture, the same hand-painted anime film style as the game's scenes. Medieval European sea-folklore feel. Brighter and clearer than a background painting so it reads at small size: a clear silhouette, a muted grey-blue base palette with the accent colours described below, soft rim light. Nothing else in the frame: no character, no hands, no ground, no scenery, no frame, no border. No text, letters or numbers anywhere. Isolated on a fully transparent background."
   },
   "items": [
     {
@@ -15,7 +16,7 @@
       "name": "怪_霧蟹",
       "seed": 8001,
       "transparent": true,
-      "prompt": "A stocky grey shore crab whose shell is overgrown with soft white fog moss, raised pincers. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real crab body low and wide on eight thin jointed crab legs, two claws, eyes on stalks. A stocky grey shore crab whose shell is overgrown with soft white fog moss, raised pincers. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -29,7 +30,7 @@
       "name": "怪_礁鼠",
       "seed": 8003,
       "transparent": true,
-      "prompt": "A lean, fast reef rat with wind-swept grey fur and a long tail, mid-leap. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A lean, fast reef rat with wind-swept grey fur and a long tail, mid-leap. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -50,14 +51,14 @@
       "name": "怪_霧鰻",
       "seed": 8006,
       "transparent": true,
-      "prompt": "A long sea eel coiled in an S shape, its front half solid dark green, its tail fading into pale mist. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real eel: a long limbless body with a small fin along its back. A long sea eel coiled in an S shape, its front half solid dark green, its tail fading into pale mist. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
       "name": "怪_燈蛾",
       "seed": 8007,
       "transparent": true,
-      "prompt": "A large moth with dusty amber wings that glow faintly like an ember, glowing powder drifting from its wings. Accent colours: ember orange and warm red."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real moth or butterfly body seen flying from a three-quarter top view, wings spread wide, a slim insect body with six tiny thin insect legs tucked under it, two feathery antennae. A large moth with dusty amber wings that glow faintly like an ember, glowing powder drifting from its wings. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -79,7 +80,7 @@
       "name": "怪_燈守",
       "seed": 8010,
       "transparent": true,
-      "prompt": "An old lighthouse keeper in a long weathered oilskin coat, holding up an iron-framed oil lantern with a bright warm flame, grey beard, a tall shadow behind him. Accent colours: ember orange and warm red. A boss monster: large, imposing and richly detailed.",
+      "prompt": "The ghost of an old lighthouse keeper, clearly not human: pale grey translucent skin, eyes glowing ember orange, long weathered oilskin coat whose hem frays into drifting wisps of smoke instead of legs, holding up an iron-framed oil lantern with a bright warm flame, grey beard, floating slightly. Accent colours: ember orange and warm red. A boss monster: large, imposing and richly detailed.",
       "rank": "首領"
     },
     {
@@ -94,14 +95,14 @@
       "name": "怪_鐘蟲",
       "seed": 8012,
       "transparent": true,
-      "prompt": "A round beetle whose shell is a small bronze bell with green patina, little legs underneath. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real beetle seen from a three-quarter top view, low to the ground, six thin jointed insect legs, two antennae. A round beetle whose shell is a small bronze bell with green patina, little legs underneath. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_遺忘蝶",
       "seed": 8013,
       "transparent": true,
-      "prompt": "A butterfly with pale wings whose patterns look like tiny blurred painted memories of a village morning. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real moth or butterfly body seen flying from a three-quarter top view, wings spread wide, a slim insect body with six tiny thin insect legs tucked under it, two feathery antennae. A butterfly with pale wings whose patterns look like tiny blurred painted memories of a village morning. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -115,7 +116,7 @@
       "name": "怪_灰雀群",
       "seed": 8015,
       "transparent": true,
-      "prompt": "A small flock of five grey sparrows flying together in a tight swirl. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: real birds with bird bodies, wings, beaks, feathered tails and thin bird feet tucked under while flying. A small flock of five grey sparrows flying together in a tight swirl. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -145,7 +146,7 @@
       "name": "怪_鏽刃魚",
       "seed": 8019,
       "transparent": true,
-      "prompt": "A sleek fish with fins shaped like rusty iron blades, orange rust streaks on dark scales. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real fish body, short and streamlined, with fins and a forked tail fin, seen swimming side-on. A sleek fish with fins shaped like rusty iron blades, orange rust streaks on dark scales. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -159,14 +160,14 @@
       "name": "怪_霧帆蝠",
       "seed": 8021,
       "transparent": true,
-      "prompt": "A bat made of a torn grey ship sail, ragged canvas wings with rope veins, foggy edges. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real bat seen flying, wings spread wide, small furry bat body with a pointed-eared bat head, tiny clawed bat feet tucked under, its wings made of the sail canvas. A bat made of a torn grey ship sail, ragged canvas wings with rope veins, foggy edges. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_溺水的水手",
       "seed": 8022,
       "transparent": true,
-      "prompt": "A drowned sailor ghost in a striped shirt, pale grey-blue skin, pulling on a broken mooring rope. Accent colours: dusky violet and shadow grey."
+      "prompt": "A drowned sailor ghost in a striped shirt, pale grey-blue skin, standing upright in a simple natural pose seen from the front, chest, hips and feet all facing the same direction as one straight body with correct human proportions, holding a broken mooring rope in both hands in front of him, water dripping from his clothes. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
@@ -189,14 +190,14 @@
       "name": "怪_帳蟲",
       "seed": 8025,
       "transparent": true,
-      "prompt": "A pale bookworm grub the size of a cat, its body made of rolled ledger paper with faint scribbled lines, nibbling a paper corner. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real fat grub: a short plump segmented body with tiny stubby legs underneath. A pale bookworm grub the size of a cat, its body made of rolled ledger paper with faint scribbled lines, nibbling a paper corner. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_銀貝蟹",
       "seed": 8026,
       "transparent": true,
-      "prompt": "A crab whose shell is covered with shiny silver seashells like coins. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real crab body low and wide on eight thin jointed crab legs, two claws, eyes on stalks. A crab whose shell is covered with shiny silver seashells like coins. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -240,21 +241,21 @@
       "name": "怪_雙影鷗",
       "seed": 8032,
       "transparent": true,
-      "prompt": "A white seagull in flight with two dark shadows below it flying in opposite directions. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: real birds with bird bodies, wings, beaks, feathered tails and thin bird feet tucked under while flying. A white seagull in flight with two dark shadows below it flying in opposite directions. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_量尺蛇",
       "seed": 8033,
       "transparent": true,
-      "prompt": "A long snake whose body is a wooden measuring rule with tick marks along it, coiled. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real snake: a long limbless body with a snake head. A long snake whose body is a wooden measuring rule with tick marks along it, coiled. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_錯線",
       "seed": 8034,
       "transparent": true,
-      "prompt": "A living line of dark ink drawn by mistake, a wriggling brush stroke with a small pointed head, searching. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a thick wriggling brush stroke of dark ink coiled like a whip about to lash out, its pointed tip glowing with two small violet eyes, dripping ink mist around it. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
@@ -268,7 +269,7 @@
       "name": "怪_墨魚",
       "seed": 8036,
       "transparent": true,
-      "prompt": "A cuttlefish with deep indigo skin, a cloud of black ink drifting from it. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real cuttlefish: an oval body with a rippling fin skirt and short tentacles at the front. A cuttlefish with deep indigo skin, a cloud of black ink drifting from it. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -291,7 +292,7 @@
       "name": "怪_珠蚌",
       "seed": 8039,
       "transparent": true,
-      "prompt": "A large freshwater clam slightly open, a pearl inside glistening with a single tear. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real clam: just two hinged shell halves resting on their own, slightly open, nothing else attached. A large freshwater clam slightly open, a pearl inside glistening with a single tear. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -305,14 +306,14 @@
       "name": "怪_白線水母",
       "seed": 8041,
       "transparent": true,
-      "prompt": "A translucent jellyfish with a single glowing white thread running through its bell. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real jellyfish: a round translucent bell with long thin tentacles trailing beneath it. A translucent jellyfish with a single glowing white thread running through its bell. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
       "name": "怪_淚珠精",
       "seed": 8042,
       "transparent": true,
-      "prompt": "A small floating spirit shaped like a teardrop pearl, soft starry glow, tiny arms. Accent colours: starlight gold and soft silver."
+      "prompt": "A living elemental spirit, just a floating mass of its element with no human body, no arms and no legs: a large floating teardrop of shining water with a starry glow inside, two sad glowing eyes, small sharp droplets orbiting it like needles. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
@@ -349,7 +350,7 @@
       "name": "怪_白頁蛾",
       "seed": 8047,
       "transparent": true,
-      "prompt": "A moth whose two wings are blank sheets of white paper, pale dust falling behind it. Accent colours: starlight gold and soft silver."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real moth or butterfly body seen flying from a three-quarter top view, wings spread wide, a slim insect body with six tiny thin insect legs tucked under it, two feathery antennae. A moth whose two wings are blank sheets of white paper, pale dust falling behind it. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
@@ -386,28 +387,28 @@
       "name": "怪_灰鴉",
       "seed": 8052,
       "transparent": true,
-      "prompt": "A crow blackened with volcanic ash, holding a shiny trinket in its beak. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: real birds with bird bodies, wings, beaks, feathered tails and thin bird feet tucked under while flying. A crow blackened with volcanic ash, holding a shiny trinket in its beak. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_帆影",
       "seed": 8053,
       "transparent": true,
-      "prompt": "The dark shadow of a ship sail standing up from a deck by itself, a ragged triangular silhouette. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a ragged triangular sail made of dark shadow billowing forward like a huge pouncing wave, two glowing violet eyes in the cloth, dark ink mist swirling around its torn edges. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
       "name": "怪_火藥蟹",
       "seed": 8054,
       "transparent": true,
-      "prompt": "A crab carrying a wooden gunpowder barrel as its shell, a short fuse sticking out. Accent colours: ember orange and warm red."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real crab body low and wide on eight thin jointed crab legs, two claws, eyes on stalks. A crab carrying a wooden gunpowder barrel as its shell, a short fuse sticking out. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
       "name": "怪_繩結蛇",
       "seed": 8055,
       "transparent": true,
-      "prompt": "A thick ship rope tied in many knots, moving like a snake, a frayed end for a head. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a thick knotted ship rope coiled up like a snake, its frayed rope end raised high like a striking head with two glowing amber eyes, ready to snap forward. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -437,7 +438,7 @@
       "name": "怪_礦燈蟲",
       "seed": 8059,
       "transparent": true,
-      "prompt": "A beetle with a small glowing miner’s lamp for a tail, light only around itself. Accent colours: starlight gold and soft silver."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real beetle seen from a three-quarter top view, low to the ground, six thin jointed insect legs, two antennae. A beetle with a small glowing miner’s lamp for a tail, light only around itself. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
@@ -458,14 +459,14 @@
       "name": "怪_鐵喉鼠",
       "seed": 8062,
       "transparent": true,
-      "prompt": "A mine rat with iron-grey fur and a soot-blackened nose, alert ears. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A mine rat with iron-grey fur and a soot-blackened nose, alert ears. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_硫磺精",
-      "seed": 8063,
+      "seed": 8163,
       "transparent": true,
-      "prompt": "A puff of yellow sulfur smoke with a grumpy face, bubbling. Accent colours: ember orange and warm red."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a round billowing cloud of yellow sulfur smoke, only smoke and nothing else, with a scowling glowing face inside the smoke, hot yellow sparks bubbling off it. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -488,28 +489,28 @@
       "name": "怪_炭蜥",
       "seed": 8066,
       "transparent": true,
-      "prompt": "A lizard whose back scales glow red-hot like charcoal. Accent colours: ember orange and warm red."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real lizard: a low flat scaly reptile body close to the ground, four short legs splayed out to the sides, a long tapering tail and a lizard head. A lizard whose back scales glow red-hot like charcoal. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
       "name": "怪_鐵砧龜",
       "seed": 8067,
       "transparent": true,
-      "prompt": "A tortoise whose shell is a heavy iron anvil. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real tortoise: four short stumpy scaly legs under a heavy shell, a small wrinkled tortoise head poking out at the front. A tortoise whose shell is a heavy iron anvil. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_風箱鬼",
-      "seed": 8068,
+      "seed": 8168,
       "transparent": true,
-      "prompt": "A torn leather blacksmith bellows with a ghostly face, puffing air and sparks. Accent colours: pale sage green and cloud white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: an old torn leather blacksmith bellows, just the bellows itself with its two wooden handles and metal nozzle, floating sideways, puffing a blast of air and orange sparks out of its nozzle, two glowing eyes painted on the leather. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_熔渣魚",
       "seed": 8069,
       "transparent": true,
-      "prompt": "A fish with scales of black volcanic glass, swimming through cooling lava. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real fish body, short and streamlined, with fins and a forked tail fin, seen swimming side-on. A fish with scales of black volcanic glass, swimming through cooling lava. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -546,7 +547,7 @@
       "name": "怪_紅岩蠍",
       "seed": 8074,
       "transparent": true,
-      "prompt": "A scorpion of red volcanic rock, its tail pointing up. Accent colours: ember orange and warm red."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real scorpion body low to the ground on eight thin jointed legs, two pincers. A scorpion of red volcanic rock, its tail pointing up. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -560,14 +561,14 @@
       "name": "怪_熔岩精",
       "seed": 8076,
       "transparent": true,
-      "prompt": "A small blob of glowing molten lava with a sleepy face. Accent colours: ember orange and warm red."
+      "prompt": "A living elemental spirit, just a floating mass of its element with no human body, no arms and no legs: a round blob of glowing molten lava with angry glowing eyes, its surface cracked and dripping, splashing small drops of lava around it. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
       "name": "怪_鎖鏈犬",
       "seed": 8077,
       "transparent": true,
-      "prompt": "A gaunt hound with a heavy iron chain collar far too big for it. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A gaunt hound with a heavy iron chain collar far too big for it. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -590,14 +591,14 @@
       "name": "怪_霜鴉",
       "seed": 8080,
       "transparent": true,
-      "prompt": "A crow with frost on its feathers. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: real birds with bird bodies, wings, beaks, feathered tails and thin bird feet tucked under while flying. A crow with frost on its feathers. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_信紙蛾",
       "seed": 8081,
       "transparent": true,
-      "prompt": "A moth whose wings are two letters covered in tiny abstract scribbles. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real moth or butterfly body seen flying from a three-quarter top view, wings spread wide, a slim insect body with six tiny thin insect legs tucked under it, two feathery antennae. A moth whose wings are two letters covered in tiny abstract scribbles. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -611,7 +612,7 @@
       "name": "怪_白狐",
       "seed": 8083,
       "transparent": true,
-      "prompt": "A snow-white fox with misty tail tips. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A snow-white fox with misty tail tips. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -648,14 +649,14 @@
       "name": "怪_冰柱蟹",
       "seed": 8088,
       "transparent": true,
-      "prompt": "A crab with icicles growing all over its back. Accent colours: ochre brown and stone grey."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real crab body low and wide on eight thin jointed crab legs, two claws, eyes on stalks. A crab with icicles growing all over its back. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_霜鯨幼",
       "seed": 8089,
       "transparent": true,
-      "prompt": "A baby whale with frosty white-blue skin, wide worried eyes. Accent colours: sea teal and foam white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real whale body, round and heavy, with two side flippers and a wide horizontal tail fluke. A baby whale with frosty white-blue skin, wide worried eyes. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -692,14 +693,15 @@
       "name": "怪_凍帆",
       "seed": 8094,
       "transparent": true,
-      "prompt": "A frozen ship sail cracked and full of ice, with icy claws. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a frozen ship sail torn loose and flying forward, its cracked icy edges jagged like teeth, two glowing pale eyes in the frosted cloth, icy shards whirling around it. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_斷槳",
-      "seed": 8095,
+      "seed": 8198,
       "transparent": true,
-      "prompt": "A broken wooden oar standing on its own like a creature. Accent colours: ochre brown and stone grey."
+      "prompt": "A broken wooden oar flying through the air on its own, tilted diagonally, its split splintered end jagged and sharp like a spearhead, a glowing amber crack in the wood like an angry eye, wood splinters flying off it. Accent colours: ochre brown and stone grey.",
+      "style": "enemy_object"
     },
     {
       "kind": "enemy",
@@ -718,9 +720,10 @@
     {
       "kind": "enemy",
       "name": "怪_冰燈蛾",
-      "seed": 8098,
+      "seed": 8100,
       "transparent": true,
-      "prompt": "A moth with frosted wings flying toward a small iron-framed oil lantern. Accent colours: ember orange and warm red."
+      "style": "enemy_object",
+      "prompt": "A hanging lantern carved entirely out of clear blue ice, a small orange flame glowing inside it, with a pair of large frosted moth wings growing from its sides and two feathery moth antennae on its top, flying by itself. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -764,7 +767,7 @@
       "name": "怪_守霧的狼",
       "seed": 8104,
       "transparent": true,
-      "prompt": "A large grey wolf with misty fur. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A large grey wolf with misty fur. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -776,9 +779,10 @@
     {
       "kind": "enemy",
       "name": "怪_第一道門",
-      "seed": 8106,
+      "seed": 8108,
       "transparent": true,
-      "prompt": "A small ice gate walking on stubby icy legs, an ice key frozen in its crack. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
+      "style": "enemy_object",
+      "prompt": "A tall arched door made of thick ice standing alone, clearly a door: two door panels in an arched stone frame, big iron hinges, a door handle and a keyhole, frost cracks glowing with cold light, an ice key frozen in its keyhole. No legs, no face. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
@@ -808,14 +812,14 @@
       "name": "怪_沒有臉的貓",
       "seed": 8110,
       "transparent": true,
-      "prompt": "A grey harbour cat with a smooth blank face. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real four-legged animal standing or moving on all four legs, a natural animal body and animal paws or feet. A grey harbour cat with a smooth blank face. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_舊船票",
       "seed": 8111,
       "transparent": true,
-      "prompt": "An old yellowed ferry ticket fluttering in the wind like a little ghost. Accent colours: pale sage green and cloud white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a swirling stack of old yellowed ferry tickets spinning through the air like sharp paper blades, a glowing green eye on the top ticket, paper edges cutting the air. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -859,7 +863,7 @@
       "name": "怪_潮痕",
       "seed": 8117,
       "transparent": true,
-      "prompt": "A dark wavy waterline stain peeled off a wall, creeping upward like a living stripe. Accent colours: sea teal and foam white."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a long dark wavy waterline stain peeled off a wall, rearing up like a striking eel shape made of watermark, two glowing teal eyes, dripping sea water. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -873,7 +877,7 @@
       "name": "怪_灰鷺",
       "seed": 8119,
       "transparent": true,
-      "prompt": "A grey heron standing on one leg on a broken roof ridge tile. Accent colours: pale sage green and cloud white."
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real bird with a bird body, folded wings, a beak and thin scaly bird feet with talons. A grey heron standing on one leg on a broken roof ridge tile. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
@@ -901,30 +905,31 @@
     {
       "kind": "enemy",
       "name": "怪_水線",
-      "seed": 8123,
+      "seed": 8225,
       "transparent": true,
-      "prompt": "A long horizontal line of dark sea water floating in the air, shaped like a serpent. Accent colours: sea teal and foam white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a curling crest of dark sea water like a breaking wave rearing up, only water and foam, a glowing teal eye inside the curl of the wave, spray flying forward. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
       "name": "怪_塔的影子",
       "seed": 8124,
       "transparent": true,
-      "prompt": "The long dark shadow of a white tower standing up, pointing one way. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a tall narrow black shadow of a tower leaning forward over the viewer as if to fall on them, two thin glowing violet window-slit eyes near its top, dark mist pooling at its base. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
       "name": "怪_鐘聲",
-      "seed": 8125,
+      "seed": 8225,
       "transparent": true,
-      "prompt": "A ripple of sound waves shaped into a floating creature, rings of faint golden light. Accent colours: pale sage green and cloud white."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a single old bronze bell hanging in the air by itself, only the bell, rings of visible golden sound waves blasting outward from its mouth, one glowing eye in the dark inside of the bell. Accent colours: pale sage green and cloud white."
     },
     {
       "kind": "enemy",
       "name": "怪_安魂的合唱",
-      "seed": 8126,
+      "seed": 8128,
       "transparent": true,
-      "prompt": "A cluster of small faint glowing spirits singing together, open mouths, soft starlight. Accent colours: starlight gold and soft silver."
+      "prompt": "A small floating cluster of seven tiny round glowing spirit wisps, each a soft little ball of light like a candle flame with a small round open singing mouth, drifting close together in a loose circle, faint musical sparkles between them, soft starlight. Accent colours: starlight gold and soft silver.",
+      "style": "enemy_object"
     },
     {
       "kind": "enemy",
@@ -947,7 +952,7 @@
       "name": "怪_畫框",
       "seed": 8129,
       "transparent": true,
-      "prompt": "An empty ornate gilded picture frame walking on its corners. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: an ornate gilded picture frame floating upright, the inside of the frame a swirling black vortex like a hungry mouth pulling things in, gold flakes being sucked into it. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
@@ -961,14 +966,14 @@
       "name": "怪_灰色的風景",
       "seed": 8131,
       "transparent": true,
-      "prompt": "A small grey painted landscape - mountain and sea - torn from a canvas, standing as a creature, completely still and colourless. Accent colours: ochre brown and stone grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a torn piece of canvas with a grey painted landscape of mountain and sea, curling forward like a wave about to swallow, its painted sea spilling out of the canvas, a cold glowing grey eye in the painted sky. Accent colours: ochre brown and stone grey."
     },
     {
       "kind": "enemy",
       "name": "怪_未乾的顏料",
-      "seed": 8132,
+      "seed": 8232,
       "transparent": true,
-      "prompt": "A splash of wet red paint shaped like a hot creature, steaming. Accent colours: ember orange and warm red."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a big splash of wet red paint flying forward, only liquid paint, dripping and steaming hot, sharp spikes of paint splattering out of it, two glowing orange eyes in the paint. Accent colours: ember orange and warm red."
     },
     {
       "kind": "enemy",
@@ -998,35 +1003,36 @@
       "name": "怪_空白",
       "seed": 8136,
       "transparent": true,
-      "prompt": "A floating patch of pure blankness with soft torn paper edges, a quiet glow. Accent colours: starlight gold and soft silver."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a floating hole of pure white blankness with torn paper edges, the paper around it peeling and crumbling into the blank, a faint golden glow, a dangerous empty stare. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
       "name": "怪_纏繞的光",
-      "seed": 8137,
+      "seed": 8239,
       "transparent": true,
-      "prompt": "Two intertwined ribbons of light, one gold and one blue, twisting around each other. Accent colours: starlight gold and soft silver."
+      "prompt": "Nobody in the image, no person, no figure, no body, nothing held by anyone. Only one object by itself floating in empty space: a glowing vortex of two light ribbons, one gold and one blue, braided together into a tight spiral knot, bright sparks flying outward from the knot. Accent colours: starlight gold and soft silver."
     },
     {
       "kind": "enemy",
       "name": "怪_未完的線",
-      "seed": 8138,
+      "seed": 8241,
       "transparent": true,
-      "prompt": "A glowing pen line running forward, a half-drawn stroke with a bright tip. Accent colours: pale sage green and cloud white."
+      "prompt": "A glowing green ink line streaking diagonally like a comet across empty space, the front end a sharp bright pen-nib point, crackling sparks along the line. Accent colours: pale sage green and cloud white.",
+      "style": "enemy_object"
     },
     {
       "kind": "enemy",
       "name": "怪_最後的霧",
       "seed": 8139,
       "transparent": true,
-      "prompt": "A small frightened cloud of fog with scared eyes, shrinking. Accent colours: dusky violet and shadow grey."
+      "prompt": "A living object brought to life by mist and ink, shaped only like the object itself, with no human body, no arms and no legs: a small dense cloud of dark fog curling in on itself, two frightened glowing eyes, thin tendrils of mist striking out in panic. Accent colours: dusky violet and shadow grey."
     },
     {
       "kind": "enemy",
       "name": "怪_被畫掉的人",
       "seed": 8140,
       "transparent": true,
-      "prompt": "A grey brush stroke in the shape of a person, half erased. Accent colours: sea teal and foam white."
+      "prompt": "A grey ink-drawn person half scribbled out by thick dark brush strokes, the crossed-out half dissolving into dripping ink, one glowing teal eye still visible, reaching forward. Accent colours: sea teal and foam white."
     },
     {
       "kind": "enemy",
@@ -1060,7 +1066,7 @@
       "name": "怪_醉鯨",
       "seed": 8144,
       "transparent": true,
-      "prompt": "A huge old whale with a bottle-shaped glow of rum in its belly, sad drooping eyes, barnacles on its back. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real whale body, round and heavy, with two side flippers and a wide horizontal tail fluke. A huge old whale with a bottle-shaped glow of rum in its belly, sad drooping eyes, barnacles on its back. Accent colours: sea teal and foam white. A boss monster: large, imposing and richly detailed.",
       "rank": "首領"
     },
     {
@@ -1116,7 +1122,7 @@
       "name": "怪_抱著頁子的老寄居蟹",
       "seed": 8151,
       "transparent": true,
-      "prompt": "A giant old hermit crab carrying a rolled iron tube on its back instead of a shell, a page of paper sticking out of the tube. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real crab body low and wide on eight thin jointed crab legs, two claws, eyes on stalks. A giant old hermit crab carrying a rolled iron tube on its back instead of a shell, a page of paper sticking out of the tube. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
@@ -1156,7 +1162,7 @@
       "name": "怪_吐藍墨的海蛇",
       "seed": 8156,
       "transparent": true,
-      "prompt": "A long sea serpent coiled on a rock, spitting blue ink water. Accent colours: sea teal and foam white. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real snake: a long limbless body with a snake head. A long sea serpent coiled on a rock, spitting blue ink water. Accent colours: sea teal and foam white. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
@@ -1164,7 +1170,7 @@
       "name": "怪_吐綠墨的老蚌",
       "seed": 8157,
       "transparent": true,
-      "prompt": "An enormous old clam leaking green ink from its shell seam. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real clam: just two hinged shell halves resting on their own, slightly open, nothing else attached. An enormous old clam leaking green ink from its shell seam. Accent colours: ochre brown and stone grey. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
@@ -1172,7 +1178,7 @@
       "name": "怪_吐紅墨的火蜥",
       "seed": 8158,
       "transparent": true,
-      "prompt": "A big lizard beside lava, its blood red ink dripping. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real lizard: a low flat scaly reptile body close to the ground, four short legs splayed out to the sides, a long tapering tail and a lizard head. A big lizard beside lava, its blood red ink dripping. Accent colours: ember orange and warm red. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
@@ -1180,7 +1186,7 @@
       "name": "怪_吐白墨的冰梟",
       "seed": 8159,
       "transparent": true,
-      "prompt": "A great white owl perched on an icicle, its white feathers dripping white ink. Accent colours: pale sage green and cloud white. An elite monster: imposing, with extra detail.",
+      "prompt": "A real animal, drawn with natural animal anatomy and no human body parts: a real bird with a bird body, folded wings, a beak and thin scaly bird feet with talons. A great white owl perched on an icicle, its white feathers dripping white ink. Accent colours: pale sage green and cloud white. An elite monster: imposing, with extra detail.",
       "rank": "精英"
     },
     {
