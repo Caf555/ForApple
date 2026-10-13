@@ -1266,7 +1266,7 @@
         "立繪_阿潮"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選1"
     },
     {
       "kind": "scene",
@@ -1280,7 +1280,7 @@
         "立繪_蓮笙"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選1"
     },
     {
       "kind": "scene",
@@ -1294,12 +1294,12 @@
         "立繪_小鈴"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選1"
     },
     {
       "kind": "scene",
       "name": "幕_登場_費米",
-      "seed": 5430,
+      "seed": 5431,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. The same young man as in the reference image, crouching in the corner of a busy floating market with ledger books spread on the planks, looking up startled from the pages, warm lantern light of market stalls behind him. Keep his face, hair and clothes the same as the reference. The young man:",
       "chars": [
         "費米"
@@ -1308,12 +1308,12 @@
         "立繪_費米"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選2"
     },
     {
       "kind": "scene",
       "name": "幕_登場_葛蘿",
-      "seed": 5440,
+      "seed": 5441,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. The same tall woman as in the reference image, sitting on the edge of a ship's deck, mending a fishing net with a large wooden needle in her only hand, raising her calm heavy eyes to look at the viewer, red sails in the soft background, evening glow. Keep her face, hair and clothes the same as the reference. The woman:",
       "chars": [
         "葛蘿"
@@ -1322,12 +1322,12 @@
         "立繪_葛蘿"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選2"
     },
     {
       "kind": "scene",
       "name": "幕_登場_嘎嘎",
-      "seed": 5450,
+      "seed": 5451,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. The same old sea turtle as in the reference image, lying on sunny stone steps in front of a tavern door, basking lazily, one droopy eye half open looking at the viewer, warm afternoon sun. Keep his face, hair and clothes the same as the reference. The turtle:",
       "chars": [
         "嘎嘎"
@@ -1336,7 +1336,7 @@
         "立繪_嘎嘎"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選2"
     },
     {
       "kind": "scene",
@@ -1347,51 +1347,51 @@
         "鹽姨"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選1"
     },
     {
       "kind": "scene",
       "name": "幕_登場_石伯",
-      "seed": 5470,
+      "seed": 5471,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. An old blacksmith standing on a pier with a heavy hammer resting on his shoulder, grinning, a glowing forge in the softly blurred background. The blacksmith:",
       "chars": [
         "石伯"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選2"
     },
     {
       "kind": "scene",
       "name": "幕_登場_大副",
-      "seed": 5480,
+      "seed": 5482,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. A sailor standing beside a battered old boat pulled up on the shore, mallet in hand, he has just stopped hammering and turns to look, daylight. The sailor:",
       "chars": [
         "大副"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選3"
     },
     {
       "kind": "scene",
       "name": "幕_登場_天文台的老人",
-      "seed": 5490,
+      "seed": 5492,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. An old man opening the heavy wooden door of an old stone observatory at night, lamp raised, behind him a wall covered with star charts lit by warm lamplight. The old man:",
       "chars": [
         "天文台的老人"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選3"
     },
     {
       "kind": "scene",
       "name": "幕_登場_商會會長",
-      "seed": 5500,
+      "seed": 5503,
       "prompt": "Half-body close-up portrait composition, from the waist up, the character large in the frame and the face clearly visible, simple softly blurred background. A man standing at the top of a white tower in a bare room beside a table where a single sheet of paper glows with white light, tired regretful expression, cold white light on his face. The man:",
       "chars": [
         "商會會長"
       ],
       "people": true,
-      "candidates": 4
+      "picked": "候選4"
     }
   ]
 }
