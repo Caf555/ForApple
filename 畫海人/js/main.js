@@ -1,5 +1,5 @@
 // 《畫海人》：標題 → 序章 → 港口 ⇄（航海 → 島嶼 → 回港）→ 第一章完 → 天文台 → 第二章 → 第二章完 → 天文台 → 第三章 → 第三章完 → 天文台 → 第四章 → 第四章完 → 天文台 → 第五章 → 霧心：最後的抉擇 → 結局 → 尾聲（之後可以繼續玩）
-import { icon } from './art.js';
+import { icon, heroFace } from './art.js';
 import { HEROES, ITEMS, MATS, EQUIPS, SLOTS, COMMISSIONS, PARTY_MAX, FACTIONS, REP_LEVELS, repLevel, repOn, MIST_ROUTE, WISHES, HULL_WEAR, HULL_WORN, hullOf } from './data.js';
 import { ISLANDS, ISLAND_ORDER, SEAS, SEA_EVENTS, INTRO, PORT_SCENES, CHAPTERS, LATE_RECRUIT, OBSERVATORY, OBSERVATORY3, OBSERVATORY4, OBSERVATORY5, CINEMA, FINALE_ASK, ENDINGS, EPILOGUE, CREDITS } from './islands.js';
 import { playCinema, loadPics } from './cinema.js';
@@ -604,7 +604,7 @@ ctx.partySheet = () => {
     for (const h of g.party) {
       const d = HEROES[h.key], st = heroStats(h), name = ctx.ui.fmt(h.key === '墨里' ? '{名}' : h.key);
       body.append(el('div', { class: 'hero' + (h.bench ? ' bench' : '') },
-        el('div', { class: 'h-top' }, el('span', { class: 'face', style: { background: d.color } }, name.slice(0, 1)),
+        el('div', { class: 'h-top' }, heroFace(h.key, d.color, name),
           el('div', {}, el('b', {}, name), el('small', {}, `　${d.job}・Lv${h.lv}・${d.element}屬性`)),
           el('span', { class: 'grow' }),
           h.sick ? el('span', { class: 'chip' }, '生病') : g.party.length > PARTY_MAX && h.key !== '墨里' ? el('button', { class: 'btn small' + (h.bench ? '' : ' on'), disabled: h.bench && out >= max, onclick: () => { h.bench = !h.bench; refresh(); api.rebuild(); } }, h.bench ? '待命' : '出戰') : null,

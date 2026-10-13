@@ -30,6 +30,13 @@ export function icon(kind, name, cls = '') {
   return im;
 }
 
+// 隊友頭像（戰鬥、隊伍）：有半身小圖就用圖（外框是角色的顏色），沒有就是寫著名字第一個字的圓
+export function heroFace(key, color, name) {
+  const pic = icon('char', key);
+  return pic ? el('span', { class: 'face has-pic', style: { borderColor: color } }, pic)
+    : el('span', { class: 'face', style: { background: color } }, name.slice(0, 1));
+}
+
 // 劇情插圖（img/scene，和劇情動畫同一種正方形圖）：劇情對話裡人物登場時用。沒有圖就回傳 null
 export function scenePic(name) {
   if (!(man && man.scene && man.scene.has(name))) return null;
