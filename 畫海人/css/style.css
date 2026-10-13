@@ -739,8 +739,8 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .foe-u.rank-首領 .foe-tag { background: rgba(120, 30, 20, .75); } .foe-u.rank-首領 .u-hp { width: 9em; }
 .foe-u.rank-精英 .foe-tag { box-shadow: 0 0 0 1px rgba(232, 184, 106, .5); }
 .foe-u .u-st { position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-size: 11px; color: #ffb3a6; text-shadow: 0 1px 3px #000; white-space: nowrap; }
-.foe-u.dead { pointer-events: none; }
-.foe-u.dead .foe-img, .foe-u.dead .foe-blob { animation: dissolve 1.1s ease forwards; }
+/* 打倒的怪物：淡出後整隻從畫面上消失（圖、名牌都不留） */
+.foe-u.dead { pointer-events: none; visibility: hidden; transition: visibility 0s 1.1s; }
 .foe-u.dead .foe-tag, .foe-u.dead .u-st { opacity: 0; transition: opacity .4s; }
 @keyframes dissolve { to { opacity: 0; filter: blur(6px) grayscale(1); transform: translateY(6%) scale(.92); } }
 .foe-u.pickable { cursor: pointer; }
@@ -755,6 +755,8 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 @keyframes charging { 50% { filter: drop-shadow(0 0 14px rgba(224, 83, 58, .95)); } }
 .foe-u.charging .foe-tag { box-shadow: 0 0 0 2px #e0533a, 0 0 14px rgba(224, 83, 58, .7); }
 .foe-u .float { top: 20%; font-size: 22px; } .foe-u .float.crit { font-size: 28px; }
+/* 放在受擊、蓄力、可選目標的動畫後面，才不會被它們蓋掉 */
+.foe-u.dead .foe-img, .foe-u.dead .foe-blob { animation: dissolve 1.1s ease forwards; }
 .pic.foe-big { width: min(80vw, 360px); height: auto; aspect-ratio: 1; margin: 0 auto 8px; border-radius: 14px; }
 /* 戰鬥紀錄：疊在戰場最下面，點一下展開 */
 .b-stage .b-log { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; height: auto; max-height: calc(3 * 1.5em + 8px); overflow: hidden; border: 0; border-radius: 0; background: linear-gradient(transparent, rgba(0, 0, 0, .55) 30%); padding: 10px 10px 4px; display: flex; flex-direction: column; justify-content: flex-end; line-height: 1.5; color: rgba(225, 232, 236, .75); text-shadow: 0 1px 2px #000; cursor: pointer; }
@@ -772,4 +774,4 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .u-row.front { background: rgba(201, 167, 122, .25); color: #e6c99a; } .u-row.back { background: rgba(108, 159, 214, .2); color: #a9c8ea; }
 .field.mine .rlabel { margin: 4px 2px 0; line-height: 1.5; }
 @media (max-height: 760px) { .b-stage { min-height: 38vh; } .field.mine .rlabel { display: none; } }
-@media (prefers-reduced-motion: reduce) { .foe-u .foe-img, .foe-u.pickable .foe-img, .foe-u.charging .foe-img { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .foe-u .foe-img, .foe-u.pickable .foe-img, .foe-u.charging .foe-img { animation: none; } .foe-u.dead { transition: none; } }
