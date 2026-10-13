@@ -720,7 +720,7 @@
     {
       "kind": "enemy",
       "name": "怪_冰燈蛾",
-      "seed": 8098,
+      "seed": 8100,
       "transparent": true,
       "style": "enemy_object",
       "prompt": "A hanging lantern carved entirely out of clear blue ice, a small orange flame glowing inside it, with a pair of large frosted moth wings growing from its sides and two feathery moth antennae on its top, flying by itself. Accent colours: ember orange and warm red."
@@ -779,7 +779,7 @@
     {
       "kind": "enemy",
       "name": "怪_第一道門",
-      "seed": 8106,
+      "seed": 8108,
       "transparent": true,
       "style": "enemy_object",
       "prompt": "A tall arched door made of thick ice standing alone, clearly a door: two door panels in an arched stone frame, big iron hinges, a door handle and a keyhole, frost cracks glowing with cold light, an ice key frozen in its keyhole. No legs, no face. Accent colours: starlight gold and soft silver. An elite monster: imposing, with extra detail.",
