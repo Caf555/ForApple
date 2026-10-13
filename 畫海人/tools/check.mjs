@@ -295,7 +295,11 @@ for (const [kind, want] of Object.entries(ART_WANT)) {
   for (const n of have) if (!want.includes(n)) bad(`生圖清單的「${n}」在遊戲裡找不到對應的東西（${kind}）`);
 }
 const manifest = JSON.parse(readFileSync(new URL('../img/manifest.json', import.meta.url), 'utf8'));
-for (const [kind, names] of Object.entries(manifest)) for (const n of names) if (!genNames.includes(n)) bad(`img/manifest.json 的「${n}」不在生圖清單裡`);
+for (const [kind, names] of Object.entries(manifest)) if (kind !== 'char') for (const n of names) if (!genNames.includes(n)) bad(`img/manifest.json 的「${n}」不在生圖清單裡`);
+// 戰鬥的角色半身小圖（從立繪裁的，見 tools/生圖/半身小圖.json）：要對得到隊友，也要有裁切範圍
+const busts = JSON.parse(readFileSync(new URL('./生圖/半身小圖.json', import.meta.url), 'utf8')).box;
+for (const k of Object.keys(busts)) if (!HEROES[k]) bad(`半身小圖.json 的「${k}」不是隊友`);
+for (const n of manifest.char || []) if (!busts[n.replace(/^角_/, '')]) bad(`img/manifest.json 的半身小圖「${n}」在 半身小圖.json 裡找不到`);
 
 // 台詞：混在文字裡的角色台詞 { who, need, text } 一定要有文字；need 要是存在的隊友
 // （視窗會把它排成「名字：台詞」，不會再出現 [object Object]）

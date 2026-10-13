@@ -767,6 +767,8 @@ body { background: radial-gradient(ellipse 120% 70% at 50% -10%, #12324a 0%, tra
 .b-party.one { grid-template-columns: 1fr; }
 .b-party .unit { padding: 5px 6px; }
 .b-party .unit .face { width: 30px; height: 30px; font-size: 14px; }
+.b-party .unit .face.has-pic { width: 40px; height: 48px; border-radius: 8px; border: 2px solid; overflow: hidden; background: #2c4256; align-self: center; }
+.face.has-pic .pic { width: 100%; height: 100%; border-radius: 0; background: none; }
 .b-party .u-name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .u-row { margin-left: 5px; padding: 0 5px; border-radius: 6px; font-size: 10px; font-weight: 400; vertical-align: 1px; }
 .u-row.front { background: rgba(201, 167, 122, .25); color: #e6c99a; } .u-row.back { background: rgba(108, 159, 214, .2); color: #a9c8ea; }

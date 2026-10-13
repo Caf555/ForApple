@@ -562,7 +562,10 @@ export class Battle {
       n.addEventListener('click', () => { if (!n.classList.contains('pickable') && !n.classList.contains('nohit')) this.foeInfo(u); });
       return n;
     }
-    const face = el('span', { class: 'face', style: { background: u.color || HEROES[u.key].color } }, u.name.slice(0, 1));
+    // 我方：有半身小圖就用圖（外框是角色的顏色），沒有就是寫著名字第一個字的圓
+    const color = u.color || HEROES[u.key].color, pic = icon('char', u.key);
+    const face = pic ? el('span', { class: 'face has-pic', style: { borderColor: color } }, pic)
+      : el('span', { class: 'face', style: { background: color } }, u.name.slice(0, 1));
     return el('div', { class: 'unit ally' },
       face, el('div', { class: 'u-main' },
         el('div', { class: 'u-name' }, el('span', { class: 'elem e-' + u.el }, u.el), u.name, el('span', { class: 'u-row' })),
