@@ -24,7 +24,8 @@
 | `js/script.js` | 劇本解析器 |
 | `js/runner.js` | 劇本執行器 |
 | `js/battle.js` | 戰鬥引擎（回合制、五行、合擊、陣法、封靈） |
-| `js/debate.js` | 論辯戰與譯字小遊戲 |
+| `js/debate.js` | 論辯戰與小遊戲的外框（跳過、再試一次、問答、研墨、描字等） |
+| `js/minigames.js` | 動手玩的小遊戲（接歌、潛行、抄紙、節奏……） |
 | `js/hub.js` | 時之書齋、選單、存讀檔 |
 | `js/state.js` | 遊戲狀態、數值、存檔碼 |
 | `js/audio.js` | 程式合成的音樂與音效 |

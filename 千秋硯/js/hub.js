@@ -1,5 +1,5 @@
 // 時之書齋（據點）與各種選單
-import { VOLUMES, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
+import { VOLUMES, TRANSLATE, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
 import { histDone, histTotal, histRate, goodEnds, wavers, collection, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
 import { el } from './ui.js';
 
@@ -29,6 +29,8 @@ export class Hub {
     room('茶室', '與夥伴夜話', () => this.teaRoom(), !!g.flags['開放.茶室'], talks.length ? '新' : null);
     room('隊伍', '陣法・裝備', () => this.party());
     room('手冊', '祖父的手冊・旅程', () => this.journal());
+    const played = Object.keys(collection().小遊戲 || {}).filter(id => TRANSLATE[id]).length;
+    room('小遊戲間', played ? `玩過 ${played} 個・可以重玩` : '玩過的小遊戲會收在這裡', () => this.miniRoom(), played > 0);
     r.appendChild(grid);
     r.appendChild(el('p', { class: 'hub-note' }, '在書齋裡，全隊的體與墨都會完全回復。'));
   }
@@ -587,6 +589,34 @@ export class Hub {
     });
   }
 
+  // ───────── 小遊戲間：玩過的小遊戲可以選難度重玩（不影響劇情） ─────────
+  miniRoom() {
+    const cl = collection();
+    const played = cl.小遊戲 || {}, perfect = cl.小遊戲完美 || {};
+    // 每個題組出現在哪一卷：看它寫在哪一個劇本檔
+    const where = {};
+    for (const s of Object.values(this.ctx.scenes)) for (const c of s.cmds) if (c.t === 'cmd' && c.name === '小遊戲') { const id = c.arg.split(/\s+/)[1]; if (!where[id]) where[id] = s.file; }
+    const volOf = f => { const b = (f || '').split('/').pop(); const v = VOLUMES.find(v => b.startsWith(v.id)); return v ? v.id : b.startsWith('序') ? '序卷' : '其他'; };
+    if (this.miniDiff == null) this.miniDiff = { 閱讀: 0, 普通: 1, 困難: 2 }[this.ctx.settings.difficulty] ?? 1;
+    this.ui.sheet('小遊戲間', (body, self) => {
+      body.innerHTML = '';
+      body.appendChild(el('p', { class: 'muted' }, '在這裡玩，只是練習，不會改變劇情。困難難度下完美過關，會蓋上一個朱印。'));
+      body.appendChild(el('div', { class: 'set-row' }, el('b', {}, '難度'), el('div', { class: 'chips' }, ...['閱讀', '普通', '困難'].map((n, i) =>
+        el('button', { class: 'chip' + (this.miniDiff === i ? ' on' : ''), onclick: () => { this.miniDiff = i; self.rebuild(); } }, n)))));
+      const groups = {};
+      for (const id of Object.keys(TRANSLATE)) if (played[id]) (groups[volOf(where[id])] = groups[volOf(where[id])] || []).push(id);
+      const order = ['序卷', ...VOLUMES.map(v => v.id), '其他'];
+      for (const vid of order.filter(v => groups[v])) {
+        body.appendChild(el('h3', { class: 'jr-h' }, vid));
+        body.appendChild(el('div', { class: 'mr-list' }, ...groups[vid].map(id => el('button', { class: 'mr-item', onclick: async () => {
+          self.close();
+          await this.ctx.translate.start(id, { practice: true, diff: this.miniDiff });
+          this.miniRoom();
+        } }, el('b', {}, TRANSLATE[id].title), el('span', {}, (TRANSLATE[id].label || TRANSLATE[id].kind || '譯字')), perfect[id] ? el('i', { class: 'mr-seal' }, '完美') : null))));
+      }
+    });
+  }
+
   // ───────── 系統 ─────────
   system() {
     this.ui.sheet('系統', (body, self) => {
@@ -618,6 +648,7 @@ export class Hub {
       opt('朗讀劇情', 'tts', [false, true], ['關', '開']);
       opt('難度', 'difficulty', ['閱讀', '普通', '困難'], ['閱讀', '普通', '困難']);
       opt('戰鬥速度', 'battleSpeed', [1, 2, 3], ['1×', '2×', '4×']);
+      opt('小遊戲', 'miniGames', ['on', 'skip'], ['開啟', '全部跳過']);
       opt('對話半身像', 'portrait', [true, false], ['開', '關'], v => { if (!v) this.ui.hidePortrait(); });
       opt('氛圍效果', 'ambient', [true, false], ['開', '關'], () => this.ui.setAmbient(this.ui.curTheme));
       opt('環境聲', 'ambSound', [true, false], ['開', '關'], v => { if (!v) this.ctx.audio.stopAmbience(); else { this.ctx.audio.amb = null; this.ui.setAmbient(this.ui.curTheme); } });
@@ -626,7 +657,7 @@ export class Hub {
       this.offlineRow(body, self);
       body.appendChild(el('p', { class: 'muted small' }, '閱讀方式——逐句點擊：每句都要點一下。整頁：一次跑完一頁（遇到選項或最多約六句），點一下再跑下一頁；打字中點一下可以立刻顯示整頁。自動播放：依字數停留後自動往下，打開選單時會暫停。'));
       body.appendChild(el('p', { class: 'muted small' }, '限時抉擇：少數緊張的時刻，選項會倒數計時；時間到了，會替你選「遲疑」的那一個。關掉就不會倒數。對話半身像：說話的角色會淡淡地出現在文字後面。氛圍效果：各卷的飄塵、火星等。環境聲：雨聲、風聲、火堆、鳥叫、蟬聲、戰壕遠方的砲聲。震動：暴擊與封靈時手機輕震（僅 Android 支援）。點任何圖片都可以放大，再點一下關閉。'));
-      body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥。難度不影響任何結局條件，隨時可以切換。朗讀使用手機內建的語音，效果依裝置而定。'));
+      body.appendChild(el('p', { class: 'muted small' }, '「閱讀」難度：敵人很弱，並可隨時跳過戰鬥，小遊戲也比較寬鬆。難度不影響任何結局條件，隨時可以切換。小遊戲：每一個都可以按右上角的「跳過」；選「全部跳過」的話，就不會出現小遊戲。跳過或沒過，劇情都會照走，也不影響結局。朗讀使用手機內建的語音，效果依裝置而定。'));
     });
   }
 

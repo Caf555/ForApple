@@ -296,6 +296,7 @@ export const DEFAULT_SETTINGS = {
   portrait: true,   // 對話時淡淡浮現說話者的半身像
   ambient: true,    // 各卷的氛圍粒子（塵、火星……）
   vibrate: true,    // 暴擊、封靈時手機輕震（Android）
+  miniGames: 'on',  // 小遊戲：on 開啟（每個都可以個別跳過）／skip 全部自動跳過
 };
 
 export function loadSettings() {

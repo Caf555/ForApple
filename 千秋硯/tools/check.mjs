@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { parseScript, targetsOf } from '../js/script.js';
 import * as D from '../js/data.js';
+import { MINI_ALL, MINI_KINDS, stealthSolve } from '../js/minigames.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const mainSrc = readFileSync(join(root, 'js/main.js'), 'utf8');
@@ -131,9 +132,31 @@ for (const id in scenes) {
       if (imgNames.size && (c.name === '背景' || c.name === '插圖') && c.arg && c.arg !== '無' && !imgNames.has(c.arg.split(/\s+/)[0])) warns.push(`${at(s, c)}：圖「${c.arg.split(/\s+/)[0]}」不在生圖清單裡`);
       if (imgNames.size && c.name === '立繪') { const k = c.arg.split(/\s+/)[1]; if (k && k !== '預設' && !imgNames.has(k) && !/_\d+$/.test(k)) warns.push(`${at(s, c)}：頭像「${k}」不在生圖清單裡`); }
       if (c.name === '小遊戲' && !D.TRANSLATE[c.arg.split(/\s+/)[1]]) errors.push(`${at(s, c)}：沒有小遊戲題組「${c.arg}」`);
-      if (c.name === '小遊戲' && !['譯字', '牽星', '識字', '透視', '研墨', '電碼', '描字', '修復', '排序'].includes(c.arg.split(/\s+/)[0])) errors.push(`${at(s, c)}：小遊戲種類應為 譯字/牽星/識字/透視/研墨/電碼/描字/修復/排序`);
+      if (c.name === '小遊戲' && !MINI_ALL.includes(c.arg.split(/\s+/)[0])) errors.push(`${at(s, c)}：小遊戲種類「${c.arg.split(/\s+/)[0]}」不存在，可用：${MINI_ALL.join('/')}`);
     }
   }
+}
+
+// 小遊戲題組的資料
+for (const [k, d] of Object.entries(D.TRANSLATE)) {
+  const bad = m => errors.push(`小遊戲題組 ${k}：${m}`);
+  if (!MINI_ALL.includes(d.kind || '譯字')) bad(`種類「${d.kind}」不存在`);
+  if (!d.title) bad('少了 title');
+  for (const [kind, a] of d.reward || []) {
+    if (kind === '道具' && !D.ITEMS[a]) bad(`獎勵道具「${a}」不存在`);
+    if (kind === '史卷' && !D.CODEX[a]) bad(`獎勵史卷「${a}」不存在`);
+    if (!['道具', '羈絆', '經驗', '錢', '史卷', '心印'].includes(kind)) bad(`獎勵「${kind}」不能用在小遊戲`);
+  }
+  if (!MINI_KINDS.includes(d.kind)) continue;
+  if (d.kind === '接歌' && (!d.pads || d.song.some(i => i < 0 || i >= d.pads.length))) bad('旋律裡有不存在的音');
+  if (d.kind === '編織' && d.pattern.some(r => [...r].some(ch => !d.colors[ch]) || r.length !== d.pattern[0].length)) bad('花樣裡有沒有定義顏色的格子，或每一行長度不一樣');
+  if (d.kind === '潛行') for (const reach of [1, 2]) if (!stealthSolve(d.level, reach)) bad(`火把照 ${reach} 格時，沒有路可以走到出口`);
+  if (d.kind === '看潮' && (d.bars.length < 6 || d.bars.some(b => b <= 0.05 || b >= 0.95))) bad('沙洲要 6 道，高度在 0.05～0.95 之間');
+  if (d.kind === '分類' && (d.items.length < 12 || d.items.some(it => it.a !== 0 && it.a !== 1))) bad('至少要 12 張，每張的 a 是 0（左）或 1（右）');
+  if (d.kind === '翻牌' && d.people.length < 6) bad('至少要 6 個人');
+  if (d.kind === '方位' && d.slots.some(sl => d.gates.filter(g => g.dir === sl.dir).length !== 1)) bad('每個位置都要剛好有一座門');
+  if (d.kind === '組句' && d.rounds.some(r => [].concat(r.a).some(a => [...a].some(ch => (r.extra || '').includes(ch))))) bad('干擾字和答案的字重複了');
+  if (d.kind === '節奏' && !d.song.some(([f]) => f)) bad('沒有音符');
 }
 
 // 資料彼此的參照
