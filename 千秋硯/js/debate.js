@@ -1,6 +1,7 @@
 // 論辯戰與小遊戲
 import { DEBATES, TRANSLATE, CODEX } from './data.js';
-import { mindSide, bondLevel } from './state.js';
+import { mindSide, bondLevel, addCollection } from './state.js';
+import { MINI, DIFF_NAME } from './minigames.js';
 import { el } from './ui.js';
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -188,44 +189,103 @@ export class Debate {
   }
 }
 
-// ───────── 小遊戲：譯字 ─────────
+// ───────── 小遊戲 ─────────
+// 每個小遊戲都可以「跳過」（當作沒過，劇情照走）；設定裡也可以選「全部跳過」
+// 動手玩的新玩法在 minigames.js；這裡留著原本的研墨、電碼、描字、修復、排序與問答
 export class Translate {
-  constructor(ctx) { this.ctx = ctx; this.root = document.getElementById('minigame'); }
+  constructor(ctx) { this.ctx = ctx; this.root = document.getElementById('minigame'); this.stops = []; }
 
-  start(id) {
+  // opts.practice：書齋小遊戲間的練習（不影響劇情）；opts.diff：指定難度（0 閱讀、1 普通、2 困難）
+  start(id, opts = {}) {
     const d = TRANSLATE[id];
     if (!d) throw new Error('沒有這個小遊戲題組：' + id);
-    this.d = d; this.i = 0; this.correct = 0;
+    this.id = id; this.d = d; this.practice = !!opts.practice;
+    this.diff = opts.diff ?? ({ 閱讀: 0, 普通: 1, 困難: 2 }[this.ctx.settings.difficulty] ?? 1);
+    if (!this.practice && this.ctx.settings.miniGames === 'skip') {
+      this.ctx.ui.note(`跳過小遊戲「${d.title}」`);
+      return Promise.resolve('敗');
+    }
     return new Promise(resolve => {
-      this.resolve = resolve;
-      if (d.kind === '研墨') this.renderInk();
-      else if (d.kind === '電碼') this.renderMorse();
-      else if (d.kind === '描字') this.renderTrace();
-      else if (d.kind === '修復') this.renderPuzzle();
-      else if (d.kind === '排序') this.renderOrder();
-      else this.render();
+      this.resolve = r => {
+        this.cleanup();
+        this.root.classList.remove('open');
+        addCollection('小遊戲', id);
+        resolve(r);
+      };
+      this.run();
     });
   }
+
+  run() {
+    const d = this.d;
+    this.cleanup();
+    this.i = 0; this.correct = 0; this.solveFn = null;
+    if (MINI[d.kind]) MINI[d.kind](this);
+    else if (d.kind === '研墨') this.renderInk();
+    else if (d.kind === '電碼') this.renderMorse();
+    else if (d.kind === '描字') this.renderTrace();
+    else if (d.kind === '修復') this.renderPuzzle();
+    else if (d.kind === '排序') this.renderOrder();
+    else this.render();
+  }
+
+  // 計時器：小遊戲結束、跳過、重來時一起停掉
+  later(ms, fn) { const t = setTimeout(fn, ms); this.stops.push(() => clearTimeout(t)); return t; }
+  every(ms, fn) { const t = setInterval(fn, ms); this.stops.push(() => clearInterval(t)); return t; }
+  frame(fn) {
+    let alive = true;
+    const loop = now => { if (!alive) return; fn(now); if (alive) requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+    this.stops.push(() => { alive = false; });
+  }
+  onStop(fn) { this.stops.push(fn); }
+  cleanup() {
+    cancelAnimationFrame(this.raf);
+    const s = this.stops; this.stops = [];
+    s.forEach(f => { try { f(); } catch (e) { /* 已經停了 */ } });
+  }
+  sfx(k) { this.ctx.audio.sfx(k); }
+  tone(freq, dur, type = 'sine', gain = 0.1) {
+    const a = this.ctx.audio;
+    if (!a.on || !a.ac) return;
+    a.note(freq, a.ac.currentTime + 0.01, dur, type, gain);
+  }
+  // 自動測試用：直接解開這一關
+  solve() { if (this.solveFn) return this.solveFn(); if (this.body) this.finish(true, '過關（測試）'); }
 
   name(t) { return String(t).replace(/\{名\}/g, (this.ctx.g && this.ctx.g.name) || '知墨'); }
 
   header() {
     const r = this.root; r.innerHTML = '';
     r.classList.add('open');
-    r.appendChild(el('div', { class: 'mg-title' }, this.d.kind + '・' + this.d.title));
+    r.appendChild(el('div', { class: 'mg-top' },
+      el('div', { class: 'mg-title' }, (this.d.label || this.d.kind) + '・' + this.d.title),
+      el('button', { class: 'btn small mg-skip', onclick: () => this.skip() }, this.practice ? '離開' : '跳過')));
+    if (this.practice) r.appendChild(el('p', { class: 'mg-rule' }, `練習・難度：${DIFF_NAME[this.diff]}`));
     if (this.d.intro) r.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.intro)));
-    r.appendChild(el('p', { class: 'mg-rule' }, this.d.rule));
+    if (this.d.rule) r.appendChild(el('p', { class: 'mg-rule' }, this.d.rule));
     this.body = el('div', { class: 'mg-body' });
     r.appendChild(this.body);
   }
 
-  finish(win, scoreText) {
-    cancelAnimationFrame(this.raf);
+  async skip() {
+    if (!this.practice && !(await this.ctx.ui.confirm('跳過這個小遊戲？\n劇情會照「沒有過關」的版本繼續。'))) return;
+    this.resolve('敗');
+  }
+
+  finish(win, scoreText, perfect) {
+    this.cleanup();
+    if (win && perfect && this.diff >= 2) addCollection('小遊戲完美', this.id);
     this.body.innerHTML = '';
+    this.root.querySelector('.mg-skip')?.remove();
     this.body.appendChild(el('div', { class: 'mg-word small' }, scoreText));
+    if (win && perfect && this.diff >= 2) this.body.appendChild(el('div', { class: 'mg-seal' }, '完美'));
     if (win && this.d.note) this.body.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.note)));
     if (!win && this.d.noteLose) this.body.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.noteLose)));
-    this.body.appendChild(el('button', { class: 'btn primary', onclick: () => { this.root.classList.remove('open'); this.resolve(win ? '勝' : '敗'); } }, win ? '過關' : '繼續'));
+    const btns = el('div', { class: 'row-btns mg-end' });
+    if (!win || this.practice) btns.appendChild(el('button', { class: 'btn', onclick: () => this.run() }, '再試一次'));
+    btns.appendChild(el('button', { class: 'btn primary', onclick: () => this.resolve(win ? '勝' : '敗') }, this.practice ? '離開' : win ? '過關' : '繼續'));
+    this.body.appendChild(btns);
   }
 
   // ───────── 研墨：墨點轉進金色的區塊時，按「研」 ─────────
@@ -273,7 +333,7 @@ export class Translate {
       svg.classList.remove('hit', 'miss'); void svg.offsetWidth; svg.classList.add(ok ? 'hit' : 'miss');
       zoneA = Math.random() * 360; drawZone();
       count.textContent = `第 ${Math.min(tries + 1, total)} / ${total} 次　研好 ${hits}`;
-      if (tries >= total) setTimeout(() => this.finish(hits >= need, `研好 ${hits} / ${total}`), 500);
+      if (tries >= total) this.later(500, () => this.finish(hits >= need, `研好 ${hits} / ${total}`));
     };
     btn.onclick = press;
   }
@@ -292,7 +352,7 @@ export class Translate {
       const it = d.items[i];
       prog.textContent = `${i + 1} / ${d.items.length}　打對 ${correct}`;
       word.textContent = it.w;
-      target.textContent = d.hideCode ? '' : it.code.split('').join(' ');
+      target.textContent = d.hideCode || (d.hideOnHard && this.diff >= 2) ? '' : it.code.split('').join(' ');
       shown.textContent = input ? input.split('').join(' ') : '　';
     };
     const check = () => {
@@ -303,12 +363,12 @@ export class Translate {
       this.ctx.audio.sfx(ok ? 'good' : 'fail');
       shown.classList.remove('right', 'wrong'); shown.classList.add(ok ? 'right' : 'wrong');
       key.disabled = true;
-      setTimeout(() => {
+      this.later(800, () => {
         shown.classList.remove('right', 'wrong'); key.disabled = false;
         i++; input = '';
         if (i >= d.items.length) return this.finish(correct >= d.need, `打對 ${correct} / ${d.items.length}`);
         show();
-      }, 800);
+      });
     };
     const down = e => { e.preventDefault(); if (key.disabled) return; downAt = performance.now(); this.ctx.audio.keyOn(); key.classList.add('down'); };
     const up = e => {
@@ -329,6 +389,7 @@ export class Translate {
     key.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') up(e); });
     const clear = el('button', { class: 'btn small', onclick: () => { input = ''; show(); } }, '重打這一個');
     this.body.append(prog, word, target, shown, key, clear, el('p', { class: 'muted small' }, '短短地按一下是「·」，按久一點（大約半秒）是「−」。'));
+    if (d.table) this.body.appendChild(el('div', { class: 'mg-morse-table' }, ...Object.entries(d.table).map(([k, v]) => el('span', {}, el('b', {}, k), v))));
     show();
   }
 
@@ -373,13 +434,13 @@ export class Translate {
       svg.classList.add('glyph-done');
       skip.disabled = true;
       this.ctx.audio.sfx('good');
-      setTimeout(() => {
+      this.later(900, () => {
         svg.classList.remove('glyph-done');
         skip.disabled = false;
         gi++;
         if (gi >= d.items.length) return this.finish(miss <= (d.maxMiss ?? d.items.length * 2), `描完 ${d.items.length} 個字・失誤 ${miss} 次`);
         showGlyph();
-      }, 900);
+      });
     };
     const toSvg = e => { const m = svg.getScreenCTM().inverse(); const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m); return [p.x, p.y]; };
     // 判斷：這一筆有八成的長度被描到，而且畫的線大多在筆畫附近
@@ -395,9 +456,22 @@ export class Translate {
       const onPath = pts.filter(([a, b]) => samples.some(([x, y]) => (a - x) ** 2 + (b - y) ** 2 <= 14 * 14)).length;
       return cover / (n + 1) >= 0.7 && onPath / pts.length >= 0.7;
     };
+    // 紙漿寫字：筆停太久，漿就乾了，這一筆要重寫
+    let lastMove = 0;
+    const dry = d.dry ? d.dry[this.diff] ?? d.dry[1] : 0;
+    if (dry) this.every(80, () => {
+      if (!live || performance.now() - lastMove < dry) return;
+      miss++; this.ctx.audio.sfx('fail');
+      live.setAttribute('class', 'tr-live bad');
+      const l = live; live = null; pts = [];
+      this.later(350, () => l.remove());
+      hint.textContent = d.dryText || '停太久了，漿乾掉了。這一筆重新寫。';
+      mark();
+    });
     svg.addEventListener('pointerdown', e => {
       if (si >= paths.length) return;
       e.preventDefault();
+      lastMove = performance.now();
       try { svg.setPointerCapture(e.pointerId); } catch (_) { /* 有些瀏覽器不支援 */ }
       pts = [toSvg(e)];
       if (live) live.remove();
@@ -405,6 +479,7 @@ export class Translate {
     });
     svg.addEventListener('pointermove', e => {
       if (!live) return;
+      lastMove = performance.now();
       pts.push(toSvg(e));
       live.setAttribute('points', pts.map(p => p.join(',')).join(' '));
     });
@@ -472,7 +547,7 @@ export class Translate {
       if (order.every((v, i) => v === i)) {
         board.classList.add('done');
         this.ctx.audio.sfx('good');
-        setTimeout(() => this.finish(moves <= (d.maxMoves || N * 2), `拼好了・換了 ${moves} 次`), 1100);
+        this.later(1100, () => this.finish(moves <= (d.maxMoves || N * 2), `拼好了・換了 ${moves} 次`));
       }
     };
     draw();
@@ -516,7 +591,10 @@ export class Translate {
   render() {
     const r = this.root; r.innerHTML = '';
     r.classList.add('open');
-    r.appendChild(el('div', { class: 'mg-title' }, (this.d.kind || '譯字') + '・' + this.d.title));
+    r.appendChild(el('div', { class: 'mg-top' },
+      el('div', { class: 'mg-title' }, (this.d.kind || '譯字') + '・' + this.d.title),
+      el('button', { class: 'btn small mg-skip', onclick: () => this.skip() }, this.practice ? '離開' : '跳過')));
+    if (this.practice) r.appendChild(el('p', { class: 'mg-rule' }, `練習・難度：${DIFF_NAME[this.diff]}`));
     r.appendChild(el('p', { class: 'mg-intro' }, this.d.intro));
     r.appendChild(el('p', { class: 'mg-rule' }, `${this.d.rule || '選出每個荷蘭語單字的意思。'}答對 ${this.d.need} 題以上即過關。`));
     this.body = el('div', { class: 'mg-body' });
@@ -561,8 +639,7 @@ export class Translate {
         b.classList.add(ok ? 'right' : 'wrong');
         if (!ok) [...opts.children].find(x => x.textContent === it.a).classList.add('right');
         this.ctx.audio.sfx(ok ? 'item' : 'fail');
-        await sleep(700);
-        this.i++; this.q();
+        this.later(700, () => { this.i++; this.q(); });
       } }, o);
       opts.appendChild(b);
     });
@@ -574,6 +651,10 @@ export class Translate {
     this.body.innerHTML = '';
     this.body.appendChild(el('div', { class: 'mg-word small' }, `答對 ${this.correct} / ${this.d.items.length}`));
     if (win && this.d.note) this.body.appendChild(el('p', { class: 'mg-intro' }, this.d.note));
-    this.body.appendChild(el('button', { class: 'btn primary', onclick: () => { this.root.classList.remove('open'); this.resolve(win ? '勝' : '敗'); } }, win ? '過關' : '再想想'));
+    this.root.querySelector('.mg-skip')?.remove();
+    const btns = el('div', { class: 'row-btns mg-end' });
+    if (!win || this.practice) btns.appendChild(el('button', { class: 'btn', onclick: () => this.run() }, '再試一次'));
+    btns.appendChild(el('button', { class: 'btn primary', onclick: () => this.resolve(win ? '勝' : '敗') }, this.practice ? '離開' : win ? '過關' : '繼續'));
+    this.body.appendChild(btns);
   }
 }
