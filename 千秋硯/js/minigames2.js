@@ -399,7 +399,7 @@ function mix(T) {
   const label = el('div', { class: 'mg-q small' });
   const pigs = el('div', { class: 'mx-pigs' });
   const recipe = el('p', { class: 'muted small' });
-  const row = el('div', { class: 'row-btns mg-end' },
+  const row = el('div', { class: 'row-btns mx-row' },
     el('button', { class: 'btn', onclick: () => { parts = {}; T.sfx('tap'); draw(); } }, '倒掉重來'),
     el('button', { class: 'btn primary', onclick: () => check() }, '這個顏色可以'));
   T.body.append(prog, label, swatches, pigs, recipe, row);
