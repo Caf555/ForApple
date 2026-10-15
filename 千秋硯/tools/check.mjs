@@ -157,6 +157,13 @@ for (const [k, d] of Object.entries(D.TRANSLATE)) {
   if (d.kind === '方位' && d.slots.some(sl => d.gates.filter(g => g.dir === sl.dir).length !== 1)) bad('每個位置都要剛好有一座門');
   if (d.kind === '組句' && d.rounds.some(r => [].concat(r.a).some(a => [...a].some(ch => (r.extra || '').includes(ch))))) bad('干擾字和答案的字重複了');
   if (d.kind === '節奏' && !d.song.some(([f]) => f)) bad('沒有音符');
+  if (d.kind === '矛盾' && d.rounds.some(r => r.lines.length !== 5 || r.pair.length !== 2 || r.pair.some(i => i < 0 || i > 4) || !r.why)) bad('每一段要有五句、一對矛盾（pair）和說明（why）');
+  if (d.kind === '數石' && ((d.counts[0] - d.counts[1]) % 20 !== 0 || d.counts.some(n => n % 10))) bad('兩邊的數量要是 10 的倍數，差距要是 20 的倍數');
+  if (d.kind === '調色') for (const t of d.targets) { if (Object.keys(t.mix).some(k => !d.pigments[k])) bad(`「${t.name}」用了不存在的顏料`); if (Object.values(t.mix).reduce((a, b) => a + b, 0) > (d.maxDrops || 8)) bad(`「${t.name}」超過可以放的份數`); for (const k in d.limit || {}) if ((t.mix[k] || 0) > d.limit[k]) bad(`「${t.name}」的${k}超過上限`); }
+  if (d.kind === '記物' && (d.layers.flatMap(l => l.items).length < 6 || (d.decoys || []).some(x => d.layers.some(l => l.items.includes(x))))) bad('至少要 6 樣東西，干擾的東西不能和柴堆上的重複');
+  if (d.kind === '對照' && d.rounds.some(r => !r.changed.some(c => typeof c !== 'string'))) bad('每一句至少要有一處被改過');
+  if (d.kind === '對話' && (d.topics.length < 3 || d.band[0] >= d.band[1])) bad('至少要 3 個話題，範圍要由小到大');
+  if (d.kind === '抽屜' && (d.decoys.includes(d.answer) || d.decoys.length < 15)) bad('答案不能出現在干擾的抽屜裡，干擾的抽屜至少 15 個');
 }
 
 // 資料彼此的參照
