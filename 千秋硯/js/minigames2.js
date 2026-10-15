@@ -51,8 +51,19 @@ function burn(T) {
   let r = 0, good = 0, len = 0, heating = false, lo = 0, done = false, last = 0;
   const prog = el('div', { class: 'mg-progress' });
   const box = svg('svg', { viewBox: '0 0 300 200', class: 'bn-svg' });
-  svg('path', { d: 'M40 30 Q150 0 260 30 L250 170 Q150 196 50 170 Z', class: 'bn-bone' }, box);
-  svg('ellipse', { cx: 150, cy: 100, rx: 12, ry: 22, class: 'bn-pit' }, box);
+  // 外觀：骨頭（預設）、石頭（鑿字）、鎖（轉鑰匙）
+  if (d.skin === 'stone') {
+    svg('rect', { x: 30, y: 20, width: 240, height: 160, rx: 6, class: 'bn-stone' }, box);
+    (d.carve || []).forEach((t, i) => { svg('text', { x: 70 + i * 80, y: 60, class: 'bn-carve' }, box).textContent = t; });
+    svg('rect', { x: 138, y: 96, width: 24, height: 8, class: 'bn-pit' }, box);
+  } else if (d.skin === 'key') {
+    svg('rect', { x: 60, y: 14, width: 180, height: 176, rx: 10, class: 'bn-cabinet' }, box);
+    svg('circle', { cx: 150, cy: 100, r: 30, class: 'bn-lock' }, box);
+    svg('path', { d: 'M146 88 L154 88 L156 112 L144 112 Z', class: 'bn-pit' }, box);
+  } else {
+    svg('path', { d: 'M40 30 Q150 0 260 30 L250 170 Q150 196 50 170 Z', class: 'bn-bone' }, box);
+    svg('ellipse', { cx: 150, cy: 100, rx: 12, ry: 22, class: 'bn-pit' }, box);
+  }
   const zone = svg('path', { class: 'bn-zone' }, box);
   const crack = svg('path', { class: 'bn-crack' }, box);
   const branch = svg('path', { class: 'bn-crack' }, box);
@@ -64,14 +75,15 @@ function burn(T) {
   // 裂紋往下長；長度 0～1，對應圖上 0～130 px
   const path = l => `M150 100 L150 ${100 - l * 70} `;
   const setRound = () => {
-    lo = 0.35 + Math.random() * (0.85 - band - 0.35);
+    const [b0, b1] = d.band || [0.35, 0.85];
+    lo = b0 + Math.random() * Math.max(0, b1 - band - b0);
     len = 0; done = false; heating = false;
     meter.firstChild.style.left = lo * 100 + '%'; meter.firstChild.style.width = band * 100 + '%';
     const y1 = 100 - lo * 70, y2 = 100 - (lo + band) * 70;
     zone.setAttribute('d', `M140 ${y1} L160 ${y1} L160 ${y2} L140 ${y2} Z`);
     crack.setAttribute('d', path(0)); branch.setAttribute('d', '');
     box.classList.remove('broke');
-    prog.textContent = `第 ${r + 1} / ${N} 片・讀出 ${good} 個兆（要 ${need} 個）`;
+    prog.textContent = d.progText ? d.progText.replace('{r}', r + 1).replace('{N}', N).replace('{g}', good).replace('{need}', need) : `第 ${r + 1} / ${N} 片・讀出 ${good} 個兆（要 ${need} 個）`;
     msg.textContent = d.hint || '按住「灼」。裂紋長到金色的範圍，就放手。';
   };
   const release = () => {
@@ -82,13 +94,14 @@ function burn(T) {
       good++; T.sfx('good');
       const up = Math.random() < 0.5;
       branch.setAttribute('d', `M150 ${100 - len * 60} L${up ? 178 : 176} ${100 - len * 60 + (up ? -16 : 14)}`);
-      msg.textContent = up ? '兆紋往上翹。' : '兆紋往下垂。';
+      msg.textContent = d.okText ? d.okText[r % d.okText.length] : up ? '兆紋往上翹。' : '兆紋往下垂。';
+      if (d.skin) branch.setAttribute('d', '');
     } else {
       T.sfx('fail');
-      msg.textContent = len < lo ? '火候不夠，骨頭沒有裂開。' : '燒太久了，裂紋亂了。';
+      msg.textContent = len < lo ? (d.tooLittle || '火候不夠，骨頭沒有裂開。') : (d.tooMuch || '燒太久了，裂紋亂了。');
     }
     r++;
-    T.later(1100, () => { if (r >= N) return T.finish(good >= need, `讀出 ${good} / ${N} 個兆`, good === N); setRound(); });
+    T.later(1100, () => { if (r >= N) return T.finish(good >= need, d.resultText ? d.resultText.replace('{g}', good).replace('{N}', N) : `讀出 ${good} / ${N} 個兆`, good === N); setRound(); });
   };
   T.frame(now => {
     if (heating && !done) {
@@ -101,7 +114,7 @@ function burn(T) {
     glow.style.opacity = heating ? 0.8 : 0;
   });
   setRound();
-  T.solveFn = () => T.finish(true, `讀出 ${N} / ${N} 個兆`);
+  T.solveFn = () => T.finish(true, d.resultText ? d.resultText.replace('{g}', N).replace('{N}', N) : `讀出 ${N} / ${N} 個兆`);
   T.burnState = () => ({ len, lo, band, heating, done }); // 自動測試用
 }
 

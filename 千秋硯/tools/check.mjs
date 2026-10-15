@@ -163,6 +163,12 @@ for (const [k, d] of Object.entries(D.TRANSLATE)) {
   if (d.kind === '記物' && (d.layers.flatMap(l => l.items).length < 6 || (d.decoys || []).some(x => d.layers.some(l => l.items.includes(x))))) bad('至少要 6 樣東西，干擾的東西不能和柴堆上的重複');
   if (d.kind === '對照' && d.rounds.some(r => !r.changed.some(c => typeof c !== 'string'))) bad('每一句至少要有一處被改過');
   if (d.kind === '對話' && (d.topics.length < 3 || d.band[0] >= d.band[1])) bad('至少要 3 個話題，範圍要由小到大');
+  if (d.kind === '讀向' && d.rounds.some(r => r.cols.reduce((x, y) => x + y, 0) !== r.signs.length || !r.signs.some(g => g.face))) bad('每個名字的 cols 加起來要等於符號數，而且至少要有一個有臉的符號');
+  if (d.kind === '記名' && d.people.length < 6) bad('至少要 6 個人');
+  if (d.kind === '接唸' && (d.names.length < 6 || new Set(d.names).size !== d.names.length)) bad('至少要 6 個不重複的名字');
+  if (d.kind === '曆輪' && d.signs.length !== 20) bad('日子的名字要剛好 20 個');
+  if (d.kind === '補紙' && d.holes.some(h => !['L', 'T', 'S', 'Z', 'J', '角', '長', '凸', '階'].includes(h))) bad('蟲洞的形狀只能用 L、T、S、Z、J、角、長、凸、階');
+  if (d.kind === '招牌' && d.signs.length < 4) bad('至少要 4 塊招牌');
   if (d.kind === '抽屜' && (d.decoys.includes(d.answer) || d.decoys.length < 15)) bad('答案不能出現在干擾的抽屜裡，干擾的抽屜至少 15 個');
 }
 
