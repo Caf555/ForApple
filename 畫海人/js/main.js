@@ -150,7 +150,7 @@ function title() {
       saved ? el('button', { class: 'btn primary', onclick: () => resume(saved) }, '繼續航行') : null,
       el('button', { class: 'btn' + (saved ? '' : ' primary'), onclick: () => saved ? ctx.ui.confirm('新的航行', '重新開始的話，現在的存檔會被蓋掉。確定嗎？', '重新開始', '取消').then(ok => ok && pickDiff()) : pickDiff() }, '新的航行'),
       el('button', { class: 'btn', onclick: () => settingsSheet() }, '設定')),
-    el('p', { class: 't-ver' }, VERSION + '　美術先用色塊和文字代替')));
+    el('p', { class: 't-ver' }, VERSION)));
 }
 
 function pickDiff() {
