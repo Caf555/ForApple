@@ -18,17 +18,19 @@
 //   節奏（節奏）：音符跑到線上時按下去
 //   看風（推理）：看旗子、煙、草，判斷風往哪裡吹
 import { el } from './ui.js';
+import { MINI2, TIPS2 } from './minigames2.js';
+import { MINI3, TIPS3 } from './minigames3.js';
 
 const NS = 'http://www.w3.org/2000/svg';
-const svg = (tag, attrs = {}, parent) => {
+export const svg = (tag, attrs = {}, parent) => {
   const n = document.createElementNS(NS, tag);
   for (const k in attrs) n.setAttribute(k, attrs[k]);
   if (parent) parent.appendChild(n);
   return n;
 };
-const rnd = n => Math.floor(Math.random() * n);
-const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
-const D = (T, arr) => arr[T.diff] ?? arr[1];
+export const rnd = n => Math.floor(Math.random() * n);
+export const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
+export const D = (T, arr) => arr[T.diff] ?? arr[1];
 const DIFF_NAME = ['閱讀', '普通', '困難'];
 
 export const MINI_TIPS = {
@@ -38,7 +40,7 @@ export const MINI_TIPS = {
 };
 
 // ═════════ 接歌：一次比一次長的旋律 ═════════
-const PENTA_HZ = [523.3, 587.3, 659.3, 784, 880];
+export const PENTA_HZ = [523.3, 587.3, 659.3, 784, 880];
 function song(T) {
   const d = T.d;
   T.header();
@@ -350,7 +352,7 @@ function sort2(T) {
   const R = el('button', { class: 'btn sr-btn', onclick: () => pick(1) }, d.right + ' ▶');
   T.body.append(prog, timer, stage, el('div', { class: 'sr-btns' }, L, R));
   const show = () => {
-    if (i >= N) return T.finish(right >= need, `救回 ${right} / ${N}`, wrong === 0);
+    if (i >= N) return T.finish(right >= need, `${d.resultWord || '救回'} ${right} / ${N}`, wrong === 0);
     card.textContent = items[i].t; card.className = 'sr-card in';
     prog.textContent = `第 ${i + 1} / ${N} 張・分對 ${right}（要 ${need} 張）`;
     shownAt = performance.now(); locked = false;
@@ -383,9 +385,9 @@ function sort2(T) {
 function paper(T) {
   const d = T.d;
   T.header();
-  const sheets = d.sheets || 3, need = 2;
-  const secs = D(T, [5, 6, 7]);
-  const zone = D(T, [0.34, 0.26, 0.19]);
+  const sheets = d.sheets || 3, need = d.need ?? 2;
+  const secs = D(T, d.secs || [5, 6, 7]);
+  const zone = D(T, d.zone || [0.34, 0.26, 0.19]);
   const shake = D(T, [0.9, 1.3, 1.7]);
   let sheet = 0, good = 0, a = 0, v = 0, push = 0, inZone = 0, elapsed = 0, last = 0, running = false, spilled = false;
   const prog = el('div', { class: 'mg-progress' });
@@ -557,7 +559,8 @@ function pipes(T) {
     const ends2 = [[20, 0], [40, 20], [20, 40], [0, 20]];
     BIT.forEach((b, i) => { if (m & b) svg('line', { x1: 20, y1: 20, x2: ends2[i][0], y2: ends2[i][1], class: 'pi-pipe' + (wet ? ' wet' : '') }, s); });
     svg('circle', { cx: 20, cy: 20, r: 5.5, class: 'pi-pipe-c' + (wet ? ' wet' : '') }, s);
-    if (tree) { svg('path', { d: 'M20 30 L20 18 M20 22 L14 15 M20 20 L27 13', class: 'pi-tree' + (wet ? ' wet' : '') }, s); }
+    if (tree && d.icon === '燈') svg('circle', { cx: 20, cy: 20, r: 9, class: 'pi-lamp' + (wet ? ' wet' : '') }, s);
+    else if (tree) { svg('path', { d: 'M20 30 L20 18 M20 22 L14 15 M20 20 L27 13', class: 'pi-tree' + (wet ? ' wet' : '') }, s); }
     return s;
   };
   const draw = () => {
@@ -566,7 +569,7 @@ function pipes(T) {
     g.forEach((r, y) => r.forEach((m, x) => board.appendChild(el('button', { class: 'pi-c', 'data-x': x, 'data-y': y, onclick: () => turn(x, y) }, tile(m, wet.has(x + ',' + y), ends.includes(x + ',' + y))))));
     const got = ends.filter(k => wet.has(k)).length;
     const left = limit ? Math.max(0, Math.ceil(limit - (performance.now() - t0) / 1000)) : 0;
-    prog.textContent = `澆到 ${got} / ${ends.length} 棵・轉了 ${moves} 次` + (limit ? `・還有 ${left} 秒` : '');
+    prog.textContent = `${d.got || '澆到'} ${got} / ${ends.length} ${d.unit || '棵'}・轉了 ${moves} 次` + (limit ? `・還有 ${left} 秒` : '');
     return got === ends.length;
   };
   const turn = (x, y) => {
@@ -574,11 +577,11 @@ function pipes(T) {
     if (x === 0 && y === 0) { do g[0][0] = rot(g[0][0]); while (!(g[0][0] & 8)); }
     else g[y][x] = rot(g[y][x]);
     moves++; T.sfx('tap');
-    if (draw()) { ended = true; T.sfx('good'); board.classList.add('done'); T.later(900, () => T.finish(true, `水都流到了・轉了 ${moves} 次`, moves <= n * n * 1.5)); }
+    if (draw()) { ended = true; T.sfx('good'); board.classList.add('done'); T.later(900, () => T.finish(true, `${d.doneText || '水都流到了'}・轉了 ${moves} 次`, moves <= n * n * 1.5)); }
   };
   if (limit) T.every(1000, () => { if (ended) return; draw(); if ((performance.now() - t0) / 1000 >= limit) { ended = true; T.finish(false, `時間到了・轉了 ${moves} 次`); } });
   draw();
-  T.solveFn = () => { sol.forEach((r, y) => r.forEach((m, x) => { g[y][x] = m; })); draw(); ended = true; T.finish(true, '水都流到了'); };
+  T.solveFn = () => { sol.forEach((r, y) => r.forEach((m, x) => { g[y][x] = m; })); draw(); ended = true; T.finish(true, d.doneText || '水都流到了'); };
 }
 
 // ═════════ 方位：把城門放到它通往的方向 ═════════
@@ -832,7 +835,8 @@ function wind(T) {
   T.solveFn = async () => { while (r < N) { pick(ans); await new Promise(res => setTimeout(res, 1100)); } };
 }
 
-export const MINI = { 接歌: song, 編織: weave, 潛行: stealth, 看潮: tide, 分類: sort2, 抄紙: paper, 翻牌: pairs, 水路: pipes, 方位: compass, 組句: compose, 節奏: rhythm, 看風: wind };
+export const MINI = { 接歌: song, 編織: weave, 潛行: stealth, 看潮: tide, 分類: sort2, 抄紙: paper, 翻牌: pairs, 水路: pipes, 方位: compass, 組句: compose, 節奏: rhythm, 看風: wind, ...MINI2, ...MINI3 };
+Object.assign(MINI_TIPS, TIPS2, TIPS3);
 export const MINI_KINDS = Object.keys(MINI);
 export { DIFF_NAME };
 // 劇本「@小遊戲」可以用的所有種類（原本的＋新的）

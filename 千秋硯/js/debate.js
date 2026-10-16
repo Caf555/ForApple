@@ -284,7 +284,7 @@ export class Translate {
     if (!win && this.d.noteLose) this.body.appendChild(el('p', { class: 'mg-intro' }, this.name(this.d.noteLose)));
     const btns = el('div', { class: 'row-btns mg-end' });
     if (!win || this.practice) btns.appendChild(el('button', { class: 'btn', onclick: () => this.run() }, '再試一次'));
-    btns.appendChild(el('button', { class: 'btn primary', onclick: () => this.resolve(win ? '勝' : '敗') }, this.practice ? '離開' : win ? '過關' : '繼續'));
+    btns.appendChild(el('button', { class: 'btn primary', onclick: () => this.resolve(win ? '勝' : '敗') }, this.practice ? '離開' : win ? (this.d.winLabel || '過關') : '繼續'));
     this.body.appendChild(btns);
   }
 
