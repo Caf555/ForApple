@@ -1209,13 +1209,13 @@
       "kind": "scene",
       "name": "幕_白色爐火裡的紙",
       "seed": 5277,
-      "prompt": "No people in the picture. An ancient stone blacksmith forge on a volcanic island, burning with strange pure white fire, in the very center of the white flames floats a single sheet of paper with a drawing of a volcano, the paper is not burnt at all, glowing embers around, dark smoky workshop."
+      "prompt": "No people in the picture. Indoors only: inside a dark, smoky stone blacksmith workshop carved into volcanic rock, with an anvil, hanging tongs and hammers on the rough walls; in the middle an ancient stone forge burns with strange pure white fire, and in the very center of the white flames floats a single sheet of paper with a drawing of a volcano, the paper not burnt at all, glowing embers drifting. Walls and a low rock ceiling all around; no sky, no outdoors."
     },
     {
       "kind": "scene",
       "name": "幕_冰鏡裡的紙",
       "seed": 5278,
-      "prompt": "No people in the picture. Beneath a frozen lake, a huge broken mirror made of ice stands on the lake bed, shards of ice drifting, from the crack floats a single dry sheet of paper with a drawing of a frozen lake, pale blue light from above the ice, cold and silent."
+      "prompt": "No people in the picture. Underwater, seen from below the surface of a frozen lake: a thick ceiling of ice above lets in pale blue light; on the dim lake bed stands a huge cracked mirror made entirely of clear ice, small shards of ice drifting in the dark water around it; out of the crack floats a single dry sheet of paper with a drawing of a frozen lake. The only light is the cold pale blue light coming down through the ice, and a faint silver glow from the paper itself; this is underwater, so there are no candles, no lanterns, no flames and no warm lights anywhere. Cold, silent, deep blue water all around; no grass, no land, no sky."
     },
     {
       "kind": "scene",
