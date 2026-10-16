@@ -895,6 +895,7 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .wm-spot.k-人 b { box-shadow: 0 0 0 2px #8fc8ff, 0 0 12px rgba(143, 200, 255, .6); }
 .wm-spot.k-謎 b { box-shadow: 0 0 0 2px #c9b8ff, 0 0 12px rgba(201, 184, 255, .6); }
 .wm-spot.k-歇 b { box-shadow: 0 0 0 2px #9fe39a, 0 0 12px rgba(159, 227, 154, .5); }
+.wm-spot.k-戲 b { box-shadow: 0 0 0 2px #ffb070, 0 0 12px rgba(255, 176, 112, .55); }
 .wm-spot:nth-child(2n) b { animation-delay: -1.2s; }
 .wm-spot.done { opacity: .45; cursor: default; } .wm-spot.done b { animation: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, .4); }
 @keyframes wmbob { 50% { transform: translateY(-4px); } }
@@ -1254,3 +1255,39 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
 .cl-day.tgt { border-style: dashed; }
 .cl-arrow { font-size: 22px; color: var(--muted); }
 .cl-btns { display: flex; gap: 8px; }
+
+/* ═════ 第四批：時代桌遊 ═════ */
+.bg-table { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; width: min(94vw, 420px); }
+.bg-seat { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 76px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); font-size: 14px; }
+.bg-seat.me { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.bg-seat small { color: var(--muted); font-size: 12px; }
+.bg-bowl { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; min-height: 64px; width: min(94vw, 360px); padding: 10px; border-radius: 50%/40%; background: radial-gradient(ellipse at 50% 40%, #f4eedf, #cfc2a2 70%, #a8977a); box-shadow: inset 0 4px 10px rgba(0, 0, 0, .3); }
+.bg-die { display: inline-grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); gap: 2px; width: 40px; height: 40px; padding: 6px; border-radius: 8px; background: #fdf8ec; border: 1px solid #8a7a5a; box-shadow: 0 2px 3px rgba(0, 0, 0, .25); }
+.bg-die i { border-radius: 50%; }
+.bg-die i.on { background: #1d1814; }
+.bg-die.red i.on { background: #c0302a; }
+.bg-die.roll { animation: bgroll .35s ease; }
+.bg-sym { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 26px; border-radius: 8px; background: #fdf8ec; border: 1px solid #8a7a5a; color: #1d1814; animation: bgroll .35s ease; }
+.bg-sym.red, .ca-sym b.red { color: #c0302a; }
+@keyframes bgroll { 0% { transform: rotate(-120deg) scale(.6); opacity: .2; } 100% { transform: none; opacity: 1; } }
+.bg-bone { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 30px; border-radius: 14px 10px 14px 10px; background: #efe6cf; border: 1px solid #a8977a; color: #3a3024; font-family: var(--serif); font-size: 17px; animation: bgroll .35s ease; }
+.bg-bone.dog { background: #6a5a48; color: #f4eedf; }
+.rc-home { display: flex; flex-direction: column; gap: 6px; width: min(94vw, 420px); }
+.rc-start { min-height: 38px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--ink); font-size: 14px; text-align: left; }
+.rc-start.can { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.rc-start.foe { color: var(--muted); }
+.rc-track { display: grid; gap: 3px; width: min(94vw, 420px); padding: 6px; border-radius: 8px; background: #6a4e30; }
+.rc-sq { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 1; min-width: 0; padding: 0; border: 0; border-radius: 3px; background: #e8d9b4; color: #3a2e20; font-size: 11px; }
+.rc-sq small { position: absolute; top: 1px; left: 2px; font-size: 9px; opacity: .55; }
+.rc-sq.safe { background: #c9dcb0; }
+.rc-sq.extra { background: #e8c49a; }
+.rc-sq.can { outline: 3px solid var(--accent); outline-offset: -3px; cursor: pointer; }
+.rc-sq:disabled { opacity: 1; }
+.rc-me, .rc-foe { font-style: normal; font-size: 15px; line-height: 1; letter-spacing: -3px; }
+.rc-me { color: #1d4a7a; }
+.rc-foe { color: #a8302a; }
+.ca-cloth { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: min(94vw, 340px); padding: 8px; border-radius: 8px; background: #2f5a3a; }
+.ca-sym { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 6px; border: 2px solid transparent; background: #f4eedf; color: #1d1814; }
+.ca-sym b { font-size: 26px; line-height: 1; }
+.ca-sym small { font-size: 12px; }
+.ca-sym.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }

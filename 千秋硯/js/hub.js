@@ -2,6 +2,7 @@
 import { VOLUMES, TRANSLATE, CODEX, ITEMS, RECIPES, SHOPS, TALKS, CHARACTERS, SKILLS, FORMATIONS, ENEMIES, STAT_NAMES, enemyCodexId } from './data.js';
 import { histDone, histTotal, histRate, goodEnds, wavers, collection, memberStats, memberSkills, expToNext, bondLevel, displayName, addItem, addMember, removeMember, checkCond, saveSlot, loadSlot, slotInfo, exportCode, importCode, codexTitle, healAll } from './state.js';
 import { el } from './ui.js';
+import { TABLE_GAMES } from './walk.js';
 
 const CATS = ['人物誌', '地理誌', '器物誌', '典故', '妖物誌'];
 
@@ -596,6 +597,7 @@ export class Hub {
     // 每個題組出現在哪一卷：看它寫在哪一個劇本檔
     const where = {};
     for (const s of Object.values(this.ctx.scenes)) for (const c of s.cmds) if (c.t === 'cmd' && c.name === '小遊戲') { const id = c.arg.split(/\s+/)[1]; if (!where[id]) where[id] = s.file; }
+    for (const [v, tg] of Object.entries(TABLE_GAMES)) where[tg.id] = v; // 時代桌遊在走走的小地圖裡
     const volOf = f => { const b = (f || '').split('/').pop(); const v = VOLUMES.find(v => b.startsWith(v.id)); return v ? v.id : b.startsWith('序') ? '序卷' : '其他'; };
     if (this.miniDiff == null) this.miniDiff = { 閱讀: 0, 普通: 1, 困難: 2 }[this.ctx.settings.difficulty] ?? 1;
     this.ui.sheet('小遊戲間', (body, self) => {

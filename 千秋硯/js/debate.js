@@ -201,7 +201,7 @@ export class Translate {
     if (!d) throw new Error('沒有這個小遊戲題組：' + id);
     this.id = id; this.d = d; this.practice = !!opts.practice;
     this.diff = opts.diff ?? ({ 閱讀: 0, 普通: 1, 困難: 2 }[this.ctx.settings.difficulty] ?? 1);
-    if (!this.practice && this.ctx.settings.miniGames === 'skip') {
+    if (!this.practice && !opts.optional && this.ctx.settings.miniGames === 'skip') {
       this.ctx.ui.note(`跳過小遊戲「${d.title}」`);
       return Promise.resolve('敗');
     }
