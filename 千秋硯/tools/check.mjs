@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { parseScript, targetsOf } from '../js/script.js';
 import * as D from '../js/data.js';
+import { MINI_ALL, MINI_KINDS, stealthSolve } from '../js/minigames.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const mainSrc = readFileSync(join(root, 'js/main.js'), 'utf8');
@@ -27,11 +28,20 @@ for (const f of readdirSync(join(root, 'js')).filter(f => f.endsWith('.js'))) {
   if (r.status !== 0) errors.push(`js/${f} 有語法錯誤：` + (String(r.stderr).split('\n').find(l => l.startsWith('SyntaxError')) || '') + '\n' + String(r.stderr).split('\n').slice(0, 3).join('\n'));
 }
 // 走走：路人的小故事
-import { WALK_EVENTS } from '../js/walk.js';
+import { WALK_EVENTS, TABLE_GAMES } from '../js/walk.js';
 for (const [vol, list] of Object.entries(WALK_EVENTS)) list.forEach((e, i) => e.opts.forEach(o => (o.fx || []).forEach(([k, a]) => {
   if (k === '道具' && !D.ITEMS[a]) errors.push(`走走・${vol} 第 ${i + 1} 個路人：道具「${a}」不存在`);
   if (!['道具', '錢', '心印', '羈絆'].includes(k)) errors.push(`走走・${vol} 第 ${i + 1} 個路人：不認識的效果「${k}」`);
 })));
+// 時代桌遊：遊戲要存在，地點要是劇本裡真的有的「走走」
+{
+  const walkPools = new Set();
+  for (const f of readdirSync(join(root, 'content')).filter(f => f.endsWith('.txt'))) for (const m of readFileSync(join(root, 'content', f), 'utf8').matchAll(/@走走 (\S+)/g)) walkPools.add(m[1]);
+  for (const [vol, tg] of Object.entries(TABLE_GAMES)) {
+    if (!D.TRANSLATE[tg.id]) errors.push(`時代桌遊・${vol}：小遊戲「${tg.id}」不存在`);
+    for (const p of tg.pools || []) if (!walkPools.has(p)) errors.push(`時代桌遊・${vol}：劇本裡沒有「@走走 ${p}」`);
+  }
+}
 // 敵人分工、叫幫手：名字都要存在
 for (const r in D.ENEMY_ROLES) for (const n of D.ENEMY_ROLES[r]) if (!D.ENEMIES[n]) errors.push(`敵人分工「${r}」裡的「${n}」不存在`);
 for (const [a, b] of Object.entries(D.SUMMONS)) { if (!D.ENEMIES[a]) errors.push(`叫幫手的「${a}」不存在`); if (!D.ENEMIES[b]) errors.push(`「${a}」叫來的「${b}」不存在`); }
@@ -131,9 +141,47 @@ for (const id in scenes) {
       if (imgNames.size && (c.name === '背景' || c.name === '插圖') && c.arg && c.arg !== '無' && !imgNames.has(c.arg.split(/\s+/)[0])) warns.push(`${at(s, c)}：圖「${c.arg.split(/\s+/)[0]}」不在生圖清單裡`);
       if (imgNames.size && c.name === '立繪') { const k = c.arg.split(/\s+/)[1]; if (k && k !== '預設' && !imgNames.has(k) && !/_\d+$/.test(k)) warns.push(`${at(s, c)}：頭像「${k}」不在生圖清單裡`); }
       if (c.name === '小遊戲' && !D.TRANSLATE[c.arg.split(/\s+/)[1]]) errors.push(`${at(s, c)}：沒有小遊戲題組「${c.arg}」`);
-      if (c.name === '小遊戲' && !['譯字', '牽星', '識字', '透視', '研墨', '電碼', '描字', '修復', '排序'].includes(c.arg.split(/\s+/)[0])) errors.push(`${at(s, c)}：小遊戲種類應為 譯字/牽星/識字/透視/研墨/電碼/描字/修復/排序`);
+      if (c.name === '小遊戲' && !MINI_ALL.includes(c.arg.split(/\s+/)[0])) errors.push(`${at(s, c)}：小遊戲種類「${c.arg.split(/\s+/)[0]}」不存在，可用：${MINI_ALL.join('/')}`);
     }
   }
+}
+
+// 小遊戲題組的資料
+for (const [k, d] of Object.entries(D.TRANSLATE)) {
+  const bad = m => errors.push(`小遊戲題組 ${k}：${m}`);
+  if (!MINI_ALL.includes(d.kind || '譯字')) bad(`種類「${d.kind}」不存在`);
+  if (!d.title) bad('少了 title');
+  for (const [kind, a] of d.reward || []) {
+    if (kind === '道具' && !D.ITEMS[a]) bad(`獎勵道具「${a}」不存在`);
+    if (kind === '史卷' && !D.CODEX[a]) bad(`獎勵史卷「${a}」不存在`);
+    if (!['道具', '羈絆', '經驗', '錢', '史卷', '心印'].includes(kind)) bad(`獎勵「${kind}」不能用在小遊戲`);
+  }
+  if (!MINI_KINDS.includes(d.kind)) continue;
+  if (d.kind === '接歌' && (!d.pads || d.song.some(i => i < 0 || i >= d.pads.length))) bad('旋律裡有不存在的音');
+  if (d.kind === '編織' && d.pattern.some(r => [...r].some(ch => !d.colors[ch]) || r.length !== d.pattern[0].length)) bad('花樣裡有沒有定義顏色的格子，或每一行長度不一樣');
+  if (d.kind === '潛行') for (const reach of [1, 2]) if (!stealthSolve(d.level, reach)) bad(`火把照 ${reach} 格時，沒有路可以走到出口`);
+  if (d.kind === '看潮' && (d.bars.length < 6 || d.bars.some(b => b <= 0.05 || b >= 0.95))) bad('沙洲要 6 道，高度在 0.05～0.95 之間');
+  if (d.kind === '分類' && (d.items.length < 12 || d.items.some(it => it.a !== 0 && it.a !== 1))) bad('至少要 12 張，每張的 a 是 0（左）或 1（右）');
+  if (d.kind === '翻牌' && d.people.length < 6) bad('至少要 6 個人');
+  if (d.kind === '方位' && d.slots.some(sl => d.gates.filter(g => g.dir === sl.dir).length !== 1)) bad('每個位置都要剛好有一座門');
+  if (d.kind === '組句' && d.rounds.some(r => [].concat(r.a).some(a => [...a].some(ch => (r.extra || '').includes(ch))))) bad('干擾字和答案的字重複了');
+  if (d.kind === '節奏' && !d.song.some(([f]) => f)) bad('沒有音符');
+  if (d.kind === '矛盾' && d.rounds.some(r => r.lines.length !== 5 || r.pair.length !== 2 || r.pair.some(i => i < 0 || i > 4) || !r.why)) bad('每一段要有五句、一對矛盾（pair）和說明（why）');
+  if (d.kind === '數石' && ((d.counts[0] - d.counts[1]) % 20 !== 0 || d.counts.some(n => n % 10))) bad('兩邊的數量要是 10 的倍數，差距要是 20 的倍數');
+  if (d.kind === '調色') for (const t of d.targets) { if (Object.keys(t.mix).some(k => !d.pigments[k])) bad(`「${t.name}」用了不存在的顏料`); if (Object.values(t.mix).reduce((a, b) => a + b, 0) > (d.maxDrops || 8)) bad(`「${t.name}」超過可以放的份數`); for (const k in d.limit || {}) if ((t.mix[k] || 0) > d.limit[k]) bad(`「${t.name}」的${k}超過上限`); }
+  if (d.kind === '記物' && (d.layers.flatMap(l => l.items).length < 6 || (d.decoys || []).some(x => d.layers.some(l => l.items.includes(x))))) bad('至少要 6 樣東西，干擾的東西不能和柴堆上的重複');
+  if (d.kind === '對照' && d.rounds.some(r => !r.changed.some(c => typeof c !== 'string'))) bad('每一句至少要有一處被改過');
+  if (d.kind === '對話' && (d.topics.length < 3 || d.band[0] >= d.band[1])) bad('至少要 3 個話題，範圍要由小到大');
+  if (d.kind === '讀向' && d.rounds.some(r => r.cols.reduce((x, y) => x + y, 0) !== r.signs.length || !r.signs.some(g => g.face))) bad('每個名字的 cols 加起來要等於符號數，而且至少要有一個有臉的符號');
+  if (d.kind === '記名' && d.people.length < 6) bad('至少要 6 個人');
+  if (d.kind === '接唸' && (d.names.length < 6 || new Set(d.names).size !== d.names.length)) bad('至少要 6 個不重複的名字');
+  if (d.kind === '曆輪' && d.signs.length !== 20) bad('日子的名字要剛好 20 個');
+  if (d.kind === '補紙' && d.holes.some(h => !['L', 'T', 'S', 'Z', 'J', '角', '長', '凸', '階'].includes(h))) bad('蟲洞的形狀只能用 L、T、S、Z、J、角、長、凸、階');
+  if (d.kind === '招牌' && d.signs.length < 4) bad('至少要 4 塊招牌');
+  if (d.kind === '跑棋' && (!['sticks', 'dice', 'beans'].includes(d.throw) || !(d.pieces >= 1) || !(d.len >= 10) || !d.rival || [...(d.safe || []), ...(d.extra || [])].some(n => n < 1 || n > d.len))) bad('throw 要是 sticks/dice/beans，要有 pieces、len（至少 10）、rival，安全格和再擲格要在棋盤上');
+  if (d.kind === '博餅' && !(d.rivals && d.rivals.length)) bad('要有對手（rivals）');
+  if (d.kind === '羊趾骨' && !d.rival) bad('要有對手（rival）');
+  if (d.kind === '抽屜' && (d.decoys.includes(d.answer) || d.decoys.length < 15)) bad('答案不能出現在干擾的抽屜裡，干擾的抽屜至少 15 個');
 }
 
 // 資料彼此的參照

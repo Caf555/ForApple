@@ -1,4 +1,4 @@
-// 據點的「走走」：一張可以點的小地圖（妖物、寶物、路人、謎題、歇腳）
+// 據點的「走走」：一張可以點的小地圖（妖物、寶物、路人、謎題、桌遊、歇腳）
 import { TRANSLATE, VOLUMES } from './data.js';
 import { checkCond, memberStats } from './state.js';
 import { el } from './ui.js';
@@ -147,6 +147,7 @@ const KIND = {
   人: { icon: '人', name: '路人', tip: '有人好像需要幫忙。' },
   謎: { icon: '謎', name: '謎題', tip: '有人在爭論一個問題。' },
   歇: { icon: '歇', name: '歇腳', tip: '一個可以坐下來喘口氣的地方。' },
+  戲: { icon: '戲', name: '玩一局', tip: '有人在玩當時的桌遊。可以坐下來玩一局，玩幾次都可以。' },
 };
 
 // 這一卷的謎題：從同一個劇本檔裡用到的問答小遊戲，挑沒有圖形的題目
@@ -160,6 +161,16 @@ function riddlePool(ctx, file) {
   for (const id of ids) (TRANSLATE[id]?.items || []).forEach((it, i) => { if (!it.glyph && it.opts && it.a) out.push({ id, i, it }); });
   return out;
 }
+
+// 時代桌遊：每一卷一種，只在這些地方出現（pools 是「走走」的遭遇池名稱）
+export const TABLE_GAMES = {
+  卷一: { id: '中秋博餅', pools: ['鹿耳門海岸', '熱蘭遮城外'] },
+  卷三: { id: '塞尼特', pools: ['阿肯塔頓', '底比斯', '空城'] },
+  卷四: { id: '羊趾骨', pools: ['比雷埃夫斯', '大赦之城', '起訴之城'] },
+  卷六: { id: '雙陸', pools: ['長安西市', '撒馬爾罕', '巴格達'] },
+  卷八: { id: '帕托利', pools: ['湖上之城'] },
+  卷九: { id: '皇冠與錨', pools: ['伊珀爾'] },
+};
 
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
@@ -182,6 +193,8 @@ export async function walkMap(ctx, runner, pool, out) {
   if (evs.length) spots.push({ k: '人', p: pos.pop(), ev: pick(evs) });
   const rs = here ? riddlePool(ctx, here.file) : [];
   if (rs.length) spots.push({ k: '謎', p: pos.pop(), q: pick(rs) });
+  const tg = TABLE_GAMES[vol];
+  if (tg && (!tg.pools || tg.pools.includes(pool)) && TRANSLATE[tg.id]) spots.push({ k: '戲', p: pos.pop(), id: tg.id });
   spots.push({ k: '歇', p: pos.pop() });
 
   const box = el('div', { class: 'overlay open walkmap' });
@@ -204,6 +217,13 @@ export async function walkMap(ctx, runner, pool, out) {
     } else if (s.k === '謎') {
       await riddle(ctx, runner, s.q, tier);
       s.done = true;
+    } else if (s.k === '戲') {
+      const res = await ctx.translate.start(s.id, { optional: true });
+      if (res === '勝' && !g.flags['桌遊.' + s.id]) {
+        g.flags['桌遊.' + s.id] = 1;
+        const n = 15 * tier; g.money += n;
+        await ui.alert('贏了一局', `大家都笑了，有人把一點銀子推到你面前。（銀 +${n}）`, '繼續');
+      }
     } else if (s.k === '歇') {
       for (const n of g.party) { const m = g.members[n]; const st = memberStats(g, m); m.hp = Math.min(st.hp, m.hp + Math.round(st.hp * 0.35)); m.mp = Math.min(st.mp, m.mp + Math.round(st.mp * 0.35)); }
       ctx.audio.sfx('heal');

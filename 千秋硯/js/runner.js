@@ -1,6 +1,7 @@
 // 劇本執行器：逐行播放劇本、處理選項、效果、戰鬥與演出指令
 import { checkCond, condText, addItem, addCodex, addMember, removeMember, healAll, gainExp, AXES, displayName, saveSlot, addCollection } from './state.js';
-import { FORMATIONS } from './data.js';
+import { FORMATIONS, TRANSLATE } from './data.js';
+import { MINI_ALL } from './minigames.js';
 import { walkMap } from './walk.js';
 
 export class Runner {
@@ -328,8 +329,12 @@ export class Runner {
       }
       case '小遊戲': {
         const [kind, id] = arg.split(/\s+/);
-        if (!['譯字', '牽星', '識字', '透視', '研墨', '電碼', '描字', '修復', '排序'].includes(kind)) throw new Error('不認識的小遊戲：' + kind);
+        if (!MINI_ALL.includes(kind)) throw new Error('不認識的小遊戲：' + kind);
         const r = await this.ctx.translate.start(id);
+        // 記下結果，劇本可以用「◆ 若 旗標 小.題組 = 勝」分支；過關的小獎勵寫在題組的 reward
+        g.flags['小.' + id] = r;
+        const rw = TRANSLATE[id] && TRANSLATE[id].reward;
+        if (r === '勝' && rw) for (const [k, ...args] of rw) this.effect({ kind: k, sign: 1, args });
         const t = c.out && c.out[r];
         return t ? '→' + t : undefined;
       }
