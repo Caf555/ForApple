@@ -28,11 +28,20 @@ for (const f of readdirSync(join(root, 'js')).filter(f => f.endsWith('.js'))) {
   if (r.status !== 0) errors.push(`js/${f} 有語法錯誤：` + (String(r.stderr).split('\n').find(l => l.startsWith('SyntaxError')) || '') + '\n' + String(r.stderr).split('\n').slice(0, 3).join('\n'));
 }
 // 走走：路人的小故事
-import { WALK_EVENTS } from '../js/walk.js';
+import { WALK_EVENTS, TABLE_GAMES } from '../js/walk.js';
 for (const [vol, list] of Object.entries(WALK_EVENTS)) list.forEach((e, i) => e.opts.forEach(o => (o.fx || []).forEach(([k, a]) => {
   if (k === '道具' && !D.ITEMS[a]) errors.push(`走走・${vol} 第 ${i + 1} 個路人：道具「${a}」不存在`);
   if (!['道具', '錢', '心印', '羈絆'].includes(k)) errors.push(`走走・${vol} 第 ${i + 1} 個路人：不認識的效果「${k}」`);
 })));
+// 時代桌遊：遊戲要存在，地點要是劇本裡真的有的「走走」
+{
+  const walkPools = new Set();
+  for (const f of readdirSync(join(root, 'content')).filter(f => f.endsWith('.txt'))) for (const m of readFileSync(join(root, 'content', f), 'utf8').matchAll(/@走走 (\S+)/g)) walkPools.add(m[1]);
+  for (const [vol, tg] of Object.entries(TABLE_GAMES)) {
+    if (!D.TRANSLATE[tg.id]) errors.push(`時代桌遊・${vol}：小遊戲「${tg.id}」不存在`);
+    for (const p of tg.pools || []) if (!walkPools.has(p)) errors.push(`時代桌遊・${vol}：劇本裡沒有「@走走 ${p}」`);
+  }
+}
 // 敵人分工、叫幫手：名字都要存在
 for (const r in D.ENEMY_ROLES) for (const n of D.ENEMY_ROLES[r]) if (!D.ENEMIES[n]) errors.push(`敵人分工「${r}」裡的「${n}」不存在`);
 for (const [a, b] of Object.entries(D.SUMMONS)) { if (!D.ENEMIES[a]) errors.push(`叫幫手的「${a}」不存在`); if (!D.ENEMIES[b]) errors.push(`「${a}」叫來的「${b}」不存在`); }
@@ -169,6 +178,9 @@ for (const [k, d] of Object.entries(D.TRANSLATE)) {
   if (d.kind === '曆輪' && d.signs.length !== 20) bad('日子的名字要剛好 20 個');
   if (d.kind === '補紙' && d.holes.some(h => !['L', 'T', 'S', 'Z', 'J', '角', '長', '凸', '階'].includes(h))) bad('蟲洞的形狀只能用 L、T、S、Z、J、角、長、凸、階');
   if (d.kind === '招牌' && d.signs.length < 4) bad('至少要 4 塊招牌');
+  if (d.kind === '跑棋' && (!['sticks', 'dice', 'beans'].includes(d.throw) || !(d.pieces >= 1) || !(d.len >= 10) || !d.rival || [...(d.safe || []), ...(d.extra || [])].some(n => n < 1 || n > d.len))) bad('throw 要是 sticks/dice/beans，要有 pieces、len（至少 10）、rival，安全格和再擲格要在棋盤上');
+  if (d.kind === '博餅' && !(d.rivals && d.rivals.length)) bad('要有對手（rivals）');
+  if (d.kind === '羊趾骨' && !d.rival) bad('要有對手（rival）');
   if (d.kind === '抽屜' && (d.decoys.includes(d.answer) || d.decoys.length < 15)) bad('答案不能出現在干擾的抽屜裡，干擾的抽屜至少 15 個');
 }
 
