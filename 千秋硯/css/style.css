@@ -616,6 +616,8 @@ body[data-mode="story"] #ambient, body[data-mode="hub"] #ambient { display: bloc
   padding: 4px 12px 6px; background: linear-gradient(transparent, rgba(0, 0, 0, .6) 30%); color: rgba(240, 232, 214, .65); font-size: 12px; display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; }
 .b-stage .b-log div:last-child { color: #fff4dc; }
 .b-stage .b-log.full { max-height: 70%; overflow-y: auto; justify-content: flex-start; background: rgba(0, 0, 0, .78); }
+.b-stage .b-log.full::before { content: "戰鬥紀錄・點一下收起 ▼"; position: sticky; top: -4px; margin: -4px -12px 4px; padding: 6px 12px; background: rgba(0, 0, 0, .92); color: #ffd98a; font-size: 12px; text-align: center; }
+.b-stage .b-log:not(.full)::after { content: "▲"; position: absolute; right: 8px; top: 6px; font-size: 10px; color: rgba(240, 232, 214, .45); }
 
 /* 我方：兩欄小卡 */
 .b-party { grid-template-columns: 1fr 1fr; gap: 4px 6px; padding: 6px 8px; }

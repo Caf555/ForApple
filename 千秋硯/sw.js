@@ -1,5 +1,5 @@
 // 離線快取：加入主畫面後，沒有網路也能玩
-const CACHE = 'qqy-v3.6.0';
+const CACHE = 'qqy-v3.6.1';
 // 設定裡「下載全部圖片」存放的地方；版本更新時不刪，免得玩家要重新下載
 const IMG_CACHE = 'qqy-img';
 const FILES = [
