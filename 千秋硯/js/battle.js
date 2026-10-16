@@ -343,6 +343,7 @@ export class Battle {
   chooseAction(u) {
     return new Promise(resolve => {
       this.resolveAction = resolve;
+      if (this.logEl) this.logEl.classList.remove('full'); // 輪到玩家時收起戰鬥紀錄，免得擋住敵人
       this.showMain(u);
     });
   }
@@ -451,6 +452,7 @@ export class Battle {
     const valid = pool.filter(x => (allowDead || x.alive) && filter(x));
     if (!valid.length) { this.ctx.ui.toast('沒有可以選擇的目標'); return; }
     if (valid.length === 1 && side === 'foe') { cb(valid[0]); return; }
+    if (this.logEl) this.logEl.classList.remove('full');
     this.cmdBox.innerHTML = '';
     this.cmdBox.appendChild(el('div', { class: 'cmd-who' }, side === 'foe' ? '選擇目標（點敵人）' : '選擇對象（點隊伍中的角色）'));
     this.cmdBox.appendChild(this.back(u));
