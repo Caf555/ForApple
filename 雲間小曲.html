@@ -203,6 +203,14 @@ const MOODS={
 const MOOD_ORDER=['mist','brook','forest','dusk','star','sea','cosmos'];
 const NATURES={none:'無',rain:'細雨',brook:'溪流',sea:'海浪',fire:'燒柴',wheel:'水車'};
 // 各自然聲的音量校正，讓它們彼此差不多大聲
+const FDN_LEVEL=.45;
+// 省運算模式：手機在背景或關螢幕時，改用輕量殘響並減少每個音的疊加層數，避免爆音
+let liteOn=false;
+const lite=()=>liteOn;
+function setLite(on){
+  if(!A||on===liteOn)return;liteOn=on;
+  ramp(A.convGate.gain,on?0:1,1.2);ramp(A.fdnGate.gain,on?1:0,1.2);
+}
 const NAT={}; // 各自然聲的建立函式，選到才建立
 const NAT_TRIM={rain:1.2,brook:.8,sea:.45,fire:.7,wheel:1.2};
 const TIMERS=[0,15,30,60];
@@ -255,7 +263,8 @@ function impulse(sec){
 }
 function initAudio(){
   const AC=window.AudioContext||window.webkitAudioContext;
-  ctx=new AC({latencyHint:'playback'});
+  // Android 進背景或關螢幕後處理器會降速；把緩衝區開到最大，才不會來不及運算而出現爆音
+  try{ctx=new AC({latencyHint:/Android/i.test(navigator.userAgent)?.3:'playback'})}catch(e){ctx=new AC()}
   try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
   const g=v=>{const n=ctx.createGain();n.gain.value=v;return n};
   A={mix:g(1),vol:g(volGain()),natVol:g(natGain()),white:null,fade:g(0),comp:ctx.createDynamicsCompressor(),
@@ -268,14 +277,21 @@ function initAudio(){
   A.padLP.type='lowpass';A.padLP.frequency.value=950;A.padLP.Q.value=.3;
   A.out=g(1);A.mix.connect(A.vol).connect(A.fade).connect(A.comp).connect(A.out);
   A.natVol.connect(A.fade);
-  A.rev.connect(A.revOut).connect(A.mix);
-  A.mel.connect(A.mix);A.mel.connect(A.melSend).connect(A.rev);
+  A.revIn=g(1);A.convGate=g(1);A.fdnGate=g(0);
+  A.revIn.connect(A.convGate).connect(A.rev);A.rev.connect(A.revOut).connect(A.mix);
+  // 輕量殘響：六條延遲線互相錯開。運算量很小，手機進背景時改用它
+  {const mg=ctx.createChannelMerger(2),fo=g(FDN_LEVEL);
+   [.0531,.0673,.0797,.0907,.1039,.1171].forEach((dt,i)=>{const d=ctx.createDelay(.25),fb=g(Math.pow(10,-3*dt/3.2)),lp=ctx.createBiquadFilter();
+     lp.type='lowpass';lp.frequency.value=2800;lp.Q.value=-6;d.delayTime.value=dt; // Q 設為負值：不能有共振，否則回授會越滾越大
+     A.fdnGate.connect(d);d.connect(lp).connect(fb).connect(d);d.connect(mg,0,i%2)});
+   A.revIn.connect(A.fdnGate);A.fdnOut=fo;mg.connect(fo).connect(A.mix);}
+  A.mel.connect(A.mix);A.mel.connect(A.melSend).connect(A.revIn);
   // 左右交替的淡淡回聲，讓旋律有餘韻
   {const es=g(.15),elp=ctx.createBiquadFilter(),dL=ctx.createDelay(1.5),dR=ctx.createDelay(1.5),fb=g(.3),mg=ctx.createChannelMerger(2),er=g(.5);
    elp.type='lowpass';elp.frequency.value=2200;dL.delayTime.value=.47;dR.delayTime.value=.7;
    A.mel.connect(es).connect(elp).connect(dL);dL.connect(mg,0,0);dL.connect(dR);dR.connect(mg,0,1);dR.connect(fb).connect(dL);
-   mg.connect(A.mix);mg.connect(er).connect(A.rev);}
-  A.padLP.connect(A.pad);A.pad.connect(A.mix);A.pad.connect(A.padSend).connect(A.rev);
+   mg.connect(A.mix);mg.connect(er).connect(A.revIn);}
+  A.padLP.connect(A.pad);A.pad.connect(A.mix);A.pad.connect(A.padSend).connect(A.revIn);
   // 長音的濾波器很慢地開合，像雲在動
   const lfo=ctx.createOscillator(),lg=g(260);lfo.frequency.value=.045;lfo.connect(lg).connect(A.padLP.frequency);lfo.start();
 
@@ -429,7 +445,7 @@ function susNote(t,dur,midi,vel,I){
     const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.Q.value=.4;
     lp.frequency.setValueAtTime(300+f*1.5,t);lp.frequency.setTargetAtTime(Math.min(3400,800+f*3.2),t,I.att*.9); // 運弓後音色才慢慢亮起來
     let node=lp;
-    for(const [ff,db,q] of (midi<58?[[190,5,2],[420,3,2],[1500,4,1.5]]:[[290,5,2],[560,3,2],[2700,5,1.5]])){ // 琴身共鳴
+    for(const [ff,db,q] of (lite()?[]:midi<58?[[190,5,2],[420,3,2],[1500,4,1.5]]:[[290,5,2],[560,3,2],[2700,5,1.5]])){ // 琴身共鳴
       const pk=ctx.createBiquadFilter();pk.type='peaking';pk.frequency.value=ff;pk.gain.value=db;pk.Q.value=q;node.connect(pk);node=pk}
     node.connect(g);dest=lp;
   }
@@ -443,9 +459,9 @@ function susNote(t,dur,midi,vel,I){
     o.detune.setValueAtTime(det-I.scoop,t);o.detune.linearRampToValueAtTime(det,t+.09); // 起音從略低處滑上來
     vg.connect(o.detune);o.connect(og).connect(dest);o.start(t);o.stop(end);return o};
   let first;
-  if(I.saw){first=mk('sawtooth',1,.5,-7);mk('sawtooth',1,.45,0);mk('sawtooth',1,.4,6)}
+  if(I.saw){first=mk('sawtooth',1,.5,-7);if(lite())mk('sawtooth',1,.8,6);else{mk('sawtooth',1,.45,0);mk('sawtooth',1,.4,6)}}
   else for(const [mul,lv] of I.parts){const o=mk('sine',mul,lv,0);first=first||o}
-  if(I.breath){const n=ctx.createBufferSource(),bp=ctx.createBiquadFilter(),ng=ctx.createGain();n.buffer=A.white;n.loop=true;
+  if(I.breath&&!lite()){const n=ctx.createBufferSource(),bp=ctx.createBiquadFilter(),ng=ctx.createGain();n.buffer=A.white;n.loop=true;
     bp.type='bandpass';bp.frequency.value=I.saw?4000:Math.min(6000,f*2.5);bp.Q.value=.8;ng.gain.value=I.breath*(midi<60?1.6:1)/I.level;
     n.connect(bp).connect(ng).connect(g);n.start(t,Math.random()*4);n.stop(end)}
   if(I.chiff)burst(t,pan,Math.min(5000,f*3),1.5,vel*I.chiff,.06);
@@ -458,7 +474,7 @@ function note(t,midi,vel,instId,visual){
   if(pan.pan)pan.pan.value=Math.max(-.6,Math.min(.6,(midi-72)/30+rnd(-.2,.2)));
   pan.connect(A.mel);
   const dec=I.dec*Math.max(.55,1-(midi-60)/90);let last=null;
-  const parts=I.dbl?[...I.parts,[Math.pow(2,I.dbl/1200),.55,1]]:I.parts;
+  const parts=I.dbl&&!lite()?[...I.parts,[Math.pow(2,I.dbl/1200),.55,1]]:I.parts;
   if(I.click)burst(t,pan,Math.min(8000,f*I.click[0]),1,vel*I.click[1],I.click[2]);
   for(const [mul,amp,dm] of parts){
     if(f*mul>9000)continue;
@@ -474,14 +490,17 @@ function note(t,midi,vel,instId,visual){
 function sustain(t,dur,midi,peak,atk,rel,dest,type){
   const g=ctx.createGain();g.gain.setValueAtTime(0,t);
   g.gain.setTargetAtTime(peak,t,atk/3);g.gain.setTargetAtTime(0,t+dur,rel/3);
-  if(dest===A.padLP&&ctx.createStereoPanner){const pn=ctx.createStereoPanner();pn.pan.value=rnd(-.65,.65);g.connect(pn).connect(dest)}else g.connect(dest);
+  const L=lite();let pn=null;
+  if(!L&&dest===A.padLP&&ctx.createStereoPanner){pn=ctx.createStereoPanner();pn.pan.value=rnd(-.65,.65);g.connect(pn).connect(dest)}else g.connect(dest);
   const end=t+dur+rel*2.2;
   const mk=(wave,det,lv)=>{const o=ctx.createOscillator(),og=ctx.createGain();o.type=wave;o.frequency.value=mtof(midi);o.detune.value=det;og.gain.value=lv;
     o.connect(og).connect(g);o.start(t);o.stop(end);return o};
   const a=mk('sine',-4,type==='strings'?.45:.7);
-  if(type==='warm'||type==='both')mk('triangle',5,.45);
-  if(type==='strings'||type==='both'){mk('sawtooth',-8,.17);mk('sawtooth',0,.13);mk('sawtooth',9,.17)} // 弦樂群
-  a.onended=()=>g.disconnect();
+  if(type==='warm'||(type==='both'&&!L))mk('triangle',5,.45);
+  if(type==='strings'||type==='both'){
+    if(L)mk('sawtooth',6,.4);else{mk('sawtooth',-8,.17);mk('sawtooth',0,.13);mk('sawtooth',9,.17)} // 弦樂群
+  }
+  a.onended=()=>{g.disconnect();if(pn)pn.disconnect()};
 }
 
 /* ========= 作曲 ========= */
@@ -651,6 +670,7 @@ function pause(fadeSec){
 }
 setInterval(tick,200);
 document.addEventListener('visibilitychange',()=>{
+  setLite(MOBILE&&document.hidden);
   if(document.hidden){tick();return} // 進背景前先把後面的音樂排好
   if(S.playing&&ctx&&ctx.state!=='running')ctx.resume().then(tick,()=>{});
   if(S.playing&&bgOn&&bgEl&&bgEl.paused)bgEl.play().catch(()=>{});
@@ -710,7 +730,7 @@ function frame(ts){
   const W=cv.clientWidth,H=cv.clientHeight;
   if(ts-colorAt>1500){const cs=getComputedStyle(document.documentElement);colors={a:cs.getPropertyValue('--accent').trim(),g:cs.getPropertyValue('--glow').trim()};colorAt=ts}
   if(ctx){
-    const now=ctx.currentTime;
+    const now=ctx.currentTime-(ctx.baseLatency||0)-(ctx.outputLatency||0); // 扣掉緩衝延遲，漣漪才會對上聽到的聲音
     for(let i=events.length-1;i>=0;i--){const e=events[i];if(e.t>now)continue;events.splice(i,1);
       if(now-e.t>1)continue;
       if(e.kind==='info')$('meta').textContent=e.text;
