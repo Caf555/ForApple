@@ -203,6 +203,7 @@ const MOODS={
 const MOOD_ORDER=['mist','brook','forest','dusk','star','sea','cosmos'];
 const NATURES={none:'無',rain:'細雨',brook:'溪流',sea:'海浪',fire:'燒柴',wheel:'水車'};
 // 各自然聲的音量校正，讓它們彼此差不多大聲
+const NAT={}; // 各自然聲的建立函式，選到才建立
 const NAT_TRIM={rain:1.2,brook:.8,sea:.45,fire:.7,wheel:1.2};
 const TIMERS=[0,15,30,60];
 
@@ -263,7 +264,7 @@ function initAudio(){
      pad:g(MOODS[S.mood].pad),padSend:g(.7),padLP:ctx.createBiquadFilter(),
      nat:{}};
   A.comp.threshold.value=-20;A.comp.knee.value=18;A.comp.ratio.value=3;A.comp.attack.value=.05;A.comp.release.value=.5;
-  A.rev.buffer=impulse(6);
+  A.rev.buffer=impulse(MOBILE?3.6:6); // 手機用短一點的殘響，省運算
   A.padLP.type='lowpass';A.padLP.frequency.value=950;A.padLP.Q.value=.3;
   A.out=g(1);A.mix.connect(A.vol).connect(A.fade).connect(A.comp).connect(A.out);
   A.natVol.connect(A.fade);
@@ -280,60 +281,68 @@ function initAudio(){
 
   /* ---- 自然聲 ---- */
   const white=noiseBuffer(6,false),brown=noiseBuffer(8,true);A.white=white;
-  const src=(buf)=>{const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;s.start();return s};
+  let live=[];
+  const src=(buf)=>{const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;s.start();live.push(s);return s};
   const bq=(type,f,q)=>{const n=ctx.createBiquadFilter();n.type=type;n.frequency.value=f;if(q)n.Q.value=q;return n};
-  const out=id=>{const o=g(0),tr=g(NAT_TRIM[id]);o.connect(tr).connect(A.natVol);A.nat[id]=o;return o};
+  const out=id=>{const o=g(0),tr=g(NAT_TRIM[id]);o.connect(tr).connect(A.natVol);live=[];A.nat[id]={o,tr,nodes:live};return o};
   const stereo=(buf,dest)=>[-.6,.6].forEach((p,i)=>{ // 同一段聲音錯開播放、分左右，聽起來有空間感
     const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;s.playbackRate.value=i?1.04:1;
     if(ctx.createStereoPanner){const pn=ctx.createStereoPanner();pn.pan.value=p;s.connect(pn).connect(dest)}else s.connect(dest);
-    s.start(0,i?buf.duration*.47:0)});
-  const lfo2=(f,depth,param)=>{const o=ctx.createOscillator(),d=g(depth);o.frequency.value=f;o.connect(d).connect(param);o.start()};
+    s.start(0,i?buf.duration*.47:0);live.push(s)});
+  const lfo2=(f,depth,param)=>{const o=ctx.createOscillator(),d=g(depth);o.frequency.value=f;o.connect(d).connect(param);o.start();live.push(o)};
 
   // 細雨：一顆一顆聽得出來的雨滴，底下只有很淡的沙沙聲
-  {const o=out('rain'),bp=bq('bandpass',3000,.5),dg=g(1);
+  NAT.rain=()=>{const o=out('rain'),bp=bq('bandpass',3000,.5),dg=g(1);
    stereo(sparse(11,6,(d,i,sr)=>{const n=Math.floor(sr*rnd(.006,.02)),a=Math.pow(Math.random(),2.5)*.9+.05;
      for(let k=0;k<n;k++)d[i+k]+=(Math.random()*2-1)*a*Math.exp(-5*k/n)}),bp);
    bp.connect(dg).connect(o);
    src(white).connect(bq('highpass',1200)).connect(bq('lowpass',6000)).connect(g(.006)).connect(o);
    src(brown).connect(bq('lowpass',300)).connect(g(.05)).connect(o);}
   // 溪流：細碎的水泡聲加上流水
-  {const o=out('brook'),bg=g(.5);
+  NAT.brook=()=>{const o=out('brook'),bg=g(.5);
    stereo(sparse(7,34,(d,i,sr)=>{const n=Math.floor(sr*rnd(.012,.04)),f0=rnd(500,1700),a=rnd(.08,.35);let ph=0;
      for(let k=0;k<n;k++){ph+=2*Math.PI*f0*(1+.6*k/n)/sr;const e=Math.sin(Math.PI*k/n);d[i+k]+=Math.sin(ph)*a*e*e}}),bg);
    bg.connect(o);
    const wg=g(.03);src(white).connect(bq('bandpass',1500,.5)).connect(wg).connect(o);lfo2(.21,.008,wg.gain);
    src(brown).connect(bq('lowpass',500)).connect(g(.08)).connect(o);}
   // 海浪（約每 12 秒一波，接近慢呼吸的節奏）
-  {const o=out('sea'),wl=bq('lowpass',520),wg=g(.3),fg=g(.012);
+  NAT.sea=()=>{const o=out('sea'),wl=bq('lowpass',520),wg=g(.3),fg=g(.012);
    src(brown).connect(wl).connect(wg).connect(o);
    src(white).connect(bq('bandpass',2600,.5)).connect(fg).connect(o);
-   const w1=ctx.createOscillator();w1.frequency.value=.083;w1.start();
+   const w1=ctx.createOscillator();w1.frequency.value=.083;w1.start();live.push(w1);
    const d1=g(.19),d3=g(340),d4=g(.011);
    w1.connect(d1).connect(wg.gain);w1.connect(d3).connect(wl.frequency);w1.connect(d4).connect(fg.gain);
    lfo2(.031,.06,wg.gain);}
   // 燒柴：低低的火焰聲加上零星的劈啪
-  {const o=out('fire'),hp=bq('highpass',1100),cg=g(.9),rg=g(.22);
+  NAT.fire=()=>{const o=out('fire'),hp=bq('highpass',1100),cg=g(.9),rg=g(.22);
    stereo(sparse(13,5,(d,i,sr)=>{const n=Math.floor(sr*rnd(.001,.006)),a=Math.pow(Math.random(),3)*.75+.04;
      for(let k=0;k<n;k++)d[i+k]+=(Math.random()*2-1)*a*Math.exp(-4*k/n)}),hp);
    hp.connect(bq('lowpass',5500)).connect(cg).connect(o);
    src(brown).connect(bq('lowpass',420)).connect(rg).connect(o);lfo2(.23,.06,rg.gain);lfo2(.61,.04,rg.gain);
    src(white).connect(bq('bandpass',900,.4)).connect(g(.008)).connect(o);}
   // 水車：木輪規律地舀水、倒水，底下是水流
-  {const o=out('wheel'),per=1.75,turns=6,sr=ctx.sampleRate,L=Math.floor(sr*per*turns);
+  NAT.wheel=()=>{const o=out('wheel'),per=1.75,turns=6,sr=ctx.sampleRate,L=Math.floor(sr*per*turns);
    const sb=ctx.createBuffer(1,L,sr),sd=sb.getChannelData(0),tb=ctx.createBuffer(1,L,sr),td=tb.getChannelData(0);
    for(let t=0;t<turns;t++){const i0=Math.floor(t*per*sr),amp=rnd(.7,1),f=rnd(85,110),n=Math.floor(sr*.14);
      for(let k=0;k<n;k++)td[i0+k]=Math.sin(2*Math.PI*f*k/sr)*Math.exp(-4*k/n)*.7*Math.min(1,k/(sr*.004));
      const m=Math.floor(per*sr);for(let k=0;k<m&&i0+k<L;k++){const p=k/m,e=p<.18?p/.18:Math.exp(-(p-.18)*4.2);sd[i0+k]=(Math.random()*2-1)*(.12+.88*e*amp)}}
-   const s1=ctx.createBufferSource();s1.buffer=sb;s1.loop=true;s1.start();s1.connect(bq('bandpass',1100,.5)).connect(g(.12)).connect(o);
-   const s2=ctx.createBufferSource();s2.buffer=tb;s2.loop=true;s2.start();s2.connect(bq('lowpass',260)).connect(g(.5)).connect(o);
+   const s1=ctx.createBufferSource();s1.buffer=sb;s1.loop=true;s1.start();live.push(s1);s1.connect(bq('bandpass',1100,.5)).connect(g(.12)).connect(o);
+   const s2=ctx.createBufferSource();s2.buffer=tb;s2.loop=true;s2.start();live.push(s2);s2.connect(bq('lowpass',260)).connect(g(.5)).connect(o);
    src(brown).connect(bq('lowpass',600)).connect(g(.06)).connect(o);}
   setNature(S.nature,true);
 }
 function ramp(param,v,sec){const t=ctx.currentTime;param.cancelScheduledValues(t);param.setValueAtTime(param.value,t);param.linearRampToValueAtTime(v,t+sec)}
 function setNature(id,quiet){
   S.nature=id;
-  if(A){for(const k in A.nat)ramp(A.nat[k].gain,k===id?1:0,quiet?.05:2.5)}
-  renderChips();save();if(A)mediaInfo();
+  if(A){ // 沒選到的自然聲淡出後整個關掉，不佔手機的運算
+    for(const k in A.nat){const n=A.nat[k];
+      if(k===id){n.dead=false;ramp(n.o.gain,1,2.5)}
+      else if(!n.dead){n.dead=true;ramp(n.o.gain,0,2.5);
+        setTimeout(()=>{if(!n.dead)return;n.nodes.forEach(x=>{try{x.stop()}catch(e){}});n.tr.disconnect();if(A.nat[k]===n)delete A.nat[k]},2900)}}
+    if(NAT[id]&&!A.nat[id]){NAT[id]();ramp(A.nat[id].o.gain,1,quiet?.05:2.5)}
+    mediaInfo();
+  }
+  renderChips();save();
 }
 
 /* ========= 樂器 ========= */
@@ -488,19 +497,38 @@ function buildLadder(){
    網頁合成的聲音在手機切到背景時通常會被系統停掉。這裡把聲音改接到一個
    <audio> 播放器，系統會把它當成「正在播放的音樂」，關螢幕也能繼續，
    鎖定畫面還會出現播放／暫停按鈕。 */
-let bgEl=null,bgOn=false;
+let bgEl=null,bgOn=false,silent=null;
+const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const MOBILE=IOS||/Android/i.test(navigator.userAgent);
+// 一段 10 秒的無聲音檔。Android 上聲音照常直接輸出，只靠它讓系統知道「這個分頁正在播音樂」
+function silentUrl(){
+  if(silent)return silent;
+  const n=80000,b=new ArrayBuffer(44+n*2),v=new DataView(b),w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i))};
+  w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+  v.setUint32(24,8000,true);v.setUint32(28,16000,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+  return silent=URL.createObjectURL(new Blob([b],{type:'audio/wav'}));
+}
 function route(){
   if(!A)return;
-  try{A.out.disconnect()}catch(e){}
-  const direct=()=>{bgOn=false;try{A.out.disconnect()}catch(e){}A.out.connect(ctx.destination);if(bgEl)bgEl.pause();renderBg()};
-  if(!S.bg||!ctx.createMediaStreamDestination)return direct();
-  try{
-    if(!A.msd){A.msd=ctx.createMediaStreamDestination();
-      bgEl=document.createElement('audio');bgEl.setAttribute('playsinline','');bgEl.srcObject=A.msd.stream;bgEl.hidden=true;document.body.appendChild(bgEl);
-}
-    A.out.connect(A.msd);bgOn=true;
-    const pr=bgEl.play();if(pr&&pr.catch)pr.catch(()=>{if(S.bg)direct()}); // 播放器被擋下時退回一般播放
-  }catch(e){direct()}
+  const wire=dest=>{try{A.out.disconnect()}catch(e){}A.out.connect(dest)};
+  bgOn=false;
+  if(S.bg){
+    try{
+      if(!bgEl){bgEl=document.createElement('audio');bgEl.setAttribute('playsinline','');bgEl.hidden=true;document.body.appendChild(bgEl)}
+      if(IOS&&ctx.createMediaStreamDestination){
+        // iPhone／iPad：聲音要經過播放器才不會在背景被停掉
+        if(!A.msd){A.msd=ctx.createMediaStreamDestination();bgEl.srcObject=A.msd.stream}
+        wire(A.msd);bgOn=true;
+        const pr=bgEl.play();if(pr&&pr.catch)pr.catch(()=>{bgOn=false;wire(ctx.destination);renderBg()});
+      }else{
+        // Android 與電腦：聲音直接輸出（經過播放器反而會斷斷續續），另外循環播放無聲音檔保持分頁在背景運作
+        wire(ctx.destination);
+        if(!bgEl.src){bgEl.src=silentUrl();bgEl.loop=true}
+        bgOn=true;
+        const pr=bgEl.play();if(pr&&pr.catch)pr.catch(()=>{bgOn=false;renderBg()});
+      }
+    }catch(e){bgOn=false;wire(ctx.destination)}
+  }else{wire(ctx.destination);if(bgEl)bgEl.pause()}
   renderBg();
 }
 function renderBg(){
@@ -599,7 +627,7 @@ function tick(){
   if(!S.playing||!ctx||ctx.state!=='running')return;
   const now=ctx.currentTime;
   if(S.nextBar<now)S.nextBar=now+.12;
-  const ahead=document.hidden?24:1.5; // 在背景時瀏覽器的計時器會變慢，所以一次先排好二十幾秒
+  const ahead=document.hidden?8:1.5; // 在背景時瀏覽器的計時器會變慢，所以多排幾秒
   while(S.nextBar<now+ahead)S.nextBar+=scheduleBar(S.nextBar);
 }
 
