@@ -118,6 +118,12 @@ footer p{margin:0 0 .5rem}
   </section>
 
   <section class="group">
+    <h2>和弦走向</h2>
+    <div class="chips" id="progs"></div>
+    <p class="mood-note" id="progNote"></p>
+  </section>
+
+  <section class="group">
     <h2>自然聲</h2>
     <div class="chips" id="natures"></div>
   </section>
@@ -200,6 +206,24 @@ const MOODS={
     bpm:[40,46],home:1,bias:{1:2.5,3:1.6,0:1,5:1,4:.4},lead:'bow',alt:'bell',altP:.4,altShift:0,arpInst:'bell',arp:.1,padType:'both',
     density:.3,grid:4,pad:.8,send:.9,range:[64,84],spark:.45,mode:k=>NOTE[(k+2)%12]+' 多里安調式'}
 };
+// 經典和弦進行（以級數表示：0=I、1=ii、2=iii、3=IV、4=V、5=vi）
+const ROMAN=['I','ii','iii','IV','V','vi'];
+const major=k=>NOTE[k%12]+' 大調',minor=k=>NOTE[(k+9)%12]+' 小調';
+const PROGS={
+  canon:{name:'卡農',seq:[0,4,5,2,3,0,3,4],mode:major,note:'帕海貝爾〈卡農〉的進行，最耐聽的八個和弦。'},
+  pop:{name:'流行四和弦',seq:[0,4,5,3],mode:major,note:'無數流行歌共用的四個和弦，明亮而熟悉。'},
+  fifties:{name:'五〇年代',seq:[0,5,3,4],mode:major,note:'老情歌常用的進行，溫暖、懷舊。'},
+  pastoral:{name:'田園',seq:[0,3,0,4],mode:major,note:'最單純的三個和弦，像民謠與聖詠，安穩踏實。'},
+  royal:{name:'王道進行',seq:[3,4,2,5],mode:minor,note:'日本流行樂最愛的進行，帶著一點惆悵的甜。'},
+  lyric:{name:'抒情小調',seq:[5,3,0,4],mode:minor,note:'從小調出發再走向明亮，適合沉澱情緒。'},
+  jazz:{name:'爵士二五一',seq:[1,4,0,5],mode:major,note:'爵士樂的基本句型，圓滑、慵懶。'},
+  dorian:{name:'多里安',seq:[1,4,1,3],mode:k=>NOTE[(k+2)%12]+' 多里安調式',note:'兩個和弦來回擺盪，空靈、不落地。'},
+  lydian:{name:'利地亞',seq:[3,0,3,1],mode:k=>NOTE[(k+5)%12]+' 利地亞調式',note:'電影配樂常用的漂浮感，像在水中或太空。'}
+};
+const PROG_ORDER=['canon','pop','fifties','pastoral','royal','lyric','jazz','dorian','lydian'];
+// 各曲風在「自動」時偏好的經典進行
+const MOOD_PROGS={mist:['canon','pop','fifties','pastoral'],brook:['fifties','pastoral','pop','canon'],forest:['pop','fifties','canon','pastoral'],
+  dusk:['lyric','royal','jazz'],star:['lyric','royal','canon'],sea:['lydian','royal'],cosmos:['dorian','lydian']};
 const MOOD_ORDER=['mist','brook','forest','dusk','star','sea','cosmos'];
 const NATURES={none:'無',rain:'細雨',brook:'溪流',sea:'海浪',fire:'燒柴',wheel:'水車'};
 // 各自然聲的音量校正，讓它們彼此差不多大聲
@@ -221,12 +245,12 @@ const mtof=m=>440*Math.pow(2,(m-69)/12);
 function wpick(pairs){let s=0;for(const p of pairs)s+=p[1];let r=Math.random()*s;for(const p of pairs){r-=p[1];if(r<=0)return p[0]}return pairs[0][0]}
 
 /* ========= 狀態 ========= */
-const S={sel:'mist',mood:'mist',pending:null,key:48+Math.floor(Math.random()*12),bpm:58,deg:0,bar:0,nextBar:0,
+const S={progSel:'auto',prog:null,pi:0,chordBars:2,cb:0,progDirty:false,sel:'mist',mood:'mist',pending:null,key:48+Math.floor(Math.random()*12),bpm:58,deg:0,bar:0,nextBar:0,
   chordsLeft:0,phrase:0,rest:1,mi:0,ladder:[],pcs:[],padNotes:[],nature:'none',vol:.7,natVol:.4,voice:'lead',playing:false,breath:true,bg:true,timerEnd:0,first:true};
 function load(){try{const o=JSON.parse(localStorage.getItem('yunjian')||'{}');
-  if(o.sel&&(MOODS[o.sel]||o.sel==='auto'))S.sel=o.sel;if(NATURES[o.nature])S.nature=o.nature;
+  if(o.sel&&(MOODS[o.sel]||o.sel==='auto'))S.sel=o.sel;if(PROGS[o.progSel]||o.progSel==='auto'||o.progSel==='free')S.progSel=o.progSel;if(NATURES[o.nature])S.nature=o.nature;
   if(typeof o.vol==='number')S.vol=Math.min(1,Math.max(0,o.vol));if(typeof o.natVol==='number')S.natVol=Math.min(1,Math.max(0,o.natVol));if(typeof o.breath==='boolean')S.breath=o.breath;if(typeof o.bg==='boolean')S.bg=o.bg}catch(e){}}
-function save(){try{localStorage.setItem('yunjian',JSON.stringify({sel:S.sel,nature:S.nature,vol:S.vol,natVol:S.natVol,breath:S.breath,bg:S.bg}))}catch(e){}}
+function save(){try{localStorage.setItem('yunjian',JSON.stringify({sel:S.sel,progSel:S.progSel,nature:S.nature,vol:S.vol,natVol:S.natVol,breath:S.breath,bg:S.bg}))}catch(e){}}
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)S.breath=false;
 load();
 const volGain=()=>S.vol*S.vol*1.4,natGain=()=>S.natVol*S.natVol*1.4;
@@ -569,6 +593,18 @@ function applyMood(id){
   ramp(A.melSend.gain,M.send,3);ramp(A.pad.gain,M.pad,4);
   buildLadder();mediaInfo();
 }
+// 決定這一段要用哪個和弦進行：指定的經典進行、依曲風挑選、或自由漫遊
+function pickProg(){
+  const M=MOODS[S.mood];
+  if(S.progSel==='free')S.prog=null;
+  else if(S.progSel==='auto')S.prog=Math.random()<.65?pick(MOOD_PROGS[S.mood]):null;
+  else S.prog=S.progSel;
+  S.pi=0;S.progDirty=false;
+  if(S.prog){ // 經典進行每小節換一個和弦才聽得出來；最慢的兩種曲風維持兩小節
+    const len=PROGS[S.prog].seq.length;S.chordBars=M.bpm[0]>=50?1:2;
+    S.chordsLeft=len*Math.ceil((S.chordBars===1?16:8)/len);S.deg=PROGS[S.prog].seq[0];
+  }else{S.chordBars=2;S.chordsLeft=Math.floor(rnd(10,17));S.deg=M.home}
+}
 function nextChord(){
   const M=MOODS[S.mood];
   if(S.chordsLeft<=0){
@@ -577,8 +613,10 @@ function nextChord(){
       if(S.sel==='auto')applyMood(pick(MOOD_ORDER.filter(m=>m!==S.mood)));
       else{S.bpm=Math.round(rnd(M.bpm[0],M.bpm[1]));buildLadder()}
     }
-    S.first=false;S.chordsLeft=Math.floor(rnd(10,17));S.deg=MOODS[S.mood].home;
-  }else{
+    S.first=false;pickProg();
+  }else if(S.progDirty)pickProg();
+  else if(S.prog){const q=PROGS[S.prog].seq;S.deg=q[++S.pi%q.length]}
+  else{
     const b=MOODS[S.mood].bias;
     S.deg=wpick(NEXT[S.deg].map(([d,w])=>[d,w*(b[d]||.6)]));
   }
@@ -595,12 +633,14 @@ function nextChord(){
 function scheduleBar(t){
   if(S.pending){applyMood(S.pending);S.pending=null}
   const M=MOODS[S.mood],beat=60/S.bpm,bar=beat*4;
-  if(S.bar%2===0){
-    const bass=nextChord(),M2=MOODS[S.mood],dur=bar*2;
-    for(const m of S.padNotes)sustain(t+rnd(0,.25),dur,m,.05,2.6,4,A.padLP,M2.padType);
-    sustain(t,dur,bass,.1,1.4,3,A.pad,'sine');sustain(t,dur,bass+12,.03,1.4,3,A.pad,'sine');
-    events.push({t,kind:'info',text:M2.mode(S.key)+'・每分鐘 '+S.bpm+' 拍・'+NOTE[deg(S.deg)%12]+CHORD_SUFFIX[S.deg]});
+  if(S.cb<=0){
+    const bass=nextChord(),M2=MOODS[S.mood],dur=bar*S.chordBars,quick=S.chordBars===1;
+    S.cb=S.chordBars;
+    for(const m of S.padNotes)sustain(t+rnd(0,.25),dur,m,.05,quick?1.6:2.6,quick?2.6:4,A.padLP,M2.padType);
+    sustain(t,dur,bass,.1,quick?1:1.4,quick?2:3,A.pad,'sine');sustain(t,dur,bass+12,.03,quick?1:1.4,quick?2:3,A.pad,'sine');
+    events.push({t,kind:'info',text:(S.prog?PROGS[S.prog].mode:M2.mode)(S.key)+'・每分鐘 '+S.bpm+' 拍・'+NOTE[deg(S.deg)%12]+CHORD_SUFFIX[S.deg]+(S.prog?'・'+PROGS[S.prog].name:'')});
   }
+  S.cb--;
   // 樂句：唱幾小節、停幾小節，留白讓耳朵休息
   if(S.phrase<=0&&S.rest<=0){
     if(Math.random()<.5+M.density){S.phrase=Math.floor(rnd(2,5));S.voice=Math.random()<M.altP?'alt':'lead'}else S.rest=1; // 每一句由主奏或搭配的樂器來唱
@@ -688,6 +728,8 @@ function chip(label,pressed,fn){const b=document.createElement('button');b.type=
 function renderChips(){
   const m=$('moods');m.replaceChildren(...MOOD_ORDER.map(id=>chip(MOODS[id].name,S.sel===id,()=>setMood(id))),chip('隨心輪替',S.sel==='auto',()=>setMood('auto')));
   $('moodNote').textContent=S.sel==='auto'?'每隔幾分鐘，隨著換調自動換一種曲風。':MOODS[S.sel].note;
+  $('progs').replaceChildren(chip('自動',S.progSel==='auto',()=>setProg('auto')),...PROG_ORDER.map(id=>chip(PROGS[id].name,S.progSel===id,()=>setProg(id))),chip('自由漫遊',S.progSel==='free',()=>setProg('free')));
+  $('progNote').textContent=S.progSel==='auto'?'依曲風挑選合適的經典進行，偶爾穿插自由漫遊。':S.progSel==='free'?'不照固定順序，每個和弦都隨機決定下一步。':PROGS[S.progSel].seq.map(d=>ROMAN[d]).join(' – ')+'　'+PROGS[S.progSel].note;
   $('natures').replaceChildren(...Object.keys(NATURES).map(id=>chip(NATURES[id],S.nature===id,()=>setNature(id))));
   renderTimer(S.timerEnd?S.timerEnd-Date.now():0);
   $('breath').setAttribute('aria-pressed',S.breath?'true':'false');
@@ -701,6 +743,7 @@ function renderTimer(left){
     return chip(label,min===timerSel,()=>{timerSel=min;S.timerEnd=min?Date.now()+min*60000:0;renderTimer(min*60000);if(min&&!S.playing)play()});
   }));
 }
+function setProg(id){S.progSel=id;S.progDirty=true;renderChips();save()} // 下一個和弦起生效
 function setMood(id){
   S.sel=id;
   const target=id==='auto'?S.mood:id;
