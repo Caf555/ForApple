@@ -148,9 +148,17 @@ footer p{margin:0 0 .5rem}
     </div>
   </section>
 
+  <section class="group">
+    <h2>背景播放</h2>
+    <div class="chips">
+      <button class="chip" id="bg" type="button" aria-pressed="true">關螢幕或切到別的 App 時繼續播放</button>
+    </div>
+    <p class="mood-note" id="bgNote"></p>
+  </section>
+
   <footer>
     <p>音樂的設計依據：每分鐘 40–66 拍的慢速、五聲音階旋律（沒有不和諧音）、緩起緩收的長音、沒有鼓點與突然的大聲。每分鐘 6 次的慢呼吸有助於身體放鬆。</p>
-    <p>iPhone 若沒有聲音，請確認側邊靜音鍵與媒體音量。這是放鬆輔助工具，不能取代醫療。</p>
+    <p>iPhone 若沒有聲音，請確認側邊靜音鍵與媒體音量。背景播放在 Safari 直接開啟網頁時最穩定。這是放鬆輔助工具，不能取代醫療。</p>
   </footer>
 </div>
 
@@ -205,11 +213,11 @@ function wpick(pairs){let s=0;for(const p of pairs)s+=p[1];let r=Math.random()*s
 
 /* ========= 狀態 ========= */
 const S={sel:'mist',mood:'mist',pending:null,key:48+Math.floor(Math.random()*12),bpm:58,deg:0,bar:0,nextBar:0,
-  chordsLeft:0,phrase:0,rest:1,mi:0,ladder:[],pcs:[],padNotes:[],nature:'none',vol:.7,natVol:.4,voice:'lead',playing:false,breath:true,timerEnd:0,first:true};
+  chordsLeft:0,phrase:0,rest:1,mi:0,ladder:[],pcs:[],padNotes:[],nature:'none',vol:.7,natVol:.4,voice:'lead',playing:false,breath:true,bg:true,timerEnd:0,first:true};
 function load(){try{const o=JSON.parse(localStorage.getItem('yunjian')||'{}');
   if(o.sel&&(MOODS[o.sel]||o.sel==='auto'))S.sel=o.sel;if(NATURES[o.nature])S.nature=o.nature;
-  if(typeof o.vol==='number')S.vol=Math.min(1,Math.max(0,o.vol));if(typeof o.natVol==='number')S.natVol=Math.min(1,Math.max(0,o.natVol));if(typeof o.breath==='boolean')S.breath=o.breath}catch(e){}}
-function save(){try{localStorage.setItem('yunjian',JSON.stringify({sel:S.sel,nature:S.nature,vol:S.vol,natVol:S.natVol,breath:S.breath}))}catch(e){}}
+  if(typeof o.vol==='number')S.vol=Math.min(1,Math.max(0,o.vol));if(typeof o.natVol==='number')S.natVol=Math.min(1,Math.max(0,o.natVol));if(typeof o.breath==='boolean')S.breath=o.breath;if(typeof o.bg==='boolean')S.bg=o.bg}catch(e){}}
+function save(){try{localStorage.setItem('yunjian',JSON.stringify({sel:S.sel,nature:S.nature,vol:S.vol,natVol:S.natVol,breath:S.breath,bg:S.bg}))}catch(e){}}
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)S.breath=false;
 load();
 const volGain=()=>S.vol*S.vol*1.4,natGain=()=>S.natVol*S.natVol*1.4;
@@ -257,7 +265,7 @@ function initAudio(){
   A.comp.threshold.value=-20;A.comp.knee.value=18;A.comp.ratio.value=3;A.comp.attack.value=.05;A.comp.release.value=.5;
   A.rev.buffer=impulse(6);
   A.padLP.type='lowpass';A.padLP.frequency.value=950;A.padLP.Q.value=.3;
-  A.mix.connect(A.vol).connect(A.fade).connect(A.comp).connect(ctx.destination);
+  A.out=g(1);A.mix.connect(A.vol).connect(A.fade).connect(A.comp).connect(A.out);
   A.natVol.connect(A.fade);
   A.rev.connect(A.revOut).connect(A.mix);
   A.mel.connect(A.mix);A.mel.connect(A.melSend).connect(A.rev);
@@ -325,7 +333,7 @@ function ramp(param,v,sec){const t=ctx.currentTime;param.cancelScheduledValues(t
 function setNature(id,quiet){
   S.nature=id;
   if(A){for(const k in A.nat)ramp(A.nat[k].gain,k===id?1:0,quiet?.05:2.5)}
-  renderChips();save();
+  renderChips();save();if(A)mediaInfo();
 }
 
 /* ========= 樂器 ========= */
@@ -476,11 +484,43 @@ function buildLadder(){
   if(old==null)S.mi=Math.floor(L.length/2);
   else{let best=0;for(let i=0;i<L.length;i++)if(Math.abs(L[i]-old)<Math.abs(L[best]-old))best=i;S.mi=best}
 }
+/* ========= 背景播放 =========
+   網頁合成的聲音在手機切到背景時通常會被系統停掉。這裡把聲音改接到一個
+   <audio> 播放器，系統會把它當成「正在播放的音樂」，關螢幕也能繼續，
+   鎖定畫面還會出現播放／暫停按鈕。 */
+let bgEl=null,bgOn=false;
+function route(){
+  if(!A)return;
+  try{A.out.disconnect()}catch(e){}
+  const direct=()=>{bgOn=false;try{A.out.disconnect()}catch(e){}A.out.connect(ctx.destination);if(bgEl)bgEl.pause();renderBg()};
+  if(!S.bg||!ctx.createMediaStreamDestination)return direct();
+  try{
+    if(!A.msd){A.msd=ctx.createMediaStreamDestination();
+      bgEl=document.createElement('audio');bgEl.setAttribute('playsinline','');bgEl.srcObject=A.msd.stream;bgEl.hidden=true;document.body.appendChild(bgEl);
+}
+    A.out.connect(A.msd);bgOn=true;
+    const pr=bgEl.play();if(pr&&pr.catch)pr.catch(()=>{if(S.bg)direct()}); // 播放器被擋下時退回一般播放
+  }catch(e){direct()}
+  renderBg();
+}
+function renderBg(){
+  $('bg').setAttribute('aria-pressed',S.bg?'true':'false');
+  $('bgNote').textContent=!S.bg?'已關閉：離開這個頁面時音樂可能會停。':(A&&!bgOn?'這個瀏覽器不支援背景播放，離開頁面時音樂可能會停。':'若開啟後沒有聲音或聲音怪怪的，請把這一項關掉。');
+}
+function mediaInfo(){
+  if(!('mediaSession' in navigator))return;
+  try{
+    if(window.MediaMetadata)navigator.mediaSession.metadata=new MediaMetadata({title:'雲間小曲・'+MOODS[S.mood].name,artist:'隨機生成的輕音樂',album:NATURES[S.nature]==='無'?'':'自然聲：'+NATURES[S.nature]});
+    navigator.mediaSession.playbackState=S.playing?'playing':'paused';
+    navigator.mediaSession.setActionHandler('play',()=>play());
+    navigator.mediaSession.setActionHandler('pause',()=>pause());
+  }catch(e){}
+}
 function applyMood(id){
   S.mood=id;const M=MOODS[id];
   S.bpm=Math.round(rnd(M.bpm[0],M.bpm[1]));
   ramp(A.melSend.gain,M.send,3);ramp(A.pad.gain,M.pad,4);
-  buildLadder();
+  buildLadder();mediaInfo();
 }
 function nextChord(){
   const M=MOODS[S.mood];
@@ -559,7 +599,8 @@ function tick(){
   if(!S.playing||!ctx||ctx.state!=='running')return;
   const now=ctx.currentTime;
   if(S.nextBar<now)S.nextBar=now+.12;
-  while(S.nextBar<now+1.5)S.nextBar+=scheduleBar(S.nextBar);
+  const ahead=document.hidden?24:1.5; // 在背景時瀏覽器的計時器會變慢，所以一次先排好二十幾秒
+  while(S.nextBar<now+ahead)S.nextBar+=scheduleBar(S.nextBar);
 }
 
 /* ========= 播放控制 ========= */
@@ -567,8 +608,9 @@ let pauseTok=0,breathT0=0;
 async function play(){
   if(!ctx){initAudio();applyMood(S.mood);S.nextBar=ctx.currentTime+.25}
   pauseTok++;
+  route(); // 要在按下的當下啟動播放器，否則手機會擋
   try{await ctx.resume()}catch(e){}
-  S.playing=true;breathT0=performance.now();
+  S.playing=true;breathT0=performance.now();mediaInfo();
   ramp(A.fade.gain,1,S.bar===0?3.5:1.8);
   tick();renderOrb();requestAnimationFrame(frame);
 }
@@ -576,11 +618,15 @@ function pause(fadeSec){
   if(!S.playing)return;
   S.playing=false;const tok=++pauseTok,f=fadeSec||.9;
   ramp(A.fade.gain,0,f);
-  setTimeout(()=>{if(tok===pauseTok&&!S.playing)ctx.suspend()},f*1000+80);
+  setTimeout(()=>{if(tok===pauseTok&&!S.playing){ctx.suspend();if(bgEl)bgEl.pause();mediaInfo()}},f*1000+80);
   S.timerEnd=0;renderOrb();renderChips();
 }
 setInterval(tick,200);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.playing&&ctx&&ctx.state!=='running')ctx.resume().then(tick,()=>{})});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){tick();return} // 進背景前先把後面的音樂排好
+  if(S.playing&&ctx&&ctx.state!=='running')ctx.resume().then(tick,()=>{});
+  if(S.playing&&bgOn&&bgEl&&bgEl.paused)bgEl.play().catch(()=>{});
+});
 setInterval(()=>{ // 定時停止
   if(!S.timerEnd||!S.playing)return;
   const left=S.timerEnd-Date.now();
@@ -619,12 +665,13 @@ function renderOrb(){
   if(!S.playing){$('orb').style.setProperty('--s',1);if(ctx&&$('hint').textContent.indexOf('晚安')<0)$('hint').textContent='已暫停';}
 }
 $('orb').onclick=()=>S.playing?pause():play();
+$('bg').onclick=()=>{S.bg=!S.bg;save();if(A&&S.playing)route();else renderBg()};
 $('breath').onclick=()=>{S.breath=!S.breath;breathT0=performance.now();renderChips();save()};
 $('vol').value=Math.round(S.vol*100);$('volOut').textContent=Math.round(S.vol*100);
 $('vol').oninput=e=>{S.vol=e.target.value/100;$('volOut').textContent=e.target.value;if(A)A.vol.gain.setTargetAtTime(volGain(),ctx.currentTime,.05);save()};
 $('natVol').value=Math.round(S.natVol*100);$('natVolOut').textContent=Math.round(S.natVol*100);
 $('natVol').oninput=e=>{S.natVol=e.target.value/100;$('natVolOut').textContent=e.target.value;if(A)A.natVol.gain.setTargetAtTime(natGain(),ctx.currentTime,.05);save()};
-renderChips();
+renderChips();renderBg();
 
 // 漣漪
 const cv=$('ripples'),c2=cv.getContext('2d');let rip=[],colors={a:'#888',g:'#888'},colorAt=0;
